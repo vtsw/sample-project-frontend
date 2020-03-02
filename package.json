@@ -8,15 +8,16 @@
     "start:analyze": "webpack-dev-server --env.mode development --env.analyze",
     "build:dev": "rimraf dist && cross-env NODE_ENV=development webpack --env.mode development",
     "build:prod": "rimraf dist && cross-env NODE_ENV=production webpack --env.mode production",
-    "test": "jest --coverage",
+    "lint": "eslint src/**/*.{js,jsx}",
+    "lint:fix": "eslint --fix src/**/*.{js,jsx}",
+    "test": "jest",
     "test:watch": "jest --coverage --watch",
-    "format": "prettier --write \"{,!(node_modules)/**/}*.{js,jsx}\"",
-    "eslint-fix": "eslint --fix \"{,!(node_modules)/**/}*.{js,jsx}\""
+    "test:all": "set CI=true && yarn test && yarn lint"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn test",
-      "pre-push": "yarn test"
+      "pre-commit": "yarn lint:fix",
+      "pre-push": "yarn test:all"
     }
   },
   "repository": {
