@@ -1,7 +1,7 @@
 /**
  * TODO:
  * - Optimize split chunk, vendor, common, minify js by using terser-webpack-plugin
- * - Config ApolloGraphQL (done), Unit & Integration test
+ * - Config ApolloGraphQL (done), Unit & Integration test (done)
  * - Setup project structure (done)
  *
  */
@@ -11,7 +11,7 @@ const webpack = require('webpack')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
@@ -37,7 +37,35 @@ module.exports = ({ mode, analyze }) => {
 	]
 
 	if (isEnvProduction) {
-		minimizer.push(new UglifyJsPlugin(), new OptimizeCSSAssetsPlugin())
+		minimizer.push(
+			new TerserPlugin({
+				// View details about TerserPlugin configs at:
+				// https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/config/webpack.config.js
+				terserOptions: {
+					parse: {
+						ecma: 8,
+					},
+					compress: {
+						ecma: 5,
+						warnings: false,
+						comparisons: false,
+						inline: 2,
+					},
+					mangle: {
+						safari10: true,
+					},
+					keep_classnames: true,
+					keep_fnames: true,
+					output: {
+						ecma: 5,
+						comments: false,
+						ascii_only: true,
+					},
+				},
+				sourceMap: true,
+			}),
+			new OptimizeCSSAssetsPlugin()
+		)
 	}
 
 	if (analyze) {
@@ -52,7 +80,9 @@ module.exports = ({ mode, analyze }) => {
 		},
 		output: {
 			path: resolve(__dirname, 'dist'),
-			filename: '[name].[chunkhash:8].js',
+			filename: isEnvProduction
+				? '[name].[chunkhash:8].js'
+				: '[name].[hash:8].js',
 			publicPath: '/',
 		},
 		resolve: {
@@ -91,7 +121,7 @@ module.exports = ({ mode, analyze }) => {
 			contentBase: resolve(__dirname, 'dist'),
 			port: 3000,
 			historyApiFallback: true,
-			inline: true,
+			hot: true,
 		},
 		devtool: isEnvProduction ? 'source-map' : 'eval-cheap-source-map',
 		plugins,
@@ -104,7 +134,7 @@ module.exports = ({ mode, analyze }) => {
 					vendors: false,
 					commons: {
 						test: /[\\/]node_modules[\\/]/,
-						name: false,
+						name: 'vendor',
 						chunks: 'all',
 					},
 				},
