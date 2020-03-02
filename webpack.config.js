@@ -2,7 +2,7 @@
  * TODO:
  * - Optimize split chunk, vendor, common, minify js by using terser-webpack-plugin
  * - Config ApolloGraphQL (done), Unit & Integration test
- * - Setup project structure
+ * - Setup project structure (done)
  *
  */
 
