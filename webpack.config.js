@@ -84,9 +84,8 @@ module.exports = ({ mode, analyze }) => {
 		resolve: {
 			alias: {
 				'@material-ui/core': '@material-ui/core/es',
-				'@material-ui/icons': '@material-ui/icons/esm',
 				'@src': resolve(__dirname, 'src'),
-				'@pages': resolve(__dirname, 'src/pages'),
+				'@views': resolve(__dirname, 'src/views'),
 				'@components': resolve(__dirname, 'src/components'),
 			},
 			modules: ['node_modules', resolve(__dirname, 'src')],
@@ -103,7 +102,7 @@ module.exports = ({ mode, analyze }) => {
 				},
 				{
 					test: /\.(scss|css)$/i,
-					use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+					use: ['style-loader', 'css-loader', 'sass-loader'],
 				},
 				{
 					test: /\.(png|jpe?g|gif|svg)$/i,
