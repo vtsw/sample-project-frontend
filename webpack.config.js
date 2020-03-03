@@ -91,6 +91,7 @@ module.exports = ({ mode, analyze }) => {
 		},
 		resolve: {
 			alias: {
+				'@material-ui/core': '@material-ui/core/es',
 				'@src': resolve(__dirname, 'src'),
 				'@pages': resolve(__dirname, 'src/pages'),
 				'@components': resolve(__dirname, 'src/components'),

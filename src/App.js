@@ -4,7 +4,8 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import NavBar from '@components/navbar'
 
-import { Button } from '@material-ui/core'
+import { Button, Grid } from '@material-ui/core'
+import { AccessAlarm, ThreeDRotation } from '@material-ui/icons'
 
 const useStyles = makeStyles(() => ({
 	title: {
@@ -15,12 +16,14 @@ const useStyles = makeStyles(() => ({
 const App = () => {
 	const classes = useStyles()
 	return (
-		<div>
+		<Grid container>
 			<Button variant='contained' color='primary' className={classes.title}>
 				Click
 			</Button>
+			<AccessAlarm />
+			<ThreeDRotation />
 			<NavBar />
-		</div>
+		</Grid>
 	)
 }
 
