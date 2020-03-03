@@ -2,13 +2,6 @@
 
 exports[`<App/> should render without crashing 1`] = `
 <div>
-  <WithStyles(ForwardRef(Button))
-    className="makeStyles-title-1"
-    color="primary"
-    variant="contained"
-  >
-    Click
-  </WithStyles(ForwardRef(Button))>
   <NavBar />
 </div>
 `;

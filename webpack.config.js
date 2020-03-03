@@ -1,11 +1,3 @@
-/**
- * TODO:
- * - Optimize split chunk, vendor, common, minify js by using terser-webpack-plugin
- * - Config ApolloGraphQL (done), Unit & Integration test (done)
- * - Setup project structure (done)
- *
- */
-
 const { resolve } = require('path')
 const webpack = require('webpack')
 
@@ -92,6 +84,7 @@ module.exports = ({ mode, analyze }) => {
 		resolve: {
 			alias: {
 				'@material-ui/core': '@material-ui/core/es',
+				'@material-ui/icons': '@material-ui/icons/esm',
 				'@src': resolve(__dirname, 'src'),
 				'@pages': resolve(__dirname, 'src/pages'),
 				'@components': resolve(__dirname, 'src/components'),
