@@ -68,6 +68,10 @@ module.exports = ({ mode, analyze }) => {
 		)
 	}
 
+	if (isEnvDevelopment) {
+		plugins.push(new webpack.HotModuleReplacementPlugin())
+	}
+
 	if (analyze) {
 		plugins.push(new BundleAnalyzerPlugin())
 	}

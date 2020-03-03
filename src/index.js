@@ -15,3 +15,7 @@ const Root = () => (
 )
 
 ReactDOM.render(<Root />, document.getElementById('root'))
+
+if (module && module.hot) {
+	module.hot.accept()
+}
