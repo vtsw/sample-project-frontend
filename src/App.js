@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom'
 import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import NavBar from '@components/navbar'
+import NavBar from '@components/NavBar'
 
 const Main = lazy(() => import('@views/Main'))
 const Message = lazy(() => import('@views/Message'))

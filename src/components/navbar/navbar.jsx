@@ -1,11 +1,12 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
+import teal from '@material-ui/core/colors/teal'
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		position: 'relative',
-		backgroundColor: theme.palette.common.green,
+		backgroundColor: teal[600],
 		display: 'flex',
 		flexDirection: 'column',
 		height: '100vh',
