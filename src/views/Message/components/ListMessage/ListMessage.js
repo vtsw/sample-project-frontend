@@ -1,6 +1,6 @@
 import React from 'react'
-import CancelRoundedIcon from '@material-ui/icons/CancelRounded'
 import { Grid, Typography, makeStyles } from '@material-ui/core'
+import { CancelRounded } from '@material-ui/icons'
 import Message from '../Message'
 
 const arr = [
@@ -37,18 +37,19 @@ const arr = [
 ]
 
 const useStyles = makeStyles(theme => ({
-	container_table: {
+	root: {
 		height: '100%',
 	},
 	typography: {
-		padding: '16px',
+		fontWeight: 700,
 	},
 	container__typography: {
 		marginLeft: '12px',
+		fontWeight: 700,
 	},
 	icon: {
 		fontSize: '18px',
-		color: 'white',
+		color: theme.palette.common.white,
 		pointerEvents: 'none',
 	},
 	container__icon__typography: {
@@ -56,8 +57,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	header: {
 		padding: '8px 16px',
-		borderTop: `1px solid ${theme.palette.common.gray}`,
-		borderBottom: `1px solid ${theme.palette.common.gray}`,
+		borderTop: `1px solid #979797`,
+		borderBottom: `1px solid #979797`,
 	},
 	item: {
 		padding: '6px 16px',
@@ -75,12 +76,12 @@ const ListMessage = () => {
 		<Grid
 			container
 			alignItems='stretch'
-			className={classes.container_table}
+			className={classes.root}
 			direction='column'
 		>
 			<Grid container className={classes.header}>
 				<Grid xs={5} container className={classes.container__icon__typography}>
-					<CancelRoundedIcon className={classes.icon} />
+					<CancelRounded className={classes.icon} />
 					<Typography
 						variant='caption'
 						className={classes.container__typography}
@@ -90,7 +91,9 @@ const ListMessage = () => {
 				</Grid>
 
 				<Grid item xs={7}>
-					<Typography variant='caption'>TEXT</Typography>
+					<Typography variant='caption' className={classes.typography}>
+						TEXT
+					</Typography>
 				</Grid>
 			</Grid>
 			<Grid container className={classes.table} direction='column'>

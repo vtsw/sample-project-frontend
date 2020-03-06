@@ -87,6 +87,7 @@ module.exports = ({ mode, analyze }) => {
 				'@src': resolve(__dirname, 'src'),
 				'@views': resolve(__dirname, 'src/views'),
 				'@components': resolve(__dirname, 'src/components'),
+				'@views_components': resolve(__dirname, 'src/views/components'),
 			},
 			modules: ['node_modules', resolve(__dirname, 'src')],
 			extensions: ['.js', '.jsx'],

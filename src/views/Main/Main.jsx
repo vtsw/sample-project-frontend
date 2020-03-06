@@ -18,17 +18,17 @@ const useStyle = makeStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		background: 'black',
+		background: theme.palette.common.black,
 		height: '100%',
 	},
 	container: {
 		height: '100%',
 		padding: '16px',
 	},
-	column1: {
+	search_box: {
 		paddingRight: '16px',
 	},
-	column11: {
+	search_box__input: {
 		border: `1px solid ${theme.palette.common.gray}`,
 
 		height: '100%',
@@ -36,9 +36,14 @@ const useStyle = makeStyles(theme => ({
 	search: {
 		padding: '16px',
 	},
+	icon: {
+		fontSize: '40px',
+	},
 	button: {
-		color: 'white',
+		color: theme.palette.common.white,
 		marginLeft: '8px',
+		width: '56px',
+		boxShadow: 'none',
 		background: theme.palette.common.gray,
 		'&:hover': {
 			background: theme.palette.common.gray,
@@ -56,12 +61,12 @@ const Main = () => {
 				className={classes.container}
 				// spacing="3"
 			>
-				<Grid item xs={4} className={classes.column1}>
+				<Grid item xs={4} className={classes.search_box}>
 					<Grid
 						direction='column'
 						container
 						alignItems='stretch'
-						className={classes.column11}
+						className={classes.search_box__input}
 					>
 						<Grid container alignItems='stretch' className={classes.search}>
 							<TextField

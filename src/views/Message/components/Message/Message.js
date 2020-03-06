@@ -1,20 +1,24 @@
 import React, { useState } from 'react'
 import { Grid, makeStyles, Typography, Box } from '@material-ui/core'
-import CancelRoundedIcon from '@material-ui/icons/CancelRounded'
-import { DeleteDialog, ModifyDialog } from '../../../components'
+import { CancelRounded } from '@material-ui/icons'
+import { DeleteDialog, ModifyDialog } from '@views_components'
 
 const useStyles = makeStyles(theme => ({
 	container: ({ haveBackground }) => ({
 		background: haveBackground && theme.palette.common.gray,
 		padding: '8px 16px',
-		height: '40px',
+		height: 40,
 	}),
 	item: {
 		padding: '6px 8px',
-		height: '40px',
+		height: 40,
 	},
 	typography: {
+		fontWeight: 700,
+	},
+	typography_email: {
 		marginLeft: '12px',
+		fontWeight: 700,
 	},
 	icon: {
 		fontSize: '18px',
@@ -42,18 +46,18 @@ const Message = ({ onClick, email, name, haveBackground }) => {
 				}}
 			>
 				<Grid xs={5} container className={classes.container__icon__typography}>
-					<CancelRoundedIcon
+					<CancelRounded
 						className={classes.icon}
 						onClick={e => {
 							e.stopPropagation()
 							setOpenConfirmDelete(true)
 						}}
 					/>
-					<Typography variant='caption' className={classes.typography}>
+					<Typography variant='caption' className={classes.typography_email}>
 						{email}
 					</Typography>
 				</Grid>
-				<Grid item xs={7}>
+				<Grid item xs={7} className={classes.typography}>
 					{name}
 				</Grid>
 			</Grid>
@@ -65,7 +69,7 @@ const Message = ({ onClick, email, name, haveBackground }) => {
 				onAgree={() => {
 					setOpenConfirmDelete(false)
 				}}
-				onDissagree={() => {
+				onDisagree={() => {
 					setOpenConfirmDelete(false)
 				}}
 			/>
@@ -77,7 +81,7 @@ const Message = ({ onClick, email, name, haveBackground }) => {
 				onAgree={() => {
 					setOpenConfirmModify(false)
 				}}
-				onDissagree={() => {
+				onDisagree={() => {
 					setOpenConfirmModify(false)
 				}}
 			/>

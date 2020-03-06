@@ -14,33 +14,51 @@ const useStyle = makeStyles(theme => ({
 	root: {
 		width: 'calc(100% - 80px)',
 		margin: '16px',
-		border: `1px solid ${theme.palette.common.gray}`,
+		border: `1px solid #979797`,
 	},
 	div: {
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		background: 'black',
+		background: theme.palette.common.black,
 		height: '100%',
 	},
 	container: {
 		height: '100%',
 		padding: '16px',
 	},
-
+	icon: {
+		fontSize: '40px',
+	},
 	search: {
 		padding: '16px',
-		borderTop: `1px solid ${theme.palette.common.gray}`,
+		borderTop: `1px solid #979797`,
 	},
 	save: {
 		padding: '16px',
 	},
-	button: {
-		color: 'white',
+	buttonSearch: {
+		color: theme.palette.common.white,
 		marginLeft: '8px',
+		width: '56px',
+		boxShadow: 'none',
 		background: theme.palette.common.gray,
 		'&:hover': {
 			background: theme.palette.common.gray,
+		},
+	},
+	textField: {
+		width: '328px',
+	},
+	buttonSave: {
+		color: theme.palette.common.white,
+		marginLeft: '8px',
+		width: '56px',
+		boxShadow: 'none',
+		textTransform: 'none',
+		background: theme.palette.common.green,
+		'&:hover': {
+			background: theme.palette.common.green,
 		},
 	},
 }))
@@ -58,8 +76,9 @@ const Message = () => {
 							label='Text'
 							placeholder='text...'
 							type='text'
+							className={classes.textField}
 						/>
-						<Button variant='contained' className={classes.button}>
+						<Button variant='contained' className={classes.buttonSave}>
 							<Typography variant='caption'>Save</Typography>
 						</Button>
 					</Grid>
@@ -72,8 +91,9 @@ const Message = () => {
 							label='Search'
 							placeholder='search...'
 							type='search'
+							className={classes.textField}
 						/>
-						<Button variant='contained' className={classes.button}>
+						<Button variant='contained' className={classes.buttonSearch}>
 							<SearchIcon className={classes.icon} />
 						</Button>
 					</Grid>
