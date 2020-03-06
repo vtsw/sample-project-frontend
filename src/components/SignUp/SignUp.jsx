@@ -97,7 +97,6 @@ const SignUp = () => {
 						label='EMAIL'
 						variant='outlined'
 						type='email'
-						autoFocus
 						autoComplete='true'
 						onChange={e => setEmail(e.target.value)}
 						className={input}

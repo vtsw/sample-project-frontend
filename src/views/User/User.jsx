@@ -1,32 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
+
 import SignUp from '@components/SignUp'
 import SearchBox from '@components/SearchBox'
 import CVTable from '@components/CVTable'
+import { WelcomeDialog } from './components'
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		width: '100%',
 		height: '100vh',
 	},
-	fullscreenheight: {
+	full_screen_height: {
 		height: '100vh',
 	},
-	fullheight: {
+	full_height: {
 		height: '100%',
 	},
 	container: {
 		padding: theme.spacing(2.5),
 	},
-	signup__container: {
+	sign_up__container: {
 		display: 'flex',
 		alignItems: 'center',
 		border: `2px solid ${theme.palette.divider}`,
 		marginRight: 8,
+		position: 'relative',
 	},
-	userlist__container: {
+	user_list__container: {
 		border: `2px solid ${theme.palette.divider}`,
 		marginLeft: 8,
 		overflow: 'hidden',
@@ -43,29 +46,35 @@ const useStyles = makeStyles(theme => ({
 
 const User = () => {
 	const classes = useStyles()
+	const [dialogVisible, setDialogVisible] = useState(true)
 	return (
 		<Box className={classes.root}>
 			<Grid
 				container
-				className={clsx(classes.fullscreenheight, classes.container)}
+				className={clsx(classes.full_screen_height, classes.container)}
 			>
 				<Grid item xs={4}>
-					<div className={clsx(classes.signup__container, classes.fullheight)}>
+					<Box
+						className={clsx(classes.sign_up__container, classes.full_height)}
+					>
+						{dialogVisible ? (
+							<WelcomeDialog setDialogVisible={setDialogVisible} />
+						) : null}
 						<SignUp />
-					</div>
+					</Box>
 				</Grid>
 				<Grid item xs={8}>
-					<div
-						className={clsx(classes.userlist__container, classes.fullheight)}
+					<Box
+						className={clsx(classes.user_list__container, classes.full_height)}
 					>
-						<div className={classes.searchbox}>
+						<Box className={classes.searchbox}>
 							<Typography variant='h6' className={classes.searchbox__title}>
 								User List
 							</Typography>
 							<SearchBox width={400} />
-						</div>
+						</Box>
 						<CVTable />
-					</div>
+					</Box>
 				</Grid>
 			</Grid>
 		</Box>
