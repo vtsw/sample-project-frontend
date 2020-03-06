@@ -3,7 +3,7 @@ import { Box, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 
-import SignUp from '@components/SignUp'
+import FormEditor from '@components/FormEditor'
 import SearchBox from '@components/SearchBox'
 import CVTable from '@components/CVTable'
 import { WelcomeDialog } from './components'
@@ -46,7 +46,8 @@ const useStyles = makeStyles(theme => ({
 
 const User = () => {
 	const classes = useStyles()
-	const [dialogVisible, setDialogVisible] = useState(true)
+	const [dialogVisible, setDialogVisible] = useState(false)
+	const [selectedItem, setSelectedItem] = useState('')
 	return (
 		<Box className={classes.root}>
 			<Grid
@@ -60,7 +61,7 @@ const User = () => {
 						{dialogVisible ? (
 							<WelcomeDialog setDialogVisible={setDialogVisible} />
 						) : null}
-						<SignUp />
+						<FormEditor />
 					</Box>
 				</Grid>
 				<Grid item xs={8}>
@@ -73,7 +74,10 @@ const User = () => {
 							</Typography>
 							<SearchBox width={400} />
 						</Box>
-						<CVTable />
+						<CVTable
+							selectedItem={selectedItem}
+							setSelectedItem={setSelectedItem}
+						/>
 					</Box>
 				</Grid>
 			</Grid>

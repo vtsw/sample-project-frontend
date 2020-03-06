@@ -43,8 +43,8 @@ const CVTableItem = ({
 	email,
 	name,
 	hasCloseIcon,
-	activeItem,
-	setActiveItem,
+	selectedItem,
+	setSelectedItem,
 }) => {
 	const classes = useStyles()
 
@@ -53,9 +53,9 @@ const CVTableItem = ({
 			container
 			className={clsx(
 				classes.root,
-				activeItem === id ? classes.item__active : ''
+				selectedItem === id ? classes.item__active : ''
 			)}
-			onClick={() => setActiveItem(id)}
+			onClick={() => setSelectedItem(id)}
 		>
 			<Grid item xs={5}>
 				<Box className={classes.item__date__container}>
@@ -81,8 +81,8 @@ CVTableItem.propsTypes = {
 	email: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
 	hasCloseIcon: PropTypes.bool,
-	activeItem: PropTypes.bool,
-	setActiveItem: PropTypes.func,
+	selectedItem: PropTypes.bool,
+	setSelectedItem: PropTypes.func,
 }
 
 export default CVTableItem

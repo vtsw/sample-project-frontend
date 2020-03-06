@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { Box, Grid, makeStyles } from '@material-ui/core'
 import CVTableItem from '@components/CVTableItem'
 
@@ -56,9 +57,9 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const CVTable = () => {
+const CVTable = ({ selectedItem, setSelectedItem }) => {
 	const classes = useStyles()
-	const [activeItem, setActiveItem] = useState('')
+
 	return (
 		<Grid
 			container
@@ -78,15 +79,20 @@ const CVTable = () => {
 				{arr.map(item => (
 					<CVTableItem
 						key={item.id}
-						hasCloseIcon={false}
-						setActiveItem={setActiveItem}
-						activeItem={activeItem}
+						hasCloseIcon={true}
+						selectedItem={selectedItem}
+						setSelectedItem={setSelectedItem}
 						{...item}
 					/>
 				))}
 			</Box>
 		</Grid>
 	)
+}
+
+CVTable.propsTypes = {
+	selectedItem: PropTypes.string,
+	setSelectedItem: PropTypes.func,
 }
 
 export default CVTable
