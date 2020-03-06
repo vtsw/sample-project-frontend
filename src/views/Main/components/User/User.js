@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
 		padding: '6px 16px',
 		height: '40px',
 	},
+	typography: { fontWeight: 'bold' },
 }))
 
 export default function User({ itemChosen, onClick, id, email, name }) {
@@ -18,10 +19,15 @@ export default function User({ itemChosen, onClick, id, email, name }) {
 	return (
 		<Grid container className={classes.container} onClick={onClick}>
 			<Grid item xs>
-				<Typography variant='caption'>{email}</Typography>
+				<Typography variant='caption' className={classes.typography}>
+					{email}
+				</Typography>
 			</Grid>
 			<Grid item xs>
-				{name}
+				<Typography variant='caption' className={classes.typography}>
+					{' '}
+					{name}
+				</Typography>
 			</Grid>
 		</Grid>
 	)

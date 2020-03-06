@@ -36,15 +36,16 @@ const arr = [
 	{ id: 61, email: '2020/02/30', name: 'test' },
 ]
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	container_table: {
 		height: '100%',
 	},
 	typography: {
-		padding: '16px',
+		fontWeight: 'bold',
 	},
 	container__typography: {
 		marginLeft: '12px',
+		fontWeight: 'bold',
 	},
 	icon: {
 		fontSize: '18px',
@@ -56,8 +57,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	header: {
 		padding: '8px 16px',
-		borderTop: `1px solid ${theme.palette.common.gray}`,
-		borderBottom: `1px solid ${theme.palette.common.gray}`,
+		borderTop: `1px solid #979797`,
+		borderBottom: `1px solid #979797`,
 	},
 	item: {
 		padding: '6px 16px',
@@ -90,7 +91,9 @@ const ListMessage = () => {
 				</Grid>
 
 				<Grid item xs={7}>
-					<Typography variant='caption'>TEXT</Typography>
+					<Typography variant='caption' className={classes.typography}>
+						TEXT
+					</Typography>
 				</Grid>
 			</Grid>
 			<Grid container className={classes.table} direction='column'>

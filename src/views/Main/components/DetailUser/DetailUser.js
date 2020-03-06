@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import clsx from 'clsx'
 import { Grid, makeStyles, Typography, Box } from '@material-ui/core'
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded'
 import { DeleteDialog, ModifyDialog } from '../../../components'
@@ -14,6 +15,9 @@ const useStyles = makeStyles(theme => ({
 		height: '40px',
 	},
 	typography: {
+		fontWeight: 'bold',
+	},
+	typography_email: {
 		marginLeft: '12px',
 	},
 	icon: {
@@ -21,7 +25,9 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.common.gray,
 		cursor: 'pointer',
 	},
-	container__icon__typography: {},
+	container__icon__typography: {
+		alignItems: 'center',
+	},
 }))
 
 const DetailUser = ({ onClick, email, name }) => {
@@ -39,21 +45,22 @@ const DetailUser = ({ onClick, email, name }) => {
 					setOpenConfirmModify(true)
 				}}
 			>
-				<Grid item xs={5}>
-					<Grid container className={classes.container__icon__typography}>
-						<CancelRoundedIcon
-							className={classes.icon}
-							onClick={e => {
-								e.stopPropagation()
-								setOpenConfirmDelete(true)
-							}}
-						/>
-						<Typography variant='caption' className={classes.typography}>
-							{email}
-						</Typography>
-					</Grid>
+				<Grid xs={5} container className={classes.container__icon__typography}>
+					<CancelRoundedIcon
+						className={classes.icon}
+						onClick={e => {
+							e.stopPropagation()
+							setOpenConfirmDelete(true)
+						}}
+					/>
+					<Typography
+						variant='caption'
+						className={clsx(classes.typography, classes.typography_email)}
+					>
+						{email}
+					</Typography>
 				</Grid>
-				<Grid item xs={7}>
+				<Grid item xs={7} className={classes.typography}>
 					{name}
 				</Grid>
 			</Grid>

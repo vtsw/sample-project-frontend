@@ -14,7 +14,11 @@ const useStyles = makeStyles(theme => ({
 		height: '40px',
 	},
 	typography: {
+		fontWeight: 'bold',
+	},
+	typography_email: {
 		marginLeft: '12px',
+		fontWeight: 'bold',
 	},
 	icon: {
 		fontSize: '18px',
@@ -49,11 +53,11 @@ const Message = ({ onClick, email, name, haveBackground }) => {
 							setOpenConfirmDelete(true)
 						}}
 					/>
-					<Typography variant='caption' className={classes.typography}>
+					<Typography variant='caption' className={classes.typography_email}>
 						{email}
 					</Typography>
 				</Grid>
-				<Grid item xs={7}>
+				<Grid item xs={7} className={classes.typography}>
 					{name}
 				</Grid>
 			</Grid>

@@ -36,9 +36,14 @@ const useStyle = makeStyles(theme => ({
 	search: {
 		padding: '16px',
 	},
+	icon: {
+		fontSize: '40px',
+	},
 	button: {
 		color: 'white',
 		marginLeft: '8px',
+		width: '56px',
+		boxShadow: 'none',
 		background: theme.palette.common.gray,
 		'&:hover': {
 			background: theme.palette.common.gray,
