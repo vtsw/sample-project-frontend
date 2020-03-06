@@ -73,12 +73,12 @@ const CVTable = ({ selectedItem, setSelectedItem }) => {
 			<Grid container className={classes.table__header}>
 				<Grid item xs={5}>
 					<Typography variant='body2' className={classes.table__header__item}>
-						DATE
+						EMAIL
 					</Typography>
 				</Grid>
 				<Grid item xs={7}>
 					<Typography variant='body2' className={classes.table__header__item}>
-						TEXT
+						NAME
 					</Typography>
 				</Grid>
 			</Grid>
@@ -86,7 +86,7 @@ const CVTable = ({ selectedItem, setSelectedItem }) => {
 				{arr.map(item => (
 					<CVTableItem
 						key={item.id}
-						hasCloseIcon={true}
+						hasCloseIcon={false}
 						selectedItem={selectedItem}
 						setSelectedItem={setSelectedItem}
 						{...item}

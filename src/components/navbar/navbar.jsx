@@ -64,7 +64,12 @@ const NavBar = ({ location, history }) => {
 			>
 				message
 			</li>
-			<li className={classes.tab}>Logout</li>
+			<li
+				className={classes.tab}
+				onClick={() => handleOnChangePage('/sign-in')}
+			>
+				Logout
+			</li>
 		</ul>
 	)
 }

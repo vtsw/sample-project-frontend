@@ -6,29 +6,29 @@ import {
 } from '@material-ui/core/styles'
 import teal from '@material-ui/core/colors/teal'
 
-import { Box, Button, TextField } from '@material-ui/core'
+import { Box, Button, TextField, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles({
 	root: {
-		minWidth: 300,
-		width: '70%',
+		width: 381,
 		margin: '20px auto',
 		padding: 16,
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
 	},
-	title: {
+	form_title: {
 		color: teal[600],
+		fontWeight: 600,
 	},
-	input: {
+	form_input: {
 		width: '100%',
 		marginTop: '18px',
 	},
-	cardContent: {
+	form_content: {
 		padding: 0,
 	},
-	actions: {
+	form_buttons: {
 		display: 'flex',
 		flexDirection: 'column',
 		padding: 0,
@@ -41,7 +41,7 @@ const useStyles = makeStyles({
 			},
 		},
 	},
-	button: {
+	form_button: {
 		color: '#ffffff',
 		fontWeight: 600,
 		textTransform: 'capitalize',
@@ -49,35 +49,33 @@ const useStyles = makeStyles({
 	},
 })
 
-const theme = createMuiTheme(theme => {
-	console.log('asdhasj', theme)
-	return {
-		palette: {
-			primary: {
-				main: teal[600],
-			},
+const theme = createMuiTheme({
+	palette: {
+		primary: {
+			main: teal[600],
 		},
-	}
+	},
 })
 
-const SignUp = ({ selectedItem }) => {
+const FormEditor = ({ selectedItem }) => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const { root, title, input, cardContent, actions, button } = useStyles()
+	const classes = useStyles()
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Box className={root}>
-				<h2 className={title}>{selectedItem ? 'Modify' : 'Sign up'}</h2>
-				<div className={cardContent}>
+			<Box className={classes.root}>
+				<Typography variant='h5' className={classes.form_title}>
+					{selectedItem ? 'Modify' : 'Sign up'}
+				</Typography>
+				<div className={classes.form_content}>
 					<TextField
 						value={email}
 						label='EMAIL'
 						variant='outlined'
 						type='email'
-						autoComplete='true'
 						onChange={e => setEmail(e.target.value)}
-						className={input}
+						className={classes.form_input}
 					/>
 					<TextField
 						value={password}
@@ -86,7 +84,7 @@ const SignUp = ({ selectedItem }) => {
 						type='text'
 						autoComplete='true'
 						onChange={e => setPassword(e.target.value)}
-						className={input}
+						className={classes.form_input}
 					/>
 					<TextField
 						value={password}
@@ -95,7 +93,7 @@ const SignUp = ({ selectedItem }) => {
 						type='password'
 						autoComplete='true'
 						onChange={e => setPassword(e.target.value)}
-						className={input}
+						className={classes.form_input}
 					/>
 					<TextField
 						value={password}
@@ -104,16 +102,16 @@ const SignUp = ({ selectedItem }) => {
 						type='password'
 						autoComplete='true'
 						onChange={e => setPassword(e.target.value)}
-						className={input}
+						className={classes.form_input}
 					/>
 				</div>
-				<div className={actions}>
+				<div className={classes.form_buttons}>
 					<Button
 						variant='contained'
 						color='primary'
 						size='large'
 						fullWidth
-						className={button}
+						className={classes.form_button}
 					>
 						{selectedItem ? 'Save' : 'Register'}
 					</Button>
@@ -122,12 +120,17 @@ const SignUp = ({ selectedItem }) => {
 							variant='contained'
 							size='large'
 							fullWidth
-							className={button}
+							className={classes.form_button}
 						>
 							Delete
 						</Button>
 					) : null}
-					<Button variant='contained' size='large' fullWidth className={button}>
+					<Button
+						variant='contained'
+						size='large'
+						fullWidth
+						className={classes.form_button}
+					>
 						Cancel
 					</Button>
 				</div>
@@ -136,4 +139,4 @@ const SignUp = ({ selectedItem }) => {
 	)
 }
 
-export default SignUp
+export default FormEditor
