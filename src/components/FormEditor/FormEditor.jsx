@@ -6,8 +6,6 @@ import {
 } from '@material-ui/core/styles'
 import teal from '@material-ui/core/colors/teal'
 
-// import { setToken } from '@src/shares/utils'
-
 import { Box, Button, TextField } from '@material-ui/core'
 
 const useStyles = makeStyles({
@@ -47,50 +45,30 @@ const useStyles = makeStyles({
 		color: '#ffffff',
 		fontWeight: 600,
 		textTransform: 'capitalize',
+		padding: '18px 0',
 	},
 })
 
-const theme = createMuiTheme({
-	palette: {
-		primary: {
-			main: teal[600],
+const theme = createMuiTheme(theme => {
+	console.log('asdhasj', theme)
+	return {
+		palette: {
+			primary: {
+				main: teal[600],
+			},
 		},
-	},
+	}
 })
 
-// const LOG_IN = gql`
-// 	mutation Login($email: String!, $password: String!) {
-// 		login(email: $email, password: $password) {
-// 			token
-// 		}
-// 	}
-// `
-
-const SignUp = () => {
+const SignUp = ({ selectedItem }) => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const { root, title, input, cardContent, actions, button } = useStyles()
 
-	// const [login, authPayload] = useMutation(LOG_IN)
-
-	// const signIn = () => {
-	// 	login({
-	// 		variables: { email, password },
-	// 	})
-	// 		.then(({ data: { login: token } }) => {
-	// 			if (token) {
-	// 				setToken(token.token)
-	// 				history.push('/')
-	// 			}
-	// 		})
-	// 		.catch(err => console.error(err))
-	// }
-	// if (authPayload.loading) return <div>Loading...</div>
-
 	return (
 		<ThemeProvider theme={theme}>
 			<Box className={root}>
-				<h2 className={title}>Sign up</h2>
+				<h2 className={title}>{selectedItem ? 'Modify' : 'Sign up'}</h2>
 				<div className={cardContent}>
 					<TextField
 						value={email}
@@ -137,8 +115,18 @@ const SignUp = () => {
 						fullWidth
 						className={button}
 					>
-						Register
+						{selectedItem ? 'Save' : 'Register'}
 					</Button>
+					{selectedItem ? (
+						<Button
+							variant='contained'
+							size='large'
+							fullWidth
+							className={button}
+						>
+							Delete
+						</Button>
+					) : null}
 					<Button variant='contained' size='large' fullWidth className={button}>
 						Cancel
 					</Button>

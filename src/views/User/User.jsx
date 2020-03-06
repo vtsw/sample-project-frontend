@@ -20,23 +20,23 @@ const useStyles = makeStyles(theme => ({
 		height: '100%',
 	},
 	container: {
-		padding: theme.spacing(2.5),
+		padding: theme.spacing(3),
 	},
 	sign_up__container: {
 		display: 'flex',
 		alignItems: 'center',
-		border: `2px solid ${theme.palette.divider}`,
-		marginRight: 8,
+		border: `1px solid ${theme.palette.common.border}`,
+		marginRight: 12,
 		position: 'relative',
 	},
 	user_list__container: {
-		border: `2px solid ${theme.palette.divider}`,
-		marginLeft: 8,
+		border: `1px solid ${theme.palette.common.border}`,
+		marginLeft: 12,
 		overflow: 'hidden',
 	},
 	searchbox: {
 		width: '100%',
-		padding: theme.spacing(2.5),
+		padding: theme.spacing(3),
 	},
 	searchbox__title: {
 		fontWeight: 600,
@@ -48,6 +48,7 @@ const User = () => {
 	const classes = useStyles()
 	const [dialogVisible, setDialogVisible] = useState(false)
 	const [selectedItem, setSelectedItem] = useState('')
+
 	return (
 		<Box className={classes.root}>
 			<Grid
@@ -61,7 +62,7 @@ const User = () => {
 						{dialogVisible ? (
 							<WelcomeDialog setDialogVisible={setDialogVisible} />
 						) : null}
-						<FormEditor />
+						<FormEditor selectedItem={selectedItem} />
 					</Box>
 				</Grid>
 				<Grid item xs={8}>
@@ -69,7 +70,7 @@ const User = () => {
 						className={clsx(classes.user_list__container, classes.full_height)}
 					>
 						<Box className={classes.searchbox}>
-							<Typography variant='h6' className={classes.searchbox__title}>
+							<Typography variant='h5' className={classes.searchbox__title}>
 								User List
 							</Typography>
 							<SearchBox width={400} />

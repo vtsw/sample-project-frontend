@@ -7,7 +7,7 @@ import clsx from 'clsx'
 const useStyles = makeStyles(theme => ({
 	root: {
 		backgroundColor: theme.palette.common.white,
-		padding: '12px',
+		padding: '14px',
 		height: 'auto',
 		cursor: 'pointer',
 		'&:nth-child(2n)': {

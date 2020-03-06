@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Box, Grid, makeStyles } from '@material-ui/core'
+import { Box, Grid, Typography, makeStyles } from '@material-ui/core'
 import CVTableItem from '@components/CVTableItem'
 
 const arr = [
@@ -43,12 +43,15 @@ const useStyles = makeStyles(theme => ({
 		flexWrap: 'nowrap',
 	},
 	table__header: {
-		padding: '8px 16px',
+		padding: '13px 16px',
 		borderTop: `1px solid ${theme.palette.common.gray}`,
 		borderBottom: `1px solid ${theme.palette.common.gray}`,
 		'&>div:first-child': {
 			paddingLeft: theme.spacing(3),
 		},
+	},
+	table__header__item: {
+		fontWeight: 600,
 	},
 	table__content: {
 		overflowY: 'auto',
@@ -69,10 +72,14 @@ const CVTable = ({ selectedItem, setSelectedItem }) => {
 		>
 			<Grid container className={classes.table__header}>
 				<Grid item xs={5}>
-					<strong>DATE</strong>
+					<Typography variant='body2' className={classes.table__header__item}>
+						DATE
+					</Typography>
 				</Grid>
 				<Grid item xs={7}>
-					<strong>TEXT</strong>
+					<Typography variant='body2' className={classes.table__header__item}>
+						TEXT
+					</Typography>
 				</Grid>
 			</Grid>
 			<Box className={classes.table__content} direction='column'>
