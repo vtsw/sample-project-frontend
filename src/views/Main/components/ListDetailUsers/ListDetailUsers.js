@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
 		padding: '6px 16px',
 	},
 	table: {
-		overflowY: 'auto',
+		overflowY: 'overlay',
 		height: 'calc(100vh - 150px)',
 		flexWrap: 'nowrap',
 	},

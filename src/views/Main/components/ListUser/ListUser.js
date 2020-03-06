@@ -1,6 +1,6 @@
 import React from 'react'
 import { Grid, makeStyles, Typography } from '@material-ui/core'
-import User from './User'
+import User from '../User'
 
 const arr = [
 	{ id: 1, email: 'test@test.com', name: 'test' },
@@ -22,12 +22,12 @@ const useStyles = makeStyles(theme => ({
 		padding: '6px 16px',
 	},
 	table: {
-		overflowY: 'auto',
+		overflowY: 'overlay',
 		// height: "calc(100vh - 150px)"
 	},
 }))
 
-export default function ListUsers({ itemChosen, setitemChosen }) {
+export default function ListUser({ itemChosen, setitemChosen }) {
 	const classes = useStyles()
 	return (
 		<Grid

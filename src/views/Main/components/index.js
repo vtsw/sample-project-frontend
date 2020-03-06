@@ -1,2 +1,2 @@
-export { default as DetailUser } from './DetailUser'
 export { default as ListDetailUsers } from './ListDetailUsers'
+export { default as ListUser } from './ListUser'

@@ -7,9 +7,8 @@ import {
 	TextField,
 	Button,
 } from '@material-ui/core'
-import ListUsers from './components/ListUsers'
 import SearchIcon from '@material-ui/icons/Search'
-import { ListDetailUsers } from './components'
+import { ListDetailUsers, ListUser } from './components'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -75,7 +74,7 @@ const Main = () => {
 								<SearchIcon className={classes.icon} />
 							</Button>
 						</Grid>
-						<ListUsers itemChosen={itemChosen} setitemChosen={setitemChosen} />
+						<ListUser itemChosen={itemChosen} setitemChosen={setitemChosen} />
 					</Grid>
 				</Grid>
 				<Grid item xs={8}>

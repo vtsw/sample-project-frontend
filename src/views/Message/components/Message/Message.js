@@ -4,8 +4,8 @@ import CancelRoundedIcon from '@material-ui/icons/CancelRounded'
 import { DeleteDialog, ModifyDialog } from '../../../components'
 
 const useStyles = makeStyles(theme => ({
-	container: ({ active }) => ({
-		background: active && theme.palette.common.gray,
+	container: ({ haveBackground }) => ({
+		background: haveBackground && theme.palette.common.gray,
 		padding: '8px 16px',
 		height: '40px',
 	}),
@@ -21,14 +21,16 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.common.gray,
 		cursor: 'pointer',
 	},
-	container__icon__typography: {},
+	container__icon__typography: {
+		alignItems: 'center',
+	},
 }))
 
-const DetailUser = ({ onClick, email, name }) => {
-	// const classes = useStyles({ active: itemChosen.id === id });
+const Message = ({ onClick, email, name, haveBackground }) => {
+	const classes = useStyles({ haveBackground })
 	const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
 	const [openConfirmModify, setOpenConfirmModify] = useState(false)
-	const classes = useStyles()
+	// const classes = useStyles()
 	return (
 		<Box>
 			<Grid
@@ -39,19 +41,17 @@ const DetailUser = ({ onClick, email, name }) => {
 					setOpenConfirmModify(true)
 				}}
 			>
-				<Grid item xs={5}>
-					<Grid container className={classes.container__icon__typography}>
-						<CancelRoundedIcon
-							className={classes.icon}
-							onClick={e => {
-								e.stopPropagation()
-								setOpenConfirmDelete(true)
-							}}
-						/>
-						<Typography variant='caption' className={classes.typography}>
-							{email}
-						</Typography>
-					</Grid>
+				<Grid xs={5} container className={classes.container__icon__typography}>
+					<CancelRoundedIcon
+						className={classes.icon}
+						onClick={e => {
+							e.stopPropagation()
+							setOpenConfirmDelete(true)
+						}}
+					/>
+					<Typography variant='caption' className={classes.typography}>
+						{email}
+					</Typography>
 				</Grid>
 				<Grid item xs={7}>
 					{name}
@@ -85,4 +85,4 @@ const DetailUser = ({ onClick, email, name }) => {
 	)
 }
 
-export default DetailUser
+export default Message
