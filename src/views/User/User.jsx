@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Grid } from '@material-ui/core'
+import { Box, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import SignUp from '@components/SignUp'
@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 		padding: theme.spacing(2.5),
 	},
 	searchbox__title: {
-		fontWeight: 500,
+		fontWeight: 600,
 		marginBottom: theme.spacing(2),
 	},
 }))
@@ -59,7 +59,9 @@ const User = () => {
 						className={clsx(classes.userlist__container, classes.fullheight)}
 					>
 						<div className={classes.searchbox}>
-							<h2 className={classes.searchbox__title}>User List</h2>
+							<Typography variant='h6' className={classes.searchbox__title}>
+								User List
+							</Typography>
 							<SearchBox width={400} />
 						</div>
 						<CVTable />
