@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Box, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import CVTableItem from '@components/CVTableItem'
+import { CVTableItem } from '@components'
 
 const arr = [
 	{ id: 11, email: '2020/02/30', name: 'test' },

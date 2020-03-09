@@ -3,9 +3,7 @@ import { Box, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 
-import FormEditor from '@components/FormEditor'
-import SearchBox from '@components/SearchBox'
-import CVTable from '@components/CVTable'
+import { FormEditor, SearchBox, CVTable } from '@components'
 import { WelcomeDialog } from './components'
 
 const useStyles = makeStyles(theme => ({
