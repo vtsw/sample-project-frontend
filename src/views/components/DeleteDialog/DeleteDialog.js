@@ -4,12 +4,17 @@ import {
 	DialogTitle,
 	DialogActions,
 	Button,
-	makeStyles,
 	Typography,
 } from '@material-ui/core'
+import {
+	makeStyles,
+	createMuiTheme,
+	ThemeProvider,
+} from '@material-ui/core/styles'
+import teal from '@material-ui/core/colors/teal'
 
 const useStyles = makeStyles(theme => ({
-	paper: {
+	root: {
 		boxShadow: 'none',
 		borderRadius: 'unset',
 		width: 323,
@@ -19,13 +24,7 @@ const useStyles = makeStyles(theme => ({
 		padding: '0 16px',
 		minWidth: '0px',
 		boxShadow: 'none',
-		color: theme.palette.common.white,
 		textTransform: 'none',
-		background: theme.palette.common.green,
-		'&:hover': {
-			background: theme.palette.common.green,
-			boxShadow: 'none',
-		},
 	},
 	button_cancel: {
 		height: 56,
@@ -45,40 +44,47 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const DeleteDialog = props => {
-	const { open, onClose, onAgree, onDisagree } = props
+const theme = createMuiTheme({
+	palette: {
+		primary: {
+			main: teal[600],
+		},
+	},
+})
+
+const DeleteDialog = ({ open, onClose, onAgree, onDisagree }) => {
 	const classes = useStyles()
 	return (
-		<Dialog open={open} onClose={onClose} classes={{ paper: classes.paper }}>
-			<DialogTitle>
-				<Typography className={classes.title} variant='h6'>
-					Delete!
-				</Typography>
-			</DialogTitle>
-			{/* <DialogContent>
-				Are you sure delete? No rollback if item delete.
-			</DialogContent> */}
-			<DialogActions>
-				<Button
-					variant='contained'
-					onClick={() => {
-						onAgree && onAgree()
-					}}
-					className={classes.button_confirm}
-				>
-					Yes
-				</Button>
-				<Button
-					variant='contained'
-					onClick={() => {
-						onDisagree && onDisagree()
-					}}
-					className={classes.button_cancel}
-				>
-					No
-				</Button>
-			</DialogActions>
-		</Dialog>
+		<ThemeProvider theme={theme}>
+			<Dialog open={open} onClose={onClose} classes={{ paper: classes.root }}>
+				<DialogTitle>
+					<Typography className={classes.title} variant='h6'>
+						Delete!
+					</Typography>
+				</DialogTitle>
+				<DialogActions>
+					<Button
+						variant='contained'
+						color='primary'
+						className={classes.button_confirm}
+						onClick={() => {
+							onAgree && onAgree()
+						}}
+					>
+						Yes
+					</Button>
+					<Button
+						variant='contained'
+						className={classes.button_cancel}
+						onClick={() => {
+							onDisagree && onDisagree()
+						}}
+					>
+						No
+					</Button>
+				</DialogActions>
+			</Dialog>
+		</ThemeProvider>
 	)
 }
 

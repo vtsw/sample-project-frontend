@@ -10,7 +10,6 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		flexDirection: 'column',
 		height: '100vh',
-		borderRight: `1px solid transparent`,
 	},
 	tab: {
 		fontSize: theme.typography.htmlFontSize,

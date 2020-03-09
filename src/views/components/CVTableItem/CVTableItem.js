@@ -14,17 +14,14 @@ const useStyles = makeStyles(theme => ({
 			backgroundColor: theme.palette.common.gray,
 		},
 	},
-	item__date__container: {
+	item__left__container: {
 		display: 'flex',
 		alignItems: 'center',
 	},
-	item__date: {
+	item__left: {
 		marginLeft: theme.spacing(1.5),
 	},
-	item__text: {
-		marginLeft: theme.spacing(1.2),
-	},
-	item__closeicon: {
+	item__close_icon: {
 		color: theme.palette.common.white,
 		cursor: 'pointer',
 		fontSize: '1rem',
@@ -36,6 +33,9 @@ const useStyles = makeStyles(theme => ({
 	item__active: {
 		backgroundColor: `${theme.palette.common.blue} !important`,
 	},
+	item_bold: {
+		fontWeight: 700,
+	},
 }))
 
 const CVTableItem = ({
@@ -45,6 +45,7 @@ const CVTableItem = ({
 	hasCloseIcon,
 	selectedItem,
 	setSelectedItem,
+	setDeleteDialogVisible,
 }) => {
 	const classes = useStyles()
 
@@ -55,20 +56,34 @@ const CVTableItem = ({
 				classes.root,
 				selectedItem === id ? classes.item__active : ''
 			)}
-			onClick={() => setSelectedItem(id)}
+			onClick={e => {
+				console.log('click', e)
+				setSelectedItem(id)
+			}}
 		>
 			<Grid item xs={5}>
-				<Box className={classes.item__date__container}>
+				<Box className={classes.item__left__container}>
 					{hasCloseIcon ? (
-						<CloseIcon className={classes.item__closeicon} />
+						<CloseIcon
+							className={classes.item__close_icon}
+							onclick={function(e) {
+								e.stopPropagation()
+								e.nativeEvent.stopImmediatePropagation()
+								setDeleteDialogVisible(true)
+								console.log('object', e)
+							}}
+						/>
 					) : null}
-					<Typography variant='body2' className={classes.item__date}>
+					<Typography
+						variant='body2'
+						className={clsx(classes.item__left, classes.item_bold)}
+					>
 						{email}
 					</Typography>
 				</Box>
 			</Grid>
 			<Grid item xs={7}>
-				<Typography variant='body2' className={classes.item__text}>
+				<Typography variant='body2' className={classes.item_bold}>
 					{name}
 				</Typography>
 			</Grid>
@@ -83,6 +98,7 @@ CVTableItem.propsTypes = {
 	hasCloseIcon: PropTypes.bool,
 	selectedItem: PropTypes.bool,
 	setSelectedItem: PropTypes.func,
+	setDeleteDialogVisible: PropTypes.func,
 }
 
 export default CVTableItem
