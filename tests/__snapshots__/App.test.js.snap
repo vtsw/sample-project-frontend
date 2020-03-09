@@ -1,53 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<App/> should render without crashing 1`] = `
-<Styled(MuiBox)
-  className="makeStyles-root-1"
->
-  <withRouter(NavBar) />
-  <Suspense
-    fallback={
-      <div>
-        Loading...
-      </div>
-    }
-  >
-    <Switch>
-      <Route
-        component={
-          Object {
-            "$$typeof": Symbol(react.lazy),
-            "_ctor": [Function],
-            "_result": null,
-            "_status": -1,
-          }
-        }
-        exact={true}
-        path="/"
-      />
-      <Route
-        component={
-          Object {
-            "$$typeof": Symbol(react.lazy),
-            "_ctor": [Function],
-            "_result": null,
-            "_status": -1,
-          }
-        }
-        path="/message"
-      />
-      <Route
-        component={
-          Object {
-            "$$typeof": Symbol(react.lazy),
-            "_ctor": [Function],
-            "_result": null,
-            "_status": -1,
-          }
-        }
-        path="/user"
-      />
-    </Switch>
-  </Suspense>
-</Styled(MuiBox)>
+<ContextConsumer>
+  <Component />
+</ContextConsumer>
 `;

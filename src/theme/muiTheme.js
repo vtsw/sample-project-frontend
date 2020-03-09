@@ -8,6 +8,7 @@ const theme = createMuiTheme({
 			green: '#00897b',
 			light: '#eeeeee',
 			gray: '#c8c8c8',
+			border: '#979797',
 			greyButton: '#d8d8d8',
 		},
 		type: 'light',

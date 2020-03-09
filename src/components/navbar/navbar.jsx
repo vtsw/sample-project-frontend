@@ -1,11 +1,12 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
+import teal from '@material-ui/core/colors/teal'
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		position: 'relative',
-		backgroundColor: theme.palette.common.green,
+		backgroundColor: teal[600],
 		display: 'flex',
 		flexDirection: 'column',
 		height: '100vh',
@@ -16,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 		fontWeight: theme.typography.fontWeightMedium,
 		color: theme.palette.common.white,
 		cursor: 'pointer',
-		padding: '24px 12px',
+		padding: `${theme.spacing(3)}px ${theme.spacing(1.5)}px`,
 		textAlign: 'center',
 		transition: `all ${theme.transitions.duration.shorter}ms ${theme.transitions.easing.easeInOut}`,
 		'&:last-child': {
@@ -31,8 +32,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const NavBar = ({ location, history }) => {
-	const classes = useStyles()
 	const [currentPage, setCurrentPage] = React.useState(location.pathname)
+	const classes = useStyles()
 	const handleOnChangePage = page => {
 		setCurrentPage(page)
 		history.push(page)
@@ -63,7 +64,12 @@ const NavBar = ({ location, history }) => {
 			>
 				message
 			</li>
-			<li className={classes.tab}>Logout</li>
+			<li
+				className={classes.tab}
+				onClick={() => handleOnChangePage('/sign-in')}
+			>
+				Logout
+			</li>
 		</ul>
 	)
 }
