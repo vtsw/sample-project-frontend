@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
+import { Box, Button, TextField, Typography } from '@material-ui/core'
 import {
 	makeStyles,
 	createMuiTheme,
 	ThemeProvider,
 } from '@material-ui/core/styles'
 import teal from '@material-ui/core/colors/teal'
-
-import { Box, Button, TextField, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -19,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 	container: {
 		width: 381,
 		margin: '20px auto',
-		padding: 16,
+		padding: theme.spacing(2),
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
@@ -41,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 		padding: 0,
 		width: '100%',
 		'&>button': {
-			marginTop: 16,
+			marginTop: theme.spacing(2),
 			marginLeft: 0,
 			'&:not(:first-child)': {
 				marginLeft: 0,
@@ -87,8 +86,8 @@ const SignIn = ({ history }) => {
 							variant='outlined'
 							type='email'
 							autoComplete='true'
-							onChange={e => setEmail(e.target.value)}
 							className={classes.input}
+							onChange={e => setEmail(e.target.value)}
 						/>
 						<TextField
 							value={password}
@@ -96,8 +95,8 @@ const SignIn = ({ history }) => {
 							variant='outlined'
 							type='password'
 							autoComplete='true'
-							onChange={e => setPassword(e.target.value)}
 							className={classes.input}
+							onChange={e => setPassword(e.target.value)}
 						/>
 					</div>
 					<div className={classes.actions}>

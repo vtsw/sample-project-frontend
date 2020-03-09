@@ -1,8 +1,8 @@
 import React from 'react'
 
 import clsx from 'clsx'
-import { makeStyles } from '@material-ui/core/styles'
 import { Box, Button, TextField } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import { Search } from '@material-ui/icons'
 
 const useStyles = makeStyles(theme => ({
@@ -11,13 +11,13 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: 'space-between',
 		width: ({ width }) => width,
 	},
-	searchbtn: {
+	search_btn: {
 		color: theme.palette.common.white,
 	},
-	searchbtn__icon: {
+	search_btn__icon: {
 		fontSize: '2rem',
 	},
-	textField: {
+	search_input: {
 		width: '80%',
 	},
 }))
@@ -29,11 +29,11 @@ const SearchBox = ({ width }) => {
 			<TextField
 				id='filled-start-adornment'
 				placeholder='search...'
-				className={clsx(classes.margin, classes.textField)}
+				className={clsx(classes.margin, classes.search_input)}
 				variant='outlined'
 			/>
-			<Button variant='contained' size='large' className={classes.searchbtn}>
-				<Search className={classes.searchbtn__icon} />
+			<Button variant='contained' size='large' className={classes.search_btn}>
+				<Search className={classes.search_btn__icon} />
 			</Button>
 		</Box>
 	)

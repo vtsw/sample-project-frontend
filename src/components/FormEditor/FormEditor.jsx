@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+
+import { Box, Button, TextField, Typography } from '@material-ui/core'
 import {
 	makeStyles,
 	createMuiTheme,
@@ -6,13 +8,11 @@ import {
 } from '@material-ui/core/styles'
 import teal from '@material-ui/core/colors/teal'
 
-import { Box, Button, TextField, Typography } from '@material-ui/core'
-
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
 	root: {
 		width: 381,
 		margin: '20px auto',
-		padding: 16,
+		padding: theme.spacing(2),
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
@@ -34,7 +34,7 @@ const useStyles = makeStyles({
 		padding: 0,
 		width: '100%',
 		'&>button': {
-			marginTop: 16,
+			marginTop: theme.spacing(2),
 			marginLeft: 0,
 			'&:not(:first-child)': {
 				marginLeft: 0,
@@ -47,7 +47,7 @@ const useStyles = makeStyles({
 		textTransform: 'capitalize',
 		padding: '18px 0',
 	},
-})
+}))
 
 const theme = createMuiTheme({
 	palette: {
@@ -74,8 +74,8 @@ const FormEditor = ({ selectedItem }) => {
 						label='EMAIL'
 						variant='outlined'
 						type='email'
-						onChange={e => setEmail(e.target.value)}
 						className={classes.form_input}
+						onChange={e => setEmail(e.target.value)}
 					/>
 					<TextField
 						value={password}
@@ -83,8 +83,8 @@ const FormEditor = ({ selectedItem }) => {
 						variant='outlined'
 						type='text'
 						autoComplete='true'
-						onChange={e => setPassword(e.target.value)}
 						className={classes.form_input}
+						onChange={e => setPassword(e.target.value)}
 					/>
 					<TextField
 						value={password}
@@ -92,8 +92,8 @@ const FormEditor = ({ selectedItem }) => {
 						variant='outlined'
 						type='password'
 						autoComplete='true'
-						onChange={e => setPassword(e.target.value)}
 						className={classes.form_input}
+						onChange={e => setPassword(e.target.value)}
 					/>
 					<TextField
 						value={password}
@@ -101,8 +101,8 @@ const FormEditor = ({ selectedItem }) => {
 						variant='outlined'
 						type='password'
 						autoComplete='true'
-						onChange={e => setPassword(e.target.value)}
 						className={classes.form_input}
+						onChange={e => setPassword(e.target.value)}
 					/>
 				</div>
 				<div className={classes.form_buttons}>

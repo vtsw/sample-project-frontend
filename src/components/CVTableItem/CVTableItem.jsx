@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Box, Grid, Typography, makeStyles } from '@material-ui/core'
-import CloseIcon from '@material-ui/icons/Close'
 import clsx from 'clsx'
+import { Box, Grid, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import CloseIcon from '@material-ui/icons/Close'
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		backgroundColor: theme.palette.common.white,
 		padding: '14px',
-		height: 'auto',
 		cursor: 'pointer',
 		'&:nth-child(2n)': {
 			backgroundColor: theme.palette.common.gray,

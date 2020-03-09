@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 		fontWeight: theme.typography.fontWeightMedium,
 		color: theme.palette.common.white,
 		cursor: 'pointer',
-		padding: '24px 12px',
+		padding: `${theme.spacing(3)}px ${theme.spacing(1.5)}px`,
 		textAlign: 'center',
 		transition: `all ${theme.transitions.duration.shorter}ms ${theme.transitions.easing.easeInOut}`,
 		'&:last-child': {
@@ -32,8 +32,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const NavBar = ({ location, history }) => {
-	const classes = useStyles()
 	const [currentPage, setCurrentPage] = React.useState(location.pathname)
+	const classes = useStyles()
 	const handleOnChangePage = page => {
 		setCurrentPage(page)
 		history.push(page)
