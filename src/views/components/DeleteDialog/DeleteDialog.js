@@ -1,12 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-import {
-	Dialog,
-	DialogTitle,
-	DialogActions,
-	Button,
-	Typography,
-} from '@material-ui/core'
+import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
 import {
 	makeStyles,
 	createMuiTheme,
@@ -26,6 +20,8 @@ const useStyles = makeStyles(theme => ({
 		marginBottom: 3,
 		'&>h2': {
 			lineHeight: 'initial',
+			fontWeight: 700,
+			fontSize: '1.5rem',
 		},
 	},
 	button_confirm: {
@@ -48,10 +44,6 @@ const useStyles = makeStyles(theme => ({
 			boxShadow: 'none',
 		},
 	},
-	title: {
-		fontWeight: 700,
-		fontSize: '1.5rem',
-	},
 	no_padding: {
 		padding: 0,
 	},
@@ -71,9 +63,7 @@ const DeleteDialog = ({ open, onClose, onAgree, onDisagree }) => {
 		<ThemeProvider theme={theme}>
 			<Dialog open={open} onClose={onClose} classes={{ paper: classes.root }}>
 				<DialogTitle className={clsx(classes.no_padding, classes.dialog_title)}>
-					<Typography className={classes.title} variant='inherit'>
-						Delete!
-					</Typography>
+					Delete!
 				</DialogTitle>
 				<DialogActions className={classes.no_padding}>
 					<Button

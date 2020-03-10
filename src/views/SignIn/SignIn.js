@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
+import { useMutation } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import {
 	makeStyles,
@@ -7,6 +9,16 @@ import {
 	ThemeProvider,
 } from '@material-ui/core/styles'
 import teal from '@material-ui/core/colors/teal'
+
+import { setToken } from '@src/shares/utils'
+
+const SIGN_IN = gql`
+	mutation SignIn($user: LoginUserInput!) {
+		login(user: $user) {
+			token
+		}
+	}
+`
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -70,7 +82,25 @@ const theme = createMuiTheme({
 const SignIn = ({ history }) => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+
+	const [signIn] = useMutation(SIGN_IN)
+
 	const classes = useStyles()
+
+	const onSignIn = () => {
+		signIn({ variables: { user: { email, password } } })
+			.then(
+				({
+					data: {
+						login: { token },
+					},
+				}) => {
+					setToken(token)
+					history.push('/')
+				}
+			)
+			.catch(error => console.error(error))
+	}
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -106,6 +136,7 @@ const SignIn = ({ history }) => {
 							size='large'
 							fullWidth
 							className={classes.button}
+							onClick={onSignIn}
 						>
 							Sign in
 						</Button>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { PropTypes } from 'prop-types'
 import { withRouter } from 'react-router-dom'
+import { useMutation } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import {
 	makeStyles,
@@ -10,6 +12,15 @@ import {
 import teal from '@material-ui/core/colors/teal'
 
 import { DeleteDialog } from '@views_components'
+
+const CREATE_USER = gql`
+	mutation CreateUser($user: CreateUserInput!) {
+		createUser(user: $user) {
+			email
+			id
+		}
+	}
+`
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -62,8 +73,12 @@ const theme = createMuiTheme({
 
 const FormEditor = ({ selectedItem, setSelectedItem, history }) => {
 	const [email, setEmail] = useState('')
+	const [name, setName] = useState('')
 	const [password, setPassword] = useState('')
 	const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false)
+
+	const [createNewUser] = useMutation(CREATE_USER)
+
 	const classes = useStyles()
 
 	const onCancel = () => {
@@ -72,6 +87,17 @@ const FormEditor = ({ selectedItem, setSelectedItem, history }) => {
 			return
 		}
 		setSelectedItem('')
+	}
+
+	const onSubmit = () => {
+		createNewUser({
+			variables: { user: { email, name, password } },
+		})
+			.then(data => {
+				console.log(data)
+				onCancel()
+			})
+			.catch(error => console.error(error))
 	}
 
 	return (
@@ -90,13 +116,13 @@ const FormEditor = ({ selectedItem, setSelectedItem, history }) => {
 						onChange={e => setEmail(e.target.value)}
 					/>
 					<TextField
-						value={password}
+						value={name}
 						label='NAME'
 						variant='outlined'
 						type='text'
 						autoComplete='true'
 						className={classes.form_input}
-						onChange={e => setPassword(e.target.value)}
+						onChange={e => setName(e.target.value)}
 					/>
 					<TextField
 						value={password}
@@ -124,6 +150,7 @@ const FormEditor = ({ selectedItem, setSelectedItem, history }) => {
 						size='large'
 						fullWidth
 						className={classes.form_button}
+						onClick={onSubmit}
 					>
 						{selectedItem ? 'Save' : 'Register'}
 					</Button>
