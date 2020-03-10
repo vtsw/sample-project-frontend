@@ -1,4 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
+import { useQuery } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
+
 import { Box, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
@@ -6,6 +10,20 @@ import clsx from 'clsx'
 import { FormEditor, SearchBox, CVTable } from '@views_components'
 import { WelcomeDialog } from './components'
 import { TABLE_TYPES } from '@src/shares/types'
+
+const FETCH_USER_LIST = gql`
+	query FetchUserList($query: UserListInput) {
+		userList(query: $query) {
+			items {
+				name
+				email
+				id
+			}
+			hasNext
+			total
+		}
+	}
+`
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -83,9 +101,33 @@ const user = [
 ]
 
 const User = () => {
-	const classes = useStyles()
 	const [dialogVisible, setDialogVisible] = useState(true)
 	const [selectedItem, setSelectedItem] = useState('')
+	const [searchText, setSearchText] = useState('')
+	const [email, setEmail] = useState('')
+	const [name, setName] = useState('')
+	const [password, setPassword] = useState('')
+	const [confirmPassword, setConfirmPassword] = useState('')
+
+	const { loading, error, data, refetch } = useQuery(FETCH_USER_LIST, {
+		variables: { query: { searchText } },
+	})
+	const classes = useStyles()
+	if (loading) {
+		return <div> Loading... </div>
+	}
+
+	const onSelectTableItem = ({ id, email, name }) => {
+		setSelectedItem({ id, email, name })
+		setName(name)
+		setEmail(email)
+	}
+
+	const onSearch = value => {
+		setSearchText(value)
+		refetch()
+	}
+	console.log(loading, error, data)
 
 	return (
 		<Box className={classes.root}>
@@ -101,8 +143,16 @@ const User = () => {
 							<WelcomeDialog setDialogVisible={setDialogVisible} />
 						) : null}
 						<FormEditor
-							selectedItem={selectedItem}
-							setSelectedItem={setSelectedItem}
+							id={selectedItem.id}
+							name={name}
+							email={email}
+							password={password}
+							confirmPassword={confirmPassword}
+							setName={setName}
+							setEmail={setEmail}
+							setPassword={setPassword}
+							setConfirmPassword={setConfirmPassword}
+							setSelectedItem={onSelectTableItem}
 						/>
 					</Box>
 				</Grid>
@@ -114,15 +164,22 @@ const User = () => {
 							<Typography variant='h5' className={classes.search_box__title}>
 								User List
 							</Typography>
-							<SearchBox width={400} />
+							<SearchBox
+								width={400}
+								searchText={searchText}
+								setSearchText={setSearchText}
+								onSearch={onSearch}
+							/>
 						</Box>
-						<CVTable
-							type={TABLE_TYPES.USER_INFO}
-							tableData={user}
-							tableHeight='calc(100vh - 250px)'
-							selectedItem={selectedItem}
-							setSelectedItem={setSelectedItem}
-						/>
+						{loading ? null : (
+							<CVTable
+								type={TABLE_TYPES.USER_INFO}
+								tableData={data.userList.items}
+								tableHeight='calc(100vh - 250px)'
+								selectedItem={selectedItem}
+								setSelectedItem={onSelectTableItem}
+							/>
+						)}
 					</Box>
 				</Grid>
 			</Grid>

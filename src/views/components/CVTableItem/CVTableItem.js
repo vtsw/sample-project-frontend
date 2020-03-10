@@ -54,9 +54,9 @@ const CVTableItem = ({
 			container
 			className={clsx(
 				classes.root,
-				selectedItem === id ? classes.item__active : ''
+				selectedItem.id === id ? classes.item__active : ''
 			)}
-			onClick={() => setSelectedItem(id)}
+			onClick={() => setSelectedItem({ id, email, name })}
 		>
 			<Grid item xs={5}>
 				<Box className={classes.item__left__container}>
@@ -91,7 +91,7 @@ CVTableItem.propsTypes = {
 	email: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
 	hasCloseIcon: PropTypes.bool,
-	selectedItem: PropTypes.bool,
+	selectedItem: PropTypes.object,
 	setSelectedItem: PropTypes.func,
 	setDeleteDialogVisible: PropTypes.func,
 }

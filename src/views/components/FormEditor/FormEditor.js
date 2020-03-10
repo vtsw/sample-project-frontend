@@ -22,6 +22,16 @@ const CREATE_USER = gql`
 	}
 `
 
+const UPDATE_USER = gql`
+	mutation UpdateUser($user: UpdateUserInput!) {
+		updateUser(user: $user) {
+			id
+			name
+			email
+		}
+	}
+`
+
 const useStyles = makeStyles(theme => ({
 	root: {
 		width: 381,
@@ -71,40 +81,81 @@ const theme = createMuiTheme({
 	},
 })
 
-const FormEditor = ({ selectedItem, setSelectedItem, history }) => {
-	const [email, setEmail] = useState('')
-	const [name, setName] = useState('')
-	const [password, setPassword] = useState('')
+const FormEditor = ({
+	id,
+	name,
+	email,
+	password,
+	confirmPassword,
+	setName,
+	setEmail,
+	setPassword,
+	setConfirmPassword,
+	setSelectedItem,
+	history,
+}) => {
 	const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false)
 
 	const [createNewUser] = useMutation(CREATE_USER)
+	const [updateUser] = useMutation(UPDATE_USER)
 
 	const classes = useStyles()
 
 	const onCancel = () => {
-		if (!selectedItem) {
+		if (!name && !email) {
 			history.push('/sign-in')
 			return
 		}
-		setSelectedItem('')
+		setSelectedItem({ id: '', name: '', email: '' })
+		setPassword('')
+		setConfirmPassword('')
+	}
+
+	const validateForm = () => {
+		const emailRegex = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/gm
+		const isValidEmail = email.match(emailRegex)
+		console.log(isValidEmail)
+
+		if (isValidEmail === null || password !== confirmPassword) {
+			return false
+		}
+		return true
 	}
 
 	const onSubmit = () => {
-		createNewUser({
-			variables: { user: { email, name, password } },
-		})
-			.then(data => {
-				console.log(data)
-				onCancel()
-			})
-			.catch(error => console.error(error))
+		const isValid = validateForm()
+
+		if (isValid) {
+			if (id) {
+				console.log('update')
+				updateUser({
+					variables: { user: { id, email, name, password } },
+				})
+					.then(data => {
+						console.log(data)
+						onCancel()
+					})
+					.catch(error => console.error(error))
+			} else {
+				createNewUser({
+					variables: { user: { email, name, password } },
+				})
+					.then(data => {
+						console.log(data)
+						onCancel()
+					})
+					.catch(error => console.error(error))
+			}
+		} else {
+			alert('Not valid!!!!')
+		}
 	}
 
 	return (
 		<ThemeProvider theme={theme}>
 			<Box className={classes.root}>
 				<Typography variant='h5' className={classes.form_title}>
-					{selectedItem ? 'Modify' : 'Sign up'}
+					{!name && !email ? 'Modify' : 'Sign up'}
 				</Typography>
 				<div className={classes.form_content}>
 					<TextField
@@ -134,13 +185,13 @@ const FormEditor = ({ selectedItem, setSelectedItem, history }) => {
 						onChange={e => setPassword(e.target.value)}
 					/>
 					<TextField
-						value={password}
+						value={confirmPassword}
 						label='PASSWORD CONFIRM'
 						variant='outlined'
 						type='password'
 						autoComplete='true'
 						className={classes.form_input}
-						onChange={e => setPassword(e.target.value)}
+						onChange={e => setConfirmPassword(e.target.value)}
 					/>
 				</div>
 				<div className={classes.form_buttons}>
@@ -152,9 +203,9 @@ const FormEditor = ({ selectedItem, setSelectedItem, history }) => {
 						className={classes.form_button}
 						onClick={onSubmit}
 					>
-						{selectedItem ? 'Save' : 'Register'}
+						{name && email ? 'Save' : 'Register'}
 					</Button>
-					{selectedItem ? (
+					{name && email ? (
 						<Button
 							variant='contained'
 							size='large'
@@ -195,7 +246,14 @@ const FormEditor = ({ selectedItem, setSelectedItem, history }) => {
 }
 
 FormEditor.propsTypes = {
-	selectedItem: PropTypes.string,
+	name: PropTypes.string,
+	email: PropTypes.string,
+	password: PropTypes.string,
+	confirmPassword: PropTypes.string,
+	setName: PropTypes.func,
+	setEmail: PropTypes.func,
+	setPassword: PropTypes.func,
+	setConfirmPassword: PropTypes.func,
 	setSelectedItem: PropTypes.func,
 }
 
