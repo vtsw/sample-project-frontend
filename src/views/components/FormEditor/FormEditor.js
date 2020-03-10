@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-
+import { PropTypes } from 'prop-types'
+import { withRouter } from 'react-router-dom'
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import {
 	makeStyles,
@@ -7,6 +8,8 @@ import {
 	ThemeProvider,
 } from '@material-ui/core/styles'
 import teal from '@material-ui/core/colors/teal'
+
+import { DeleteDialog } from '@views_components'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -57,10 +60,19 @@ const theme = createMuiTheme({
 	},
 })
 
-const FormEditor = ({ selectedItem }) => {
+const FormEditor = ({ selectedItem, setSelectedItem, history }) => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false)
 	const classes = useStyles()
+
+	const onCancel = () => {
+		if (!selectedItem) {
+			history.push('/sign-in')
+			return
+		}
+		setSelectedItem('')
+	}
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -121,6 +133,9 @@ const FormEditor = ({ selectedItem }) => {
 							size='large'
 							fullWidth
 							className={classes.form_button}
+							onClick={() => {
+								setOpenConfirmDeleteDialog(true)
+							}}
 						>
 							Delete
 						</Button>
@@ -130,13 +145,31 @@ const FormEditor = ({ selectedItem }) => {
 						size='large'
 						fullWidth
 						className={classes.form_button}
+						onClick={onCancel}
 					>
 						Cancel
 					</Button>
 				</div>
+				<DeleteDialog
+					open={openConfirmDeleteDialog}
+					onClose={() => {
+						setOpenConfirmDeleteDialog(false)
+					}}
+					onAgree={() => {
+						setOpenConfirmDeleteDialog(false)
+					}}
+					onDisagree={() => {
+						setOpenConfirmDeleteDialog(false)
+					}}
+				/>
 			</Box>
 		</ThemeProvider>
 	)
 }
 
-export default FormEditor
+FormEditor.propsTypes = {
+	selectedItem: PropTypes.string,
+	setSelectedItem: PropTypes.func,
+}
+
+export default withRouter(FormEditor)

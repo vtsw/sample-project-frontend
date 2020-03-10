@@ -68,6 +68,7 @@ const Message = () => {
 	return (
 		<Box className={classes.root}>
 			<Grid container direction='column'>
+				{/* Save Message */}
 				<Grid item>
 					{' '}
 					<Grid container alignItems='stretch' className={classes.save}>
@@ -83,6 +84,7 @@ const Message = () => {
 						</Button>
 					</Grid>
 				</Grid>
+				{/* Search Message */}
 				<Grid item>
 					{' '}
 					<Grid container alignItems='stretch' className={classes.search}>
@@ -98,6 +100,7 @@ const Message = () => {
 						</Button>
 					</Grid>
 				</Grid>
+				{/* View ListMessage */}
 				<Grid item>
 					<ListMessage />
 				</Grid>
