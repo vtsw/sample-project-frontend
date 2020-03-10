@@ -1,4 +1,5 @@
 import React from 'react'
+import clsx from 'clsx'
 import {
 	Dialog,
 	DialogTitle,
@@ -18,6 +19,14 @@ const useStyles = makeStyles(theme => ({
 		boxShadow: 'none',
 		borderRadius: 'unset',
 		width: 323,
+		padding: '24px 12px 12px 24px',
+		margin: 0,
+	},
+	dialog_title: {
+		marginBottom: 3,
+		'&>h2': {
+			lineHeight: 'initial',
+		},
 	},
 	button_confirm: {
 		height: 56,
@@ -41,6 +50,10 @@ const useStyles = makeStyles(theme => ({
 	},
 	title: {
 		fontWeight: 700,
+		fontSize: '1.5rem',
+	},
+	no_padding: {
+		padding: 0,
 	},
 }))
 
@@ -57,12 +70,12 @@ const DeleteDialog = ({ open, onClose, onAgree, onDisagree }) => {
 	return (
 		<ThemeProvider theme={theme}>
 			<Dialog open={open} onClose={onClose} classes={{ paper: classes.root }}>
-				<DialogTitle>
-					<Typography className={classes.title} variant='h6'>
+				<DialogTitle className={clsx(classes.no_padding, classes.dialog_title)}>
+					<Typography className={classes.title} variant='inherit'>
 						Delete!
 					</Typography>
 				</DialogTitle>
-				<DialogActions>
+				<DialogActions className={classes.no_padding}>
 					<Button
 						variant='contained'
 						color='primary'

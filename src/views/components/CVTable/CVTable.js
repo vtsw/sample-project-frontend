@@ -33,6 +33,7 @@ const CVTable = ({
 	tableData,
 	type,
 	tableHeight,
+	setDeleteDialogVisible,
 }) => {
 	const classes = useStyles({ tableHeight })
 
@@ -62,6 +63,7 @@ const CVTable = ({
 						hasCloseIcon={type === TABLE_TYPES.MESSAGE}
 						selectedItem={selectedItem}
 						setSelectedItem={setSelectedItem}
+						setDeleteDialogVisible={setDeleteDialogVisible}
 						{...item}
 					/>
 				))}
@@ -76,6 +78,7 @@ CVTable.propsTypes = {
 	tableData: PropTypes.array,
 	type: PropTypes.string,
 	tableHeight: PropTypes.string,
+	setDeleteDialogVisible: PropTypes.func,
 }
 
 export default CVTable

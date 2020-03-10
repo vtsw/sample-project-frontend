@@ -56,21 +56,16 @@ const CVTableItem = ({
 				classes.root,
 				selectedItem === id ? classes.item__active : ''
 			)}
-			onClick={e => {
-				console.log('click', e)
-				setSelectedItem(id)
-			}}
+			onClick={() => setSelectedItem(id)}
 		>
 			<Grid item xs={5}>
 				<Box className={classes.item__left__container}>
 					{hasCloseIcon ? (
 						<CloseIcon
 							className={classes.item__close_icon}
-							onclick={function(e) {
+							onClick={e => {
 								e.stopPropagation()
-								e.nativeEvent.stopImmediatePropagation()
 								setDeleteDialogVisible(true)
-								console.log('object', e)
 							}}
 						/>
 					) : null}

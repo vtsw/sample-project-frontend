@@ -9,7 +9,7 @@ import {
 	Button,
 } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search'
-import { CVTable, DeleteDialog } from '@views_components'
+import { CVTable, DeleteDialog, ModifyDialog } from '@views_components'
 // import { ListDetailUsers } from './components'
 import { TABLE_TYPES } from '@src/shares/types'
 
@@ -142,9 +142,13 @@ const Main = () => {
 	const classes = useStyle()
 	const [selectedUser, setSelectedUser] = useState('')
 	const [selectedMessage, setSelectedMessage] = useState('')
-	// const [modifyDialogVisible, setModifyDialogVisible] = useState(false)
-	const [deleteDialogVisible, setDeleteDialogVisible] = useState('')
+	const [modifyDialogVisible, setModifyDialogVisible] = useState(false)
+	const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)
 
+	const onSelectAMessage = id => {
+		setSelectedMessage(id)
+		setModifyDialogVisible(true)
+	}
 	return (
 		<Box className={classes.root}>
 			<Grid
@@ -201,7 +205,7 @@ const Main = () => {
 								tableData={message}
 								tableHeight='calc(100vh - 148px)'
 								selectedItem={selectedMessage}
-								setSelectedItem={setSelectedMessage}
+								setSelectedItem={onSelectAMessage}
 								setDeleteDialogVisible={setDeleteDialogVisible}
 							/>
 							<DeleteDialog
@@ -216,18 +220,18 @@ const Main = () => {
 									setDeleteDialogVisible(false)
 								}}
 							/>
-							{/* <ModifyDialog
-								open={openConfirmModifyDialog}
+							<ModifyDialog
+								open={modifyDialogVisible}
 								onClose={() => {
-									setOpenConfirmModifyDialog(false)
+									setModifyDialogVisible(false)
 								}}
 								onAgree={() => {
-									setOpenConfirmModifyDialog(false)
+									setModifyDialogVisible(false)
 								}}
 								onDisagree={() => {
-									setOpenConfirmModifyDialog(false)
+									setModifyDialogVisible(false)
 								}}
-							/> */}
+							/>
 						</Box>
 					) : (
 						<div className={classes.div}>
