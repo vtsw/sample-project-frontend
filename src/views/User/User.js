@@ -25,19 +25,19 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		alignItems: 'center',
 		border: `1px solid ${theme.palette.common.border}`,
-		marginRight: 12,
+		marginRight: theme.spacing(1.5),
 		position: 'relative',
 	},
 	user_list__container: {
 		border: `1px solid ${theme.palette.common.border}`,
-		marginLeft: 12,
+		marginLeft: theme.spacing(1.5),
 		overflow: 'hidden',
 	},
-	searchbox: {
+	search_box: {
 		width: '100%',
 		padding: theme.spacing(3),
 	},
-	searchbox__title: {
+	search_box__title: {
 		fontWeight: 600,
 		marginBottom: theme.spacing(2),
 	},
@@ -97,7 +97,7 @@ const User = () => {
 					<Box
 						className={clsx(classes.sign_up__container, classes.full_height)}
 					>
-						{dialogVisible ? (
+						{dialogVisible && !selectedItem ? (
 							<WelcomeDialog setDialogVisible={setDialogVisible} />
 						) : null}
 						<FormEditor
@@ -110,8 +110,8 @@ const User = () => {
 					<Box
 						className={clsx(classes.user_list__container, classes.full_height)}
 					>
-						<Box className={classes.searchbox}>
-							<Typography variant='h5' className={classes.searchbox__title}>
+						<Box className={classes.search_box}>
+							<Typography variant='h5' className={classes.search_box__title}>
 								User List
 							</Typography>
 							<SearchBox width={400} />

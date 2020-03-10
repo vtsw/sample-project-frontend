@@ -1,68 +1,49 @@
 import React, { useState } from 'react'
 import clsx from 'clsx'
+import { Box, Grid, makeStyles, Typography } from '@material-ui/core'
 import {
-	Box,
-	Grid,
-	makeStyles,
-	Typography,
-	TextField,
-	Button,
-} from '@material-ui/core'
-import SearchIcon from '@material-ui/icons/Search'
-import { CVTable, DeleteDialog, ModifyDialog } from '@views_components'
-// import { ListDetailUsers } from './components'
+	CVTable,
+	DeleteDialog,
+	ModifyDialog,
+	SearchBox,
+} from '@views_components'
 import { TABLE_TYPES } from '@src/shares/types'
 
 const useStyle = makeStyles(theme => ({
 	root: {
-		width: 'calc(100% - 80px)',
+		width: '100%',
+		height: '100vh',
 	},
-	div: {
+	full_height: {
+		height: '100%',
+	},
+	container: {
+		padding: theme.spacing(3),
+	},
+	overlay: {
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
 		background: theme.palette.common.black,
 		height: '100%',
-	},
-	container: {
-		height: '100%',
-		padding: '16px',
-	},
-	search_box: {
-		paddingRight: '16px',
-	},
-	search_box__input: {
-		border: `1px solid ${theme.palette.common.border}`,
-
-		height: '100%',
-	},
-	search: {
-		padding: '16px',
-	},
-	icon: {
-		fontSize: '40px',
-	},
-	button: {
-		color: theme.palette.common.white,
-		marginLeft: '8px',
-		width: '56px',
-		boxShadow: 'none',
-		background: theme.palette.common.gray,
-		'&:hover': {
-			background: theme.palette.common.gray,
-		},
-	},
-	typography: {
-		fontWeight: 700,
-	},
-	typography_email: {
-		padding: '16px',
+		marginLeft: theme.spacing(1.5),
 	},
 	user_list__container: {
+		display: 'flex',
+		flexDirection: 'column',
 		border: `1px solid ${theme.palette.common.border}`,
-		marginLeft: 12,
-		overflow: 'hidden',
-		height: '100%',
+		marginRight: theme.spacing(1.5),
+	},
+	message_list__container: {
+		border: `1px solid ${theme.palette.common.border}`,
+		marginLeft: theme.spacing(1.5),
+	},
+	search_box: {
+		padding: theme.spacing(3),
+	},
+	message_list__title: {
+		padding: theme.spacing(3),
+		fontWeight: 700,
 	},
 }))
 
@@ -142,6 +123,7 @@ const Main = () => {
 	const classes = useStyle()
 	const [selectedUser, setSelectedUser] = useState('')
 	const [selectedMessage, setSelectedMessage] = useState('')
+	const [searchVal, setSearchVal] = useState('')
 	const [modifyDialogVisible, setModifyDialogVisible] = useState(false)
 	const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)
 
@@ -151,59 +133,39 @@ const Main = () => {
 	}
 	return (
 		<Box className={classes.root}>
-			<Grid
-				container
-				alignItems='stretch'
-				className={classes.container}
-				// spacing="3"
-			>
-				<Grid item xs={4} className={classes.search_box}>
-					<Grid
-						direction='column'
-						container
-						alignItems='stretch'
-						className={classes.search_box__input}
+			<Grid container className={clsx(classes.full_height, classes.container)}>
+				<Grid item xs={4}>
+					<Box
+						className={clsx(classes.user_list__container, classes.full_height)}
 					>
-						<Grid container alignItems='stretch' className={classes.search}>
-							<TextField
-								variant='outlined'
-								label='Search'
-								placeholder='search...'
-								type='search'
-							/>
-							<Button variant='contained' className={classes.button}>
-								<SearchIcon className={classes.icon} />
-							</Button>
-						</Grid>
+						<Box className={classes.search_box}>
+							<SearchBox width={390} onSearch={setSearchVal} />
+						</Box>
 						<CVTable
 							type={TABLE_TYPES.USER_INFO}
 							tableData={user}
-							tableHeight='calc(100vh - 170px)'
+							tableHeight='calc(100vh - 210px)'
 							selectedItem={selectedUser}
 							setSelectedItem={setSelectedUser}
 						/>
-					</Grid>
+					</Box>
 				</Grid>
 				<Grid item xs={8}>
 					{selectedUser ? (
 						<Box
 							className={clsx(
-								classes.user_list__container,
+								classes.message_list__container,
 								classes.full_height
 							)}
 						>
-							<Box className={classes.searchbox}>
-								<Typography
-									variant='h5'
-									className={clsx(classes.typography, classes.typography_email)}
-								>
-									Total {message.length}
-								</Typography>
-							</Box>
+							<Typography variant='h5' className={classes.message_list__title}>
+								Total {message.length}
+							</Typography>
+
 							<CVTable
 								type={TABLE_TYPES.MESSAGE}
 								tableData={message}
-								tableHeight='calc(100vh - 148px)'
+								tableHeight='calc(100vh - 185px)'
 								selectedItem={selectedMessage}
 								setSelectedItem={onSelectAMessage}
 								setDeleteDialogVisible={setDeleteDialogVisible}
@@ -234,11 +196,11 @@ const Main = () => {
 							/>
 						</Box>
 					) : (
-						<div className={classes.div}>
+						<Box className={classes.overlay}>
 							<Typography variant='subtitle2' color='primary' gutterBottom>
 								Select an item on the left.
 							</Typography>
-						</div>
+						</Box>
 					)}
 				</Grid>
 			</Grid>
