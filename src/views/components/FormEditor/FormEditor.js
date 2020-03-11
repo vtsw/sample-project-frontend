@@ -132,7 +132,7 @@ const FormEditor = ({
 
 	const [createNewUser] = useMutation(CREATE_USER, {
 		update(cache, { data: { createUser } }) {
-			if (!isAuthenticated) {
+			if (isAuthenticated) {
 				const { userList } = cache.readQuery({
 					query: FETCH_USER_LIST,
 					variables: { query: { searchText: '', limit: 100 } },
@@ -201,6 +201,7 @@ const FormEditor = ({
 					})
 					.catch(error => console.error(error))
 			} else {
+				console.log('create')
 				createNewUser({
 					variables: { user: { email, name, password } },
 				})
