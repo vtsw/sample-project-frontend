@@ -5,7 +5,10 @@ import { setContext } from 'apollo-link-context'
 import { getToken } from './shares/utils'
 import localConfigs from './configs.local'
 
-const httpLink = createHttpLink({ uri: localConfigs.APOLLO_SERVER })
+const httpLink = createHttpLink({
+	uri: localConfigs.APOLLO_SERVER,
+	credentials: 'same-origin',
+})
 
 const authLink = setContext((_, { headers }) => {
 	const token = getToken()
@@ -17,10 +20,8 @@ const authLink = setContext((_, { headers }) => {
 	}
 })
 
-const cache = new InMemoryCache()
-
 const client = new ApolloClient({
-	cache,
+	cache: new InMemoryCache(),
 	link: authLink.concat(httpLink),
 })
 

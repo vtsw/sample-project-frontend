@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
 		overflow: 'hidden',
 		flexWrap: 'nowrap',
 	},
-	table__header: {
+	table_header: {
 		padding: '13px 16px',
 		borderTop: `1px solid ${theme.palette.common.gray}`,
 		borderBottom: `1px solid ${theme.palette.common.gray}`,
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 			paddingLeft: theme.spacing(3),
 		},
 	},
-	table__header__item: {
+	table_header__item: {
 		fontWeight: 600,
 	},
 	table__content: {
@@ -36,7 +36,6 @@ const CVTable = ({
 	setDeleteDialogVisible,
 }) => {
 	const classes = useStyles({ tableHeight })
-
 	return (
 		<Grid
 			container
@@ -44,14 +43,14 @@ const CVTable = ({
 			className={classes.root}
 			direction='column'
 		>
-			<Grid container className={classes.table__header}>
+			<Grid container className={classes.table_header}>
 				<Grid item xs={5}>
-					<Typography variant='body2' className={classes.table__header__item}>
+					<Typography variant='body2' className={classes.table_header__item}>
 						{type === TABLE_TYPES.USER_INFO ? 'EMAIL' : 'DATE'}
 					</Typography>
 				</Grid>
 				<Grid item xs={7}>
-					<Typography variant='body2' className={classes.table__header__item}>
+					<Typography variant='body2' className={classes.table_header__item}>
 						{type === TABLE_TYPES.USER_INFO ? 'NAME' : 'TEXT'}
 					</Typography>
 				</Grid>
@@ -73,11 +72,11 @@ const CVTable = ({
 }
 
 CVTable.propsTypes = {
+	tableData: PropTypes.array,
+	tableHeight: PropTypes.string,
+	type: PropTypes.string,
 	selectedItem: PropTypes.string,
 	setSelectedItem: PropTypes.func,
-	tableData: PropTypes.array,
-	type: PropTypes.string,
-	tableHeight: PropTypes.string,
 	setDeleteDialogVisible: PropTypes.func,
 }
 

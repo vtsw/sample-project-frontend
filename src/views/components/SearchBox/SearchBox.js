@@ -23,23 +23,23 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const SearchBox = ({ width, onSearch }) => {
-	const [inputVal, setInputVal] = useState('')
+const SearchBox = ({ width, searchText, onSearch }) => {
+	const [searchValue, setSearchValue] = useState(searchText)
 	const classes = useStyles({ width })
 	return (
 		<Box className={classes.root}>
 			<TextField
-				value={inputVal}
+				value={searchValue}
 				variant='outlined'
 				placeholder='search...'
 				className={clsx(classes.margin, classes.search_input)}
-				onChange={e => setInputVal(e.target.value)}
+				onChange={e => setSearchValue(e.target.value)}
 			/>
 			<Button
 				variant='contained'
 				size='large'
 				className={classes.search_btn}
-				onClick={() => onSearch(inputVal)}
+				onClick={() => onSearch(searchValue)}
 			>
 				<Search className={classes.search_btn__icon} />
 			</Button>
@@ -49,6 +49,7 @@ const SearchBox = ({ width, onSearch }) => {
 
 SearchBox.propsTypes = {
 	width: PropTypes.string,
+	searchText: PropTypes.string,
 	onSearch: PropTypes.func,
 }
 

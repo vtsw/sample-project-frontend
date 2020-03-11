@@ -17,7 +17,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint:fix",
+      "pre-commit": "",
       "pre-push": ""
     }
   },
@@ -39,6 +39,7 @@
     "apollo-client": "^2.6.8",
     "clsx": "^1.1.0",
     "core-js": "2",
+    "graphql-tag": "^2.10.3",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
