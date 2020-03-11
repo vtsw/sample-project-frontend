@@ -46,12 +46,12 @@ const CVTable = ({
 			<Grid container className={classes.table_header}>
 				<Grid item xs={5}>
 					<Typography variant='body2' className={classes.table_header__item}>
-						{type === TABLE_TYPES.USER_INFO ? 'EMAIL' : 'DATE'}
+						{type === TABLE_TYPES.USER_LIST ? 'EMAIL' : 'DATE'}
 					</Typography>
 				</Grid>
 				<Grid item xs={7}>
 					<Typography variant='body2' className={classes.table_header__item}>
-						{type === TABLE_TYPES.USER_INFO ? 'NAME' : 'TEXT'}
+						{type === TABLE_TYPES.USER_LIST ? 'NAME' : 'TEXT'}
 					</Typography>
 				</Grid>
 			</Grid>

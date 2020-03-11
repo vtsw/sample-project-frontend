@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { Box } from '@material-ui/core'
@@ -14,10 +14,23 @@ const useStyles = makeStyles({
 })
 
 const SignUp = () => {
+	const [email, setEmail] = useState('')
+	const [name, setName] = useState('')
+	const [password, setPassword] = useState('')
+	const [confirmPassword, setConfirmPassword] = useState('')
 	const classes = useStyles()
 	return (
 		<Box className={classes.root}>
-			<FormEditor />
+			<FormEditor
+				name={name}
+				email={email}
+				password={password}
+				confirmPassword={confirmPassword}
+				setName={setName}
+				setEmail={setEmail}
+				setPassword={setPassword}
+				setConfirmPassword={setConfirmPassword}
+			/>
 		</Box>
 	)
 }

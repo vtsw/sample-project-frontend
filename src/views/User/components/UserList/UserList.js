@@ -59,8 +59,6 @@ const UserList = ({ selectedItem, setSelectedItem }) => {
 	})
 	const classes = useStyles()
 
-	console.log(loading, error, data)
-
 	const onSearch = value => {
 		if (value) {
 			setSearchValue(value)
