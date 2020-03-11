@@ -13,21 +13,51 @@ import teal from '@material-ui/core/colors/teal'
 
 import { DeleteDialog } from '@views_components'
 
+const USER_FIELDS = gql`
+	fragment UserFields on User {
+		id
+		name
+		email
+	}
+`
+
 const CREATE_USER = gql`
 	mutation CreateUser($user: CreateUserInput!) {
 		createUser(user: $user) {
-			email
-			id
+			...UserFields
 		}
 	}
+	${USER_FIELDS}
 `
 
 const UPDATE_USER = gql`
 	mutation UpdateUser($user: UpdateUserInput!) {
 		updateUser(user: $user) {
-			id
-			name
-			email
+			...UserFields
+		}
+	}
+	${USER_FIELDS}
+`
+
+const DELETE_USER = gql`
+	mutation DeleteUser($id: ID!) {
+		deleteUser(id: $id) {
+			...UserFields
+		}
+	}
+	${USER_FIELDS}
+`
+
+const FETCH_USER_LIST = gql`
+	query FetchUserList($query: UserListInput) {
+		userList(query: $query) {
+			items {
+				name
+				email
+				id
+			}
+			hasNext
+			total
 		}
 	}
 `
@@ -91,13 +121,76 @@ const FormEditor = ({
 	setEmail,
 	setPassword,
 	setConfirmPassword,
+	selectedItem,
 	setSelectedItem,
 	history,
 }) => {
 	const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false)
 
-	const [createNewUser] = useMutation(CREATE_USER)
-	const [updateUser] = useMutation(UPDATE_USER)
+	const [createNewUser] = useMutation(CREATE_USER, {
+		update(cache, { data: { createUser } }) {
+			const { userList } = cache.readQuery({
+				query: FETCH_USER_LIST,
+				variables: { query: { searchText: '', limit: 100 } },
+			})
+			cache.writeQuery({
+				query: FETCH_USER_LIST,
+				variables: { query: { searchText: '', limit: 100 } },
+				data: {
+					userList: { ...userList, items: [createUser, ...userList.items] },
+				},
+			})
+		},
+	})
+	const [updateUser] = useMutation(UPDATE_USER, {
+		update(cache, { data: { updateUser } }) {
+			const { userList } = cache.readQuery({
+				query: FETCH_USER_LIST,
+				variables: { query: { searchText: '', limit: 100 } },
+			})
+			const newItemIndex = userList.items.findIndex(
+				item => item.id === updateUser.id
+			)
+			if (newItemIndex !== -1) {
+				userList.items[newItemIndex] = updateUser
+				cache.writeQuery({
+					query: FETCH_USER_LIST,
+					variables: { query: { searchText: '', limit: 100 } },
+					data: {
+						userList: { ...userList, items: userList.items },
+					},
+				})
+			}
+		},
+	})
+	const [deleteUser] = useMutation(DELETE_USER, {
+		update(cache, { data: { deleteUser } }) {
+			const { userList } = cache.readQuery({
+				query: FETCH_USER_LIST,
+				variables: { query: { searchText: '', limit: 100 } },
+			})
+			const deleteItemIndex = userList.items.findIndex(
+				item => item.id === deleteUser.id
+			)
+			console.log(deleteItemIndex, deleteUser)
+			if (deleteItemIndex !== -1) {
+				userList.items.splice(deleteItemIndex, 1)
+				console.log(userList)
+				cache.writeQuery({
+					query: FETCH_USER_LIST,
+					variables: { query: { searchText: '', limit: 100 } },
+					data: {
+						userList: { ...userList, items: [...userList.items] },
+					},
+				})
+			}
+			const afterData = cache.readQuery({
+				query: FETCH_USER_LIST,
+				variables: { query: { searchText: '', limit: 100 } },
+			})
+			console.log('afterData', afterData)
+		},
+	})
 
 	const classes = useStyles()
 
@@ -127,7 +220,6 @@ const FormEditor = ({
 
 		if (isValid) {
 			if (id) {
-				console.log('update')
 				updateUser({
 					variables: { user: { id, email, name, password } },
 				})
@@ -151,11 +243,20 @@ const FormEditor = ({
 		}
 	}
 
+	const onAgreeDeleteAnUser = () => {
+		deleteUser({ variables: { id } })
+			.then(data => {
+				console.log(data)
+			})
+			.catch(error => console.error(error))
+		setOpenConfirmDeleteDialog(false)
+	}
+
 	return (
 		<ThemeProvider theme={theme}>
 			<Box className={classes.root}>
 				<Typography variant='h5' className={classes.form_title}>
-					{!name && !email ? 'Modify' : 'Sign up'}
+					{selectedItem.id ? 'Modify' : 'Sign up'}
 				</Typography>
 				<div className={classes.form_content}>
 					<TextField
@@ -164,7 +265,7 @@ const FormEditor = ({
 						variant='outlined'
 						type='email'
 						className={classes.form_input}
-						onChange={e => setEmail(e.target.value)}
+						onChange={e => setEmail(e.target.value.toLowerCase())}
 					/>
 					<TextField
 						value={name}
@@ -203,9 +304,9 @@ const FormEditor = ({
 						className={classes.form_button}
 						onClick={onSubmit}
 					>
-						{name && email ? 'Save' : 'Register'}
+						{selectedItem.id ? 'Save' : 'Register'}
 					</Button>
-					{name && email ? (
+					{selectedItem.id ? (
 						<Button
 							variant='contained'
 							size='large'
@@ -233,9 +334,7 @@ const FormEditor = ({
 					onClose={() => {
 						setOpenConfirmDeleteDialog(false)
 					}}
-					onAgree={() => {
-						setOpenConfirmDeleteDialog(false)
-					}}
+					onAgree={onAgreeDeleteAnUser}
 					onDisagree={() => {
 						setOpenConfirmDeleteDialog(false)
 					}}
@@ -250,6 +349,7 @@ FormEditor.propsTypes = {
 	email: PropTypes.string,
 	password: PropTypes.string,
 	confirmPassword: PropTypes.string,
+	selectedItem: PropTypes.object,
 	setName: PropTypes.func,
 	setEmail: PropTypes.func,
 	setPassword: PropTypes.func,

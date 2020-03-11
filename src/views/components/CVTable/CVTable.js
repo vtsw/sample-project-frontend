@@ -36,7 +36,6 @@ const CVTable = ({
 	setDeleteDialogVisible,
 }) => {
 	const classes = useStyles({ tableHeight })
-
 	return (
 		<Grid
 			container
