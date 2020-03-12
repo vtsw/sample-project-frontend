@@ -76,7 +76,7 @@ const client = new ApolloClient({
 
 cache.writeData({
 	data: {
-		userSearchValue: 'dai',
+		userSearchValue: '',
 	},
 })
 

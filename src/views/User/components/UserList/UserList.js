@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 
 import { Box, Typography } from '@material-ui/core'
@@ -10,19 +10,11 @@ import clsx from 'clsx'
 import { SearchBox, CVTable } from '@views_components'
 import { TABLE_TYPES } from '@src/shares/types'
 
-const FETCH_USER_LIST = gql`
-	query FetchUserList($query: UserListInput) {
-		userList(query: $query) {
-			items {
-				name
-				email
-				id
-			}
-			hasNext
-			total
-		}
-	}
-`
+import {
+	FETCH_USER_LIST,
+	GET_SEARCH_TEXT,
+	SET_SEARCH_TEXT,
+} from '@views/User/gql/queries'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -52,20 +44,25 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const UserList = ({ selectedItem, setSelectedItem }) => {
-	const [searchValue, setSearchValue] = useState('')
+	const {
+		data: { userSearchValue },
+	} = useQuery(GET_SEARCH_TEXT)
+	const [searchValue, setSearchValue] = useState(userSearchValue)
+	const [setUserSearchValue] = useMutation(SET_SEARCH_TEXT)
 
 	const { loading, error, data } = useQuery(FETCH_USER_LIST, {
 		variables: { query: { searchText: searchValue, limit: 100 } },
 	})
 	const classes = useStyles()
 
-	const onSearch = value => {
-		if (value) {
-			setSearchValue(value)
+	const onSearch = searchValue => {
+		if (searchValue) {
+			setUserSearchValue({ variables: { searchValue } })
+			setSearchValue(searchValue)
 			setSelectedItem({ id: '', name: '', email: '' })
 		}
 	}
-
+	console.log(userSearchValue)
 	return (
 		<Box className={classes.root}>
 			<Box className={clsx(classes.user_list__container, classes.full_height)}>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { PropTypes } from 'prop-types'
 import { withRouter } from 'react-router-dom'
-import { useMutation } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import {
@@ -18,7 +18,9 @@ import {
 	UPDATE_USER,
 	DELETE_USER,
 	FETCH_USER_LIST,
-} from '@views/gql/User/queries'
+	GET_SEARCH_TEXT,
+} from '@views/User/gql/queries'
+import { useCreateAUser, useDeleteAUser } from './mutations'
 
 import { getToken } from '@src/shares/utils'
 
@@ -87,41 +89,22 @@ const FormEditor = ({
 }) => {
 	const isAuthenticated = getToken()
 	const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false)
+	const {
+		data: { userSearchValue },
+	} = useQuery(GET_SEARCH_TEXT)
 
-	const [createNewUser] = useMutation(CREATE_USER, {
-		update(cache, { data: { createUser } }) {
-			if (isAuthenticated) {
-				const { userList } = cache.readQuery({
-					query: FETCH_USER_LIST,
-					variables: { query: { searchText: '', limit: 100 } },
-				})
-				cache.writeQuery({
-					query: FETCH_USER_LIST,
-					variables: { query: { searchText: '', limit: 100 } },
-					data: {
-						userList: { ...userList, items: [createUser, ...userList.items] },
-					},
-				})
-			}
+	const [createNewUser] = useCreateAUser(
+		CREATE_USER,
+		FETCH_USER_LIST,
+		{
+			query: { searchText: userSearchValue, limit: 100 },
 		},
-	})
+		isAuthenticated
+	)
+
 	const [updateUser] = useMutation(UPDATE_USER)
-	const [deleteUser] = useMutation(DELETE_USER, {
-		update(cache, { data: { deleteUser } }) {
-			const { userList } = cache.readQuery({
-				query: FETCH_USER_LIST,
-				variables: { query: { searchText: '', limit: 100 } },
-			})
-			const items = userList.items.filter(item => item.id !== deleteUser.id)
-
-			cache.writeQuery({
-				query: FETCH_USER_LIST,
-				variables: { query: { searchText: '', limit: 100 } },
-				data: {
-					userList: { ...userList, items },
-				},
-			})
-		},
+	const [deleteUser] = useDeleteAUser(DELETE_USER, FETCH_USER_LIST, {
+		query: { searchText: userSearchValue, limit: 100 },
 	})
 
 	const classes = useStyles()
@@ -159,27 +142,8 @@ const FormEditor = ({
 					})
 					.catch(error => console.error(error))
 			} else {
-				console.log('create')
 				createNewUser({
 					variables: { user: { email, name, password } },
-					refetchQueries: [
-						{
-							query: gql`
-								query {
-									userList(query: { searchText: "ad", limit: 100 }) {
-										items {
-											name
-											email
-											id
-										}
-										hasNext
-										total
-									}
-								}
-							`,
-						},
-					],
-					awaitRefetchQueries: true,
 				})
 					.then(() => {
 						onCancel()
@@ -192,8 +156,12 @@ const FormEditor = ({
 	}
 
 	const onAgreeDeleteAnUser = () => {
-		deleteUser({ variables: { id } }).catch(error => console.error(error))
-		setOpenConfirmDeleteDialog(false)
+		deleteUser({ variables: { id } })
+			.then(() => {
+				setSelectedItem({ id: '', name: '', email: '' })
+				setOpenConfirmDeleteDialog(false)
+			})
+			.catch(error => console.error(error))
 	}
 
 	return (
