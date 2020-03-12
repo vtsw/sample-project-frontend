@@ -13,56 +13,14 @@ import teal from '@material-ui/core/colors/teal'
 
 import { DeleteDialog } from '@views_components'
 
+import {
+	CREATE_USER,
+	UPDATE_USER,
+	DELETE_USER,
+	FETCH_USER_LIST,
+} from '@views/gql/User/queries'
+
 import { getToken } from '@src/shares/utils'
-
-const USER_FIELDS = gql`
-	fragment UserFields on User {
-		id
-		name
-		email
-	}
-`
-
-const CREATE_USER = gql`
-	mutation CreateUser($user: CreateUserInput!) {
-		createUser(user: $user) {
-			...UserFields
-		}
-	}
-	${USER_FIELDS}
-`
-
-const UPDATE_USER = gql`
-	mutation UpdateUser($user: UpdateUserInput!) {
-		updateUser(user: $user) {
-			...UserFields
-		}
-	}
-	${USER_FIELDS}
-`
-
-const DELETE_USER = gql`
-	mutation DeleteUser($id: ID!) {
-		deleteUser(id: $id) {
-			...UserFields
-		}
-	}
-	${USER_FIELDS}
-`
-
-const FETCH_USER_LIST = gql`
-	query FetchUserList($query: UserListInput) {
-		userList(query: $query) {
-			items {
-				name
-				email
-				id
-			}
-			hasNext
-			total
-		}
-	}
-`
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -204,6 +162,24 @@ const FormEditor = ({
 				console.log('create')
 				createNewUser({
 					variables: { user: { email, name, password } },
+					refetchQueries: [
+						{
+							query: gql`
+								query {
+									userList(query: { searchText: "ad", limit: 100 }) {
+										items {
+											name
+											email
+											id
+										}
+										hasNext
+										total
+									}
+								}
+							`,
+						},
+					],
+					awaitRefetchQueries: true,
 				})
 					.then(() => {
 						onCancel()

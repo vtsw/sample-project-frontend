@@ -7,6 +7,9 @@ import clsx from 'clsx'
 import { FormEditor } from '@views_components'
 import { WelcomeDialog, UserList } from './components'
 
+import { useQuery, useMutation } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
+
 const useStyles = makeStyles(theme => ({
 	root: {
 		width: '100%',
@@ -43,6 +46,18 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+const GET_SEARCH_TEXT = gql`
+	query userSearchValue {
+		userSearchValue @client
+	}
+`
+
+const SET_SEARCH_TEXT = gql`
+	mutation SetUserSearchValue($searchValue: String!) {
+		setUserSearchValue(searchValue: $searchValue) @client
+	}
+`
+
 const User = () => {
 	const [dialogVisible, setDialogVisible] = useState(true)
 	const [selectedItem, setSelectedItem] = useState('')
@@ -53,7 +68,13 @@ const User = () => {
 
 	const classes = useStyles()
 
+	const { data } = useQuery(GET_SEARCH_TEXT)
+	const [setUserSearchValue] = useMutation(SET_SEARCH_TEXT)
+	console.log(data)
+
 	const onSelectTableItem = ({ id, email, name }) => {
+		setUserSearchValue({ variables: { searchValue: 'daikkkkk' } })
+
 		setSelectedItem({ id, email, name })
 		setName(name)
 		setEmail(email)
