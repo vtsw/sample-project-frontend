@@ -1,17 +1,15 @@
 import React, { useState } from 'react'
 import { Grid, makeStyles, Typography, Box } from '@material-ui/core'
-import { CancelRounded } from '@material-ui/icons'
+import CloseIcon from '@material-ui/icons/Close'
 import { DeleteDialog, ModifyDialog } from '@views_components'
 
 const useStyles = makeStyles(theme => ({
 	container: ({ haveBackground }) => ({
 		background: haveBackground && theme.palette.common.gray,
 		padding: '8px 16px',
-		height: 40,
 	}),
 	item: {
 		padding: '6px 8px',
-		height: 40,
 	},
 	typography: {
 		fontWeight: 700,
@@ -20,21 +18,34 @@ const useStyles = makeStyles(theme => ({
 		marginLeft: '12px',
 		fontWeight: 700,
 	},
-	icon: {
-		fontSize: '18px',
-		color: theme.palette.common.gray,
-		cursor: 'pointer',
-	},
+
 	container__icon__typography: {
 		alignItems: 'center',
 	},
+	item__close_icon: {
+		color: theme.palette.common.white,
+		cursor: 'pointer',
+		fontSize: '1rem',
+		border: '1px solid transparent',
+		backgroundColor: theme.palette.common.gray,
+		borderRadius: '50%',
+		padding: 1,
+	},
 }))
 
-const Message = ({ onClick, email, name, haveBackground }) => {
+const Message = ({
+	onClick,
+	id,
+	content,
+	lastModified,
+	haveBackground,
+	handleDeleteMessage,
+	handleUpdateMessage,
+}) => {
 	const classes = useStyles({ haveBackground })
 	const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
 	const [openConfirmModify, setOpenConfirmModify] = useState(false)
-	// const classes = useStyles()
+
 	return (
 		<Box>
 			<Grid
@@ -46,19 +57,19 @@ const Message = ({ onClick, email, name, haveBackground }) => {
 				}}
 			>
 				<Grid xs={5} container className={classes.container__icon__typography}>
-					<CancelRounded
-						className={classes.icon}
+					<CloseIcon
+						className={classes.item__close_icon}
 						onClick={e => {
 							e.stopPropagation()
 							setOpenConfirmDelete(true)
 						}}
 					/>
 					<Typography variant='caption' className={classes.typography_email}>
-						{email}
+						{lastModified}
 					</Typography>
 				</Grid>
 				<Grid item xs={7} className={classes.typography}>
-					{name}
+					{content}
 				</Grid>
 			</Grid>
 			<DeleteDialog
@@ -68,6 +79,7 @@ const Message = ({ onClick, email, name, haveBackground }) => {
 				}}
 				onAgree={() => {
 					setOpenConfirmDelete(false)
+					handleDeleteMessage(id)
 				}}
 				onDisagree={() => {
 					setOpenConfirmDelete(false)
@@ -78,8 +90,10 @@ const Message = ({ onClick, email, name, haveBackground }) => {
 				onClose={() => {
 					setOpenConfirmModify(false)
 				}}
-				onAgree={() => {
+				valueDefault={content}
+				onAgree={value => {
 					setOpenConfirmModify(false)
+					handleUpdateMessage(id, value)
 				}}
 				onDisagree={() => {
 					setOpenConfirmModify(false)
