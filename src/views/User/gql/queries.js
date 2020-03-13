@@ -49,13 +49,13 @@ const FETCH_USER_LIST = gql`
 	}
 `
 
-const GET_SEARCH_TEXT = gql`
+const GET_USER_SEARCH_TEXT = gql`
 	query userSearchValue {
 		userSearchValue @client
 	}
 `
 
-const SET_SEARCH_TEXT = gql`
+const SET_USER_SEARCH_TEXT = gql`
 	mutation SetUserSearchValue($searchValue: String!) {
 		setUserSearchValue(searchValue: $searchValue) @client
 	}
@@ -66,6 +66,6 @@ export {
 	UPDATE_USER,
 	DELETE_USER,
 	FETCH_USER_LIST,
-	GET_SEARCH_TEXT,
-	SET_SEARCH_TEXT,
+	GET_USER_SEARCH_TEXT,
+	SET_USER_SEARCH_TEXT,
 }

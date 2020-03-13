@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 
-import { useQuery, useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 
 import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -12,8 +11,8 @@ import { TABLE_TYPES } from '@src/shares/types'
 
 import {
 	FETCH_USER_LIST,
-	GET_SEARCH_TEXT,
-	SET_SEARCH_TEXT,
+	GET_USER_SEARCH_TEXT,
+	SET_USER_SEARCH_TEXT,
 } from '@views/User/gql/queries'
 
 const useStyles = makeStyles(theme => ({
@@ -46,11 +45,12 @@ const useStyles = makeStyles(theme => ({
 const UserList = ({ selectedItem, setSelectedItem }) => {
 	const {
 		data: { userSearchValue },
-	} = useQuery(GET_SEARCH_TEXT)
-	const [searchValue, setSearchValue] = useState(userSearchValue)
-	const [setUserSearchValue] = useMutation(SET_SEARCH_TEXT)
+	} = useQuery(GET_USER_SEARCH_TEXT)
 
-	const { loading, error, data } = useQuery(FETCH_USER_LIST, {
+	const [searchValue, setSearchValue] = useState(userSearchValue)
+	const [setUserSearchValue] = useMutation(SET_USER_SEARCH_TEXT)
+
+	const { loading, _, data } = useQuery(FETCH_USER_LIST, {
 		variables: { query: { searchText: searchValue, limit: 100 } },
 	})
 	const classes = useStyles()

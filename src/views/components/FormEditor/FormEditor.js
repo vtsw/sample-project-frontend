@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { PropTypes } from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/react-hooks'
@@ -17,9 +17,9 @@ import {
 	UPDATE_USER,
 	DELETE_USER,
 	FETCH_USER_LIST,
-	GET_SEARCH_TEXT,
+	GET_USER_SEARCH_TEXT,
 } from '@views/User/gql/queries'
-import { useCreateAUser, useDeleteAUser } from './mutations'
+import { useCreateAUser, useDeleteAUser } from './useMutations'
 
 import { getToken } from '@src/shares/utils'
 
@@ -87,10 +87,9 @@ const FormEditor = ({
 	history,
 }) => {
 	const isAuthenticated = getToken()
-	const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false)
 	const {
 		data: { userSearchValue },
-	} = useQuery(GET_SEARCH_TEXT)
+	} = useQuery(GET_USER_SEARCH_TEXT)
 
 	const [createNewUser] = useCreateAUser(
 		CREATE_USER,
@@ -100,11 +99,12 @@ const FormEditor = ({
 		},
 		isAuthenticated
 	)
-
 	const [updateUser] = useMutation(UPDATE_USER)
 	const [deleteUser] = useDeleteAUser(DELETE_USER, FETCH_USER_LIST, {
 		query: { searchText: userSearchValue, limit: 100 },
 	})
+
+	const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false)
 
 	const classes = useStyles()
 
