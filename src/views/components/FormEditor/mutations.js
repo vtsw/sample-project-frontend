@@ -10,18 +10,19 @@ const genQueryOptions = (query, variables) => {
 const useCreateAUser = (query, updateQuery, vars, isAuthenticated) => {
 	return useMutation(
 		query,
-		isAuthenticated && {
-			update(cache, { data: { createUser } }) {
-				const options = genQueryOptions(updateQuery, vars)
-				const { userList } = cache.readQuery(options)
-				cache.writeQuery({
-					...options,
-					data: {
-						userList: { ...userList, items: [createUser, ...userList.items] },
-					},
-				})
-			},
-		}
+		isAuthenticated &&
+			!vars.query.searchText && {
+				update(cache, { data: { createUser } }) {
+					const options = genQueryOptions(updateQuery, vars)
+					const { userList } = cache.readQuery(options)
+					cache.writeQuery({
+						...options,
+						data: {
+							userList: { ...userList, items: [createUser, ...userList.items] },
+						},
+					})
+				},
+			}
 	)
 }
 

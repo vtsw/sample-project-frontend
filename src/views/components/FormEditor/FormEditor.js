@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { PropTypes } from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import {
 	makeStyles,
@@ -129,26 +128,53 @@ const FormEditor = ({
 		return true
 	}
 
+	const shouldUseRefetchQueries = () => {
+		return userSearchValue
+			? [
+					{
+						query: FETCH_USER_LIST,
+						variables: { query: { searchText: userSearchValue, limit: 100 } },
+						awaitRefetchQueries: true,
+					},
+			  ]
+			: []
+	}
+
+	const updateUserInfo = () => {
+		updateUser({
+			variables: { user: { id, email, name, password } },
+		})
+			.then(() => {
+				onCancel()
+			})
+			.catch(error => {
+				alert(error.message)
+				console.error(error)
+			})
+	}
+
+	const createAUser = () => {
+		createNewUser({
+			variables: { user: { email, name, password } },
+			refetchQueries: shouldUseRefetchQueries(),
+		})
+			.then(() => {
+				onCancel()
+			})
+			.catch(error => {
+				alert(error.message)
+				console.error(error)
+			})
+	}
+
 	const onSubmit = () => {
 		const isValid = validateForm()
 
 		if (isValid) {
 			if (id) {
-				updateUser({
-					variables: { user: { id, email, name, password } },
-				})
-					.then(() => {
-						onCancel()
-					})
-					.catch(error => console.error(error))
+				updateUserInfo()
 			} else {
-				createNewUser({
-					variables: { user: { email, name, password } },
-				})
-					.then(() => {
-						onCancel()
-					})
-					.catch(error => console.error(error))
+				createAUser()
 			}
 		} else {
 			alert('Not valid!!!!')
