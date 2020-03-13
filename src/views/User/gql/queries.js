@@ -50,7 +50,7 @@ const FETCH_USER_LIST = gql`
 `
 
 const GET_USER_SEARCH_TEXT = gql`
-	query userSearchValue {
+	query UserSearchValue {
 		userSearchValue @client
 	}
 `
@@ -61,6 +61,12 @@ const SET_USER_SEARCH_TEXT = gql`
 	}
 `
 
+const GET_SELECTED_USER = gql`
+	query SelectedUser {
+		selectedUser @client
+	}
+`
+
 export {
 	CREATE_USER,
 	UPDATE_USER,
@@ -68,4 +74,5 @@ export {
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
 	SET_USER_SEARCH_TEXT,
+	GET_SELECTED_USER,
 }
