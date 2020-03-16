@@ -1,6 +1,12 @@
 import React from 'react'
 import clsx from 'clsx'
-import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
+import {
+	Dialog,
+	DialogTitle,
+	DialogActions,
+	Button,
+	Slide,
+} from '@material-ui/core'
 import {
 	makeStyles,
 	createMuiTheme,
@@ -57,11 +63,20 @@ const theme = createMuiTheme({
 	},
 })
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction='up' ref={ref} {...props} />
+})
+
 const DeleteDialog = ({ open, onClose, onAgree, onDisagree }) => {
 	const classes = useStyles()
 	return (
 		<ThemeProvider theme={theme}>
-			<Dialog open={open} onClose={onClose} classes={{ paper: classes.root }}>
+			<Dialog
+				TransitionComponent={Transition}
+				open={open}
+				onClose={onClose}
+				classes={{ paper: classes.root }}
+			>
 				<DialogTitle className={clsx(classes.no_padding, classes.dialog_title)}>
 					Delete!
 				</DialogTitle>

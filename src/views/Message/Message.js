@@ -1,19 +1,18 @@
-import React from 'react'
-import {
-	Box,
-	Grid,
-	makeStyles,
-	TextField,
-	Button,
-	Typography,
-} from '@material-ui/core'
-import SearchIcon from '@material-ui/icons/Search'
-import { ListMessage } from './components'
+import React, { useState, useEffect } from 'react'
+import { Box, Grid, makeStyles } from '@material-ui/core'
+import { ListMessage, BoxCreate, BoxSearch } from './components'
+import { MESSAGE_LIST, MESSAGE_LIST_WITHOUT_FILTER } from './query'
+import { useApolloClient, useMutation, useQuery } from '@apollo/react-hooks'
+import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './mutation'
+import Loading from '../components/Loading'
 
 const useStyle = makeStyles(theme => ({
 	root: {
 		width: 'calc(100% - 80px)',
-		margin: '16px',
+		padding: theme.spacing(3),
+		position: 'relative',
+	},
+	container: {
 		border: `1px solid #979797`,
 	},
 	div: {
@@ -23,87 +22,110 @@ const useStyle = makeStyles(theme => ({
 		background: theme.palette.common.black,
 		height: '100%',
 	},
-	container: {
-		height: '100%',
-		padding: '16px',
-	},
-	icon: {
-		fontSize: '40px',
-	},
-	search: {
-		padding: '16px',
-		borderTop: `1px solid #979797`,
-	},
-	save: {
-		padding: '16px',
-	},
-	buttonSearch: {
-		color: theme.palette.common.white,
-		marginLeft: '8px',
-		width: '56px',
-		boxShadow: 'none',
-		background: theme.palette.common.gray,
-		'&:hover': {
-			background: theme.palette.common.gray,
-		},
-	},
-	textField: {
-		width: '328px',
-	},
-	buttonSave: {
-		color: theme.palette.common.white,
-		marginLeft: '8px',
-		width: '56px',
-		boxShadow: 'none',
-		textTransform: 'none',
-		background: theme.palette.common.green,
-		'&:hover': {
-			background: theme.palette.common.green,
-		},
-	},
 }))
 
 const Message = () => {
 	const classes = useStyle()
+	const client = useApolloClient()
+	const [contents, setContents] = useState({})
+
+	const [createMsg] = useMutation(CREATE_MESSAGE, {
+		onCompleted: data => {
+			const update = {
+				...contents,
+				items: [data.createMessage, ...contents.items],
+			}
+			setContents(update)
+		},
+		onError: err => {
+			alert(err)
+		},
+	})
+
+	const [deleteMsg] = useMutation(DELETE_MESSAGE, {
+		onCompleted: data => {
+			const update = {
+				...contents,
+				items: contents.items.filter(item => item.id !== data.deleteMessage.id),
+			}
+			setContents(update)
+		},
+		onError: err => {
+			alert(err)
+		},
+	})
+
+	const [updateMsg] = useMutation(UPDATE_MESSAGE, {
+		onCompleted: ({ updateMessage }) => {
+			const update = {
+				...contents,
+				items: contents.items.map(item => {
+					if (item.id === updateMessage.id)
+						return { ...item, content: updateMessage.content }
+					return item
+				}),
+			}
+			setContents(update)
+		},
+		onError: err => {
+			alert(err)
+		},
+	})
+
+	const handleSearch = async value => {
+		const result = await client.query({
+			query: MESSAGE_LIST,
+			variables: { query: { searchText: value, limit: 100 } },
+		})
+		setContents(result.data.messageList)
+	}
+
+	const handleDeleteMessage = id => {
+		deleteMsg({ variables: { id } })
+	}
+
+	const handleUpdateMessage = (id, value) => {
+		updateMsg({
+			variables: { message: { id, content: value } },
+		})
+	}
+
+	const handleCreateMessage = createVal => {
+		createMsg({
+			variables: { message: { content: createVal } },
+		})
+	}
+
+	const { loading, error, data } = useQuery(MESSAGE_LIST_WITHOUT_FILTER, {
+		fetchPolicy: 'network-only',
+	})
+	useEffect(() => {
+		if (data && data.messageList) {
+			setContents(data.messageList)
+		}
+	}, [data])
+
+	if (error) return <p>Error :(</p>
+
 	return (
 		<Box className={classes.root}>
-			<Grid container direction='column'>
-				{/* Save Message */}
-				<Grid item>
-					{' '}
-					<Grid container alignItems='stretch' className={classes.save}>
-						<TextField
-							variant='outlined'
-							label='Text'
-							placeholder='text...'
-							type='text'
-							className={classes.textField}
+			<Loading open={loading} msg={'Loading...'} />
+			<Grid container direction='column' className={classes.container}>
+				<Grid item xs>
+					<BoxCreate handleCreate={handleCreateMessage} />
+				</Grid>
+				<Grid item xs>
+					<BoxSearch handleSearch={handleSearch} />
+				</Grid>
+				{contents && contents.items && (
+					<Grid item xs>
+						<ListMessage
+							messageList={contents}
+							handleDeleteMessage={handleDeleteMessage}
+							handleUpdateMessage={handleUpdateMessage}
 						/>
-						<Button variant='contained' className={classes.buttonSave}>
-							<Typography variant='caption'>Save</Typography>
-						</Button>
 					</Grid>
-				</Grid>
-				{/* Search Message */}
-				<Grid item>
-					{' '}
-					<Grid container alignItems='stretch' className={classes.search}>
-						<TextField
-							variant='outlined'
-							label='Search'
-							placeholder='search...'
-							type='search'
-							className={classes.textField}
-						/>
-						<Button variant='contained' className={classes.buttonSearch}>
-							<SearchIcon className={classes.icon} />
-						</Button>
-					</Grid>
-				</Grid>
-				{/* View ListMessage */}
-				<Grid item>
-					<ListMessage />
-				</Grid>
+				)}
 			</Grid>
 		</Box>
 	)
