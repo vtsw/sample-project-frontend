@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "serve": "serve dist",
-    "start": "webpack-dev-server --env.mode development",
+    "start": "webpack-dev-server --env.mode production",
+    "start:development": "webpack-dev-server --env.mode development",
+    "start:production": "webpack-dev-server --env.mode production",
     "start:analyze": "webpack-dev-server --env.mode development --env.analyze",
     "build:dev": "rimraf dist && cross-env NODE_ENV=development webpack --env.mode development",
     "build:prod": "rimraf dist && cross-env NODE_ENV=production webpack --env.mode production",
