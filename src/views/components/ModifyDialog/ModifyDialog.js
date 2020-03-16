@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
 	Dialog,
 	DialogTitle,
@@ -8,6 +8,7 @@ import {
 	makeStyles,
 	TextField,
 	Typography,
+	Slide,
 } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
@@ -50,36 +51,70 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction='up' ref={ref} {...props} />
+})
+
 const ModifyDialog = props => {
-	const { open, onClose, onAgree, onDisagree } = props
+	const { open, onClose, onAgree, valueDefault = '', onDisagree } = props
 	const classes = useStyles()
+	const [value, setValue] = useState()
+
+	useEffect(() => {
+		setValue(valueDefault)
+	}, [valueDefault])
+
+	const handleUpdate = () => {
+		if (valueDefault === value) {
+			onDisagree && onDisagree()
+		} else {
+			onAgree && onAgree(value)
+		}
+	}
+
+	const handleCancel = () => {
+		onDisagree && onDisagree()
+	}
+
 	return (
-		<Dialog open={open} onClose={onClose} classes={{ paper: classes.paper }}>
+		<Dialog
+			TransitionComponent={Transition}
+			open={open}
+			onClose={onClose}
+			classes={{ paper: classes.paper }}
+		>
 			<DialogTitle>
 				<Typography className={classes.typography}>Modify!</Typography>
 			</DialogTitle>
 			<DialogContent>
 				<TextField
+					autoFocus
 					variant='outlined'
 					placeholder='placeholder'
+					defaultValue={valueDefault}
+					onChange={e => setValue(e.target.value)}
 					className={classes.textField}
+					onKeyDown={e => {
+						if (e.keyCode === 13) {
+							handleUpdate()
+						}
+						if (e.keyCode === 32) {
+							handleCancel()
+						}
+					}}
 				/>
 			</DialogContent>
 			<DialogActions>
 				<Button
 					variant='contained'
-					onClick={() => {
-						onAgree && onAgree()
-					}}
+					onClick={handleUpdate}
 					className={classes.button_confirm}
 				>
 					Yes
 				</Button>
 				<Button
 					variant='contained'
-					onClick={() => {
-						onDisagree && onDisagree()
-					}}
+					onClick={handleCancel}
 					className={classes.button_cancel}
 				>
 					No

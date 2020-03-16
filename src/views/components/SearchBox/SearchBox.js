@@ -14,7 +14,8 @@ const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		width: ({ width }) => width,
+		maxWidth: ({ width }) => width,
+		width: '100%',
 	},
 	search_btn: {
 		color: theme.palette.common.white,
