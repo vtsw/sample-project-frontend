@@ -8,7 +8,7 @@ import { Box, Button, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Search } from '@material-ui/icons'
 
-import { SET_USER_SEARCH_TEXT } from '@views/User/gql/queries'
+import { SET_USER_SEARCH_TEXT } from '@views/User/gql/query'
 
 const useStyles = makeStyles(theme => ({
 	root: {

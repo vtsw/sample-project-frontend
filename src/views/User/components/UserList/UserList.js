@@ -13,7 +13,7 @@ import {
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
 	SET_USER_SEARCH_TEXT,
-} from '@views/User/gql/queries'
+} from '@views/User/gql/query'
 
 const useStyles = makeStyles(theme => ({
 	root: {

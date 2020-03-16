@@ -11,7 +11,6 @@ import localConfigs from './configs.local'
 const typeDefs = gql`
 	extend type Query {
 		userSearchValue: String!
-		selectedUser: User!
 	}
 
 	extend type Mutation {

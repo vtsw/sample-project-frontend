@@ -18,7 +18,7 @@ import {
 	DELETE_USER,
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
-} from '@views/User/gql/queries'
+} from '@views/User/gql/query'
 import { useCreateAUser, useDeleteAUser } from './useMutations'
 
 import { getToken } from '@src/shares/utils'
