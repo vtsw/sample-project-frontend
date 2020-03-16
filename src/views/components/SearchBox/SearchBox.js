@@ -2,16 +2,13 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/react-hooks'
 
 import { Box, Button, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Search } from '@material-ui/icons'
 
-import {
-	SET_USER_SEARCH_TEXT,
-	GET_SELECTED_USER,
-} from '@views/User/gql/queries'
+import { SET_USER_SEARCH_TEXT } from '@views/User/gql/queries'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -43,7 +40,6 @@ const SearchBox = ({ width, setSelectedItem }) => {
 			setSelectedItem({ id: '', name: '', email: '' })
 		}
 	}
-	console.log('SearchBox')
 	return (
 		<Box className={classes.root}>
 			<TextField

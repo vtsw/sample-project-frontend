@@ -51,8 +51,6 @@ const UserList = ({ selectedItem, setSelectedItem }) => {
 		variables: { query: { searchText: userSearchValue, limit: 100 } },
 	})
 	const classes = useStyles()
-
-	console.log('userSearchValue')
 	return (
 		<Box className={classes.root}>
 			<Box className={clsx(classes.user_list__container, classes.full_height)}>

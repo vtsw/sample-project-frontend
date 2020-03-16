@@ -62,8 +62,18 @@ const SET_USER_SEARCH_TEXT = gql`
 `
 
 const GET_SELECTED_USER = gql`
-	query SelectedUser {
+	query GetSelectedUser {
 		selectedUser @client
+	}
+`
+
+const SET_SELECTED_USER = gql`
+	mutation SetSelectedUser($selectedUser: User!) {
+		setSelectedUser(selectedUser: $selectedUser) @client {
+			id
+			email
+			name
+		}
 	}
 `
 
@@ -75,4 +85,5 @@ export {
 	GET_USER_SEARCH_TEXT,
 	SET_USER_SEARCH_TEXT,
 	GET_SELECTED_USER,
+	SET_SELECTED_USER,
 }

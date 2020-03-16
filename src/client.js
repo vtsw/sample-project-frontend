@@ -9,11 +9,6 @@ import { getToken } from './shares/utils'
 import localConfigs from './configs.local'
 
 const typeDefs = gql`
-	type User {
-		id: ID
-		name: String
-		email: string
-	}
 	extend type Query {
 		userSearchValue: String!
 		selectedUser: User!
@@ -52,7 +47,7 @@ const authLink = setContext((_, { headers }) => {
 	}
 })
 
-const cache = new InMemoryCache()
+const cache = new InMemoryCache({ dataIdFromObject: object => object.id })
 
 const client = new ApolloClient({
 	cache,
@@ -64,9 +59,6 @@ const client = new ApolloClient({
 cache.writeData({
 	data: {
 		userSearchValue: '',
-		selectedUser: {
-			__typename: 'selectedUser',
-		},
 	},
 })
 
