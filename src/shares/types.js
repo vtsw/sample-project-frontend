@@ -1,6 +1,0 @@
-const TABLE_TYPES = {
-	USER_INFO: 'USER_INFO',
-	MESSAGE: 'MESSAGE',
-}
-
-export { TABLE_TYPES }

@@ -41,6 +41,7 @@ const FETCH_USER_LIST = gql`
 			items {
 				...UserFields
 			}
+			hasNext
 		}
 	}
 	${USER_FIELDS}

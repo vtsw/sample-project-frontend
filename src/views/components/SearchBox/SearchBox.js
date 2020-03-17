@@ -24,8 +24,8 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const SearchBox = ({ width, searchText, onSearch }) => {
-	const [searchValue, setSearchValue] = useState(searchText)
+const SearchBox = ({ width, onSearch }) => {
+	const [searchValue, setSearchValue] = useState('')
 	const classes = useStyles({ width })
 	return (
 		<Box className={classes.root}>
@@ -50,7 +50,6 @@ const SearchBox = ({ width, searchText, onSearch }) => {
 
 SearchBox.propsTypes = {
 	width: PropTypes.string,
-	searchText: PropTypes.string,
 	onSearch: PropTypes.func,
 }
 
