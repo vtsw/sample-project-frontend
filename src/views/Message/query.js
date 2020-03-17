@@ -13,18 +13,5 @@ const MESSAGE_LIST = gql`
 		}
 	}
 `
-const MESSAGE_LIST_WITHOUT_FILTER = gql`
-	query {
-		messageList(query: { limit: 100 }) {
-			items {
-				content
-				id
-				lastModified
-			}
-			hasNext
-			total
-		}
-	}
-`
 
-export { MESSAGE_LIST, MESSAGE_LIST_WITHOUT_FILTER }
+export { MESSAGE_LIST }

@@ -28,18 +28,4 @@ const MESSAGE_LIST = gql`
 	}
 `
 
-const USER_LIST_WITHOUT_FILTER = gql`
-	query {
-		userList(query: { limit: 100 }) {
-			items {
-				name
-				email
-				id
-			}
-			hasNext
-			total
-		}
-	}
-`
-
-export { USER_LIST, USER_LIST_WITHOUT_FILTER, MESSAGE_LIST }
+export { USER_LIST, MESSAGE_LIST }
