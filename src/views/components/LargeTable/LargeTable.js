@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Box, makeStyles, Grid, Typography } from '@material-ui/core'
+import { Box, Grid, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import { InfiniteScroll } from './components'
 
 const useStyles = makeStyles(theme => ({
-	root_table: {
+	root: {
 		display: 'flex',
 		flex: 1,
 		flexDirection: 'column',
@@ -31,7 +32,7 @@ const LargeTable = props => {
 	}
 
 	return (
-		<Box className={classes.root_table}>
+		<Box className={classes.root}>
 			<Grid container className={classes.table__header}>
 				{columns.map(column => (
 					<Grid item xs={column.xs} key={column.headerVariable}>
@@ -41,7 +42,7 @@ const LargeTable = props => {
 					</Grid>
 				))}
 			</Grid>
-			<Box className={classes.root_table}>
+			<Box className={classes.root}>
 				{items.length > 0 && (
 					<InfiniteScroll
 						{...props}

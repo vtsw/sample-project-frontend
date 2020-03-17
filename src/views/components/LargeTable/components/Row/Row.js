@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import CloseIcon from '@material-ui/icons/Close'
 
 const useStyles = makeStyles(theme => ({
-	root_row: ({ style, index }) => ({
+	root: ({ style, index }) => ({
 		...style,
 		backgroundColor:
 			index % 2 === 0 ? theme.palette.common.white : theme.palette.common.gray,
@@ -68,7 +68,7 @@ const Row = ({ forwardedRef, index, data, style }) => {
 		<Grid
 			container
 			className={clsx(
-				classes.root_row,
+				classes.root,
 				selectedRow.id === item.id ? classes.item__active : ''
 			)}
 			ref={forwardedRef}

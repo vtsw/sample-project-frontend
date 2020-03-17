@@ -12,7 +12,7 @@ const useStyle = makeStyles(theme => ({
 	root: {
 		width: 'calc(100% - 80px)',
 		height: '100vh',
-		padding: '24px',
+		padding: theme.spacing(3),
 		position: 'relative',
 	},
 	container: {

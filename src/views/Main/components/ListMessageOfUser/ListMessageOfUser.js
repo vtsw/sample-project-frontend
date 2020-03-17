@@ -7,7 +7,7 @@ import { MESSAGE_LIST } from '../../query'
 import { Loading } from '@views/components'
 
 const useStyles = makeStyles(theme => ({
-	message_list__container: {
+	root: {
 		border: `1px solid ${theme.palette.common.border}`,
 		marginLeft: theme.spacing(1.5),
 		position: 'relative ',
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function ListMessageOfUser({ selectedUser }) {
+const ListMessageOfUser = ({ selectedUser }) => {
 	const classes = useStyles()
 	const client = useApolloClient()
 	const [modifyDialogVisible, setModifyDialogVisible] = useState(false)
@@ -64,8 +64,8 @@ export default function ListMessageOfUser({ selectedUser }) {
 		deleteMsg({ variables: { id: selectedMessage.id } })
 	}
 
-	const onSelectAMessage = object => {
-		setSelectedMessage(object)
+	const onSelectAMessage = dataRow => {
+		setSelectedMessage(dataRow)
 		setModifyDialogVisible(true)
 	}
 
@@ -80,7 +80,6 @@ export default function ListMessageOfUser({ selectedUser }) {
 				},
 			},
 			fetchPolicy: 'network-only',
-			// pollInterval: 5000,
 		}
 	)
 
@@ -111,7 +110,7 @@ export default function ListMessageOfUser({ selectedUser }) {
 
 	return (
 		message && (
-			<Box className={classes.message_list__container}>
+			<Box className={classes.root}>
 				{/* <Loading open={loadingMsg} msg={'Loading...'} /> */}
 				<Typography variant='h5' className={classes.message_list__title}>
 					Total {message.length}
@@ -123,9 +122,9 @@ export default function ListMessageOfUser({ selectedUser }) {
 					selectedRow={selectedMessage}
 					columns={columns}
 					isIconClose={true}
-					handleDeleteRow={object => {
+					handleDeleteRow={dataRow => {
 						setDeleteDialogVisible(true)
-						setSelectedMessage(object)
+						setSelectedMessage(dataRow)
 					}}
 					loadNextPage={loadNextMesagePage}
 					hasNextPage={dataMsg.messageList && dataMsg.messageList.hasNext}
@@ -165,3 +164,5 @@ export default function ListMessageOfUser({ selectedUser }) {
 		)
 	)
 }
+
+export default ListMessageOfUser
