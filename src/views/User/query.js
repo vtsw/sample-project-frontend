@@ -59,6 +59,26 @@ const SET_USER_SEARCH_TEXT = gql`
 	}
 `
 
+const GET_SELECTED_USER = gql`
+	query GetSelectedUser {
+		selectedUser @client {
+			id
+			name
+			email
+		}
+	}
+`
+
+const SET_SELECTED_USER = gql`
+	mutation SetSelectedUser {
+		setSelectedUser @client {
+			id
+			name
+			email
+		}
+	}
+`
+
 export {
 	CREATE_USER,
 	UPDATE_USER,
@@ -66,4 +86,6 @@ export {
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
 	SET_USER_SEARCH_TEXT,
+	GET_SELECTED_USER,
+	SET_SELECTED_USER,
 }

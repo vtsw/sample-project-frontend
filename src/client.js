@@ -8,13 +8,21 @@ import gql from 'graphql-tag'
 import { getToken } from './shares/utils'
 import localConfigs from './configs.local'
 
+import { GET_SELECTED_USER } from '@views/User/query'
+
 const typeDefs = gql`
+	type User {
+		id: ID
+		name: String
+		email: String
+	}
 	extend type Query {
 		userSearchValue: String!
 	}
 
 	extend type Mutation {
 		setUserSearchValue(searchValue: String!): String!
+		setSelectedUser(selectedUser: User): String
 	}
 `
 
@@ -27,6 +35,15 @@ const resolvers = {
 				},
 			})
 			return searchValue
+		},
+		setSelectedUser: (_, data, { cache }) => {
+			console.log('setSelectedUser client.js', data)
+			// cache.writeData({
+			// 	data: {
+			// 		userSearchValue: searchValue,
+			// 	},
+			// })
+			return 'searchValue'
 		},
 	},
 }
@@ -58,6 +75,12 @@ const client = new ApolloClient({
 cache.writeData({
 	data: {
 		userSearchValue: '',
+		selectedUser: {
+			id: 'Lebron',
+			name: 'James',
+			email: 'James',
+			__typename: 'User',
+		},
 	},
 })
 

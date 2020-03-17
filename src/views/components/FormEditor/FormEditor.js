@@ -18,6 +18,8 @@ import {
 	DELETE_USER,
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
+	GET_SELECTED_USER,
+	SET_SELECTED_USER,
 } from '@views/User/query'
 import { useCreateAUser, useDeleteAUser } from './useMutations'
 
@@ -90,6 +92,10 @@ const FormEditor = ({
 	const {
 		data: { userSearchValue },
 	} = useQuery(GET_USER_SEARCH_TEXT)
+	const { data } = useQuery(GET_SELECTED_USER)
+	const [setSelectedUser] = useMutation(SET_SELECTED_USER)
+
+	console.log('selectedUser', data)
 
 	const [createNewUser] = useCreateAUser(
 		CREATE_USER,
@@ -109,6 +115,16 @@ const FormEditor = ({
 	const classes = useStyles()
 
 	const onCancel = () => {
+		setSelectedUser({
+			variables: {
+				selectedUser: {
+					id: 'asdas',
+					name: 'dai',
+					email: 'nvdai@gmail.com',
+					__typename: 'User',
+				},
+			},
+		})
 		if (!isAuthenticated) {
 			history.push('/sign-in')
 			return
