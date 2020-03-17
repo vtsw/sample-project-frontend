@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import teal from '@material-ui/core/colors/teal'
 
+import { deleteToken } from '@src/shares/utils'
+
 const useStyles = makeStyles(theme => ({
 	root: {
 		position: 'relative',
@@ -65,7 +67,10 @@ const NavBar = ({ location, history }) => {
 			</li>
 			<li
 				className={classes.tab}
-				onClick={() => handleOnChangePage('/sign-in')}
+				onClick={() => {
+					deleteToken()
+					handleOnChangePage('/sign-in')
+				}}
 			>
 				Logout
 			</li>

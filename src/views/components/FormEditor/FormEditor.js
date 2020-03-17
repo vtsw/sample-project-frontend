@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { PropTypes } from 'prop-types'
 import { withRouter } from 'react-router-dom'
-import { useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import {
 	makeStyles,
@@ -13,54 +12,16 @@ import teal from '@material-ui/core/colors/teal'
 
 import { DeleteDialog } from '@views_components'
 
-const USER_FIELDS = gql`
-	fragment UserFields on User {
-		id
-		name
-		email
-	}
-`
+import {
+	CREATE_USER,
+	UPDATE_USER,
+	DELETE_USER,
+	FETCH_USER_LIST,
+	GET_USER_SEARCH_TEXT,
+} from '@views/User/gql/query'
+import { useCreateAUser, useDeleteAUser } from './useMutations'
 
-const CREATE_USER = gql`
-	mutation CreateUser($user: CreateUserInput!) {
-		createUser(user: $user) {
-			...UserFields
-		}
-	}
-	${USER_FIELDS}
-`
-
-const UPDATE_USER = gql`
-	mutation UpdateUser($user: UpdateUserInput!) {
-		updateUser(user: $user) {
-			...UserFields
-		}
-	}
-	${USER_FIELDS}
-`
-
-const DELETE_USER = gql`
-	mutation DeleteUser($id: ID!) {
-		deleteUser(id: $id) {
-			...UserFields
-		}
-	}
-	${USER_FIELDS}
-`
-
-const FETCH_USER_LIST = gql`
-	query FetchUserList($query: UserListInput) {
-		userList(query: $query) {
-			items {
-				name
-				email
-				id
-			}
-			hasNext
-			total
-		}
-	}
-`
+import { getToken } from '@src/shares/utils'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -125,77 +86,30 @@ const FormEditor = ({
 	setSelectedItem,
 	history,
 }) => {
-	const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false)
+	const isAuthenticated = getToken()
+	const {
+		data: { userSearchValue },
+	} = useQuery(GET_USER_SEARCH_TEXT)
 
-	const [createNewUser] = useMutation(CREATE_USER, {
-		update(cache, { data: { createUser } }) {
-			const { userList } = cache.readQuery({
-				query: FETCH_USER_LIST,
-				variables: { query: { searchText: '', limit: 100 } },
-			})
-			cache.writeQuery({
-				query: FETCH_USER_LIST,
-				variables: { query: { searchText: '', limit: 100 } },
-				data: {
-					userList: { ...userList, items: [createUser, ...userList.items] },
-				},
-			})
+	const [createNewUser] = useCreateAUser(
+		CREATE_USER,
+		FETCH_USER_LIST,
+		{
+			query: { searchText: userSearchValue, limit: 100 },
 		},
+		isAuthenticated
+	)
+	const [updateUser] = useMutation(UPDATE_USER)
+	const [deleteUser] = useDeleteAUser(DELETE_USER, FETCH_USER_LIST, {
+		query: { searchText: userSearchValue, limit: 100 },
 	})
-	const [updateUser] = useMutation(UPDATE_USER, {
-		update(cache, { data: { updateUser } }) {
-			const { userList } = cache.readQuery({
-				query: FETCH_USER_LIST,
-				variables: { query: { searchText: '', limit: 100 } },
-			})
-			const newItemIndex = userList.items.findIndex(
-				item => item.id === updateUser.id
-			)
-			if (newItemIndex !== -1) {
-				userList.items[newItemIndex] = updateUser
-				cache.writeQuery({
-					query: FETCH_USER_LIST,
-					variables: { query: { searchText: '', limit: 100 } },
-					data: {
-						userList: { ...userList, items: userList.items },
-					},
-				})
-			}
-		},
-	})
-	const [deleteUser] = useMutation(DELETE_USER, {
-		update(cache, { data: { deleteUser } }) {
-			const { userList } = cache.readQuery({
-				query: FETCH_USER_LIST,
-				variables: { query: { searchText: '', limit: 100 } },
-			})
-			const deleteItemIndex = userList.items.findIndex(
-				item => item.id === deleteUser.id
-			)
-			console.log(deleteItemIndex, deleteUser)
-			if (deleteItemIndex !== -1) {
-				userList.items.splice(deleteItemIndex, 1)
-				console.log(userList)
-				cache.writeQuery({
-					query: FETCH_USER_LIST,
-					variables: { query: { searchText: '', limit: 100 } },
-					data: {
-						userList: { ...userList, items: [...userList.items] },
-					},
-				})
-			}
-			const afterData = cache.readQuery({
-				query: FETCH_USER_LIST,
-				variables: { query: { searchText: '', limit: 100 } },
-			})
-			console.log('afterData', afterData)
-		},
-	})
+
+	const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false)
 
 	const classes = useStyles()
 
 	const onCancel = () => {
-		if (!name && !email) {
+		if (!isAuthenticated) {
 			history.push('/sign-in')
 			return
 		}
@@ -207,7 +121,6 @@ const FormEditor = ({
 	const validateForm = () => {
 		const emailRegex = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/gm
 		const isValidEmail = email.match(emailRegex)
-		console.log(isValidEmail)
 
 		if (isValidEmail === null || password !== confirmPassword) {
 			return false
@@ -215,28 +128,53 @@ const FormEditor = ({
 		return true
 	}
 
+	const shouldUseRefetchQueries = () => {
+		return userSearchValue
+			? [
+					{
+						query: FETCH_USER_LIST,
+						variables: { query: { searchText: userSearchValue, limit: 100 } },
+						awaitRefetchQueries: true,
+					},
+			  ]
+			: []
+	}
+
+	const updateUserInfo = () => {
+		updateUser({
+			variables: { user: { id, email, name, password } },
+		})
+			.then(() => {
+				onCancel()
+			})
+			.catch(error => {
+				alert(error.message)
+				console.error(error)
+			})
+	}
+
+	const createAUser = () => {
+		createNewUser({
+			variables: { user: { email, name, password } },
+			refetchQueries: shouldUseRefetchQueries(),
+		})
+			.then(() => {
+				onCancel()
+			})
+			.catch(error => {
+				alert(error.message)
+				console.error(error)
+			})
+	}
+
 	const onSubmit = () => {
 		const isValid = validateForm()
 
 		if (isValid) {
 			if (id) {
-				updateUser({
-					variables: { user: { id, email, name, password } },
-				})
-					.then(data => {
-						console.log(data)
-						onCancel()
-					})
-					.catch(error => console.error(error))
+				updateUserInfo()
 			} else {
-				createNewUser({
-					variables: { user: { email, name, password } },
-				})
-					.then(data => {
-						console.log(data)
-						onCancel()
-					})
-					.catch(error => console.error(error))
+				createAUser()
 			}
 		} else {
 			alert('Not valid!!!!')
@@ -245,18 +183,18 @@ const FormEditor = ({
 
 	const onAgreeDeleteAnUser = () => {
 		deleteUser({ variables: { id } })
-			.then(data => {
-				console.log(data)
+			.then(() => {
+				setSelectedItem({ id: '', name: '', email: '' })
+				setOpenConfirmDeleteDialog(false)
 			})
 			.catch(error => console.error(error))
-		setOpenConfirmDeleteDialog(false)
 	}
 
 	return (
 		<ThemeProvider theme={theme}>
 			<Box className={classes.root}>
 				<Typography variant='h5' className={classes.form_title}>
-					{selectedItem.id ? 'Modify' : 'Sign up'}
+					{selectedItem && selectedItem.id ? 'Modify' : 'Sign up'}
 				</Typography>
 				<div className={classes.form_content}>
 					<TextField
@@ -304,9 +242,9 @@ const FormEditor = ({
 						className={classes.form_button}
 						onClick={onSubmit}
 					>
-						{selectedItem.id ? 'Save' : 'Register'}
+						{selectedItem && selectedItem.id ? 'Save' : 'Register'}
 					</Button>
-					{selectedItem.id ? (
+					{selectedItem && selectedItem.id ? (
 						<Button
 							variant='contained'
 							size='large'

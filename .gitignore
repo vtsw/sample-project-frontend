@@ -1,3 +1,7 @@
+# User specific
+.idea
+.vscode
+
 # dependencies
 /node_modules
 /.pnp

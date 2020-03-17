@@ -32,8 +32,14 @@ class App extends React.Component {
 
 	onRouteChanged() {
 		const authToken = getToken()
-		if (!authToken && this.props.location.pathname !== '/sign-in') {
-			this.props.history.push('/sign-in')
+		const { location, history } = this.props
+
+		if (!authToken && location.pathname === '/sign-up') {
+			return
+		}
+
+		if (!authToken && location.pathname !== '/sign-in') {
+			history.push('/sign-in')
 			return
 		}
 	}

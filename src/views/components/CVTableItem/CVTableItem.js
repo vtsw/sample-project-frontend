@@ -36,12 +36,19 @@ const useStyles = makeStyles(theme => ({
 	item_bold: {
 		fontWeight: 700,
 	},
+	text_overflow: {
+		width: '100%',
+		textOverflow: 'ellipsis',
+		overflow: 'hidden',
+	},
 }))
 
 const CVTableItem = ({
 	id,
 	email,
 	name,
+	lastModified,
+	content,
 	hasCloseIcon,
 	selectedItem,
 	setSelectedItem,
@@ -56,7 +63,9 @@ const CVTableItem = ({
 				classes.root,
 				selectedItem.id === id ? classes.item__active : ''
 			)}
-			onClick={() => setSelectedItem({ id, email, name })}
+			onClick={() =>
+				setSelectedItem({ id, email, name, lastModified, content })
+			}
 		>
 			<Grid item xs={5}>
 				<Box className={classes.item__left__container}>
@@ -65,21 +74,28 @@ const CVTableItem = ({
 							className={classes.item__close_icon}
 							onClick={e => {
 								e.stopPropagation()
-								setDeleteDialogVisible(true)
+								setDeleteDialogVisible(true, { id, email, name })
 							}}
 						/>
 					) : null}
 					<Typography
 						variant='body2'
-						className={clsx(classes.item__left, classes.item_bold)}
+						className={clsx(
+							classes.item__left,
+							classes.item_bold,
+							classes.text_overflow
+						)}
 					>
-						{email}
+						{email || lastModified}
 					</Typography>
 				</Box>
 			</Grid>
 			<Grid item xs={7}>
-				<Typography variant='body2' className={classes.item_bold}>
-					{name}
+				<Typography
+					variant='body2'
+					className={clsx(classes.item_bold, classes.text_overflow)}
+				>
+					{name || content}
 				</Typography>
 			</Grid>
 		</Grid>
@@ -91,7 +107,7 @@ CVTableItem.propsTypes = {
 	email: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
 	hasCloseIcon: PropTypes.bool,
-	selectedItem: PropTypes.object,
+	selectedItem: PropTypes.bool,
 	setSelectedItem: PropTypes.func,
 	setDeleteDialogVisible: PropTypes.func,
 }
