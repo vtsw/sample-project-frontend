@@ -1,6 +1,6 @@
 # User specific
-.idea
-.vscode
+/.idea
+/.vscode
 
 # dependencies
 /node_modules
