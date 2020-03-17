@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState } from 'react'
 import { PropTypes } from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/react-hooks'
@@ -18,7 +18,7 @@ import {
 	DELETE_USER,
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
-} from '@views/User/gql/query'
+} from '@views/User/query'
 import { useCreateAUser, useDeleteAUser } from './useMutations'
 
 import { getToken } from '@src/shares/utils'

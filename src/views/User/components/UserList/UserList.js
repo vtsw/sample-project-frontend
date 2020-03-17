@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -12,7 +12,7 @@ import {
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
 	SET_USER_SEARCH_TEXT,
-} from '@views/User/gql/query'
+} from '@views/User/query'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -51,12 +51,11 @@ const TABLE_HEADER = [
 ]
 
 const UserList = ({ selectedItem, setSelectedItem }) => {
-	const client = useApolloClient()
 	const {
 		data: { userSearchValue },
 	} = useQuery(GET_USER_SEARCH_TEXT)
 
-	const { loading, _, data } = useQuery(FETCH_USER_LIST, {
+	const { loading, _, data, fetchMore } = useQuery(FETCH_USER_LIST, {
 		variables: { query: { searchText: userSearchValue, limit: 20 } },
 	})
 	const [setUserSearchValue] = useMutation(SET_USER_SEARCH_TEXT)
@@ -65,42 +64,27 @@ const UserList = ({ selectedItem, setSelectedItem }) => {
 		setSelectedItem({ id: '', name: '', email: '' })
 	}
 
-	const fetchUserList = async variables => {
-		const { data } = await client.query({
-			query: FETCH_USER_LIST,
-			variables,
-		})
-		return data.userList
-	}
-
-	const updateUserListInCache = ({ items, hasNext, ...otherProps }) => {
-		const { userList } = client.readQuery({
-			query: FETCH_USER_LIST,
-			variables: { query: { searchText: userSearchValue, limit: 20 } },
-		})
-		client.writeQuery({
-			query: FETCH_USER_LIST,
-			variables: { query: { searchText: userSearchValue, limit: 20 } },
-			data: {
-				userList: {
-					...userList,
-					items: [...userList.items, ...items],
-					hasNext,
-					...otherProps,
-				},
-			},
-		})
-	}
-
 	const loadNextUserPage = async () => {
-		const { items, hasNext } = await fetchUserList({
-			query: {
-				searchText: userSearchValue,
-				limit: 10,
-				skip: data.userList.items.length,
+		fetchMore({
+			variables: {
+				query: { skip: data.userList.items.length },
+			},
+			updateQuery: (prev, { fetchMoreResult }) => {
+				if (!fetchMoreResult) return prev
+				const fetchedUserList = fetchMoreResult.userList
+				let cacheUserList = prev.userList
+				const items = [...cacheUserList.items, ...fetchedUserList.items]
+				const hasNext = fetchedUserList.hasNext
+
+				return {
+					userList: {
+						...cacheUserList,
+						items,
+						hasNext,
+					},
+				}
 			},
 		})
-		updateUserListInCache({ items, hasNext, boole: true })
 	}
 
 	const classes = useStyles()
