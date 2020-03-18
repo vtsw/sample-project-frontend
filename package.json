@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "serve": "serve dist",
-    "start": "webpack-dev-server --env.mode production",
-    "start:development": "webpack-dev-server --env.mode development",
+    "start": "node_modules/.bin/webpack-dev-server --host 0.0.0.0 --env.mode production",
+    "start:development": "node_modules/.bin/webpack-dev-server --host 0.0.0.0 --env.mode development",
     "start:production": "webpack-dev-server --env.mode production",
     "start:analyze": "webpack-dev-server --env.mode development --env.analyze",
     "build": "./node_modules/.bin/cross-env NODE_ENV=development ./node_modules/.bin/webpack --env.mode development",
