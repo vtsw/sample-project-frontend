@@ -3,20 +3,10 @@ import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
 
-import gql from 'graphql-tag'
-
 import { getToken } from './shares/utils'
 import localConfigs from './configs.local'
 
-const typeDefs = gql`
-	extend type Query {
-		userSearchValue: String!
-	}
-
-	extend type Mutation {
-		setUserSearchValue(searchValue: String!): String!
-	}
-`
+const typeDefs = {}
 
 const resolvers = {
 	Mutation: {
@@ -27,6 +17,14 @@ const resolvers = {
 				},
 			})
 			return searchValue
+		},
+		setSelectedUser: (_, { selectedUser }, { cache }) => {
+			cache.writeData({
+				data: {
+					selectedUser,
+				},
+			})
+			return selectedUser
 		},
 	},
 }
@@ -46,7 +44,7 @@ const authLink = setContext((_, { headers }) => {
 	}
 })
 
-const cache = new InMemoryCache({ dataIdFromObject: object => object.id })
+const cache = new InMemoryCache()
 
 const client = new ApolloClient({
 	cache,
@@ -58,6 +56,12 @@ const client = new ApolloClient({
 cache.writeData({
 	data: {
 		userSearchValue: '',
+		selectedUser: {
+			id: '',
+			name: '',
+			email: '',
+			__typename: 'User',
+		},
 	},
 })
 
