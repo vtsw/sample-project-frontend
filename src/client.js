@@ -7,22 +7,7 @@ import gql from 'graphql-tag'
 import { getToken } from './shares/utils'
 import localConfigs from './configs.local'
 
-const typeDefs = gql`
-	# type User {
-	# 	id: ID
-	# 	name: String
-	# 	email: String
-	# }
-
-	extend type Query {
-		userSearchValue: String!
-	}
-
-	extend type Mutation {
-		setUserSearchValue(searchValue: String!): String!
-		setSelectedUser(selectedUser: User!): User!
-	}
-`
+const typeDefs = {}
 
 const resolvers = {
 	Mutation: {
@@ -60,7 +45,7 @@ const authLink = setContext((_, { headers }) => {
 	}
 })
 
-const cache = new InMemoryCache({ dataIdFromObject: object => object.id })
+const cache = new InMemoryCache()
 
 const client = new ApolloClient({
 	cache,
