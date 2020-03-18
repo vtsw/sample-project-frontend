@@ -156,8 +156,10 @@ const FormEditor = ({ history }) => {
 	}
 
 	const updateUserInfo = () => {
+		let userInfo = { id: userId, email, name }
+		if (password) userInfo = { ...userInfo, password }
 		updateUser({
-			variables: { user: { id: userId, email, name, password } },
+			variables: { user: userInfo },
 		})
 			.then(() => {
 				onCancel()
