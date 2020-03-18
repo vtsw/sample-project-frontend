@@ -4,8 +4,7 @@ COPY . .
 RUN yarn
 RUN yarn run build
 
-FROM mhart/alpine-node
-RUN yarn global add serve
+FROM mhart/alpine-node:11
 WORKDIR /app
-COPY --from=builder /app/dist .
-CMD ["serve", "-p", "80", "-s", "."]
+RUN yarn global add serve
+COPY --from=builder /app/dist/ .

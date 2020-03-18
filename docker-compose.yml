@@ -1,0 +1,15 @@
+version: "3"
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: frontend
+    ports:
+    - "3000:80"
+    networks:
+      - localnetwork
+    command: serve -p 80 -s .
+networks:
+  localnetwork:
+    external: true
