@@ -45,19 +45,8 @@ const useStyles = makeStyles(theme => ({
 
 const User = () => {
 	const [dialogVisible, setDialogVisible] = useState(true)
-	const [selectedItem, setSelectedItem] = useState('')
-	const [email, setEmail] = useState('')
-	const [name, setName] = useState('')
-	const [password, setPassword] = useState('')
-	const [confirmPassword, setConfirmPassword] = useState('')
 
 	const classes = useStyles()
-
-	const onSelectTableItem = ({ id, email, name }) => {
-		setSelectedItem({ id, email, name })
-		setName(name)
-		setEmail(email)
-	}
 
 	return (
 		<Box className={classes.root}>
@@ -69,29 +58,14 @@ const User = () => {
 					<Box
 						className={clsx(classes.sign_up__container, classes.full_height)}
 					>
-						{dialogVisible && !selectedItem ? (
+						{dialogVisible ? (
 							<WelcomeDialog setDialogVisible={setDialogVisible} />
 						) : null}
-						<FormEditor
-							id={selectedItem.id}
-							name={name}
-							email={email}
-							password={password}
-							confirmPassword={confirmPassword}
-							setName={setName}
-							setEmail={setEmail}
-							setPassword={setPassword}
-							setConfirmPassword={setConfirmPassword}
-							selectedItem={selectedItem}
-							setSelectedItem={onSelectTableItem}
-						/>
+						<FormEditor />
 					</Box>
 				</Grid>
 				<Grid item xs={8}>
-					<UserList
-						selectedItem={selectedItem}
-						setSelectedItem={onSelectTableItem}
-					/>
+					<UserList setDialogVisible={setDialogVisible} />
 				</Grid>
 			</Grid>
 		</Box>

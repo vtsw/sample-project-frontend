@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
+import React from 'react'
+import PropTypes from 'prop-types'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -12,7 +12,10 @@ import {
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
 	SET_USER_SEARCH_TEXT,
-} from '@views/User/gql/query'
+	GET_SELECTED_USER,
+	SET_SELECTED_USER,
+} from '@views/User/query'
+import localConfigs from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -50,57 +53,67 @@ const TABLE_HEADER = [
 	{ headerLabel: 'NAME', xs: 7, headerVariable: 'name' },
 ]
 
-const UserList = ({ selectedItem, setSelectedItem }) => {
-	const client = useApolloClient()
+const UserList = ({ setDialogVisible }) => {
 	const {
 		data: { userSearchValue },
 	} = useQuery(GET_USER_SEARCH_TEXT)
 
-	const { loading, _, data } = useQuery(FETCH_USER_LIST, {
-		variables: { query: { searchText: userSearchValue, limit: 20 } },
+	const { loading, _, data, fetchMore } = useQuery(FETCH_USER_LIST, {
+		variables: {
+			query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
+		},
 	})
+	const {
+		data: { selectedUser },
+	} = useQuery(GET_SELECTED_USER)
+
 	const [setUserSearchValue] = useMutation(SET_USER_SEARCH_TEXT)
+	const [setSelectedUser] = useMutation(SET_SELECTED_USER)
+
 	const handleOnSearch = searchValue => {
 		setUserSearchValue({ variables: { searchValue } })
-		setSelectedItem({ id: '', name: '', email: '' })
-	}
-
-	const fetchUserList = async variables => {
-		const { data } = await client.query({
-			query: FETCH_USER_LIST,
-			variables,
-		})
-		return data.userList
-	}
-
-	const updateUserListInCache = ({ items, hasNext, ...otherProps }) => {
-		const { userList } = client.readQuery({
-			query: FETCH_USER_LIST,
-			variables: { query: { searchText: userSearchValue, limit: 20 } },
-		})
-		client.writeQuery({
-			query: FETCH_USER_LIST,
-			variables: { query: { searchText: userSearchValue, limit: 20 } },
-			data: {
-				userList: {
-					...userList,
-					items: [...userList.items, ...items],
-					hasNext,
-					...otherProps,
+		setSelectedUser({
+			variables: {
+				selectedUser: {
+					id: selectedUser.id + '_reset',
+					name: '',
+					email: '',
+					__typename: 'User',
 				},
 			},
 		})
 	}
 
 	const loadNextUserPage = async () => {
-		const { items, hasNext } = await fetchUserList({
-			query: {
-				searchText: userSearchValue,
-				limit: 10,
-				skip: data.userList.items.length,
+		fetchMore({
+			variables: {
+				query: { skip: data.userList.items.length },
+			},
+			updateQuery: (prev, { fetchMoreResult }) => {
+				if (!fetchMoreResult) return prev
+				const fetchedUserList = fetchMoreResult.userList
+				let cacheUserList = prev.userList
+				const items = [...cacheUserList.items, ...fetchedUserList.items]
+				const hasNext = fetchedUserList.hasNext
+
+				return {
+					userList: {
+						...cacheUserList,
+						items,
+						hasNext,
+					},
+				}
 			},
 		})
-		updateUserListInCache({ items, hasNext, boole: true })
+	}
+
+	const selectAnUser = selectedUser => {
+		setSelectedUser({
+			variables: {
+				selectedUser,
+			},
+		})
+		setDialogVisible(false)
 	}
 
 	const classes = useStyles()
@@ -117,8 +130,8 @@ const UserList = ({ selectedItem, setSelectedItem }) => {
 					{!loading ? (
 						<LargeTable
 							items={data.userList.items}
-							onClickRow={setSelectedItem}
-							selectedRow={selectedItem}
+							onClickRow={selectAnUser}
+							selectedRow={selectedUser}
 							columns={TABLE_HEADER}
 							isIconClose={false}
 							loadNextPage={loadNextUserPage}
@@ -133,6 +146,8 @@ const UserList = ({ selectedItem, setSelectedItem }) => {
 	)
 }
 
-UserList.propsTypes = {}
+UserList.propsTypes = {
+	setDialogVisible: PropTypes.func,
+}
 
 export default UserList

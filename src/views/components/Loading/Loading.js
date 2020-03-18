@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
 	root: {
 		height: '100%',
 		width: '100%',
@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 		opacity: 0.9,
 		zIndex: 1000,
 	},
-}))
+})
 export default function Loading({ open, msg }) {
 	const classes = useStyles()
 	return open && <div className={classes.root}>{msg}</div>
