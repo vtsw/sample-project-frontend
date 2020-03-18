@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+/* eslint-disable no-mixed-spaces-and-tabs */
+import React, { useState, useEffect } from 'react'
 import { PropTypes } from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/react-hooks'
@@ -24,6 +25,7 @@ import {
 import { useCreateAUser, useDeleteAUser } from './useMutations'
 
 import { getToken } from '@src/shares/utils'
+import localConfigs from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -74,62 +76,59 @@ const theme = createMuiTheme({
 	},
 })
 
-const FormEditor = ({
-	id,
-	name,
-	email,
-	password,
-	confirmPassword,
-	setName,
-	setEmail,
-	setPassword,
-	setConfirmPassword,
-	selectedItem,
-	setSelectedItem,
-	history,
-}) => {
+const FormEditor = ({ history }) => {
 	const isAuthenticated = getToken()
+
 	const {
 		data: { userSearchValue },
 	} = useQuery(GET_USER_SEARCH_TEXT)
-	const { data } = useQuery(GET_SELECTED_USER)
+	const {
+		data: { selectedUser },
+	} = useQuery(GET_SELECTED_USER)
 	const [setSelectedUser] = useMutation(SET_SELECTED_USER)
-
-	console.log('selectedUser', data)
-
+	const [updateUser] = useMutation(UPDATE_USER)
 	const [createNewUser] = useCreateAUser(
 		CREATE_USER,
 		FETCH_USER_LIST,
 		{
-			query: { searchText: userSearchValue, limit: 100 },
+			query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
 		},
 		isAuthenticated
 	)
-	const [updateUser] = useMutation(UPDATE_USER)
 	const [deleteUser] = useDeleteAUser(DELETE_USER, FETCH_USER_LIST, {
-		query: { searchText: userSearchValue, limit: 100 },
+		query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
 	})
 
+	const [userId, setUserId] = useState('')
+	const [email, setEmail] = useState('')
+	const [name, setName] = useState('')
+	const [password, setPassword] = useState('')
+	const [confirmPassword, setConfirmPassword] = useState('')
 	const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false)
+
+	useEffect(() => {
+		setUserId(selectedUser.id)
+		setEmail(selectedUser.email)
+		setName(selectedUser.name)
+	}, [selectedUser])
 
 	const classes = useStyles()
 
 	const onCancel = () => {
-		setSelectedUser({
-			variables: {
-				selectedUser: {
-					id: 'asdas',
-					name: 'dai',
-					email: 'nvdai@gmail.com',
-					__typename: 'User',
-				},
-			},
-		})
 		if (!isAuthenticated) {
 			history.push('/sign-in')
 			return
 		}
-		setSelectedItem({ id: '', name: '', email: '' })
+		setSelectedUser({
+			variables: {
+				selectedUser: {
+					id: userId + '_reset',
+					name: '',
+					email: '',
+					__typename: 'User',
+				},
+			},
+		})
 		setPassword('')
 		setConfirmPassword('')
 	}
@@ -149,7 +148,9 @@ const FormEditor = ({
 			? [
 					{
 						query: FETCH_USER_LIST,
-						variables: { query: { searchText: userSearchValue, limit: 100 } },
+						variables: {
+							query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
+						},
 						awaitRefetchQueries: true,
 					},
 			  ]
@@ -158,7 +159,7 @@ const FormEditor = ({
 
 	const updateUserInfo = () => {
 		updateUser({
-			variables: { user: { id, email, name, password } },
+			variables: { user: { id: userId, email, name, password } },
 		})
 			.then(() => {
 				onCancel()
@@ -187,7 +188,7 @@ const FormEditor = ({
 		const isValid = validateForm()
 
 		if (isValid) {
-			if (id) {
+			if (selectedUser.id && selectedUser.name && selectedUser.email) {
 				updateUserInfo()
 			} else {
 				createAUser()
@@ -198,9 +199,18 @@ const FormEditor = ({
 	}
 
 	const onAgreeDeleteAnUser = () => {
-		deleteUser({ variables: { id } })
+		deleteUser({ variables: { id: userId } })
 			.then(() => {
-				setSelectedItem({ id: '', name: '', email: '' })
+				setSelectedUser({
+					variables: {
+						selectedUser: {
+							id: userId + '_reset',
+							name: '',
+							email: '',
+							__typename: 'User',
+						},
+					},
+				})
 				setOpenConfirmDeleteDialog(false)
 			})
 			.catch(error => console.error(error))
@@ -210,7 +220,9 @@ const FormEditor = ({
 		<ThemeProvider theme={theme}>
 			<Box className={classes.root}>
 				<Typography variant='h5' className={classes.form_title}>
-					{selectedItem && selectedItem.id ? 'Modify' : 'Sign up'}
+					{selectedUser.id && selectedUser.name && selectedUser.email
+						? 'Modify'
+						: 'Sign up'}
 				</Typography>
 				<div className={classes.form_content}>
 					<TextField
@@ -258,9 +270,11 @@ const FormEditor = ({
 						className={classes.form_button}
 						onClick={onSubmit}
 					>
-						{selectedItem && selectedItem.id ? 'Save' : 'Register'}
+						{selectedUser.id && selectedUser.name && selectedUser.email
+							? 'Save'
+							: 'Register'}
 					</Button>
-					{selectedItem && selectedItem.id ? (
+					{selectedUser.id && selectedUser.name && selectedUser.email ? (
 						<Button
 							variant='contained'
 							size='large'
@@ -299,16 +313,7 @@ const FormEditor = ({
 }
 
 FormEditor.propsTypes = {
-	name: PropTypes.string,
-	email: PropTypes.string,
-	password: PropTypes.string,
-	confirmPassword: PropTypes.string,
 	selectedItem: PropTypes.object,
-	setName: PropTypes.func,
-	setEmail: PropTypes.func,
-	setPassword: PropTypes.func,
-	setConfirmPassword: PropTypes.func,
-	setSelectedItem: PropTypes.func,
 }
 
 export default withRouter(FormEditor)

@@ -1,6 +1,6 @@
+const dotenv = require('dotenv').config({ path: __dirname + '/.env' })
 const { resolve } = require('path')
 const webpack = require('webpack')
-
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
@@ -24,6 +24,9 @@ module.exports = ({ mode, analyze }) => {
 		}),
 		new webpack.ProgressPlugin((percentage, message, ...args) => {
 			console.log(`${(percentage * 100).toFixed()}% ${message}`, ...args)
+		}),
+		new webpack.DefinePlugin({
+			'process.env': JSON.stringify(dotenv.parsed),
 		}),
 		new CleanWebpackPlugin(),
 	]

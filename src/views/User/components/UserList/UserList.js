@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
@@ -12,7 +12,10 @@ import {
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
 	SET_USER_SEARCH_TEXT,
+	GET_SELECTED_USER,
+	SET_SELECTED_USER,
 } from '@views/User/query'
+import localConfigs from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -50,18 +53,35 @@ const TABLE_HEADER = [
 	{ headerLabel: 'NAME', xs: 7, headerVariable: 'name' },
 ]
 
-const UserList = ({ selectedItem, setSelectedItem }) => {
+const UserList = ({ setDialogVisible }) => {
 	const {
 		data: { userSearchValue },
 	} = useQuery(GET_USER_SEARCH_TEXT)
 
 	const { loading, _, data, fetchMore } = useQuery(FETCH_USER_LIST, {
-		variables: { query: { searchText: userSearchValue, limit: 20 } },
+		variables: {
+			query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
+		},
 	})
+	const {
+		data: { selectedUser },
+	} = useQuery(GET_SELECTED_USER)
+
 	const [setUserSearchValue] = useMutation(SET_USER_SEARCH_TEXT)
+	const [setSelectedUser] = useMutation(SET_SELECTED_USER)
+
 	const handleOnSearch = searchValue => {
 		setUserSearchValue({ variables: { searchValue } })
-		setSelectedItem({ id: '', name: '', email: '' })
+		setSelectedUser({
+			variables: {
+				selectedUser: {
+					id: selectedUser.id + '_reset',
+					name: '',
+					email: '',
+					__typename: 'User',
+				},
+			},
+		})
 	}
 
 	const loadNextUserPage = async () => {
@@ -87,6 +107,15 @@ const UserList = ({ selectedItem, setSelectedItem }) => {
 		})
 	}
 
+	const onSelectAnUser = selectedUser => {
+		setSelectedUser({
+			variables: {
+				selectedUser,
+			},
+		})
+		setDialogVisible(false)
+	}
+
 	const classes = useStyles()
 	return (
 		<Box className={classes.root}>
@@ -101,8 +130,8 @@ const UserList = ({ selectedItem, setSelectedItem }) => {
 					{!loading ? (
 						<LargeTable
 							items={data.userList.items}
-							onClickRow={setSelectedItem}
-							selectedRow={selectedItem}
+							onClickRow={onSelectAnUser}
+							selectedRow={selectedUser}
 							columns={TABLE_HEADER}
 							isIconClose={false}
 							loadNextPage={loadNextUserPage}

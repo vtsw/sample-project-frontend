@@ -62,21 +62,19 @@ const SET_USER_SEARCH_TEXT = gql`
 const GET_SELECTED_USER = gql`
 	query GetSelectedUser {
 		selectedUser @client {
-			id
-			name
-			email
+			...UserFields
 		}
 	}
+	${USER_FIELDS}
 `
 
 const SET_SELECTED_USER = gql`
-	mutation SetSelectedUser {
-		setSelectedUser @client {
-			id
-			name
-			email
+	mutation SetSelectedUser($selectedUser: User!) {
+		setSelectedUser(selectedUser: $selectedUser) @client {
+			...UserFields
 		}
 	}
+	${USER_FIELDS}
 `
 
 export {

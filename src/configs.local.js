@@ -1,5 +1,7 @@
+const url = process.env.APOLLO_SERVER
 const localConfigs = {
-	APOLLO_SERVER: 'http://172.76.10.161:4000/graphql',
+	APOLLO_SERVER: url,
+	LIMIT: 20,
 }
 
 export default localConfigs

@@ -4,7 +4,6 @@ import { LargeTable, DeleteDialog, ModifyDialog } from '@views_components'
 import { DELETE_MESSAGE, UPDATE_MESSAGE } from '../../../Message/mutation'
 import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks'
 import { MESSAGE_LIST } from '../../query'
-import { Loading } from '@views/components'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -111,7 +110,6 @@ const ListMessageOfUser = ({ selectedUser }) => {
 	return (
 		message && (
 			<Box className={classes.root}>
-				{/* <Loading open={loadingMsg} msg={'Loading...'} /> */}
 				<Typography variant='h5' className={classes.message_list__title}>
 					Total {message.length}
 				</Typography>
