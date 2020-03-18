@@ -21,6 +21,7 @@
           }
       ],
       "no-unused-vars": ["warn", { "vars": "all", "args": "after-used" }],
-      "no-useless-escape": "off"
+      "no-useless-escape": "off",
+      "no-mixed-spaces-and-tabs": "off"
   }
 }

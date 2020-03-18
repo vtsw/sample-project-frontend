@@ -1,5 +1,5 @@
 import React from 'react'
-
+import PropTypes from 'prop-types'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box, Typography } from '@material-ui/core'
@@ -107,7 +107,7 @@ const UserList = ({ setDialogVisible }) => {
 		})
 	}
 
-	const onSelectAnUser = selectedUser => {
+	const selectAnUser = selectedUser => {
 		setSelectedUser({
 			variables: {
 				selectedUser,
@@ -130,7 +130,7 @@ const UserList = ({ setDialogVisible }) => {
 					{!loading ? (
 						<LargeTable
 							items={data.userList.items}
-							onClickRow={onSelectAnUser}
+							onClickRow={selectAnUser}
 							selectedRow={selectedUser}
 							columns={TABLE_HEADER}
 							isIconClose={false}
@@ -146,6 +146,8 @@ const UserList = ({ setDialogVisible }) => {
 	)
 }
 
-UserList.propsTypes = {}
+UserList.propsTypes = {
+	setDialogVisible: PropTypes.func,
+}
 
 export default UserList

@@ -1,6 +1,4 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 import React, { useState, useEffect } from 'react'
-import { PropTypes } from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { Box, Button, TextField, Typography } from '@material-ui/core'
@@ -310,10 +308,6 @@ const FormEditor = ({ history }) => {
 			</Box>
 		</ThemeProvider>
 	)
-}
-
-FormEditor.propsTypes = {
-	selectedItem: PropTypes.object,
 }
 
 export default withRouter(FormEditor)
