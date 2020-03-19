@@ -8,7 +8,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
-module.exports = ({ mode, analyze }) => {
+module.exports = ({ mode, analyze, graphql_server }) => {
 	const isEnvDevelopment = mode === 'development'
 	const isEnvProduction = mode === 'production'
 	let minimizer = []
@@ -124,7 +124,7 @@ module.exports = ({ mode, analyze }) => {
 			historyApiFallback: true,
 			hot: true,
 			proxy: {
-				'/mygraphql': 'http://172.76.10.161:4000/graphql',
+				'/clever-graphql': graphql_server,
 			},
 		},
 		devtool: isEnvProduction ? 'source-map' : 'eval-cheap-source-map',
