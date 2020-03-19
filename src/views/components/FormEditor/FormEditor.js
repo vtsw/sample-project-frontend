@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { Box, Button, TextField, Typography } from '@material-ui/core'
@@ -74,6 +74,23 @@ const theme = createMuiTheme({
 	},
 })
 
+const initialState = {
+	id: '',
+	name: '',
+	email: '',
+	password: '',
+	confirmPassword: '',
+}
+
+const reducer = (state = initialState, action) => {
+	switch (action.type) {
+		case 'UPDATE_USER_INFO':
+			return { ...state, ...action.payload }
+		default:
+			return { ...state }
+	}
+}
+
 const FormEditor = ({ history }) => {
 	const isAuthenticated = getToken()
 
@@ -97,18 +114,34 @@ const FormEditor = ({ history }) => {
 		query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
 	})
 
-	const [userId, setUserId] = useState('')
-	const [email, setEmail] = useState('')
-	const [name, setName] = useState('')
-	const [password, setPassword] = useState('')
-	const [confirmPassword, setConfirmPassword] = useState('')
+	const [{ id, email, name, password, confirmPassword }, dispatch] = useReducer(
+		reducer,
+		initialState
+	)
+
+	// const [userId, setUserId] = useState('')
+	// const [email, setEmail] = useState('')
+	// const [name, setName] = useState('')
+	// const [password, setPassword] = useState('')
+	// const [confirmPassword, setConfirmPassword] = useState('')
 	const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false)
 
 	useEffect(() => {
-		setUserId(selectedUser.id)
-		setEmail(selectedUser.email)
-		setName(selectedUser.name)
+		// setUserId(selectedUser.id)
+		// setEmail(selectedUser.email)
+		// setName(selectedUser.name)
+		const { id, email, name } = selectedUser
+		dispatch({
+			type: 'UPDATE_USER_INFO',
+			payload: {
+				id,
+				email,
+				name,
+			},
+		})
 	}, [selectedUser])
+
+	console.log(selectedUser)
 
 	const classes = useStyles()
 
@@ -120,15 +153,22 @@ const FormEditor = ({ history }) => {
 		setSelectedUser({
 			variables: {
 				selectedUser: {
-					id: userId + '_reset',
+					id: id + '_reset',
 					name: '',
 					email: '',
 					__typename: 'User',
 				},
 			},
 		})
-		setPassword('')
-		setConfirmPassword('')
+		dispatch({
+			type: 'UPDATE_USER_INFO',
+			payload: {
+				password: '',
+				confirmPassword: '',
+			},
+		})
+		// setPassword('')
+		// setConfirmPassword('')
 	}
 
 	const validateForm = () => {
@@ -156,7 +196,7 @@ const FormEditor = ({ history }) => {
 	}
 
 	const updateUserInfo = () => {
-		let userInfo = { id: userId, email, name }
+		let userInfo = { id, email, name }
 		if (password) userInfo = { ...userInfo, password }
 		updateUser({
 			variables: { user: userInfo },
@@ -199,12 +239,12 @@ const FormEditor = ({ history }) => {
 	}
 
 	const onAgreeDeleteAnUser = () => {
-		deleteUser({ variables: { id: userId } })
+		deleteUser({ variables: { id } })
 			.then(() => {
 				setSelectedUser({
 					variables: {
 						selectedUser: {
-							id: userId + '_reset',
+							id: id + '_reset',
 							name: '',
 							email: '',
 							__typename: 'User',
@@ -231,7 +271,14 @@ const FormEditor = ({ history }) => {
 						variant='outlined'
 						type='email'
 						className={classes.form_input}
-						onChange={e => setEmail(e.target.value.toLowerCase())}
+						onChange={e =>
+							dispatch({
+								type: 'UPDATE_USER_INFO',
+								payload: {
+									email: e.target.value.toLowerCase(),
+								},
+							})
+						}
 					/>
 					<TextField
 						value={name}
@@ -240,7 +287,14 @@ const FormEditor = ({ history }) => {
 						type='text'
 						autoComplete='true'
 						className={classes.form_input}
-						onChange={e => setName(e.target.value)}
+						onChange={e =>
+							dispatch({
+								type: 'UPDATE_USER_INFO',
+								payload: {
+									name: e.target.value,
+								},
+							})
+						}
 					/>
 					<TextField
 						value={password}
@@ -249,7 +303,14 @@ const FormEditor = ({ history }) => {
 						type='password'
 						autoComplete='true'
 						className={classes.form_input}
-						onChange={e => setPassword(e.target.value)}
+						onChange={e =>
+							dispatch({
+								type: 'UPDATE_USER_INFO',
+								payload: {
+									password: e.target.value,
+								},
+							})
+						}
 					/>
 					<TextField
 						value={confirmPassword}
@@ -258,7 +319,14 @@ const FormEditor = ({ history }) => {
 						type='password'
 						autoComplete='true'
 						className={classes.form_input}
-						onChange={e => setConfirmPassword(e.target.value)}
+						onChange={e =>
+							dispatch({
+								type: 'UPDATE_USER_INFO',
+								payload: {
+									confirmPassword: e.target.value,
+								},
+							})
+						}
 					/>
 				</div>
 				<div className={classes.form_buttons}>
