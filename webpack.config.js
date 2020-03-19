@@ -123,6 +123,9 @@ module.exports = ({ mode, analyze }) => {
 			port: 3000,
 			historyApiFallback: true,
 			hot: true,
+			proxy: {
+				'/mygraphql': 'http://172.76.10.161:4000/graphql',
+			},
 		},
 		devtool: isEnvProduction ? 'source-map' : 'eval-cheap-source-map',
 		plugins,

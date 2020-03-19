@@ -4,8 +4,6 @@
 
 ## Installation guide
 
- 1. Download zip file or type command in your terminal `git@github.com:nvdai2401/clever-demo.git`
+ 1. Download zip file or type command in your terminal `git clone git@bitbucket.org:clevervn/frontend-sample-project.git`
  2. Run `yarn` to install essential dependencies. <b>Don't run `npm install` because it can cause problems with the app</b>
- 3. Add your GraphQL Server url in `configs.local.js`
- 4. Run `yarn start` to start the web app. The app will run at `localhost:3000`
- 5. Run `yarn test:watch` to see the test results. 
+ 3. Run `yarn start:development` to start the web app on your local. The app will run at `localhost:3000`
