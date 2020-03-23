@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { Box, Grid, makeStyles, Typography } from '@material-ui/core'
-import { useApolloClient, useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/react-hooks'
 import { USER_LIST } from './query'
 import { ListMessageOfUser } from './components'
 import Loading from '../components/Loading'
@@ -43,24 +43,15 @@ const useStyle = makeStyles(theme => ({
 
 const Main = () => {
 	const [userList, setUserList] = useState({})
-	const client = useApolloClient()
 	const classes = useStyle()
+	const [searchValue, setSearchValue] = useState('')
 	const [selectedUser, setSelectedUser] = useState('')
 
 	const handleChoseImage = object => {
 		setSelectedUser(object)
 	}
 
-	const handleSearch = async inputVal => {
-		const result = await client.query({
-			query: USER_LIST,
-			variables: { query: { searchText: inputVal, limit: 100 } },
-		})
-		setUserList(result.data.userList)
-		setSelectedUser('')
-	}
-
-	const { loading, error, data } = useQuery(USER_LIST, {
+	const { loading, error, data, fetchMore } = useQuery(USER_LIST, {
 		fetchPolicy: 'network-only',
 		variables: { query: { limit: 20 } },
 	})
@@ -78,17 +69,52 @@ const Main = () => {
 		{ headerLabel: 'NAME', xs: 6, headerVariable: 'name' },
 	]
 
-	const loadNextUserPage = async () => {
-		const result = await client.query({
-			query: USER_LIST,
+	const handleSearch = async inputVal => {
+		setSearchValue(inputVal)
+		fetchMore({
 			variables: {
-				query: { limit: 10, skip: userList.items.length },
+				query: { searchText: inputVal, limit: 10 },
+			},
+			updateQuery: (prev, { fetchMoreResult }) => {
+				if (!fetchMoreResult) return prev
+				const fetchedUserList = fetchMoreResult.userList
+				let cacheUserList = prev.userList
+				const hasNext = fetchedUserList.hasNext
+				return {
+					userList: {
+						...cacheUserList,
+						items: fetchedUserList.items,
+						hasNext,
+					},
+				}
 			},
 		})
-		setUserList({
-			...userList,
-			total: userList.total + result.data.userList.total,
-			items: [...userList.items, ...result.data.userList.items],
+	}
+
+	const loadNextUserPage = async resolve => {
+		fetchMore({
+			variables: {
+				query: {
+					limit: 10,
+					skip: userList.items.length,
+					searchText: searchValue,
+				},
+			},
+			updateQuery: (prev, { fetchMoreResult }) => {
+				if (!fetchMoreResult) return prev
+				const fetchedUserList = fetchMoreResult.userList
+				let cacheUserList = prev.userList
+				const items = [...cacheUserList.items, ...fetchedUserList.items]
+				const hasNext = fetchedUserList.hasNext
+				resolve('done')
+				return {
+					userList: {
+						...cacheUserList,
+						items,
+						hasNext,
+					},
+				}
+			},
 		})
 	}
 

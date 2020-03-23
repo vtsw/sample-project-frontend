@@ -84,7 +84,7 @@ const UserList = ({ setDialogVisible }) => {
 		})
 	}
 
-	const loadNextUserPage = async () => {
+	const loadNextUserPage = async resolve => {
 		fetchMore({
 			variables: {
 				query: { skip: data.userList.items.length },
@@ -95,7 +95,7 @@ const UserList = ({ setDialogVisible }) => {
 				let cacheUserList = prev.userList
 				const items = [...cacheUserList.items, ...fetchedUserList.items]
 				const hasNext = fetchedUserList.hasNext
-
+				resolve('done')
 				return {
 					userList: {
 						...cacheUserList,

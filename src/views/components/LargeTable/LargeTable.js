@@ -26,9 +26,14 @@ const LargeTable = props => {
 	const [loadingMore, setLoadingMore] = useState(false)
 
 	const _loadNextPage = async () => {
-		await setLoadingMore(true)
-		await loadNextPage()
-		await setLoadingMore(false)
+		setLoadingMore(true)
+		let promise = new Promise(function(resolve) {
+			loadNextPage(resolve)
+		})
+
+		promise.then(() => {
+			setLoadingMore(false)
+		})
 	}
 
 	return (

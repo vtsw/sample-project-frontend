@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Box, Grid, makeStyles } from '@material-ui/core'
 import { BoxCreate, BoxSearch } from './components'
 import { MESSAGE_LIST } from './query'
-import { useApolloClient, useMutation, useQuery } from '@apollo/react-hooks'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './mutation'
 import Loading from '../components/Loading'
 import LargeTable from '../components/LargeTable/LargeTable'
@@ -30,11 +30,11 @@ const useStyle = makeStyles(theme => ({
 
 const Message = () => {
 	const classes = useStyle()
-	const client = useApolloClient()
 	const [contents, setContents] = useState({})
 
 	const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
 	const [openConfirmModify, setOpenConfirmModify] = useState(false)
+	const [searchText, setSearchText] = useState('')
 
 	const [selectedMessage, setSelectedMessage] = useState(false)
 
@@ -81,16 +81,6 @@ const Message = () => {
 		},
 	})
 
-	const handleSearch = async value => {
-		const result = await client.query({
-			query: MESSAGE_LIST,
-			variables: { query: { searchText: value, limit: 40 } },
-			fetchPolicy: 'network-only',
-		})
-		setContents(result.data.messageList)
-		setSelectedMessage(false)
-	}
-
 	const handleDeleteMessage = id => {
 		deleteMsg({ variables: { id } })
 	}
@@ -107,25 +97,64 @@ const Message = () => {
 		})
 	}
 
-	const { loading, error, data } = useQuery(MESSAGE_LIST, {
+	const { loading, error, data, fetchMore } = useQuery(MESSAGE_LIST, {
 		fetchPolicy: 'network-only',
 		variables: { query: { limit: 20 } },
 	})
 
-	const loadNextMesagePage = async () => {
-		const result = await client.query({
-			query: MESSAGE_LIST,
+	const handleSearch = async value => {
+		setSearchText(value)
+		fetchMore({
 			variables: {
 				query: {
 					limit: 10,
 					skip: contents.items.length,
+					searchText: value,
 				},
 			},
+			updateQuery: (prev, { fetchMoreResult }) => {
+				if (!fetchMoreResult) return prev
+				const fetchedMessageList = fetchMoreResult.messageList
+				let cacheMessageList = prev.messageList
+				const hasNext = fetchedMessageList.hasNext
+
+				return {
+					messageList: {
+						...cacheMessageList,
+						items: fetchedMessageList.items,
+						hasNext,
+					},
+				}
+			},
 		})
-		setContents({
-			...contents,
-			total: contents.total + result.data.messageList.total,
-			items: [...contents.items, ...result.data.messageList.items],
+	}
+
+	const loadNextMesagePage = async resolve => {
+		fetchMore({
+			variables: {
+				query: {
+					limit: 10,
+					skip: contents.items.length,
+					searchText: searchText,
+				},
+			},
+			updateQuery: (prev, { fetchMoreResult }) => {
+				resolve('done')
+				if (!fetchMoreResult) return prev
+				const fetchedMessageList = fetchMoreResult.messageList
+				let cacheMessageList = prev.messageList
+
+				const items = [...cacheMessageList.items, ...fetchedMessageList.items]
+				const hasNext = fetchedMessageList.hasNext
+
+				return {
+					messageList: {
+						...cacheMessageList,
+						items,
+						hasNext,
+					},
+				}
+			},
 		})
 	}
 

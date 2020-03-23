@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Box, Typography, makeStyles } from '@material-ui/core'
 import { LargeTable, DeleteDialog, ModifyDialog } from '@views_components'
 import { DELETE_MESSAGE, UPDATE_MESSAGE } from '../../../Message/mutation'
-import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import { MESSAGE_LIST } from '../../query'
 
 const useStyles = makeStyles(theme => ({
@@ -22,7 +22,6 @@ const useStyles = makeStyles(theme => ({
 
 const ListMessageOfUser = ({ selectedUser }) => {
 	const classes = useStyles()
-	const client = useApolloClient()
 	const [modifyDialogVisible, setModifyDialogVisible] = useState(false)
 	const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)
 	const [selectedMessage, setSelectedMessage] = useState('')
@@ -68,7 +67,7 @@ const ListMessageOfUser = ({ selectedUser }) => {
 		setModifyDialogVisible(true)
 	}
 
-	const { data: dataMsg } = useQuery(
+	const { data: dataMsg, fetchMore } = useQuery(
 		MESSAGE_LIST,
 
 		{
@@ -82,9 +81,8 @@ const ListMessageOfUser = ({ selectedUser }) => {
 		}
 	)
 
-	const loadNextMesagePage = async () => {
-		const result = await client.query({
-			query: MESSAGE_LIST,
+	const loadNextMesagePage = async resolve => {
+		fetchMore({
 			variables: {
 				query: {
 					userId: selectedUser && selectedUser.id,
@@ -92,8 +90,23 @@ const ListMessageOfUser = ({ selectedUser }) => {
 					skip: message.length,
 				},
 			},
+			updateQuery: (prev, { fetchMoreResult }) => {
+				resolve('done')
+				if (!fetchMoreResult) return prev
+				const fetchedMessageList = fetchMoreResult.messageList
+				let cacheMessageList = prev.messageList
+				const items = [...cacheMessageList.items, ...fetchedMessageList.items]
+				const hasNext = fetchedMessageList.hasNext
+
+				return {
+					messageList: {
+						...cacheMessageList,
+						items,
+						hasNext,
+					},
+				}
+			},
 		})
-		setMessage([...message, ...result.data.messageList.items])
 	}
 
 	useEffect(() => {
