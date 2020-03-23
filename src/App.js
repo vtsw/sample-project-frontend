@@ -1,8 +1,7 @@
 import React, { Suspense, lazy } from 'react'
 import { Route, Switch, withRouter } from 'react-router-dom'
 
-import { Box } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Grid } from '@material-ui/core'
 
 import { getToken } from '@src/shares/utils'
 
@@ -13,12 +12,6 @@ const Message = lazy(() => import('@views/Message'))
 const User = lazy(() => import('@views/User'))
 const SignIn = lazy(() => import('@views/SignIn'))
 const SignUp = lazy(() => import('@views/SignUp'))
-
-const styles = {
-	root: {
-		display: 'flex',
-	},
-}
 
 class App extends React.Component {
 	componentDidMount() {
@@ -52,9 +45,8 @@ class App extends React.Component {
 	}
 
 	render() {
-		const { classes } = this.props
 		return (
-			<Box className={classes.root}>
+			<Grid container wrap='nowrap'>
 				{this.shouldRenderNavBar()}
 
 				<Suspense fallback={<div>Loading...</div>}>
@@ -66,9 +58,9 @@ class App extends React.Component {
 						<Route path='/sign-up' component={SignUp} />
 					</Switch>
 				</Suspense>
-			</Box>
+			</Grid>
 		)
 	}
 }
 
-export default withRouter(withStyles(styles)(App))
+export default withRouter(App)

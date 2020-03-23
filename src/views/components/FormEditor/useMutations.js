@@ -22,6 +22,9 @@ const useCreateAUser = (query, updateQuery, vars, isAuthenticated) => {
 						},
 					})
 				},
+				onError: err => {
+					alert(err)
+				},
 			}
 	)
 }
@@ -38,6 +41,9 @@ const useDeleteAUser = (query, updateQuery, vars) => {
 					userList: { ...userList, items },
 				},
 			})
+		},
+		onError: err => {
+			alert(err)
 		},
 	})
 }

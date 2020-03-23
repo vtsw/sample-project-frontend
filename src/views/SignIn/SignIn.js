@@ -3,11 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import { Box, Button, TextField, Typography } from '@material-ui/core'
-import {
-	makeStyles,
-	createMuiTheme,
-	ThemeProvider,
-} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import teal from '@material-ui/core/colors/teal'
 
 import { setToken } from '@src/shares/utils'
@@ -71,19 +67,15 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const theme = createMuiTheme({
-	palette: {
-		primary: {
-			main: teal[600],
-		},
-	},
-})
-
 const SignIn = ({ history }) => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
-	const [signIn] = useMutation(SIGN_IN)
+	const [signIn] = useMutation(SIGN_IN, {
+		onError: err => {
+			alert(err)
+		},
+	})
 
 	const classes = useStyles()
 
@@ -103,54 +95,52 @@ const SignIn = ({ history }) => {
 	}
 
 	return (
-		<ThemeProvider theme={theme}>
-			<Box className={classes.root}>
-				<Box className={classes.container}>
-					<Typography variant='h5' className={classes.title}>
+		<Box className={classes.root}>
+			<Box className={classes.container}>
+				<Typography variant='h5' className={classes.title}>
+					Sign in
+				</Typography>
+				<div className={classes.cardContent}>
+					<TextField
+						value={email}
+						label='EMAIL'
+						variant='outlined'
+						type='email'
+						autoComplete='true'
+						className={classes.input}
+						onChange={e => setEmail(e.target.value)}
+					/>
+					<TextField
+						value={password}
+						label='PASSWORD'
+						variant='outlined'
+						type='password'
+						autoComplete='true'
+						className={classes.input}
+						onChange={e => setPassword(e.target.value)}
+					/>
+				</div>
+				<div className={classes.actions}>
+					<Button
+						variant='contained'
+						color='primary'
+						size='large'
+						fullWidth
+						className={classes.button}
+						onClick={onSignIn}
+					>
 						Sign in
+					</Button>
+					<Typography
+						variant='body2'
+						className={classes.sign_up_text}
+						onClick={() => history.push('/sign-up')}
+					>
+						sign up
 					</Typography>
-					<div className={classes.cardContent}>
-						<TextField
-							value={email}
-							label='EMAIL'
-							variant='outlined'
-							type='email'
-							autoComplete='true'
-							className={classes.input}
-							onChange={e => setEmail(e.target.value)}
-						/>
-						<TextField
-							value={password}
-							label='PASSWORD'
-							variant='outlined'
-							type='password'
-							autoComplete='true'
-							className={classes.input}
-							onChange={e => setPassword(e.target.value)}
-						/>
-					</div>
-					<div className={classes.actions}>
-						<Button
-							variant='contained'
-							color='primary'
-							size='large'
-							fullWidth
-							className={classes.button}
-							onClick={onSignIn}
-						>
-							Sign in
-						</Button>
-						<Typography
-							variant='body2'
-							className={classes.sign_up_text}
-							onClick={() => history.push('/sign-up')}
-						>
-							sign up
-						</Typography>
-					</div>
-				</Box>
+				</div>
 			</Box>
-		</ThemeProvider>
+		</Box>
 	)
 }
 

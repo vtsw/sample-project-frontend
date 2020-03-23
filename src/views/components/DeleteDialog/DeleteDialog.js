@@ -7,11 +7,7 @@ import {
 	Button,
 	Slide,
 } from '@material-ui/core'
-import {
-	makeStyles,
-	createMuiTheme,
-	ThemeProvider,
-} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import teal from '@material-ui/core/colors/teal'
 
 const useStyles = makeStyles(theme => ({
@@ -55,14 +51,6 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const theme = createMuiTheme({
-	palette: {
-		primary: {
-			main: teal[600],
-		},
-	},
-})
-
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction='up' ref={ref} {...props} />
 })
@@ -70,39 +58,37 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const DeleteDialog = ({ open, onClose, onAgree, onDisagree }) => {
 	const classes = useStyles()
 	return (
-		<ThemeProvider theme={theme}>
-			<Dialog
-				TransitionComponent={Transition}
-				open={open}
-				onClose={onClose}
-				classes={{ paper: classes.root }}
-			>
-				<DialogTitle className={clsx(classes.no_padding, classes.dialog_title)}>
-					Delete!
-				</DialogTitle>
-				<DialogActions className={classes.no_padding}>
-					<Button
-						variant='contained'
-						color='primary'
-						className={classes.button_confirm}
-						onClick={() => {
-							onAgree && onAgree()
-						}}
-					>
-						Yes
-					</Button>
-					<Button
-						variant='contained'
-						className={classes.button_cancel}
-						onClick={() => {
-							onDisagree && onDisagree()
-						}}
-					>
-						No
-					</Button>
-				</DialogActions>
-			</Dialog>
-		</ThemeProvider>
+		<Dialog
+			TransitionComponent={Transition}
+			open={open}
+			onClose={onClose}
+			classes={{ paper: classes.root }}
+		>
+			<DialogTitle className={clsx(classes.no_padding, classes.dialog_title)}>
+				Delete!
+			</DialogTitle>
+			<DialogActions className={classes.no_padding}>
+				<Button
+					variant='contained'
+					color='primary'
+					className={classes.button_confirm}
+					onClick={() => {
+						onAgree && onAgree()
+					}}
+				>
+					Yes
+				</Button>
+				<Button
+					variant='contained'
+					className={classes.button_cancel}
+					onClick={() => {
+						onDisagree && onDisagree()
+					}}
+				>
+					No
+				</Button>
+			</DialogActions>
+		</Dialog>
 	)
 }
 

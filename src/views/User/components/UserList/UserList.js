@@ -67,8 +67,16 @@ const UserList = ({ setDialogVisible }) => {
 		data: { selectedUser },
 	} = useQuery(GET_SELECTED_USER)
 
-	const [setUserSearchValue] = useMutation(SET_USER_SEARCH_TEXT)
-	const [setSelectedUser] = useMutation(SET_SELECTED_USER)
+	const [setUserSearchValue] = useMutation(SET_USER_SEARCH_TEXT, {
+		onError: err => {
+			alert(err)
+		},
+	})
+	const [setSelectedUser] = useMutation(SET_SELECTED_USER, {
+		onError: err => {
+			alert(err)
+		},
+	})
 
 	const handleOnSearch = searchValue => {
 		setUserSearchValue({ variables: { searchValue } })
