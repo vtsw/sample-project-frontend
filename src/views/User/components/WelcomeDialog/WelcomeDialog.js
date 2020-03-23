@@ -17,12 +17,12 @@ const useStyles = makeStyles(theme => ({
 		zIndex: 10,
 		transition: `opacity 225ms ${theme.transitions.easing.easeInOut} 0ms`,
 	},
-	welcome_text: {
+	welcometext: {
 		color: theme.palette.primary.main,
 		marginBottom: theme.spacing(1),
 		fontWeight: 600,
 	},
-	create_user_button: {
+	button: {
 		textTransform: 'unset',
 		color: theme.palette.primary.main,
 		fontWeight: 700,
@@ -35,13 +35,13 @@ const WelcomeDialog = ({ setDialogVisible }) => {
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.signup__dialog__container}>
-				<Typography variant='subtitle1' className={classes.welcome_text}>
+				<Typography variant='subtitle1' className={classes.welcometext}>
 					Welcome to Vatech !!!
 				</Typography>
 				<Button
 					variant='contained'
 					fullWidth
-					className={classes.create_user_button}
+					className={classes.button}
 					onClick={() => setDialogVisible(false)}
 				>
 					Create user

@@ -14,21 +14,20 @@ const useStyle = makeStyles(theme => ({
 		height: '100vh',
 		position: 'relative',
 	},
-	full_height: {
+	fullheight: {
 		height: '100%',
 	},
 	container: {
 		padding: theme.spacing(3),
 	},
-
-	user_list__container: {
+	container__searchbox__largetable: {
 		display: 'flex',
 		flexDirection: 'column',
 		border: `1px solid ${theme.palette.common.border}`,
 		marginRight: theme.spacing(1.5),
 	},
 
-	search_box: {
+	searchbox: {
 		padding: theme.spacing(3),
 	},
 	overlay: {
@@ -95,12 +94,15 @@ const Main = () => {
 	return (
 		<Box className={classes.root}>
 			<Loading open={loading} msg={'Loading...'} />
-			<Grid container className={clsx(classes.full_height, classes.container)}>
+			<Grid container className={clsx(classes.fullheight, classes.container)}>
 				<Grid item xs={4}>
 					<Box
-						className={clsx(classes.user_list__container, classes.full_height)}
+						className={clsx(
+							classes.container__searchbox__largetable,
+							classes.fullheight
+						)}
 					>
-						<Box className={classes.search_box}>
+						<Box className={classes.searchbox}>
 							<SearchBox width={390} onSearch={handleSearch} />
 						</Box>
 						{userList && userList.items && (

@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		flexDirection: 'column',
 	},
-	message_list__title: {
+	listtitle: {
 		padding: theme.spacing(3),
 		fontWeight: 700,
 	},
@@ -82,7 +82,7 @@ const ListMessageOfUser = ({ selectedUser }) => {
 		}
 	)
 
-	const loadNextMesagePage = async () => {
+	const loadNextMessagePage = async () => {
 		const result = await client.query({
 			query: MESSAGE_LIST,
 			variables: {
@@ -110,7 +110,7 @@ const ListMessageOfUser = ({ selectedUser }) => {
 	return (
 		message && (
 			<Box className={classes.root}>
-				<Typography variant='h5' className={classes.message_list__title}>
+				<Typography variant='h5' className={classes.listtitle}>
 					Total {message.length}
 				</Typography>
 
@@ -124,7 +124,7 @@ const ListMessageOfUser = ({ selectedUser }) => {
 						setDeleteDialogVisible(true)
 						setSelectedMessage(dataRow)
 					}}
-					loadNextPage={loadNextMesagePage}
+					loadNextPage={loadNextMessagePage}
 					hasNextPage={dataMsg.messageList && dataMsg.messageList.hasNext}
 				/>
 

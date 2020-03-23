@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 
 import { Box, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import clsx from 'clsx'
 
 import { FormEditor } from '@views_components'
 import { WelcomeDialog, UserList } from './components'
@@ -12,34 +11,17 @@ const useStyles = makeStyles(theme => ({
 		width: '100%',
 		height: '100vh',
 	},
-	full_screen_height: {
-		height: '100vh',
-	},
-	full_height: {
-		height: '100%',
-	},
 	container: {
 		padding: theme.spacing(3),
+		height: '100vh',
 	},
-	sign_up__container: {
+	item__signup: {
 		display: 'flex',
 		alignItems: 'center',
+		height: '100%',
 		border: `1px solid ${theme.palette.common.border}`,
 		marginRight: theme.spacing(1.5),
 		position: 'relative',
-	},
-	user_list__container: {
-		border: `1px solid ${theme.palette.common.border}`,
-		marginLeft: theme.spacing(1.5),
-		overflow: 'hidden',
-	},
-	search_box: {
-		width: '100%',
-		padding: theme.spacing(3),
-	},
-	search_box__title: {
-		fontWeight: 600,
-		marginBottom: theme.spacing(2),
 	},
 }))
 
@@ -50,14 +32,9 @@ const User = () => {
 
 	return (
 		<Box className={classes.root}>
-			<Grid
-				container
-				className={clsx(classes.full_screen_height, classes.container)}
-			>
+			<Grid container className={classes.container}>
 				<Grid item xs={4}>
-					<Box
-						className={clsx(classes.sign_up__container, classes.full_height)}
-					>
+					<Box className={classes.item__signup}>
 						{dialogVisible ? (
 							<WelcomeDialog setDialogVisible={setDialogVisible} />
 						) : null}
@@ -71,7 +48,5 @@ const User = () => {
 		</Box>
 	)
 }
-
-User.propsTypes = {}
 
 export default User

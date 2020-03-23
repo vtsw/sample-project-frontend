@@ -4,15 +4,14 @@ import SearchIcon from '@material-ui/icons/Search'
 import { Button, TextField, Grid, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
-	icon: {
-		fontSize: '40px',
-	},
-	search: {
+	root: {
 		padding: '16px',
-		borderTop: `1px solid #979797`,
+		borderTop: `1px solid ${theme.palette.common.border}`,
 	},
-
-	buttonSearch: {
+	textfield: {
+		width: '328px',
+	},
+	searchbtn: {
 		color: theme.palette.common.white,
 		marginLeft: '8px',
 		width: '56px',
@@ -22,27 +21,27 @@ const useStyles = makeStyles(theme => ({
 			background: theme.palette.grey['300'],
 		},
 	},
-	textField: {
-		width: '328px',
+	icon: {
+		fontSize: '40px',
 	},
 }))
 
-export default function BoxSearch({ handleSearch }) {
+const BoxSearch = ({ handleSearch }) => {
 	const classes = useStyles()
 	const [searchVal, setSearchVal] = useState('')
 	return (
-		<Grid container alignItems='stretch' className={classes.search}>
+		<Grid container alignItems='stretch' className={classes.root}>
 			<TextField
 				variant='outlined'
 				label='Search'
 				placeholder='search...'
 				type='search'
 				onChange={e => setSearchVal(e.target.value)}
-				className={classes.textField}
+				className={classes.textfield}
 			/>
 			<Button
 				variant='contained'
-				className={classes.buttonSearch}
+				className={classes.searchbtn}
 				onClick={() => handleSearch(searchVal)}
 			>
 				<SearchIcon className={classes.icon} />
@@ -50,3 +49,5 @@ export default function BoxSearch({ handleSearch }) {
 		</Grid>
 	)
 }
+
+export default BoxSearch

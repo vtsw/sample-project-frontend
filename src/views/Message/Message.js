@@ -16,14 +16,7 @@ const useStyle = makeStyles(theme => ({
 		position: 'relative',
 	},
 	container: {
-		border: `1px solid #979797`,
-		height: '100%',
-	},
-	div: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		background: theme.palette.common.black,
+		border: `1px solid ${theme.palette.common.border}`,
 		height: '100%',
 	},
 }))
@@ -112,7 +105,7 @@ const Message = () => {
 		variables: { query: { limit: 20 } },
 	})
 
-	const loadNextMesagePage = async () => {
+	const loadNextMessagePage = async () => {
 		const result = await client.query({
 			query: MESSAGE_LIST,
 			variables: {
@@ -167,7 +160,7 @@ const Message = () => {
 						selectedRow={selectedMessage}
 						columns={columns}
 						isIconClose={true}
-						loadNextPage={loadNextMesagePage}
+						loadNextPage={loadNextMessagePage}
 						hasNextPage={contents.hasNext}
 					/>
 				)}

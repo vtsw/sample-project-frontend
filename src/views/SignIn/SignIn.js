@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 		width: '100%',
 		marginTop: '18px',
 	},
-	cardContent: {
+	cardcontent: {
 		padding: 0,
 	},
 	actions: {
@@ -60,7 +60,7 @@ const useStyles = makeStyles(theme => ({
 		textTransform: 'unset',
 		padding: '18px 0',
 	},
-	sign_up_text: {
+	signuptext: {
 		marginTop: theme.spacing(2),
 		cursor: 'pointer',
 	},
@@ -99,7 +99,7 @@ const SignIn = ({ history }) => {
 				<Typography variant='h5' className={classes.title}>
 					Sign in
 				</Typography>
-				<div className={classes.cardContent}>
+				<div className={classes.cardcontent}>
 					<TextField
 						value={email}
 						label='EMAIL'
@@ -132,7 +132,7 @@ const SignIn = ({ history }) => {
 					</Button>
 					<Typography
 						variant='body2'
-						className={classes.sign_up_text}
+						className={classes.signuptext}
 						onClick={() => history.push('/sign-up')}
 					>
 						sign up

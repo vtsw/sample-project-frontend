@@ -22,28 +22,22 @@ const useStyles = makeStyles(theme => ({
 		width: '100%',
 		height: '100%',
 	},
-	full_screen_height: {
-		height: '100vh',
-	},
-	full_height: {
-		height: '100%',
-	},
-	user_list__container: {
+	userlist__container: {
 		border: `1px solid ${theme.palette.common.border}`,
 		marginLeft: theme.spacing(1.5),
 		overflow: 'hidden',
 		height: '100%',
 	},
-	user_list__table: {
+	userlist__table: {
 		position: 'relative',
 		display: 'flex',
 		height: 'calc(100vh - 200px)',
 	},
-	search_box: {
+	searchbox: {
 		width: '100%',
 		padding: theme.spacing(3),
 	},
-	search_box__title: {
+	searchbox__title: {
 		fontWeight: 600,
 		marginBottom: theme.spacing(2),
 	},
@@ -135,14 +129,14 @@ const UserList = ({ setDialogVisible }) => {
 	const classes = useStyles()
 	return (
 		<Box className={classes.root}>
-			<Box className={clsx(classes.user_list__container, classes.full_height)}>
-				<Box className={classes.search_box}>
-					<Typography variant='h5' className={classes.search_box__title}>
+			<Box className={classes.userlist__container}>
+				<Box className={classes.searchbox}>
+					<Typography variant='h5' className={classes.searchbox__title}>
 						User List
 					</Typography>
 					<SearchBox width={400} onSearch={handleOnSearch} />
 				</Box>
-				<Box className={classes.user_list__table}>
+				<Box className={classes.userlist__table}>
 					{!loading ? (
 						<LargeTable
 							items={data.userList.items}
