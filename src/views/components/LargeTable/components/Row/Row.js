@@ -7,17 +7,14 @@ const useStyles = makeStyles(theme => ({
 	root: ({ style, index }) => ({
 		...style,
 		backgroundColor:
-			index % 2 === 0 ? theme.palette.common.white : theme.palette.common.gray,
+			index % 2 === 0 ? theme.palette.common.white : theme.palette.grey['300'],
 		padding: '14px 14px 14px 34px',
 		cursor: 'pointer',
 	}),
-
-	item__left__container: {
-		display: 'flex',
-		alignItems: 'center',
+	item__active: {
+		backgroundColor: `${theme.palette.common.blue} !important`,
 	},
-
-	item__close_icon: {
+	item__closeicon: {
 		position: 'absolute',
 		top: 16,
 		left: 10,
@@ -26,20 +23,19 @@ const useStyles = makeStyles(theme => ({
 		cursor: 'pointer',
 		fontSize: '1rem',
 		border: '1px solid transparent',
-		backgroundColor: theme.palette.common.gray,
+		backgroundColor: theme.palette.grey['300'],
 		borderRadius: '50%',
 		padding: 1,
 	},
-	item__active: {
-		backgroundColor: `${theme.palette.common.blue} !important`,
+	columns__item: {
+		display: 'flex',
+		alignItems: 'center',
 	},
-	item_bold: {
-		fontWeight: 700,
-	},
-	text_overflow: {
+	columns__item__typo: {
 		width: '100%',
 		textOverflow: 'ellipsis',
 		overflow: 'hidden',
+		fontWeight: 700,
 	},
 }))
 
@@ -76,7 +72,7 @@ const Row = ({ forwardedRef, index, data, style }) => {
 		>
 			{isIconClose && (
 				<CloseIcon
-					className={classes.item__close_icon}
+					className={classes.item__closeicon}
 					onClick={e => {
 						e.stopPropagation()
 						handleDeleteRow(item)
@@ -85,11 +81,8 @@ const Row = ({ forwardedRef, index, data, style }) => {
 			)}
 			{columns.map(column => (
 				<Grid item xs={column.xs} key={column.headerVariable}>
-					<Box className={classes.item__left__container}>
-						<Typography
-							variant='body2'
-							className={clsx(classes.item_bold, classes.text_overflow)}
-						>
+					<Box className={classes.columns__item}>
+						<Typography variant='body2' className={classes.columns__item__typo}>
 							{item[column.headerVariable]}
 						</Typography>
 					</Box>

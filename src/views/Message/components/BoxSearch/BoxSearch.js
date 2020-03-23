@@ -17,9 +17,9 @@ const useStyles = makeStyles(theme => ({
 		marginLeft: '8px',
 		width: '56px',
 		boxShadow: 'none',
-		background: theme.palette.common.gray,
+		background: theme.palette.grey['300'],
 		'&:hover': {
-			background: theme.palette.common.gray,
+			background: theme.palette.grey['300'],
 		},
 	},
 	textField: {

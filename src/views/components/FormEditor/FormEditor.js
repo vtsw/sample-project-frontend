@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import teal from '@material-ui/core/colors/teal'
 
 import { DeleteDialog } from '@views_components'
 
@@ -30,18 +29,18 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: 'column',
 		alignItems: 'center',
 	},
-	form_title: {
-		color: teal[600],
+	formtitle: {
+		color: theme.palette.primary.main,
 		fontWeight: 600,
 	},
-	form_input: {
+	forminput: {
 		width: '100%',
 		marginTop: '18px',
 	},
-	form_content: {
+	formcontent: {
 		padding: 0,
 	},
-	form_buttons: {
+	formbuttons: {
 		display: 'flex',
 		flexDirection: 'column',
 		padding: 0,
@@ -54,7 +53,7 @@ const useStyles = makeStyles(theme => ({
 			},
 		},
 	},
-	form_button: {
+	formbutton: {
 		color: '#ffffff',
 		fontWeight: 600,
 		textTransform: 'capitalize',
@@ -214,18 +213,18 @@ const FormEditor = ({ history }) => {
 
 	return (
 		<Box className={classes.root}>
-			<Typography variant='h5' className={classes.form_title}>
+			<Typography variant='h5' className={classes.formtitle}>
 				{selectedUser.id && selectedUser.name && selectedUser.email
 					? 'Modify'
 					: 'Sign up'}
 			</Typography>
-			<div className={classes.form_content}>
+			<Box className={classes.formcontent}>
 				<TextField
 					value={email}
 					label='EMAIL'
 					variant='outlined'
 					type='email'
-					className={classes.form_input}
+					className={classes.forminput}
 					onChange={e => setEmail(e.target.value.toLowerCase())}
 				/>
 				<TextField
@@ -234,7 +233,7 @@ const FormEditor = ({ history }) => {
 					variant='outlined'
 					type='text'
 					autoComplete='true'
-					className={classes.form_input}
+					className={classes.forminput}
 					onChange={e => setName(e.target.value)}
 				/>
 				<TextField
@@ -243,7 +242,7 @@ const FormEditor = ({ history }) => {
 					variant='outlined'
 					type='password'
 					autoComplete='true'
-					className={classes.form_input}
+					className={classes.forminput}
 					onChange={e => setPassword(e.target.value)}
 				/>
 				<TextField
@@ -252,17 +251,17 @@ const FormEditor = ({ history }) => {
 					variant='outlined'
 					type='password'
 					autoComplete='true'
-					className={classes.form_input}
+					className={classes.forminput}
 					onChange={e => setConfirmPassword(e.target.value)}
 				/>
-			</div>
-			<div className={classes.form_buttons}>
+			</Box>
+			<Box className={classes.formbuttons}>
 				<Button
 					variant='contained'
 					color='primary'
 					size='large'
 					fullWidth
-					className={classes.form_button}
+					className={classes.formbutton}
 					onClick={onSubmit}
 				>
 					{selectedUser.id && selectedUser.name && selectedUser.email
@@ -274,7 +273,7 @@ const FormEditor = ({ history }) => {
 						variant='contained'
 						size='large'
 						fullWidth
-						className={classes.form_button}
+						className={classes.formbutton}
 						onClick={() => {
 							setOpenConfirmDeleteDialog(true)
 						}}
@@ -286,12 +285,12 @@ const FormEditor = ({ history }) => {
 					variant='contained'
 					size='large'
 					fullWidth
-					className={classes.form_button}
+					className={classes.formbutton}
 					onClick={onCancel}
 				>
 					Cancel
 				</Button>
-			</div>
+			</Box>
 			<DeleteDialog
 				open={openConfirmDeleteDialog}
 				onClose={() => {

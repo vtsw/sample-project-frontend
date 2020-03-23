@@ -1,14 +1,13 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
-import teal from '@material-ui/core/colors/teal'
 
 import { deleteToken } from '@src/shares/utils'
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		position: 'relative',
-		backgroundColor: teal[600],
+		backgroundColor: theme.palette.primary.main,
 		display: 'flex',
 		flexDirection: 'column',
 		height: '100vh',
@@ -77,7 +76,5 @@ const NavBar = ({ location, history }) => {
 		</ul>
 	)
 }
-
-NavBar.propsTypes = {}
 
 export default withRouter(NavBar)

@@ -4,7 +4,6 @@ import { useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import teal from '@material-ui/core/colors/teal'
 
 import { setToken } from '@src/shares/utils'
 
@@ -32,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 		alignItems: 'center',
 	},
 	title: {
-		color: teal[600],
+		color: theme.palette.primary.main,
 		fontWeight: 600,
 	},
 	input: {

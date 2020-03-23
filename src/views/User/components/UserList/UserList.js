@@ -6,7 +6,7 @@ import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 
-import { SearchBox, LargeTable } from '@views_components'
+import { SearchBox, LargeTable, Loading } from '@views_components'
 
 import {
 	FETCH_USER_LIST,
@@ -35,6 +35,7 @@ const useStyles = makeStyles(theme => ({
 		height: '100%',
 	},
 	user_list__table: {
+		position: 'relative',
 		display: 'flex',
 		height: 'calc(100vh - 200px)',
 	},
@@ -62,10 +63,17 @@ const UserList = ({ setDialogVisible }) => {
 		variables: {
 			query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
 		},
+		onError: err => {
+			alert(err)
+		},
 	})
 	const {
 		data: { selectedUser },
-	} = useQuery(GET_SELECTED_USER)
+	} = useQuery(GET_SELECTED_USER, {
+		onError: err => {
+			alert(err)
+		},
+	})
 
 	const [setUserSearchValue] = useMutation(SET_USER_SEARCH_TEXT, {
 		onError: err => {
@@ -146,7 +154,7 @@ const UserList = ({ setDialogVisible }) => {
 							hasNextPage={data.userList.hasNext}
 						/>
 					) : (
-						<div>Loading...</div>
+						<Loading open={true} msg={'Loading...'} />
 					)}
 				</Box>
 			</Box>

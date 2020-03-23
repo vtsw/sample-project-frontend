@@ -12,42 +12,22 @@ import {
 } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
-	paper: {
+	root: {
 		boxShadow: 'none',
 		borderRadius: 'unset',
 		width: 376,
 	},
-	button_confirm: {
-		height: 56,
-		padding: `0px ${theme.spacing(2)}px`,
-		minWidth: 0,
-		boxShadow: 'none',
-		color: theme.palette.common.white,
-		textTransform: 'none',
-		background: theme.palette.common.green,
-		'&:hover': {
-			background: theme.palette.common.green,
-			boxShadow: 'none',
-		},
+	title: {
+		fontWeight: 700,
 	},
-	button_cancel: {
-		height: 56,
-		padding: `0px ${theme.spacing(2)}px`,
-		minWidth: '0px',
-		boxShadow: 'none',
-		color: theme.palette.common.white,
-		textTransform: 'none',
-		background: theme.palette.common.greyButton,
-		'&:hover': {
-			background: theme.palette.common.greyButton,
-			boxShadow: 'none',
-		},
-	},
-	textField: {
+	textfield: {
 		width: '100%',
 	},
-	typography: {
-		fontWeight: 700,
+	button: {
+		height: 58,
+		color: theme.palette.common.white,
+		minWidth: 0,
+		textTransform: 'none',
 	},
 }))
 
@@ -81,10 +61,12 @@ const ModifyDialog = props => {
 			TransitionComponent={Transition}
 			open={open}
 			onClose={onClose}
-			classes={{ paper: classes.paper }}
+			classes={{ paper: classes.root }}
 		>
 			<DialogTitle>
-				<Typography className={classes.typography}>Modify!</Typography>
+				<Typography variant='h5' className={classes.title}>
+					Modify!
+				</Typography>
 			</DialogTitle>
 			<DialogContent>
 				<TextField
@@ -93,7 +75,7 @@ const ModifyDialog = props => {
 					placeholder='placeholder'
 					defaultValue={valueDefault}
 					onChange={e => setValue(e.target.value)}
-					className={classes.textField}
+					className={classes.textfield}
 					onKeyDown={e => {
 						if (e.keyCode === 13) {
 							handleUpdate()
@@ -107,15 +89,16 @@ const ModifyDialog = props => {
 			<DialogActions>
 				<Button
 					variant='contained'
+					color='primary'
 					onClick={handleUpdate}
-					className={classes.button_confirm}
+					className={classes.button}
 				>
 					Yes
 				</Button>
 				<Button
 					variant='contained'
 					onClick={handleCancel}
-					className={classes.button_cancel}
+					className={classes.button}
 				>
 					No
 				</Button>

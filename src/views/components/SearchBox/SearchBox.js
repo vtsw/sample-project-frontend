@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import clsx from 'clsx'
 import { Box, Button, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Search } from '@material-ui/icons'
@@ -12,15 +11,15 @@ const useStyles = makeStyles(theme => ({
 		maxWidth: ({ width }) => width,
 		width: '100%',
 	},
-	search_btn: {
+	searchinput: {
+		width: '80%',
+	},
+	searchbtn: {
 		color: theme.palette.common.white,
 		padding: 0,
 	},
-	search_btn__icon: {
+	searchbtn__icon: {
 		fontSize: '2rem',
-	},
-	search_input: {
-		width: '80%',
 	},
 }))
 
@@ -33,16 +32,16 @@ const SearchBox = ({ width, onSearch }) => {
 				value={searchValue}
 				variant='outlined'
 				placeholder='search...'
-				className={clsx(classes.margin, classes.search_input)}
+				className={classes.searchinput}
 				onChange={e => setSearchValue(e.target.value)}
 			/>
 			<Button
 				variant='contained'
 				size='large'
-				className={classes.search_btn}
+				className={classes.searchbtn}
 				onClick={() => onSearch(searchValue)}
 			>
-				<Search className={classes.search_btn__icon} />
+				<Search className={classes.searchbtn__icon} />
 			</Button>
 		</Box>
 	)

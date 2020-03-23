@@ -20,9 +20,9 @@ const useStyles = makeStyles(theme => ({
 		width: '56px',
 		boxShadow: 'none',
 		textTransform: 'none',
-		background: theme.palette.common.green,
+		background: theme.palette.primary.main,
 		'&:hover': {
-			background: theme.palette.common.green,
+			background: theme.palette.primary.main,
 		},
 	},
 }))

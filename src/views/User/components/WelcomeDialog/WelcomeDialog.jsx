@@ -18,13 +18,13 @@ const useStyles = makeStyles(theme => ({
 		transition: `opacity 225ms ${theme.transitions.easing.easeInOut} 0ms`,
 	},
 	welcome_text: {
-		color: theme.palette.common.green,
+		color: theme.palette.primary.main,
 		marginBottom: theme.spacing(1),
 		fontWeight: 600,
 	},
 	create_user_button: {
 		textTransform: 'unset',
-		color: theme.palette.common.green,
+		color: theme.palette.primary.main,
 		fontWeight: 700,
 	},
 }))

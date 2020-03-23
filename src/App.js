@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core'
 
 import { getToken } from '@src/shares/utils'
 
-import { NavBar } from '@views_components'
+import { NavBar, Loading } from '@views_components'
 
 const Main = lazy(() => import('@views/Main'))
 const Message = lazy(() => import('@views/Message'))
@@ -36,6 +36,7 @@ class App extends React.Component {
 			return
 		}
 	}
+
 	shouldRenderNavBar = () => {
 		const { location } = this.props
 		if (location.pathname === '/sign-in' || location.pathname === '/sign-up') {
@@ -49,7 +50,7 @@ class App extends React.Component {
 			<Grid container wrap='nowrap'>
 				{this.shouldRenderNavBar()}
 
-				<Suspense fallback={<div>Loading...</div>}>
+				<Suspense fallback={<Loading open={true} msg={'Loading...'} />}>
 					<Switch>
 						<Route exact path='/' component={Main} />
 						<Route path='/message' component={Message} />
