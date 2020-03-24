@@ -1,22 +1,16 @@
 import React, { useState } from 'react'
-import {
-	Grid,
-	TextField,
-	Typography,
-	Button,
-	makeStyles,
-} from '@material-ui/core'
+import { Grid, TextField, Button, makeStyles } from '@material-ui/core'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
 	root: {
-		padding: '16px',
+		padding: theme.spacing(2),
 	},
 	textfield: {
-		width: '328px',
+		width: 328,
 	},
 	savebtn: {
-		marginLeft: '8px',
-		width: '56px',
+		marginLeft: theme.spacing(1),
+		width: 56,
 		textTransform: 'none',
 	},
 }))

@@ -42,20 +42,13 @@ const useStyles = makeStyles(theme => ({
 		padding: 0,
 	},
 	actions: {
-		display: 'flex',
-		flexDirection: 'column',
 		padding: 0,
 		width: '100%',
 		'&>button': {
 			marginTop: theme.spacing(2),
-			marginLeft: 0,
-			'&:not(:first-child)': {
-				marginLeft: 0,
-			},
 		},
 	},
 	button: {
-		color: '#ffffff',
 		fontWeight: 600,
 		textTransform: 'unset',
 		padding: '18px 0',

@@ -5,7 +5,7 @@ import { Button, TextField, Grid, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
 	root: {
-		padding: '16px',
+		padding: theme.spacing(2),
 		borderTop: `1px solid ${theme.palette.common.border}`,
 	},
 	textfield: {
@@ -13,8 +13,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	searchbtn: {
 		color: theme.palette.common.white,
-		marginLeft: '8px',
-		width: '56px',
+		marginLeft: theme.spacing(1),
+		width: 56,
 		boxShadow: 'none',
 		background: theme.palette.grey['300'],
 		'&:hover': {
@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	icon: {
-		fontSize: '40px',
+		fontSize: 40,
 	},
 }))
 

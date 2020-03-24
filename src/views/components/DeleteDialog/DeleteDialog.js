@@ -25,23 +25,15 @@ const useStyles = makeStyles(theme => ({
 			fontSize: '1.5rem',
 		},
 	},
-	buttonconfirm: {
+	nopadding: {
+		padding: 0,
+	},
+	button: {
 		height: 56,
-		padding: '0 16px',
 		minWidth: '0px',
 		boxShadow: 'none',
 		textTransform: 'none',
-	},
-	buttoncancel: {
-		height: 56,
-		padding: '0 16px',
-		minWidth: 0,
-		boxShadow: 'none',
 		color: theme.palette.common.white,
-		textTransform: 'none',
-	},
-	nopadding: {
-		padding: 0,
 	},
 }))
 
@@ -65,7 +57,7 @@ const DeleteDialog = ({ open, onClose, onAgree, onDisagree }) => {
 				<Button
 					variant='contained'
 					color='primary'
-					className={classes.buttonconfirm}
+					className={classes.button}
 					onClick={() => {
 						onAgree && onAgree()
 					}}
@@ -74,7 +66,7 @@ const DeleteDialog = ({ open, onClose, onAgree, onDisagree }) => {
 				</Button>
 				<Button
 					variant='contained'
-					className={classes.buttoncancel}
+					className={classes.button}
 					onClick={() => {
 						onDisagree && onDisagree()
 					}}

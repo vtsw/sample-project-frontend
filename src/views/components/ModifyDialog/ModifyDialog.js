@@ -18,7 +18,9 @@ const useStyles = makeStyles(theme => ({
 		width: 376,
 	},
 	title: {
-		fontWeight: 700,
+		'&>h2': {
+			fontWeight: 700,
+		},
 	},
 	textfield: {
 		width: '100%',
@@ -63,11 +65,7 @@ const ModifyDialog = props => {
 			onClose={onClose}
 			classes={{ paper: classes.root }}
 		>
-			<DialogTitle>
-				<Typography variant='h5' className={classes.title}>
-					Modify!
-				</Typography>
-			</DialogTitle>
+			<DialogTitle className={classes.title}>Modify!</DialogTitle>
 			<DialogContent>
 				<TextField
 					autoFocus

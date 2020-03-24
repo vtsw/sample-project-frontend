@@ -5,7 +5,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 module.exports = ({ mode, analyze }) => {
@@ -79,9 +78,7 @@ module.exports = ({ mode, analyze }) => {
 		},
 		output: {
 			path: resolve(__dirname, 'dist'),
-			filename: isEnvProduction
-				? '[name].[chunkhash:8].js'
-				: '[name].[hash:8].js',
+			filename: '[name].[hash:8].js',
 			publicPath: '/',
 		},
 		resolve: {

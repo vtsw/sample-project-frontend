@@ -32,7 +32,8 @@ const useStyles = makeStyles(theme => ({
 		alignItems: 'center',
 	},
 	columns__item__typo: {
-		width: '100%',
+		width: '95%',
+		whiteSpace: 'nowrap',
 		textOverflow: 'ellipsis',
 		overflow: 'hidden',
 		fontWeight: 700,
