@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
 	textfield: {
 		width: 328,
 	},
-	savebtn: {
+	savebutton: {
 		marginLeft: theme.spacing(1),
 		width: 56,
 		textTransform: 'none',
@@ -32,7 +32,7 @@ export default function BoxCreate({ handleCreate }) {
 			<Button
 				variant='contained'
 				color='primary'
-				className={classes.savebtn}
+				className={classes.savebutton}
 				onClick={() => handleCreate(createVal)}
 			>
 				Save

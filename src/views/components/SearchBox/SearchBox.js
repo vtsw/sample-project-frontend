@@ -14,11 +14,11 @@ const useStyles = makeStyles(theme => ({
 	searchinput: {
 		width: '80%',
 	},
-	searchbtn: {
+	searchbutton: {
 		color: theme.palette.common.white,
 		padding: 0,
 	},
-	searchbtn__icon: {
+	searchbutton__icon: {
 		fontSize: '2rem',
 	},
 }))
@@ -38,10 +38,10 @@ const SearchBox = ({ width, onSearch }) => {
 			<Button
 				variant='contained'
 				size='large'
-				className={classes.searchbtn}
+				className={classes.searchbutton}
 				onClick={() => onSearch(searchValue)}
 			>
-				<Search className={classes.searchbtn__icon} />
+				<Search className={classes.searchbutton__icon} />
 			</Button>
 		</Box>
 	)

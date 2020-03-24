@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
 	textfield: {
 		width: 328,
 	},
-	searchbtn: {
+	searchbutton: {
 		color: theme.palette.common.white,
 		marginLeft: theme.spacing(1),
 		width: 56,
@@ -41,7 +41,7 @@ const BoxSearch = ({ handleSearch }) => {
 			/>
 			<Button
 				variant='contained'
-				className={classes.searchbtn}
+				className={classes.searchbutton}
 				onClick={() => handleSearch(searchVal)}
 			>
 				<SearchIcon className={classes.icon} />

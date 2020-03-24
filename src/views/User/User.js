@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 
+import { useQuery } from '@apollo/react-hooks'
+
 import { Box, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { FormEditor } from '@views_components'
 import { WelcomeDialog, UserList } from './components'
+
+import { GET_SELECTED_USER } from '@views/User/query'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -26,6 +30,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const User = () => {
+	const {
+		data: { selectedUser },
+	} = useQuery(GET_SELECTED_USER)
 	const [dialogVisible, setDialogVisible] = useState(true)
 
 	const classes = useStyles()
@@ -35,7 +42,7 @@ const User = () => {
 			<Grid container className={classes.container}>
 				<Grid item xs={4}>
 					<Box className={classes.item__signup}>
-						{dialogVisible ? (
+						{dialogVisible && !selectedUser.id ? (
 							<WelcomeDialog setDialogVisible={setDialogVisible} />
 						) : null}
 						<FormEditor />

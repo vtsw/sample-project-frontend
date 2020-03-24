@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const FormEditor = ({ history }) => {
-	const isAuthenticated = getToken()
+	const authToken = getToken()
 
 	const {
 		data: { userSearchValue },
@@ -86,7 +86,7 @@ const FormEditor = ({ history }) => {
 		{
 			query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
 		},
-		isAuthenticated
+		authToken
 	)
 	const [deleteUser] = useDeleteAUser(DELETE_USER, FETCH_USER_LIST, {
 		query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
@@ -108,7 +108,7 @@ const FormEditor = ({ history }) => {
 	const classes = useStyles()
 
 	const onCancel = () => {
-		if (!isAuthenticated) {
+		if (!authToken) {
 			history.push('/sign-in')
 			return
 		}

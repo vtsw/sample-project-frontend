@@ -2,6 +2,8 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 
+import NavBarItem from './NavBarItem'
+
 import { deleteToken } from '@src/shares/utils'
 
 const useStyles = makeStyles(theme => ({
@@ -31,6 +33,12 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+const navbarItems = [
+	{ page: 'main', pathname: '/' },
+	{ page: 'user', pathname: '/user' },
+	{ page: 'message', pathname: '/message' },
+]
+
 const NavBar = ({ location, history }) => {
 	const [currentPage, setCurrentPage] = React.useState(location.pathname)
 	const classes = useStyles()
@@ -38,32 +46,20 @@ const NavBar = ({ location, history }) => {
 		setCurrentPage(page)
 		history.push(page)
 	}
+
+	const setActiveTab = pathname => {
+		return currentPage === pathname ? classes.active : ''
+	}
 	return (
 		<ul className={classes.root}>
-			<li
-				className={`${classes.tab} ${
-					currentPage === '/' ? classes.active : ''
-				}`}
-				onClick={() => handleOnChangePage('/')}
-			>
-				main
-			</li>
-			<li
-				className={`${classes.tab} ${
-					currentPage === '/user' ? classes.active : ''
-				}`}
-				onClick={() => handleOnChangePage('/user')}
-			>
-				user
-			</li>
-			<li
-				className={`${classes.tab} ${
-					currentPage === '/message' ? classes.active : ''
-				}`}
-				onClick={() => handleOnChangePage('/message')}
-			>
-				message
-			</li>
+			{navbarItems.map((item, index) => (
+				<NavBarItem
+					key={index}
+					handleOnChangePage={handleOnChangePage}
+					styles={`${classes.tab} ${setActiveTab(item.pathname)}`}
+					{...item}
+				/>
+			))}
 			<li
 				className={classes.tab}
 				onClick={() => {

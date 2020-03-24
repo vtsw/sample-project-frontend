@@ -7,10 +7,10 @@ const genQueryOptions = (query, variables) => {
 	}
 }
 
-const useCreateAUser = (query, updateQuery, vars, isAuthenticated) => {
+const useCreateAUser = (query, updateQuery, vars, authToken) => {
 	return useMutation(
 		query,
-		isAuthenticated &&
+		authToken &&
 			!vars.query.searchText && {
 				update(cache, { data: { createUser } }) {
 					const options = genQueryOptions(updateQuery, vars)
