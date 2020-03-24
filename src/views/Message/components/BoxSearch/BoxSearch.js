@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
 		borderTop: `1px solid ${theme.palette.common.border}`,
 	},
 	textfield: {
-		width: '328px',
+		width: 328,
 	},
 	searchbtn: {
 		color: theme.palette.common.white,

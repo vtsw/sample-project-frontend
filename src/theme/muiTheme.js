@@ -5,7 +5,6 @@ const theme = createMuiTheme({
 		common: {
 			white: '#ffffff',
 			blue: '#73bbff',
-			green: '#00897b',
 			light: '#eeeeee',
 			border: '#979797',
 			greyButton: '#d8d8d8',

@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	forminput: {
 		width: '100%',
-		marginTop: '18px',
+		marginTop: 18,
 	},
 	formcontent: {
 		padding: 0,
@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	formbutton: {
-		color: '#ffffff',
+		color: theme.palette.common.white,
 		fontWeight: 600,
 		textTransform: 'capitalize',
 		padding: '18px 0',

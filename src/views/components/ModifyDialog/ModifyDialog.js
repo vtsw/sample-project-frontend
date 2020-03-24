@@ -7,7 +7,6 @@ import {
 	Button,
 	makeStyles,
 	TextField,
-	Typography,
 	Slide,
 } from '@material-ui/core'
 
