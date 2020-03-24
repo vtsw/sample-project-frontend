@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+
 import { Box, Button, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Search } from '@material-ui/icons'
@@ -23,9 +23,11 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const SearchBox = ({ width, onSearch }) => {
-	const [searchValue, setSearchValue] = useState('')
+const SearchBox = props => {
+	const { userSearchValue, width, onSearch } = props
+	const [searchValue, setSearchValue] = useState(userSearchValue)
 	const classes = useStyles({ width })
+
 	return (
 		<Box className={classes.root}>
 			<TextField
@@ -34,6 +36,11 @@ const SearchBox = ({ width, onSearch }) => {
 				placeholder='search...'
 				className={classes.searchinput}
 				onChange={e => setSearchValue(e.target.value)}
+				onKeyDown={e => {
+					if (e.keyCode === 13) {
+						onSearch(searchValue)
+					}
+				}}
 			/>
 			<Button
 				variant='contained'
@@ -45,11 +52,6 @@ const SearchBox = ({ width, onSearch }) => {
 			</Button>
 		</Box>
 	)
-}
-
-SearchBox.propsTypes = {
-	width: PropTypes.string,
-	onSearch: PropTypes.func,
 }
 
 export default SearchBox

@@ -26,9 +26,11 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const BoxSearch = ({ handleSearch }) => {
-	const classes = useStyles()
+const BoxSearch = props => {
+	const { handleSearch } = props
 	const [searchVal, setSearchVal] = useState('')
+	const classes = useStyles()
+
 	return (
 		<Grid container alignItems='stretch' className={classes.root}>
 			<TextField

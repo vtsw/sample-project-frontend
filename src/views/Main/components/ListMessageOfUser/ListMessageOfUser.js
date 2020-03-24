@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
+
+import { useMutation, useQuery } from '@apollo/react-hooks'
+
 import { Box, Typography, makeStyles } from '@material-ui/core'
+
 import { LargeTable, DeleteDialog, ModifyDialog } from '@views_components'
-import { DELETE_MESSAGE, UPDATE_MESSAGE } from '../../../Message/mutation'
-import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks'
+
 import { MESSAGE_LIST } from '../../query'
+import { DELETE_MESSAGE, UPDATE_MESSAGE } from '../../../Message/mutation'
+import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -20,13 +25,33 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const ListMessageOfUser = ({ selectedUser }) => {
-	const classes = useStyles()
-	const client = useApolloClient()
+const ListMessageOfUser = props => {
+	const { selectedUser } = props
 	const [modifyDialogVisible, setModifyDialogVisible] = useState(false)
 	const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)
 	const [selectedMessage, setSelectedMessage] = useState('')
 	const [message, setMessage] = useState(false)
+
+	const { data: dataMsg, fetchMore, networkStatus } = useQuery(
+		MESSAGE_LIST,
+
+		{
+			variables: {
+				query: {
+					userId: selectedUser && selectedUser.id,
+					limit: 20,
+				},
+			},
+			fetchPolicy: 'network-only',
+			notifyOnNetworkStatusChange: true,
+		}
+	)
+
+	useEffect(() => {
+		if (dataMsg && dataMsg.messageList) {
+			setMessage(dataMsg.messageList.items)
+		}
+	}, [dataMsg])
 
 	const [deleteMsg] = useMutation(DELETE_MESSAGE, {
 		onCompleted: data => {
@@ -68,23 +93,8 @@ const ListMessageOfUser = ({ selectedUser }) => {
 		setModifyDialogVisible(true)
 	}
 
-	const { data: dataMsg } = useQuery(
-		MESSAGE_LIST,
-
-		{
-			variables: {
-				query: {
-					userId: selectedUser && selectedUser.id,
-					limit: 20,
-				},
-			},
-			fetchPolicy: 'network-only',
-		}
-	)
-
-	const loadNextMessagePage = async () => {
-		const result = await client.query({
-			query: MESSAGE_LIST,
+	const loadNextMessagePage = () =>
+		fetchMore({
 			variables: {
 				query: {
 					userId: selectedUser && selectedUser.id,
@@ -92,20 +102,34 @@ const ListMessageOfUser = ({ selectedUser }) => {
 					skip: message.length,
 				},
 			},
-		})
-		setMessage([...message, ...result.data.messageList.items])
-	}
+			updateQuery: (prev, { fetchMoreResult }) => {
+				if (!fetchMoreResult) return prev
+				const fetchedMessageList = fetchMoreResult.messageList
+				let cacheMessageList = prev.messageList
+				const items = [...cacheMessageList.items, ...fetchedMessageList.items]
+				const hasNext = fetchedMessageList.hasNext
 
-	useEffect(() => {
-		if (dataMsg && dataMsg.messageList) {
-			setMessage(dataMsg.messageList.items)
-		}
-	}, [dataMsg])
+				return {
+					messageList: {
+						...cacheMessageList,
+						items,
+						hasNext,
+					},
+				}
+			},
+		})
 
 	const columns = [
 		{ headerLabel: 'DATE', xs: 5, headerVariable: 'lastModified' },
 		{ headerLabel: 'CONTENT', xs: 7, headerVariable: 'content' },
 	]
+
+	const valueDefault =
+		message &&
+		message.find(item => item.id === selectedMessage.id) &&
+		message.find(item => item.id === selectedMessage.id).content
+
+	const classes = useStyles()
 
 	return (
 		message && (
@@ -124,6 +148,7 @@ const ListMessageOfUser = ({ selectedUser }) => {
 						setDeleteDialogVisible(true)
 						setSelectedMessage(dataRow)
 					}}
+					loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 					loadNextPage={loadNextMessagePage}
 					hasNextPage={dataMsg.messageList && dataMsg.messageList.hasNext}
 				/>
@@ -146,10 +171,7 @@ const ListMessageOfUser = ({ selectedUser }) => {
 					onClose={() => {
 						setModifyDialogVisible(false)
 					}}
-					valueDefault={
-						message.find(item => item.id === selectedMessage.id) &&
-						message.find(item => item.id === selectedMessage.id).content
-					}
+					valueDefault={valueDefault}
 					onAgree={value => {
 						setModifyDialogVisible(false)
 						handleUpdateMessage(value)

@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles({
@@ -13,8 +14,10 @@ const useStyles = makeStyles({
 		zIndex: 1000,
 	},
 })
-const Loading = ({ open, msg }) => {
+const Loading = props => {
+	const { open, msg } = props
 	const classes = useStyles()
+
 	return open && <div className={classes.root}>{msg}</div>
 }
 

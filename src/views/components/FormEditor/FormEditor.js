@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
+
 import { useQuery, useMutation } from '@apollo/react-hooks'
+
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -18,7 +20,7 @@ import {
 import { useCreateAUser, useDeleteAUser } from './useMutations'
 
 import { getToken } from '@src/shares/utils'
-import localConfigs from '@src/configs.local'
+import { LIMIT } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -84,12 +86,12 @@ const FormEditor = ({ history }) => {
 		CREATE_USER,
 		FETCH_USER_LIST,
 		{
-			query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
+			query: { searchText: userSearchValue, limit: LIMIT },
 		},
 		authToken
 	)
 	const [deleteUser] = useDeleteAUser(DELETE_USER, FETCH_USER_LIST, {
-		query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
+		query: { searchText: userSearchValue, limit: LIMIT },
 	})
 
 	const [userId, setUserId] = useState('')
@@ -142,7 +144,7 @@ const FormEditor = ({ history }) => {
 					{
 						query: FETCH_USER_LIST,
 						variables: {
-							query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
+							query: { searchText: userSearchValue, limit: LIMIT },
 						},
 					},
 			  ]

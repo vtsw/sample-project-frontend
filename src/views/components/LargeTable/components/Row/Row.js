@@ -1,6 +1,7 @@
 import React from 'react'
-import { Grid, Box, Typography, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
+
+import { Grid, Box, Typography, makeStyles } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 
 const useStyles = makeStyles(theme => ({
@@ -40,8 +41,8 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const Row = ({ forwardedRef, index, data, style }) => {
-	const classes = useStyles({ style, index })
+const Row = props => {
+	const { forwardedRef, index, data, style } = props
 	const {
 		items,
 		propsRow: {
@@ -54,6 +55,7 @@ const Row = ({ forwardedRef, index, data, style }) => {
 		},
 	} = data
 
+	const classes = useStyles({ style, index })
 	let item
 	if (!isItemLoaded(index)) {
 		return 'Loading...'

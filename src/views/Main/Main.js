@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import clsx from 'clsx'
+
+import { useQuery } from '@apollo/react-hooks'
+
 import { Box, Grid, makeStyles, Typography } from '@material-ui/core'
-import { useApolloClient, useQuery } from '@apollo/react-hooks'
-import { USER_LIST } from './query'
+
+import { SearchBox, Loading, LargeTable } from '@views_components'
 import { ListMessageOfUser } from './components'
-import Loading from '../components/Loading'
-import LargeTable from '../components/LargeTable/LargeTable'
-import { SearchBox } from '@views_components'
+
+import { USER_LIST } from './query'
+import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -42,27 +45,22 @@ const useStyle = makeStyles(theme => ({
 
 const Main = () => {
 	const [userList, setUserList] = useState({})
-	const client = useApolloClient()
 	const classes = useStyle()
+	const [searchValue, setSearchValue] = useState('')
 	const [selectedUser, setSelectedUser] = useState('')
 
 	const handleChoseImage = object => {
 		setSelectedUser(object)
 	}
 
-	const handleSearch = async inputVal => {
-		const result = await client.query({
-			query: USER_LIST,
-			variables: { query: { searchText: inputVal, limit: 100 } },
-		})
-		setUserList(result.data.userList)
-		setSelectedUser('')
-	}
-
-	const { loading, error, data } = useQuery(USER_LIST, {
-		fetchPolicy: 'network-only',
-		variables: { query: { limit: 20 } },
-	})
+	const { loading, error, data, fetchMore, networkStatus } = useQuery(
+		USER_LIST,
+		{
+			fetchPolicy: 'network-only',
+			variables: { query: { limit: 20 } },
+			notifyOnNetworkStatusChange: true,
+		}
+	)
 
 	useEffect(() => {
 		if (data && data.userList) {
@@ -77,23 +75,62 @@ const Main = () => {
 		{ headerLabel: 'NAME', xs: 6, headerVariable: 'name' },
 	]
 
-	const loadNextUserPage = async () => {
-		const result = await client.query({
-			query: USER_LIST,
+	const handleSearch = inputVal => {
+		setSearchValue(inputVal)
+		fetchMore({
 			variables: {
-				query: { limit: 10, skip: userList.items.length },
+				query: { searchText: inputVal, limit: 10 },
 			},
-		})
-		setUserList({
-			...userList,
-			total: userList.total + result.data.userList.total,
-			items: [...userList.items, ...result.data.userList.items],
+			updateQuery: (prev, { fetchMoreResult }) => {
+				if (!fetchMoreResult) {
+					return prev
+				} else {
+					const fetchedUserList = fetchMoreResult.userList
+					let cacheUserList = prev.userList
+					const hasNext = fetchedUserList.hasNext
+					return {
+						userList: {
+							...cacheUserList,
+							items: fetchedUserList.items,
+							hasNext,
+						},
+					}
+				}
+			},
 		})
 	}
 
+	const loadNextUserPage = () =>
+		fetchMore({
+			variables: {
+				query: {
+					limit: 10,
+					skip: userList.items.length,
+					searchText: searchValue,
+				},
+			},
+			updateQuery: (prev, { fetchMoreResult }) => {
+				if (!fetchMoreResult) return prev
+				const fetchedUserList = fetchMoreResult.userList
+				let cacheUserList = prev.userList
+				const items = [...cacheUserList.items, ...fetchedUserList.items]
+				const hasNext = fetchedUserList.hasNext
+				return {
+					userList: {
+						...cacheUserList,
+						items,
+						hasNext,
+					},
+				}
+			},
+		})
+
 	return (
 		<Box className={classes.root}>
-			<Loading open={loading} msg={'Loading...'} />
+			<Loading
+				open={loading && networkStatus !== NETWORK_STATUS_FETCH_MORE}
+				msg={'Loading...'}
+			/>
 			<Grid container className={clsx(classes.fullheight, classes.container)}>
 				<Grid item xs={4}>
 					<Box
@@ -111,6 +148,7 @@ const Main = () => {
 								onClickRow={handleChoseImage}
 								selectedRow={selectedUser}
 								columns={columns}
+								loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 								isIconClose={false}
 								loadNextPage={loadNextUserPage}
 								hasNextPage={userList.hasNext}
@@ -133,4 +171,5 @@ const Main = () => {
 		</Box>
 	)
 }
+
 export default Main

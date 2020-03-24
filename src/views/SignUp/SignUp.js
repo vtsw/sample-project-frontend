@@ -15,6 +15,7 @@ const useStyles = makeStyles({
 
 const SignUp = () => {
 	const classes = useStyles()
+
 	return (
 		<Box className={classes.root}>
 			<FormEditor />

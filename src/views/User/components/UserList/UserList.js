@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box, Typography } from '@material-ui/core'
@@ -14,7 +14,7 @@ import {
 	GET_SELECTED_USER,
 	SET_SELECTED_USER,
 } from '@views/User/query'
-import localConfigs from '@src/configs.local'
+import { LIMIT, NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -47,19 +47,24 @@ const TABLE_HEADER = [
 	{ headerLabel: 'NAME', xs: 7, headerVariable: 'name' },
 ]
 
-const UserList = ({ setDialogVisible }) => {
+const UserList = props => {
+	const { setDialogVisible } = props
 	const {
 		data: { userSearchValue },
 	} = useQuery(GET_USER_SEARCH_TEXT)
 
-	const { loading, data, fetchMore } = useQuery(FETCH_USER_LIST, {
-		variables: {
-			query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
-		},
-		onError: err => {
-			alert(err)
-		},
-	})
+	const { loading, data, fetchMore, networkStatus } = useQuery(
+		FETCH_USER_LIST,
+		{
+			variables: {
+				query: { searchText: userSearchValue, limit: LIMIT },
+			},
+			notifyOnNetworkStatusChange: true,
+			onError: err => {
+				alert(err)
+			},
+		}
+	)
 	const {
 		data: { selectedUser },
 	} = useQuery(GET_SELECTED_USER, {
@@ -93,7 +98,7 @@ const UserList = ({ setDialogVisible }) => {
 		})
 	}
 
-	const loadNextUserPage = async () => {
+	const loadNextUserPage = () =>
 		fetchMore({
 			variables: {
 				query: { skip: data.userList.items.length },
@@ -114,7 +119,6 @@ const UserList = ({ setDialogVisible }) => {
 				}
 			},
 		})
-	}
 
 	const selectAnUser = selectedUser => {
 		setSelectedUser({
@@ -133,30 +137,31 @@ const UserList = ({ setDialogVisible }) => {
 					<Typography variant='h5' className={classes.searchbox__title}>
 						User List
 					</Typography>
-					<SearchBox width={400} onSearch={handleOnSearch} />
+					<SearchBox
+						userSearchValue={userSearchValue}
+						width={400}
+						onSearch={handleOnSearch}
+					/>
 				</Box>
 				<Box className={classes.userlist__table}>
-					{!loading ? (
+					{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
+						<Loading open={true} msg={'Loading...'} />
+					) : (
 						<LargeTable
 							items={data.userList.items}
 							onClickRow={selectAnUser}
 							selectedRow={selectedUser}
 							columns={TABLE_HEADER}
 							isIconClose={false}
+							loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 							loadNextPage={loadNextUserPage}
 							hasNextPage={data.userList.hasNext}
 						/>
-					) : (
-						<Loading open={true} msg={'Loading...'} />
 					)}
 				</Box>
 			</Box>
 		</Box>
 	)
-}
-
-UserList.propsTypes = {
-	setDialogVisible: PropTypes.func,
 }
 
 export default UserList

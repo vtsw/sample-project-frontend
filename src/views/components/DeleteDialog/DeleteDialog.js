@@ -1,4 +1,5 @@
 import React from 'react'
+
 import clsx from 'clsx'
 import {
 	Dialog,
@@ -41,8 +42,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction='up' ref={ref} {...props} />
 })
 
-const DeleteDialog = ({ open, onClose, onAgree, onDisagree }) => {
+const DeleteDialog = props => {
+	const { open, onClose, onAgree, onDisagree } = props
 	const classes = useStyles()
+
 	return (
 		<Dialog
 			TransitionComponent={Transition}

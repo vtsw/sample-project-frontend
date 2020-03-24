@@ -4,7 +4,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
 
 import { getToken } from './shares/utils'
-import localConfigs from './configs.local'
+import { APOLLO_SERVER } from './configs.local'
 
 const typeDefs = {}
 
@@ -30,7 +30,7 @@ const resolvers = {
 }
 
 const httpLink = createHttpLink({
-	uri: localConfigs.APOLLO_SERVER,
+	uri: APOLLO_SERVER,
 	credentials: 'same-origin',
 })
 

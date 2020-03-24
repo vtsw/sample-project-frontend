@@ -15,7 +15,8 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function BoxCreate({ handleCreate }) {
+const BoxCreate = props => {
+	const { handleCreate } = props
 	const [createVal, setCreateVal] = useState('')
 	const classes = useStyles()
 
@@ -40,3 +41,5 @@ export default function BoxCreate({ handleCreate }) {
 		</Grid>
 	)
 }
+
+export default BoxCreate
