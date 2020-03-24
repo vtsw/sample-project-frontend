@@ -58,11 +58,15 @@ const UserList = ({ setDialogVisible }) => {
 		data: { userSearchValue },
 	} = useQuery(GET_USER_SEARCH_TEXT)
 
-	const { loading, _, data, fetchMore } = useQuery(FETCH_USER_LIST, {
-		variables: {
-			query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
-		},
-	})
+	const { loading, _, data, fetchMore, networkStatus } = useQuery(
+		FETCH_USER_LIST,
+		{
+			variables: {
+				query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
+			},
+			notifyOnNetworkStatusChange: true,
+		}
+	)
 	const {
 		data: { selectedUser },
 	} = useQuery(GET_SELECTED_USER)
@@ -84,7 +88,7 @@ const UserList = ({ setDialogVisible }) => {
 		})
 	}
 
-	const loadNextUserPage = async resolve => {
+	const loadNextUserPage = () =>
 		fetchMore({
 			variables: {
 				query: { skip: data.userList.items.length },
@@ -95,7 +99,7 @@ const UserList = ({ setDialogVisible }) => {
 				let cacheUserList = prev.userList
 				const items = [...cacheUserList.items, ...fetchedUserList.items]
 				const hasNext = fetchedUserList.hasNext
-				resolve('done')
+
 				return {
 					userList: {
 						...cacheUserList,
@@ -105,7 +109,6 @@ const UserList = ({ setDialogVisible }) => {
 				}
 			},
 		})
-	}
 
 	const selectAnUser = selectedUser => {
 		setSelectedUser({
@@ -127,18 +130,19 @@ const UserList = ({ setDialogVisible }) => {
 					<SearchBox width={400} onSearch={handleOnSearch} />
 				</Box>
 				<Box className={classes.user_list__table}>
-					{!loading ? (
+					{loading && networkStatus !== 3 ? (
+						<div>Loading...</div>
+					) : (
 						<LargeTable
 							items={data.userList.items}
 							onClickRow={selectAnUser}
 							selectedRow={selectedUser}
 							columns={TABLE_HEADER}
 							isIconClose={false}
+							loadingMore={networkStatus === 3}
 							loadNextPage={loadNextUserPage}
 							hasNextPage={data.userList.hasNext}
 						/>
-					) : (
-						<div>Loading...</div>
 					)}
 				</Box>
 			</Box>

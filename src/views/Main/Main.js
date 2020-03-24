@@ -51,10 +51,14 @@ const Main = () => {
 		setSelectedUser(object)
 	}
 
-	const { loading, error, data, fetchMore } = useQuery(USER_LIST, {
-		fetchPolicy: 'network-only',
-		variables: { query: { limit: 20 } },
-	})
+	const { loading, error, data, fetchMore, networkStatus } = useQuery(
+		USER_LIST,
+		{
+			fetchPolicy: 'network-only',
+			variables: { query: { limit: 20 } },
+			notifyOnNetworkStatusChange: true,
+		}
+	)
 
 	useEffect(() => {
 		if (data && data.userList) {
@@ -69,7 +73,7 @@ const Main = () => {
 		{ headerLabel: 'NAME', xs: 6, headerVariable: 'name' },
 	]
 
-	const handleSearch = async inputVal => {
+	const handleSearch = inputVal => {
 		setSearchValue(inputVal)
 		fetchMore({
 			variables: {
@@ -91,7 +95,7 @@ const Main = () => {
 		})
 	}
 
-	const loadNextUserPage = async resolve => {
+	const loadNextUserPage = () =>
 		fetchMore({
 			variables: {
 				query: {
@@ -106,7 +110,6 @@ const Main = () => {
 				let cacheUserList = prev.userList
 				const items = [...cacheUserList.items, ...fetchedUserList.items]
 				const hasNext = fetchedUserList.hasNext
-				resolve('done')
 				return {
 					userList: {
 						...cacheUserList,
@@ -116,11 +119,10 @@ const Main = () => {
 				}
 			},
 		})
-	}
 
 	return (
 		<Box className={classes.root}>
-			<Loading open={loading} msg={'Loading...'} />
+			<Loading open={loading && networkStatus !== 3} msg={'Loading...'} />
 			<Grid container className={clsx(classes.full_height, classes.container)}>
 				<Grid item xs={4}>
 					<Box
@@ -135,6 +137,7 @@ const Main = () => {
 								onClickRow={handleChoseImage}
 								selectedRow={selectedUser}
 								columns={columns}
+								loadingMore={networkStatus === 3}
 								isIconClose={false}
 								loadNextPage={loadNextUserPage}
 								hasNextPage={userList.hasNext}

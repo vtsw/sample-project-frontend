@@ -97,12 +97,16 @@ const Message = () => {
 		})
 	}
 
-	const { loading, error, data, fetchMore } = useQuery(MESSAGE_LIST, {
-		fetchPolicy: 'network-only',
-		variables: { query: { limit: 20 } },
-	})
+	const { loading, error, data, fetchMore, networkStatus } = useQuery(
+		MESSAGE_LIST,
+		{
+			fetchPolicy: 'network-only',
+			variables: { query: { limit: 20 } },
+			notifyOnNetworkStatusChange: true,
+		}
+	)
 
-	const handleSearch = async value => {
+	const handleSearch = value => {
 		setSearchText(value)
 		fetchMore({
 			variables: {
@@ -129,7 +133,7 @@ const Message = () => {
 		})
 	}
 
-	const loadNextMesagePage = async resolve => {
+	const loadNextMessagePage = () =>
 		fetchMore({
 			variables: {
 				query: {
@@ -139,7 +143,6 @@ const Message = () => {
 				},
 			},
 			updateQuery: (prev, { fetchMoreResult }) => {
-				resolve('done')
 				if (!fetchMoreResult) return prev
 				const fetchedMessageList = fetchMoreResult.messageList
 				let cacheMessageList = prev.messageList
@@ -156,7 +159,6 @@ const Message = () => {
 				}
 			},
 		})
-	}
 
 	useEffect(() => {
 		if (data && data.messageList) {
@@ -173,7 +175,7 @@ const Message = () => {
 
 	return (
 		<Box className={classes.root}>
-			<Loading open={loading} msg={'Loading...'} />
+			<Loading open={loading && networkStatus !== 3} msg={'Loading...'} />
 			<Grid container direction='column' className={classes.container}>
 				<Grid item>
 					<BoxCreate handleCreate={handleCreateMessage} />
@@ -195,8 +197,9 @@ const Message = () => {
 						}}
 						selectedRow={selectedMessage}
 						columns={columns}
+						loadingMore={networkStatus === 3}
 						isIconClose={true}
-						loadNextPage={loadNextMesagePage}
+						loadNextPage={loadNextMessagePage}
 						hasNextPage={contents.hasNext}
 					/>
 				)}

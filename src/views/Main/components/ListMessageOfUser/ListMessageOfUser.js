@@ -67,7 +67,7 @@ const ListMessageOfUser = ({ selectedUser }) => {
 		setModifyDialogVisible(true)
 	}
 
-	const { data: dataMsg, fetchMore } = useQuery(
+	const { data: dataMsg, fetchMore, networkStatus } = useQuery(
 		MESSAGE_LIST,
 
 		{
@@ -78,10 +78,11 @@ const ListMessageOfUser = ({ selectedUser }) => {
 				},
 			},
 			fetchPolicy: 'network-only',
+			notifyOnNetworkStatusChange: true,
 		}
 	)
 
-	const loadNextMesagePage = async resolve => {
+	const loadNextMessagePage = () =>
 		fetchMore({
 			variables: {
 				query: {
@@ -91,7 +92,6 @@ const ListMessageOfUser = ({ selectedUser }) => {
 				},
 			},
 			updateQuery: (prev, { fetchMoreResult }) => {
-				resolve('done')
 				if (!fetchMoreResult) return prev
 				const fetchedMessageList = fetchMoreResult.messageList
 				let cacheMessageList = prev.messageList
@@ -107,7 +107,6 @@ const ListMessageOfUser = ({ selectedUser }) => {
 				}
 			},
 		})
-	}
 
 	useEffect(() => {
 		if (dataMsg && dataMsg.messageList) {
@@ -137,7 +136,8 @@ const ListMessageOfUser = ({ selectedUser }) => {
 						setDeleteDialogVisible(true)
 						setSelectedMessage(dataRow)
 					}}
-					loadNextPage={loadNextMesagePage}
+					loadingMore={networkStatus === 3}
+					loadNextPage={loadNextMessagePage}
 					hasNextPage={dataMsg.messageList && dataMsg.messageList.hasNext}
 				/>
 
