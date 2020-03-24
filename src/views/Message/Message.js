@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { Box, Grid, makeStyles } from '@material-ui/core'
 import { BoxCreate, BoxSearch } from './components'
 import { MESSAGE_LIST } from './query'
-import { useApolloClient, useMutation, useQuery } from '@apollo/react-hooks'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './mutation'
 import Loading from '../components/Loading'
 import LargeTable from '../components/LargeTable/LargeTable'
 import { DeleteDialog, ModifyDialog } from '@views_components'
+import { NETWORK_STATUS_FETCH_MORE } from '../../configs.local'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -30,11 +31,11 @@ const useStyle = makeStyles(theme => ({
 
 const Message = () => {
 	const classes = useStyle()
-	const client = useApolloClient()
 	const [contents, setContents] = useState({})
 
 	const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
 	const [openConfirmModify, setOpenConfirmModify] = useState(false)
+	const [searchText, setSearchText] = useState('')
 
 	const [selectedMessage, setSelectedMessage] = useState(false)
 
@@ -81,16 +82,6 @@ const Message = () => {
 		},
 	})
 
-	const handleSearch = async value => {
-		const result = await client.query({
-			query: MESSAGE_LIST,
-			variables: { query: { searchText: value, limit: 40 } },
-			fetchPolicy: 'network-only',
-		})
-		setContents(result.data.messageList)
-		setSelectedMessage(false)
-	}
-
 	const handleDeleteMessage = id => {
 		deleteMsg({ variables: { id } })
 	}
@@ -107,27 +98,68 @@ const Message = () => {
 		})
 	}
 
-	const { loading, error, data } = useQuery(MESSAGE_LIST, {
-		fetchPolicy: 'network-only',
-		variables: { query: { limit: 20 } },
-	})
+	const { loading, error, data, fetchMore, networkStatus } = useQuery(
+		MESSAGE_LIST,
+		{
+			fetchPolicy: 'network-only',
+			variables: { query: { limit: 20 } },
+			notifyOnNetworkStatusChange: true,
+		}
+	)
 
-	const loadNextMesagePage = async () => {
-		const result = await client.query({
-			query: MESSAGE_LIST,
+	const handleSearch = value => {
+		setSearchText(value)
+		fetchMore({
 			variables: {
 				query: {
 					limit: 10,
 					skip: contents.items.length,
+					searchText: value,
 				},
 			},
-		})
-		setContents({
-			...contents,
-			total: contents.total + result.data.messageList.total,
-			items: [...contents.items, ...result.data.messageList.items],
+			updateQuery: (prev, { fetchMoreResult }) => {
+				if (!fetchMoreResult) return prev
+				const fetchedMessageList = fetchMoreResult.messageList
+				let cacheMessageList = prev.messageList
+				const hasNext = fetchedMessageList.hasNext
+
+				return {
+					messageList: {
+						...cacheMessageList,
+						items: fetchedMessageList.items,
+						hasNext,
+					},
+				}
+			},
 		})
 	}
+
+	const loadNextMessagePage = () =>
+		fetchMore({
+			variables: {
+				query: {
+					limit: 10,
+					skip: contents.items.length,
+					searchText: searchText,
+				},
+			},
+			updateQuery: (prev, { fetchMoreResult }) => {
+				if (!fetchMoreResult) return prev
+				const fetchedMessageList = fetchMoreResult.messageList
+				let cacheMessageList = prev.messageList
+
+				const items = [...cacheMessageList.items, ...fetchedMessageList.items]
+				const hasNext = fetchedMessageList.hasNext
+
+				return {
+					messageList: {
+						...cacheMessageList,
+						items,
+						hasNext,
+					},
+				}
+			},
+		})
 
 	useEffect(() => {
 		if (data && data.messageList) {
@@ -144,7 +176,10 @@ const Message = () => {
 
 	return (
 		<Box className={classes.root}>
-			<Loading open={loading} msg={'Loading...'} />
+			<Loading
+				open={loading && networkStatus !== NETWORK_STATUS_FETCH_MORE}
+				msg={'Loading...'}
+			/>
 			<Grid container direction='column' className={classes.container}>
 				<Grid item>
 					<BoxCreate handleCreate={handleCreateMessage} />
@@ -166,8 +201,9 @@ const Message = () => {
 						}}
 						selectedRow={selectedMessage}
 						columns={columns}
+						loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 						isIconClose={true}
-						loadNextPage={loadNextMesagePage}
+						loadNextPage={loadNextMessagePage}
 						hasNextPage={contents.hasNext}
 					/>
 				)}

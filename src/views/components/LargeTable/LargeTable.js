@@ -20,16 +20,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const LargeTable = props => {
-	const { items, columns, loadNextPage } = props
+	const { items, columns, loadNextPage, loadingMore } = props
 	const classes = useStyles()
-
-	const [loadingMore, setLoadingMore] = useState(false)
-
-	const _loadNextPage = async () => {
-		await setLoadingMore(true)
-		await loadNextPage()
-		await setLoadingMore(false)
-	}
 
 	return (
 		<Box className={classes.root}>
@@ -46,7 +38,7 @@ const LargeTable = props => {
 				{items.length > 0 && (
 					<InfiniteScroll
 						{...props}
-						loadNextPage={_loadNextPage}
+						loadNextPage={loadNextPage}
 						isNextPageLoading={loadingMore}
 					/>
 				)}
