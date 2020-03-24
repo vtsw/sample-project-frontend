@@ -1,7 +1,5 @@
-const url = process.env.APOLLO_SERVER
-const localConfigs = {
-	APOLLO_SERVER: url,
-	LIMIT: 20,
-}
+const APOLLO_SERVER = process.env.APOLLO_SERVER
+const LIMIT = 20
+const NETWORK_STATUS_FETCH_MORE = 3
 
-export default localConfigs
+export { APOLLO_SERVER, LIMIT, NETWORK_STATUS_FETCH_MORE }

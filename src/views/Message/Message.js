@@ -7,6 +7,7 @@ import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './mutation'
 import Loading from '../components/Loading'
 import LargeTable from '../components/LargeTable/LargeTable'
 import { DeleteDialog, ModifyDialog } from '@views_components'
+import { NETWORK_STATUS_FETCH_MORE } from '../../configs.local'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -175,7 +176,10 @@ const Message = () => {
 
 	return (
 		<Box className={classes.root}>
-			<Loading open={loading && networkStatus !== 3} msg={'Loading...'} />
+			<Loading
+				open={loading && networkStatus !== NETWORK_STATUS_FETCH_MORE}
+				msg={'Loading...'}
+			/>
 			<Grid container direction='column' className={classes.container}>
 				<Grid item>
 					<BoxCreate handleCreate={handleCreateMessage} />
@@ -197,7 +201,7 @@ const Message = () => {
 						}}
 						selectedRow={selectedMessage}
 						columns={columns}
-						loadingMore={networkStatus === 3}
+						loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 						isIconClose={true}
 						loadNextPage={loadNextMessagePage}
 						hasNextPage={contents.hasNext}

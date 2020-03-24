@@ -7,6 +7,7 @@ import { ListMessageOfUser } from './components'
 import Loading from '../components/Loading'
 import LargeTable from '../components/LargeTable/LargeTable'
 import { SearchBox } from '@views_components'
+import { NETWORK_STATUS_FETCH_MORE } from '../../configs.local'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -80,16 +81,19 @@ const Main = () => {
 				query: { searchText: inputVal, limit: 10 },
 			},
 			updateQuery: (prev, { fetchMoreResult }) => {
-				if (!fetchMoreResult) return prev
-				const fetchedUserList = fetchMoreResult.userList
-				let cacheUserList = prev.userList
-				const hasNext = fetchedUserList.hasNext
-				return {
-					userList: {
-						...cacheUserList,
-						items: fetchedUserList.items,
-						hasNext,
-					},
+				if (!fetchMoreResult) {
+					return prev
+				} else {
+					const fetchedUserList = fetchMoreResult.userList
+					let cacheUserList = prev.userList
+					const hasNext = fetchedUserList.hasNext
+					return {
+						userList: {
+							...cacheUserList,
+							items: fetchedUserList.items,
+							hasNext,
+						},
+					}
 				}
 			},
 		})
@@ -122,7 +126,10 @@ const Main = () => {
 
 	return (
 		<Box className={classes.root}>
-			<Loading open={loading && networkStatus !== 3} msg={'Loading...'} />
+			<Loading
+				open={loading && networkStatus !== NETWORK_STATUS_FETCH_MORE}
+				msg={'Loading...'}
+			/>
 			<Grid container className={clsx(classes.full_height, classes.container)}>
 				<Grid item xs={4}>
 					<Box
@@ -137,7 +144,7 @@ const Main = () => {
 								onClickRow={handleChoseImage}
 								selectedRow={selectedUser}
 								columns={columns}
-								loadingMore={networkStatus === 3}
+								loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 								isIconClose={false}
 								loadNextPage={loadNextUserPage}
 								hasNextPage={userList.hasNext}

@@ -4,6 +4,7 @@ import { LargeTable, DeleteDialog, ModifyDialog } from '@views_components'
 import { DELETE_MESSAGE, UPDATE_MESSAGE } from '../../../Message/mutation'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { MESSAGE_LIST } from '../../query'
+import { NETWORK_STATUS_FETCH_MORE } from '../../../../configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		flexDirection: 'column',
 	},
-	message_list__title: {
+	listtitle: {
 		padding: theme.spacing(3),
 		fontWeight: 700,
 	},
@@ -26,6 +27,27 @@ const ListMessageOfUser = ({ selectedUser }) => {
 	const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)
 	const [selectedMessage, setSelectedMessage] = useState('')
 	const [message, setMessage] = useState(false)
+
+	const { data: dataMsg, fetchMore, networkStatus } = useQuery(
+		MESSAGE_LIST,
+
+		{
+			variables: {
+				query: {
+					userId: selectedUser && selectedUser.id,
+					limit: 20,
+				},
+			},
+			fetchPolicy: 'network-only',
+			notifyOnNetworkStatusChange: true,
+		}
+	)
+
+	useEffect(() => {
+		if (dataMsg && dataMsg.messageList) {
+			setMessage(dataMsg.messageList.items)
+		}
+	}, [dataMsg])
 
 	const [deleteMsg] = useMutation(DELETE_MESSAGE, {
 		onCompleted: data => {
@@ -67,21 +89,6 @@ const ListMessageOfUser = ({ selectedUser }) => {
 		setModifyDialogVisible(true)
 	}
 
-	const { data: dataMsg, fetchMore, networkStatus } = useQuery(
-		MESSAGE_LIST,
-
-		{
-			variables: {
-				query: {
-					userId: selectedUser && selectedUser.id,
-					limit: 20,
-				},
-			},
-			fetchPolicy: 'network-only',
-			notifyOnNetworkStatusChange: true,
-		}
-	)
-
 	const loadNextMessagePage = () =>
 		fetchMore({
 			variables: {
@@ -108,21 +115,20 @@ const ListMessageOfUser = ({ selectedUser }) => {
 			},
 		})
 
-	useEffect(() => {
-		if (dataMsg && dataMsg.messageList) {
-			setMessage(dataMsg.messageList.items)
-		}
-	}, [dataMsg])
-
 	const columns = [
 		{ headerLabel: 'DATE', xs: 5, headerVariable: 'lastModified' },
 		{ headerLabel: 'CONTENT', xs: 7, headerVariable: 'content' },
 	]
 
+	const valueDefault =
+		message &&
+		message.find(item => item.id === selectedMessage.id) &&
+		message.find(item => item.id === selectedMessage.id).content
+
 	return (
 		message && (
 			<Box className={classes.root}>
-				<Typography variant='h5' className={classes.message_list__title}>
+				<Typography variant='h5' className={classes.listtitle}>
 					Total {message.length}
 				</Typography>
 
@@ -136,7 +142,7 @@ const ListMessageOfUser = ({ selectedUser }) => {
 						setDeleteDialogVisible(true)
 						setSelectedMessage(dataRow)
 					}}
-					loadingMore={networkStatus === 3}
+					loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 					loadNextPage={loadNextMessagePage}
 					hasNextPage={dataMsg.messageList && dataMsg.messageList.hasNext}
 				/>
@@ -159,10 +165,7 @@ const ListMessageOfUser = ({ selectedUser }) => {
 					onClose={() => {
 						setModifyDialogVisible(false)
 					}}
-					valueDefault={
-						message.find(item => item.id === selectedMessage.id) &&
-						message.find(item => item.id === selectedMessage.id).content
-					}
+					valueDefault={valueDefault}
 					onAgree={value => {
 						setModifyDialogVisible(false)
 						handleUpdateMessage(value)

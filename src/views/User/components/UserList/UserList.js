@@ -5,6 +5,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
+import { NETWORK_STATUS_FETCH_MORE } from '../../../../configs.local'
 
 import { SearchBox, LargeTable } from '@views_components'
 
@@ -15,7 +16,7 @@ import {
 	GET_SELECTED_USER,
 	SET_SELECTED_USER,
 } from '@views/User/query'
-import localConfigs from '@src/configs.local'
+import { LIMIT } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 	full_height: {
 		height: '100%',
 	},
-	user_list__container: {
+	userlist__container: {
 		border: `1px solid ${theme.palette.common.border}`,
 		marginLeft: theme.spacing(1.5),
 		overflow: 'hidden',
@@ -62,7 +63,7 @@ const UserList = ({ setDialogVisible }) => {
 		FETCH_USER_LIST,
 		{
 			variables: {
-				query: { searchText: userSearchValue, limit: localConfigs.LIMIT },
+				query: { searchText: userSearchValue, limit: LIMIT },
 			},
 			notifyOnNetworkStatusChange: true,
 		}
@@ -122,7 +123,7 @@ const UserList = ({ setDialogVisible }) => {
 	const classes = useStyles()
 	return (
 		<Box className={classes.root}>
-			<Box className={clsx(classes.user_list__container, classes.full_height)}>
+			<Box className={clsx(classes.userlist__container, classes.full_height)}>
 				<Box className={classes.search_box}>
 					<Typography variant='h5' className={classes.search_box__title}>
 						User List
@@ -130,7 +131,7 @@ const UserList = ({ setDialogVisible }) => {
 					<SearchBox width={400} onSearch={handleOnSearch} />
 				</Box>
 				<Box className={classes.user_list__table}>
-					{loading && networkStatus !== 3 ? (
+					{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
 						<div>Loading...</div>
 					) : (
 						<LargeTable
@@ -139,7 +140,7 @@ const UserList = ({ setDialogVisible }) => {
 							selectedRow={selectedUser}
 							columns={TABLE_HEADER}
 							isIconClose={false}
-							loadingMore={networkStatus === 3}
+							loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 							loadNextPage={loadNextUserPage}
 							hasNextPage={data.userList.hasNext}
 						/>
