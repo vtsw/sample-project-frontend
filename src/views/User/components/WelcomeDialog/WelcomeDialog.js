@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const WelcomeDialog = props => {
-	const { setDialogVisible } = props
+	const { onCreateUser } = props
 	const classes = useStyles()
 
 	return (
@@ -43,7 +43,7 @@ const WelcomeDialog = props => {
 					variant='contained'
 					fullWidth
 					className={classes.button}
-					onClick={() => setDialogVisible(false)}
+					onClick={onCreateUser}
 				>
 					Create user
 				</Button>

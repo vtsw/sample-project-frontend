@@ -22,13 +22,15 @@ const InfiniteScroll = props => {
 	const {
 		hasNextPage,
 		isNextPageLoading,
-		isIconClose,
-		items,
-		columns,
+		isIconClose = false,
+		items = [],
+		columns = [
+			{ headerLabel: 'EMAIL', width: { xs: 1 }, headerVariable: 'email' },
+		],
 		loadNextPage,
-		onClickRow,
-		selectedRow,
-		handleDeleteRow,
+		onClickRow = () => {},
+		selectedRow = {},
+		handleDeleteRow = () => {},
 	} = props
 	const itemCount = hasNextPage ? items.length + 1 : items.length
 	const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage

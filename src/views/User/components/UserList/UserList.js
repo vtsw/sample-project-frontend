@@ -48,7 +48,7 @@ const TABLE_HEADER = [
 ]
 
 const UserList = props => {
-	const { setDialogVisible } = props
+	const { onSelectAnUser } = props
 	const {
 		data: { userSearchValue },
 	} = useQuery(GET_USER_SEARCH_TEXT)
@@ -126,7 +126,7 @@ const UserList = props => {
 				selectedUser,
 			},
 		})
-		setDialogVisible(false)
+		onSelectAnUser()
 	}
 
 	const classes = useStyles()
