@@ -41,7 +41,6 @@ const Message = () => {
 
 	const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
 	const [openConfirmModify, setOpenConfirmModify] = useState(false)
-	// const [searchText, setSearchText] = useState('')
 
 	const [selectedMessage, setSelectedMessage] = useState(false)
 
