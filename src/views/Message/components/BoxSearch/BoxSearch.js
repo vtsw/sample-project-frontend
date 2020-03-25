@@ -27,9 +27,9 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function BoxSearch({ handleSearch }) {
+export default function BoxSearch({ handleSearch, defaultValue }) {
 	const classes = useStyles()
-	const [searchVal, setSearchVal] = useState('')
+	const [searchVal, setSearchVal] = useState(defaultValue)
 	return (
 		<Grid container alignItems='stretch' className={classes.search}>
 			<TextField
@@ -37,6 +37,7 @@ export default function BoxSearch({ handleSearch }) {
 				label='Search'
 				placeholder='search...'
 				type='search'
+				defaultValue={defaultValue}
 				onChange={e => setSearchVal(e.target.value)}
 				className={classes.textField}
 			/>

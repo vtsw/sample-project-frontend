@@ -26,6 +26,40 @@ const resolvers = {
 			})
 			return selectedUser
 		},
+
+		setUserSearchValueOfMain: (_, { searchValue }, { cache }) => {
+			cache.writeData({
+				data: {
+					userSearchValueOfMain: searchValue,
+				},
+			})
+			return searchValue
+		},
+		setSelectedUserOfMain: (_, { selectedUser }, { cache }) => {
+			cache.writeData({
+				data: {
+					selectedUserOfMain: selectedUser,
+				},
+			})
+			return selectedUser
+		},
+
+		setMessageSearchValueOfMain: (_, { searchValue }, { cache }) => {
+			cache.writeData({
+				data: {
+					messageSearchValueOfMessage: searchValue,
+				},
+			})
+			return searchValue
+		},
+		setMessageCreateValueOfMain: (_, { createValue }, { cache }) => {
+			cache.writeData({
+				data: {
+					messageCreateValueOfMessage: createValue,
+				},
+			})
+			return createValue
+		},
 	},
 }
 
@@ -56,11 +90,20 @@ const client = new ApolloClient({
 cache.writeData({
 	data: {
 		userSearchValue: '',
+		messageCreateValueOfMessage: '',
+		messageSearchValueOfMessage: '',
+		userSearchValueOfMain: '',
 		selectedUser: {
 			id: '',
 			name: '',
 			email: '',
 			__typename: 'User',
+		},
+		selectedUserOfMain: {
+			id: '',
+			name: '',
+			email: '',
+			__typename: 'UserOfMain',
 		},
 	},
 })

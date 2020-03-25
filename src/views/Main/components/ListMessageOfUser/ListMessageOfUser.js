@@ -38,7 +38,6 @@ const ListMessageOfUser = ({ selectedUser }) => {
 					limit: 20,
 				},
 			},
-			fetchPolicy: 'network-only',
 			notifyOnNetworkStatusChange: true,
 		}
 	)

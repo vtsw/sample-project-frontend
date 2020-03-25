@@ -27,8 +27,8 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function BoxCreate({ handleCreate }) {
-	const [createVal, setCreateVal] = useState('')
+export default function BoxCreate({ handleCreate, defaultValue }) {
+	const [createVal, setCreateVal] = useState(defaultValue)
 	const classes = useStyles()
 
 	return (
@@ -40,6 +40,7 @@ export default function BoxCreate({ handleCreate }) {
 				type='text'
 				onChange={e => setCreateVal(e.target.value)}
 				className={classes.textField}
+				defaultValue={defaultValue}
 			/>
 			<Button
 				variant='contained'
