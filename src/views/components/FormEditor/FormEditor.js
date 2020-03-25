@@ -243,6 +243,7 @@ const FormEditor = ({ history }) => {
 						onChange={e => setName(e.target.value)}
 					/>
 					<TextField
+						id='formeditor-password'
 						value={password}
 						label='PASSWORD'
 						variant='outlined'
@@ -252,6 +253,7 @@ const FormEditor = ({ history }) => {
 						onChange={e => setPassword(e.target.value)}
 					/>
 					<TextField
+						id='formeditor-password-confirm'
 						value={confirmPassword}
 						label='PASSWORD CONFIRM'
 						variant='outlined'
