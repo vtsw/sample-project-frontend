@@ -1,10 +1,7 @@
 import React from 'react'
 
-import { Welcome } from '@storybook/react/demo'
-
 export default {
-	title: 'User',
-	component: Welcome,
+	title: 'Component Api|SignUp',
 }
 
 export const SignUp = () => <div>SignUp</div>

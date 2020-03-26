@@ -1,9 +1,7 @@
 import React from 'react'
-import { Welcome } from '@storybook/react/demo'
 
 export default {
-	title: 'WarningDialog',
-	component: Welcome,
+	title: 'Component Api|WarningDialog',
 }
 
 export const WarningDialog = () => <div>WarningDialog</div>

@@ -1,11 +1,16 @@
 import React from 'react'
-import { action } from '@storybook/addon-actions'
-import { Button } from '@storybook/react/demo'
 import { makeStyles } from '@material-ui/core/styles'
 
 export default {
-	title: 'UI',
-	component: Button,
+	title: 'Get started|UI',
+	parameters: {
+		options: {
+			storySort: (a, b) =>
+				a[1].kind === b[1].kind
+					? 0
+					: a[1].id.localeCompare(b[1].id, undefined, { numeric: true }),
+		},
+	},
 }
 
 const useStyles = makeStyles(() => ({
@@ -39,7 +44,7 @@ const CardColor = ({ codeColor = '#2A73CC', nameColor = 'primary' }) => {
 }
 const CardText = props => {
 	const { color, nameColor, fontWeight, fontSize, fontFamily } = props
-	const classes = useStyles({ codeColor: '#ffffff' })
+
 	return (
 		<div
 			style={{

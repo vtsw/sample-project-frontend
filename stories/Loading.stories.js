@@ -3,12 +3,11 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { light } from 'react-syntax-highlighter/dist/esm/styles/prism'
 // import { Loading as ExampleLoading } from '@views_components'
 import Loading from '../src/views/components/Loading'
-import { Welcome } from '@storybook/react/demo'
+
 import Tables from '../src/views/components/Tables/Tables'
 
 export default {
-	title: 'LoadingScreen',
-	component: Welcome,
+	title: 'Component Api|LoadingScreen',
 }
 
 const propsDetail = [

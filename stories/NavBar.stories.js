@@ -1,10 +1,7 @@
 import React from 'react'
 
-import { Welcome } from '@storybook/react/demo'
-
 export default {
-	title: 'NavBar',
-	component: Welcome,
+	title: 'Component Api|NavBar',
 }
 
 export const NavBar = () => <div>NavBar</div>

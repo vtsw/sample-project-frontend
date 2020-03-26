@@ -1,9 +1,7 @@
 import React from 'react'
-import { Welcome } from '@storybook/react/demo'
 
 export default {
-	title: 'SearchBox',
-	component: Welcome,
+	title: 'Component Api|SearchBox',
 }
 
 export const Search = () => {
