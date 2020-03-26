@@ -86,7 +86,6 @@ module.exports = ({ mode, analyze }) => {
 				'@material-ui/core': '@material-ui/core/es',
 				'@src': resolve(__dirname, 'src'),
 				'@views': resolve(__dirname, 'src/views'),
-				'@components': resolve(__dirname, 'src/components'),
 				'@views_components': resolve(__dirname, 'src/views/components'),
 			},
 			modules: ['node_modules', resolve(__dirname, 'src')],

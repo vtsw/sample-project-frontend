@@ -98,7 +98,6 @@ const Message = () => {
 		})
 	}
 
-	console.log('Start loading message list')
 	const { loading, error, data, fetchMore, networkStatus } = useQuery(
 		MESSAGE_LIST,
 		{
@@ -107,7 +106,6 @@ const Message = () => {
 			notifyOnNetworkStatusChange: true,
 		}
 	)
-	console.log('Stop loading message list')
 
 	const handleSearch = value => {
 		setSearchText(value)

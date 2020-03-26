@@ -1,19 +1,13 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
+
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { setToken } from '@src/shares/utils'
-
-const SIGN_IN = gql`
-	mutation SignIn($user: LoginUserInput!) {
-		login(user: $user) {
-			token
-		}
-	}
-`
+import { SIGN_IN } from './query'
+import { SET_UPLOADED_FILE } from '@views/File/query'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -64,28 +58,23 @@ const SignIn = props => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
-	const [signIn] = useMutation(SIGN_IN, {
+	const [setUploadedFile] = useMutation(SET_UPLOADED_FILE, {
 		onError: err => {
 			alert(err)
 		},
 	})
 
-	const classes = useStyles()
+	const [signIn] = useMutation(SIGN_IN, {
+		onCompleted: ({ login: { token, user } }) => {
+			setUploadedFile({ variables: { file: user.image } })
+			setToken(token)
+			history.push('/')
+		},
+		onError: err => alert(err),
+		fetchPolicy: 'no-cache',
+	})
 
-	const onSignIn = () => {
-		signIn({ variables: { user: { email, password } } })
-			.then(
-				({
-					data: {
-						login: { token },
-					},
-				}) => {
-					setToken(token)
-					history.push('/')
-				}
-			)
-			.catch(error => console.error(error))
-	}
+	const classes = useStyles()
 
 	return (
 		<Box className={classes.root}>
@@ -120,7 +109,7 @@ const SignIn = props => {
 						size='large'
 						fullWidth
 						className={classes.button}
-						onClick={onSignIn}
+						onClick={() => signIn({ variables: { user: { email, password } } })}
 					>
 						Sign in
 					</Button>

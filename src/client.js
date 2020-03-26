@@ -27,11 +27,13 @@ const resolvers = {
 			return selectedUser
 		},
 		setUploadedFile: (_, { file }, { cache }) => {
-			cache.writeData({
-				data: {
-					file,
-				},
-			})
+			if (file) {
+				cache.writeData({
+					data: {
+						file,
+					},
+				})
+			}
 			return file
 		},
 	},

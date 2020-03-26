@@ -5,7 +5,12 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import { Box, Button, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
-import { GET_FILE, UPLOAD_FILE, SET_UPLOADED_FILE } from './query'
+import {
+	GET_USER_INFO,
+	GET_FILE,
+	UPLOAD_FILE,
+	SET_UPLOADED_FILE,
+} from './query'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -74,6 +79,20 @@ const File = () => {
 			alert(err)
 		},
 	})
+
+	const { data } = useQuery(GET_USER_INFO, {
+		onCompleted: ({ me: { image } }) => {
+			// when reload page
+			// prevent GET_USER_INFO query use its latest cache when log out
+			if (!file.filename) {
+				setUploadedFile({ variables: { file: image } })
+			}
+		},
+		onError: err => {
+			alert(err)
+		},
+	})
+
 	const [uploadFile] = useMutation(UPLOAD_FILE, {
 		onCompleted: ({ uploadImage }) => {
 			setUploadedFile({ variables: { file: uploadImage } })

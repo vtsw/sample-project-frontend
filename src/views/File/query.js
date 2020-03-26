@@ -1,5 +1,16 @@
 import gql from 'graphql-tag'
 
+const GET_USER_INFO = gql`
+	query GetUserInfo {
+		me {
+			image {
+				filename
+				link
+			}
+		}
+	}
+`
+
 const GET_FILE = gql`
 	query GetFile {
 		file @client {
@@ -26,4 +37,4 @@ const SET_UPLOADED_FILE = gql`
 	}
 `
 
-export { GET_FILE, UPLOAD_FILE, SET_UPLOADED_FILE }
+export { GET_USER_INFO, GET_FILE, UPLOAD_FILE, SET_UPLOADED_FILE }
