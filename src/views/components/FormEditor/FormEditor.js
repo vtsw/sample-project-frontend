@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
+
 import { useQuery, useMutation } from '@apollo/react-hooks'
+
 import { Box, Button, TextField, Typography } from '@material-ui/core'
-import {
-	makeStyles,
-	createMuiTheme,
-	ThemeProvider,
-} from '@material-ui/core/styles'
-import teal from '@material-ui/core/colors/teal'
+import { makeStyles } from '@material-ui/core/styles'
 
 import { DeleteDialog } from '@views_components'
 
@@ -23,7 +20,7 @@ import {
 import { useCreateAUser, useDeleteAUser } from './useMutations'
 
 import { getToken } from '@src/shares/utils'
-import { LIMIT } from '@src/configs.local'
+import { PAGE_LIMIT } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -34,18 +31,18 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: 'column',
 		alignItems: 'center',
 	},
-	form_title: {
-		color: teal[600],
+	formtitle: {
+		color: theme.palette.primary.main,
 		fontWeight: 600,
 	},
-	form_input: {
+	forminput: {
 		width: '100%',
-		marginTop: '18px',
+		marginTop: 18,
 	},
-	form_content: {
+	formcontent: {
 		padding: 0,
 	},
-	form_buttons: {
+	formbuttons: {
 		display: 'flex',
 		flexDirection: 'column',
 		padding: 0,
@@ -58,24 +55,17 @@ const useStyles = makeStyles(theme => ({
 			},
 		},
 	},
-	form_button: {
-		color: '#ffffff',
+	formbutton: {
+		color: theme.palette.common.white,
 		fontWeight: 600,
 		textTransform: 'capitalize',
 		padding: '18px 0',
 	},
 }))
 
-const theme = createMuiTheme({
-	palette: {
-		primary: {
-			main: teal[600],
-		},
-	},
-})
-
-const FormEditor = ({ history }) => {
-	const isAuthenticated = getToken()
+const FormEditor = props => {
+	const { history } = props
+	const authToken = getToken()
 
 	const {
 		data: { userSearchValue },
@@ -83,18 +73,27 @@ const FormEditor = ({ history }) => {
 	const {
 		data: { selectedUser },
 	} = useQuery(GET_SELECTED_USER)
-	const [setSelectedUser] = useMutation(SET_SELECTED_USER)
-	const [updateUser] = useMutation(UPDATE_USER)
+
+	const [setSelectedUser] = useMutation(SET_SELECTED_USER, {
+		onError: err => {
+			alert(err)
+		},
+	})
+	const [updateUser] = useMutation(UPDATE_USER, {
+		onError: err => {
+			alert(err)
+		},
+	})
 	const [createNewUser] = useCreateAUser(
 		CREATE_USER,
 		FETCH_USER_LIST,
 		{
-			query: { searchText: userSearchValue, limit: LIMIT },
+			query: { searchText: userSearchValue, limit: PAGE_LIMIT },
 		},
-		isAuthenticated
+		authToken
 	)
 	const [deleteUser] = useDeleteAUser(DELETE_USER, FETCH_USER_LIST, {
-		query: { searchText: userSearchValue, limit: LIMIT },
+		query: { searchText: userSearchValue, limit: PAGE_LIMIT },
 	})
 
 	const [userId, setUserId] = useState('')
@@ -113,7 +112,7 @@ const FormEditor = ({ history }) => {
 	const classes = useStyles()
 
 	const onCancel = () => {
-		if (!isAuthenticated) {
+		if (!authToken) {
 			history.push('/sign-in')
 			return
 		}
@@ -147,9 +146,8 @@ const FormEditor = ({ history }) => {
 					{
 						query: FETCH_USER_LIST,
 						variables: {
-							query: { searchText: userSearchValue, limit: LIMIT },
+							query: { searchText: userSearchValue, limit: PAGE_LIMIT },
 						},
-						awaitRefetchQueries: true,
 					},
 			  ]
 			: []
@@ -174,6 +172,7 @@ const FormEditor = ({ history }) => {
 		createNewUser({
 			variables: { user: { email, name, password } },
 			refetchQueries: shouldUseRefetchQueries(),
+			awaitRefetchQueries: !!userSearchValue,
 		})
 			.then(() => {
 				onCancel()
@@ -217,98 +216,96 @@ const FormEditor = ({ history }) => {
 	}
 
 	return (
-		<ThemeProvider theme={theme}>
-			<Box className={classes.root}>
-				<Typography variant='h5' className={classes.form_title}>
-					{selectedUser.id && selectedUser.name && selectedUser.email
-						? 'Modify'
-						: 'Sign up'}
-				</Typography>
-				<div className={classes.form_content}>
-					<TextField
-						value={email}
-						label='EMAIL'
-						variant='outlined'
-						type='email'
-						className={classes.form_input}
-						onChange={e => setEmail(e.target.value.toLowerCase())}
-					/>
-					<TextField
-						value={name}
-						label='NAME'
-						variant='outlined'
-						type='text'
-						autoComplete='true'
-						className={classes.form_input}
-						onChange={e => setName(e.target.value)}
-					/>
-					<TextField
-						value={password}
-						label='PASSWORD'
-						variant='outlined'
-						type='password'
-						autoComplete='true'
-						className={classes.form_input}
-						onChange={e => setPassword(e.target.value)}
-					/>
-					<TextField
-						value={confirmPassword}
-						label='PASSWORD CONFIRM'
-						variant='outlined'
-						type='password'
-						autoComplete='true'
-						className={classes.form_input}
-						onChange={e => setConfirmPassword(e.target.value)}
-					/>
-				</div>
-				<div className={classes.form_buttons}>
-					<Button
-						variant='contained'
-						color='primary'
-						size='large'
-						fullWidth
-						className={classes.form_button}
-						onClick={onSubmit}
-					>
-						{selectedUser.id && selectedUser.name && selectedUser.email
-							? 'Save'
-							: 'Register'}
-					</Button>
-					{selectedUser.id && selectedUser.name && selectedUser.email ? (
-						<Button
-							variant='contained'
-							size='large'
-							fullWidth
-							className={classes.form_button}
-							onClick={() => {
-								setOpenConfirmDeleteDialog(true)
-							}}
-						>
-							Delete
-						</Button>
-					) : null}
-					<Button
-						variant='contained'
-						size='large'
-						fullWidth
-						className={classes.form_button}
-						onClick={onCancel}
-					>
-						Cancel
-					</Button>
-				</div>
-				<DeleteDialog
-					open={openConfirmDeleteDialog}
-					onClose={() => {
-						setOpenConfirmDeleteDialog(false)
-					}}
-					onAgree={onAgreeDeleteAnUser}
-					onDisagree={() => {
-						setOpenConfirmDeleteDialog(false)
-					}}
+		<Box className={classes.root}>
+			<Typography variant='h5' className={classes.formtitle}>
+				{selectedUser.id && selectedUser.name && selectedUser.email
+					? 'Modify'
+					: 'Sign up'}
+			</Typography>
+			<Box className={classes.formcontent}>
+				<TextField
+					value={email}
+					label='EMAIL'
+					variant='outlined'
+					type='email'
+					className={classes.forminput}
+					onChange={e => setEmail(e.target.value.toLowerCase())}
+				/>
+				<TextField
+					value={name}
+					label='NAME'
+					variant='outlined'
+					type='text'
+					autoComplete='true'
+					className={classes.forminput}
+					onChange={e => setName(e.target.value)}
+				/>
+				<TextField
+					value={password}
+					label='PASSWORD'
+					variant='outlined'
+					type='password'
+					autoComplete='true'
+					className={classes.forminput}
+					onChange={e => setPassword(e.target.value)}
+				/>
+				<TextField
+					value={confirmPassword}
+					label='PASSWORD CONFIRM'
+					variant='outlined'
+					type='password'
+					autoComplete='true'
+					className={classes.forminput}
+					onChange={e => setConfirmPassword(e.target.value)}
 				/>
 			</Box>
-		</ThemeProvider>
+			<Box className={classes.formbuttons}>
+				<Button
+					variant='contained'
+					color='primary'
+					size='large'
+					fullWidth
+					className={classes.formbutton}
+					onClick={onSubmit}
+				>
+					{selectedUser.id && selectedUser.name && selectedUser.email
+						? 'Save'
+						: 'Register'}
+				</Button>
+				{selectedUser.id && selectedUser.name && selectedUser.email ? (
+					<Button
+						variant='contained'
+						size='large'
+						fullWidth
+						className={classes.formbutton}
+						onClick={() => {
+							setOpenConfirmDeleteDialog(true)
+						}}
+					>
+						Delete
+					</Button>
+				) : null}
+				<Button
+					variant='contained'
+					size='large'
+					fullWidth
+					className={classes.formbutton}
+					onClick={onCancel}
+				>
+					Cancel
+				</Button>
+			</Box>
+			<DeleteDialog
+				open={openConfirmDeleteDialog}
+				onClose={() => {
+					setOpenConfirmDeleteDialog(false)
+				}}
+				onAgree={onAgreeDeleteAnUser}
+				onDisagree={() => {
+					setOpenConfirmDeleteDialog(false)
+				}}
+			/>
+		</Box>
 	)
 }
 

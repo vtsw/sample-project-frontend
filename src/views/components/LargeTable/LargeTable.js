@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
+
 import { Box, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+
 import { InfiniteScroll } from './components'
 
 const useStyles = makeStyles(theme => ({
@@ -9,12 +11,12 @@ const useStyles = makeStyles(theme => ({
 		flex: 1,
 		flexDirection: 'column',
 	},
-	table__header: {
+	container__header: {
 		padding: '14px 14px 14px 34px',
-		borderTop: `1px solid ${theme.palette.common.gray}`,
-		borderBottom: `1px solid ${theme.palette.common.gray}`,
+		borderTop: `1px solid ${theme.palette.grey['300']}`,
+		borderBottom: `1px solid ${theme.palette.grey['300']}`,
 	},
-	table__header__item: {
+	item__header: {
 		fontWeight: 600,
 	},
 }))
@@ -25,10 +27,10 @@ const LargeTable = props => {
 
 	return (
 		<Box className={classes.root}>
-			<Grid container className={classes.table__header}>
+			<Grid container className={classes.container__header}>
 				{columns.map(column => (
 					<Grid item xs={column.xs} key={column.headerVariable}>
-						<Typography variant='body2' className={classes.table__header__item}>
+						<Typography variant='body2' className={classes.item__header}>
 							{column.headerLabel}
 						</Typography>
 					</Grid>

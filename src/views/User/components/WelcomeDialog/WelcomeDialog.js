@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+
 import { Box, Button, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -17,42 +17,39 @@ const useStyles = makeStyles(theme => ({
 		zIndex: 10,
 		transition: `opacity 225ms ${theme.transitions.easing.easeInOut} 0ms`,
 	},
-	welcome_text: {
-		color: theme.palette.common.green,
+	welcometext: {
+		color: theme.palette.primary.main,
 		marginBottom: theme.spacing(1),
 		fontWeight: 600,
 	},
-	create_user_button: {
+	button: {
 		textTransform: 'unset',
-		color: theme.palette.common.green,
+		color: theme.palette.primary.main,
 		fontWeight: 700,
 	},
 }))
 
-const WelcomeDialog = ({ setDialogVisible }) => {
+const WelcomeDialog = props => {
+	const { onCreateUser } = props
 	const classes = useStyles()
 
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.signup__dialog__container}>
-				<Typography variant='subtitle1' className={classes.welcome_text}>
+				<Typography variant='subtitle1' className={classes.welcometext}>
 					Welcome to Vatech !!!
 				</Typography>
 				<Button
 					variant='contained'
 					fullWidth
-					className={classes.create_user_button}
-					onClick={() => setDialogVisible(false)}
+					className={classes.button}
+					onClick={onCreateUser}
 				>
 					Create user
 				</Button>
 			</Box>
 		</Box>
 	)
-}
-
-WelcomeDialog.propsTypes = {
-	setDialogVisible: PropTypes.func,
 }
 
 export default WelcomeDialog

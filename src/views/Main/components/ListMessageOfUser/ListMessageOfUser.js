@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Typography, makeStyles } from '@material-ui/core'
-import { LargeTable, DeleteDialog, ModifyDialog } from '@views_components'
-import { DELETE_MESSAGE, UPDATE_MESSAGE } from '../../../Message/mutation'
+
 import { useMutation, useQuery } from '@apollo/react-hooks'
+
+import { Box, Typography, makeStyles } from '@material-ui/core'
+
+import { LargeTable, DeleteDialog, ModifyDialog } from '@views_components'
+
 import { MESSAGE_LIST } from '../../query'
-import { NETWORK_STATUS_FETCH_MORE } from '../../../../configs.local'
+import { DELETE_MESSAGE, UPDATE_MESSAGE } from '../../../Message/mutation'
+import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -21,27 +25,23 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const ListMessageOfUser = ({ selectedUser }) => {
-	const classes = useStyles()
+const ListMessageOfUser = props => {
+	const { selectedUser } = props
 	const [modifyDialogVisible, setModifyDialogVisible] = useState(false)
 	const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)
 	const [selectedMessage, setSelectedMessage] = useState('')
 	const [message, setMessage] = useState(false)
 
-	const { data: dataMsg, fetchMore, networkStatus } = useQuery(
-		MESSAGE_LIST,
-
-		{
-			variables: {
-				query: {
-					userId: selectedUser && selectedUser.id,
-					limit: 20,
-				},
+	const { data: dataMsg, fetchMore, networkStatus } = useQuery(MESSAGE_LIST, {
+		variables: {
+			query: {
+				userId: selectedUser && selectedUser.id,
+				limit: 20,
 			},
-			fetchPolicy: 'network-only',
-			notifyOnNetworkStatusChange: true,
-		}
-	)
+		},
+		fetchPolicy: 'network-only',
+		notifyOnNetworkStatusChange: true,
+	})
 
 	useEffect(() => {
 		if (dataMsg && dataMsg.messageList) {
@@ -52,10 +52,8 @@ const ListMessageOfUser = ({ selectedUser }) => {
 	const [deleteMsg] = useMutation(DELETE_MESSAGE, {
 		onCompleted: data => {
 			const update = message.filter(item => item.id !== data.deleteMessage.id)
-
 			setMessage(update)
 		},
-
 		onError: err => {
 			alert(err)
 		},
@@ -124,6 +122,8 @@ const ListMessageOfUser = ({ selectedUser }) => {
 		message &&
 		message.find(item => item.id === selectedMessage.id) &&
 		message.find(item => item.id === selectedMessage.id).content
+
+	const classes = useStyles()
 
 	return (
 		message && (

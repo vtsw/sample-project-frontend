@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Grid, makeStyles } from '@material-ui/core'
-import { BoxCreate, BoxSearch } from './components'
-import { MESSAGE_LIST } from './query'
+
 import { useMutation, useQuery } from '@apollo/react-hooks'
+
+import { Box, Grid, makeStyles } from '@material-ui/core'
+
+import {
+	Loading,
+	LargeTable,
+	DeleteDialog,
+	ModifyDialog,
+} from '@views_components'
+import { BoxCreate, BoxSearch } from './components'
+
+import { MESSAGE_LIST } from './query'
 import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './mutation'
-import Loading from '../components/Loading'
-import LargeTable from '../components/LargeTable/LargeTable'
-import { DeleteDialog, ModifyDialog } from '@views_components'
-import { NETWORK_STATUS_FETCH_MORE } from '../../configs.local'
+import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -17,14 +24,7 @@ const useStyle = makeStyles(theme => ({
 		position: 'relative',
 	},
 	container: {
-		border: `1px solid #979797`,
-		height: '100%',
-	},
-	div: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		background: theme.palette.common.black,
+		border: `1px solid ${theme.palette.common.border}`,
 		height: '100%',
 	},
 }))
@@ -39,7 +39,7 @@ const Message = () => {
 
 	const [selectedMessage, setSelectedMessage] = useState(false)
 
-	const [createMsg] = useMutation(CREATE_MESSAGE, {
+	const [createMessage] = useMutation(CREATE_MESSAGE, {
 		onCompleted: data => {
 			const update = {
 				...contents,
@@ -52,7 +52,7 @@ const Message = () => {
 		},
 	})
 
-	const [deleteMsg] = useMutation(DELETE_MESSAGE, {
+	const [deleteMessage] = useMutation(DELETE_MESSAGE, {
 		onCompleted: data => {
 			const update = {
 				...contents,
@@ -65,7 +65,7 @@ const Message = () => {
 		},
 	})
 
-	const [updateMsg] = useMutation(UPDATE_MESSAGE, {
+	const [updateMessage] = useMutation(UPDATE_MESSAGE, {
 		onCompleted: ({ updateMessage }) => {
 			const update = {
 				...contents,
@@ -83,21 +83,22 @@ const Message = () => {
 	})
 
 	const handleDeleteMessage = id => {
-		deleteMsg({ variables: { id } })
+		deleteMessage({ variables: { id } })
 	}
 
 	const handleUpdateMessage = value => {
-		updateMsg({
+		updateMessage({
 			variables: { message: { id: selectedMessage.id, content: value } },
 		})
 	}
 
 	const handleCreateMessage = createVal => {
-		createMsg({
+		createMessage({
 			variables: { message: { content: createVal } },
 		})
 	}
 
+	console.log('Start loading message list')
 	const { loading, error, data, fetchMore, networkStatus } = useQuery(
 		MESSAGE_LIST,
 		{
@@ -106,6 +107,7 @@ const Message = () => {
 			notifyOnNetworkStatusChange: true,
 		}
 	)
+	console.log('Stop loading message list')
 
 	const handleSearch = value => {
 		setSearchText(value)
@@ -134,7 +136,8 @@ const Message = () => {
 		})
 	}
 
-	const loadNextMessagePage = () =>
+	const loadNextMessagePage = () => {
+		const startFetchTime = Date.now()
 		fetchMore({
 			variables: {
 				query: {
@@ -159,7 +162,7 @@ const Message = () => {
 					},
 				}
 			},
-		})
+		}).then(x => console.log('fetch time = ', Date.now() - startFetchTime))}
 
 	useEffect(() => {
 		if (data && data.messageList) {

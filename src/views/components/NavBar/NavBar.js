@@ -1,14 +1,15 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
-import teal from '@material-ui/core/colors/teal'
+
+import NavBarItem from './NavBarItem'
 
 import { deleteToken } from '@src/shares/utils'
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		position: 'relative',
-		backgroundColor: teal[600],
+		backgroundColor: theme.palette.primary.main,
 		display: 'flex',
 		flexDirection: 'column',
 		height: '100vh',
@@ -32,39 +33,34 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const NavBar = ({ location, history }) => {
+const navbarItems = [
+	{ page: 'main', pathname: '/' },
+	{ page: 'user', pathname: '/user' },
+	{ page: 'message', pathname: '/message' },
+]
+
+const NavBar = props => {
+	const { location, history } = props
 	const [currentPage, setCurrentPage] = React.useState(location.pathname)
 	const classes = useStyles()
 	const handleOnChangePage = page => {
 		setCurrentPage(page)
 		history.push(page)
 	}
+
+	const setActiveTab = pathname => {
+		return currentPage === pathname ? classes.active : ''
+	}
 	return (
 		<ul className={classes.root}>
-			<li
-				className={`${classes.tab} ${
-					currentPage === '/' ? classes.active : ''
-				}`}
-				onClick={() => handleOnChangePage('/')}
-			>
-				main
-			</li>
-			<li
-				className={`${classes.tab} ${
-					currentPage === '/user' ? classes.active : ''
-				}`}
-				onClick={() => handleOnChangePage('/user')}
-			>
-				user
-			</li>
-			<li
-				className={`${classes.tab} ${
-					currentPage === '/message' ? classes.active : ''
-				}`}
-				onClick={() => handleOnChangePage('/message')}
-			>
-				message
-			</li>
+			{navbarItems.map((item, index) => (
+				<NavBarItem
+					key={index}
+					handleOnChangePage={handleOnChangePage}
+					styles={`${classes.tab} ${setActiveTab(item.pathname)}`}
+					{...item}
+				/>
+			))}
 			<li
 				className={classes.tab}
 				onClick={() => {
@@ -77,7 +73,5 @@ const NavBar = ({ location, history }) => {
 		</ul>
 	)
 }
-
-NavBar.propsTypes = {}
 
 export default withRouter(NavBar)
