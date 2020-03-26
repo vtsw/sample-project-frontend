@@ -39,7 +39,8 @@ const navbarItems = [
 	{ page: 'message', pathname: '/message' },
 ]
 
-const NavBar = ({ location, history }) => {
+const NavBar = props => {
+	const { location, history } = props
 	const [currentPage, setCurrentPage] = React.useState(location.pathname)
 	const classes = useStyles()
 	const handleOnChangePage = page => {

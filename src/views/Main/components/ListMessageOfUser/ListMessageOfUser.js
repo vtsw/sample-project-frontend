@@ -32,20 +32,16 @@ const ListMessageOfUser = props => {
 	const [selectedMessage, setSelectedMessage] = useState('')
 	const [message, setMessage] = useState(false)
 
-	const { data: dataMsg, fetchMore, networkStatus } = useQuery(
-		MESSAGE_LIST,
-
-		{
-			variables: {
-				query: {
-					userId: selectedUser && selectedUser.id,
-					limit: 20,
-				},
+	const { data: dataMsg, fetchMore, networkStatus } = useQuery(MESSAGE_LIST, {
+		variables: {
+			query: {
+				userId: selectedUser && selectedUser.id,
+				limit: 20,
 			},
-			fetchPolicy: 'network-only',
-			notifyOnNetworkStatusChange: true,
-		}
-	)
+		},
+		fetchPolicy: 'network-only',
+		notifyOnNetworkStatusChange: true,
+	})
 
 	useEffect(() => {
 		if (dataMsg && dataMsg.messageList) {
@@ -56,10 +52,8 @@ const ListMessageOfUser = props => {
 	const [deleteMsg] = useMutation(DELETE_MESSAGE, {
 		onCompleted: data => {
 			const update = message.filter(item => item.id !== data.deleteMessage.id)
-
 			setMessage(update)
 		},
-
 		onError: err => {
 			alert(err)
 		},

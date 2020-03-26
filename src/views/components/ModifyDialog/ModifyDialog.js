@@ -77,8 +77,7 @@ const ModifyDialog = props => {
 					onKeyDown={e => {
 						if (e.keyCode === 13) {
 							handleUpdate()
-						}
-						if (e.keyCode === 32) {
+						} else if (e.keyCode === 32) {
 							handleCancel()
 						}
 					}}

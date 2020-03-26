@@ -59,7 +59,8 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const SignIn = ({ history }) => {
+const SignIn = props => {
+	const { history } = props
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 

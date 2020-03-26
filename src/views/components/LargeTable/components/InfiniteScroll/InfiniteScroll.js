@@ -32,6 +32,7 @@ const InfiniteScroll = props => {
 		selectedRow = {},
 		handleDeleteRow = () => {},
 	} = props
+
 	const itemCount = hasNextPage ? items.length + 1 : items.length
 	const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage
 	const isItemLoaded = index => !hasNextPage || index < items.length
@@ -45,33 +46,39 @@ const InfiniteScroll = props => {
 			threshold={1}
 			minimumBatchSize={1}
 		>
-			{({ onItemsRendered, ref }) => (
-				<AutoSizer>
-					{({ height, width }) => (
-						<List
-							height={height}
-							onItemsRendered={onItemsRendered}
-							ref={ref}
-							itemCount={items.length}
-							width={width}
-							className={classes.overflow}
-							itemData={{
-								items,
-								propsRow: {
-									onClickRow,
-									selectedRow,
-									isIconClose,
-									handleDeleteRow,
-									columns,
-									isItemLoaded,
-								},
-							}}
-						>
-							{RefForwarder}
-						</List>
-					)}
-				</AutoSizer>
-			)}
+			{props => {
+				const { onItemsRendered, ref } = props
+				return (
+					<AutoSizer>
+						{props => {
+							const { height, width } = props
+							return (
+								<List
+									height={height}
+									onItemsRendered={onItemsRendered}
+									ref={ref}
+									itemCount={items.length}
+									width={width}
+									className={classes.overflow}
+									itemData={{
+										items,
+										propsRow: {
+											onClickRow,
+											selectedRow,
+											isIconClose,
+											handleDeleteRow,
+											columns,
+											isItemLoaded,
+										},
+									}}
+								>
+									{RefForwarder}
+								</List>
+							)
+						}}
+					</AutoSizer>
+				)
+			}}
 		</InfiniteLoader>
 	)
 }

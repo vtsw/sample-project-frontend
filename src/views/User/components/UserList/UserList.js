@@ -14,7 +14,7 @@ import {
 	GET_SELECTED_USER,
 	SET_SELECTED_USER,
 } from '@views/User/query'
-import { LIMIT, NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
+import { PAGE_LIMIT, NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -49,15 +49,13 @@ const TABLE_HEADER = [
 
 const UserList = props => {
 	const { onSelectAnUser } = props
-	const {
-		data: { userSearchValue },
-	} = useQuery(GET_USER_SEARCH_TEXT)
+	const { data: { userSearchValue } } = useQuery(GET_USER_SEARCH_TEXT)
 
 	const { loading, data, fetchMore, networkStatus } = useQuery(
 		FETCH_USER_LIST,
 		{
 			variables: {
-				query: { searchText: userSearchValue, limit: LIMIT },
+				query: { searchText: userSearchValue, limit: PAGE_LIMIT },
 			},
 			notifyOnNetworkStatusChange: true,
 			onError: err => {
@@ -65,9 +63,7 @@ const UserList = props => {
 			},
 		}
 	)
-	const {
-		data: { selectedUser },
-	} = useQuery(GET_SELECTED_USER, {
+	const { data: { selectedUser } } = useQuery(GET_SELECTED_USER, {
 		onError: err => {
 			alert(err)
 		},

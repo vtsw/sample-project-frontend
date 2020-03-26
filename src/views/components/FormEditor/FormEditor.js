@@ -20,7 +20,7 @@ import {
 import { useCreateAUser, useDeleteAUser } from './useMutations'
 
 import { getToken } from '@src/shares/utils'
-import { LIMIT } from '@src/configs.local'
+import { PAGE_LIMIT } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -63,7 +63,8 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const FormEditor = ({ history }) => {
+const FormEditor = props => {
+	const { history } = props
 	const authToken = getToken()
 
 	const {
@@ -72,6 +73,7 @@ const FormEditor = ({ history }) => {
 	const {
 		data: { selectedUser },
 	} = useQuery(GET_SELECTED_USER)
+
 	const [setSelectedUser] = useMutation(SET_SELECTED_USER, {
 		onError: err => {
 			alert(err)
@@ -86,12 +88,12 @@ const FormEditor = ({ history }) => {
 		CREATE_USER,
 		FETCH_USER_LIST,
 		{
-			query: { searchText: userSearchValue, limit: LIMIT },
+			query: { searchText: userSearchValue, limit: PAGE_LIMIT },
 		},
 		authToken
 	)
 	const [deleteUser] = useDeleteAUser(DELETE_USER, FETCH_USER_LIST, {
-		query: { searchText: userSearchValue, limit: LIMIT },
+		query: { searchText: userSearchValue, limit: PAGE_LIMIT },
 	})
 
 	const [userId, setUserId] = useState('')
@@ -144,7 +146,7 @@ const FormEditor = ({ history }) => {
 					{
 						query: FETCH_USER_LIST,
 						variables: {
-							query: { searchText: userSearchValue, limit: LIMIT },
+							query: { searchText: userSearchValue, limit: PAGE_LIMIT },
 						},
 					},
 			  ]
