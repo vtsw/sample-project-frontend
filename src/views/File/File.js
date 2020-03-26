@@ -1,10 +1,11 @@
 import React from 'react'
 
-// import { useQuery, useMutation } from '@apollo/react-hooks'
-// import gql from 'graphql-tag'
+import { useMutation } from '@apollo/react-hooks'
 
 import { Box, Button, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
+
+import { UPLOAD_FILE } from './query'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -32,6 +33,7 @@ const useStyle = makeStyles(theme => ({
 		fontWeight: 700,
 		textTransform: 'unset',
 		marginRight: theme.spacing(1),
+		padding: '3px 12px 3px 11px',
 	},
 	item__uploader__input: {
 		position: 'absolute',
@@ -54,7 +56,16 @@ const useStyle = makeStyles(theme => ({
 }))
 
 const File = () => {
-	const onUpload = () => {}
+	const [uploadFile] = useMutation(UPLOAD_FILE)
+	const onUploadFile = ({ target }) => {
+		const file = target.files[0]
+		console.log(file)
+		uploadFile({ variables: { file } })
+			.then(data => {
+				console.log(data)
+			})
+			.catch(error => console.error(error))
+	}
 	const classes = useStyle()
 
 	return (
@@ -78,7 +89,7 @@ const File = () => {
 								accept='image/*'
 								className={classes.item__uploader__input}
 								id='uploading-input'
-								onChange={onUpload}
+								onChange={onUploadFile}
 								type='file'
 							/>
 						</Button>
