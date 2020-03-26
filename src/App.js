@@ -13,6 +13,7 @@ const Message = lazy(() => import('@views/Message'))
 const User = lazy(() => import('@views/User'))
 const SignIn = lazy(() => import('@views/SignIn'))
 const SignUp = lazy(() => import('@views/SignUp'))
+const File = lazy(() => import('@views/File'))
 
 const styles = {
 	root: {
@@ -64,6 +65,7 @@ class App extends React.Component {
 						<Route path='/user' component={User} />
 						<Route path='/sign-in' component={SignIn} />
 						<Route path='/sign-up' component={SignUp} />
+						<Route path='/file' component={File} />
 					</Switch>
 				</Suspense>
 			</Box>

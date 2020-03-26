@@ -59,7 +59,7 @@ const UserList = ({ setDialogVisible }) => {
 		data: { userSearchValue },
 	} = useQuery(GET_USER_SEARCH_TEXT)
 
-	const { loading, _, data, fetchMore, networkStatus } = useQuery(
+	const { loading, data, fetchMore, networkStatus } = useQuery(
 		FETCH_USER_LIST,
 		{
 			variables: {

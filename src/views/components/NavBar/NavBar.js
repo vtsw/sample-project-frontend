@@ -66,6 +66,14 @@ const NavBar = ({ location, history }) => {
 				message
 			</li>
 			<li
+				className={`${classes.tab} ${
+					currentPage === '/file' ? classes.active : ''
+				}`}
+				onClick={() => handleOnChangePage('/file')}
+			>
+				file
+			</li>
+			<li
 				className={classes.tab}
 				onClick={() => {
 					deleteToken()
