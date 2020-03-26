@@ -110,6 +110,8 @@ const FormEditor = ({ history }) => {
 		setName(selectedUser.name)
 	}, [selectedUser])
 
+	const isSelectedUser =
+		selectedUser.id && selectedUser.name && selectedUser.email
 	const classes = useStyles()
 
 	const onCancel = () => {
@@ -220,9 +222,7 @@ const FormEditor = ({ history }) => {
 		<ThemeProvider theme={theme}>
 			<Box className={classes.root}>
 				<Typography variant='h5' className={classes.form_title}>
-					{selectedUser.id && selectedUser.name && selectedUser.email
-						? 'Modify'
-						: 'Sign up'}
+					{isSelectedUser ? 'Modify' : 'Sign up'}
 				</Typography>
 				<div className={classes.form_content}>
 					<TextField
@@ -265,6 +265,7 @@ const FormEditor = ({ history }) => {
 				</div>
 				<div className={classes.form_buttons}>
 					<Button
+						data-cy='submit-button'
 						variant='contained'
 						color='primary'
 						size='large'
@@ -272,11 +273,9 @@ const FormEditor = ({ history }) => {
 						className={classes.form_button}
 						onClick={onSubmit}
 					>
-						{selectedUser.id && selectedUser.name && selectedUser.email
-							? 'Save'
-							: 'Register'}
+						{isSelectedUser ? 'Save' : 'Register'}
 					</Button>
-					{selectedUser.id && selectedUser.name && selectedUser.email ? (
+					{isSelectedUser ? (
 						<Button
 							variant='contained'
 							size='large'

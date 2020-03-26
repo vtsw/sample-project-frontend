@@ -131,6 +131,7 @@ const SignIn = ({ history }) => {
 					</div>
 					<div className={classes.actions}>
 						<Button
+							data-cy='signin-button'
 							variant='contained'
 							color='primary'
 							size='large'
@@ -141,6 +142,7 @@ const SignIn = ({ history }) => {
 							Sign in
 						</Button>
 						<Typography
+							data-cy='signup-text'
 							variant='body2'
 							className={classes.sign_up_text}
 							onClick={() => history.push('/sign-up')}
