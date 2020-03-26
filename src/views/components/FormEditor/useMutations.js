@@ -7,10 +7,10 @@ const genQueryOptions = (query, variables) => {
 	}
 }
 
-const useCreateAUser = (query, updateQuery, vars, isAuthenticated) => {
+const useCreateAUser = (query, updateQuery, vars, authToken) => {
 	return useMutation(
 		query,
-		isAuthenticated &&
+		authToken &&
 			!vars.query.searchText && {
 				update(cache, { data: { createUser } }) {
 					const options = genQueryOptions(updateQuery, vars)
@@ -21,6 +21,9 @@ const useCreateAUser = (query, updateQuery, vars, isAuthenticated) => {
 							userList: { ...userList, items: [createUser, ...userList.items] },
 						},
 					})
+				},
+				onError: err => {
+					alert(err)
 				},
 			}
 	)
@@ -38,6 +41,9 @@ const useDeleteAUser = (query, updateQuery, vars) => {
 					userList: { ...userList, items },
 				},
 			})
+		},
+		onError: err => {
+			alert(err)
 		},
 	})
 }

@@ -1,13 +1,11 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import clsx from 'clsx'
-import { NETWORK_STATUS_FETCH_MORE } from '../../../../configs.local'
 
-import { SearchBox, LargeTable } from '@views_components'
+import { SearchBox, LargeTable, Loading } from '@views_components'
 
 import {
 	FETCH_USER_LIST,
@@ -16,17 +14,11 @@ import {
 	GET_SELECTED_USER,
 	SET_SELECTED_USER,
 } from '@views/User/query'
-import { LIMIT } from '@src/configs.local'
+import { PAGE_LIMIT, NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		width: '100%',
-		height: '100%',
-	},
-	full_screen_height: {
-		height: '100vh',
-	},
-	full_height: {
 		height: '100%',
 	},
 	userlist__container: {
@@ -35,15 +27,16 @@ const useStyles = makeStyles(theme => ({
 		overflow: 'hidden',
 		height: '100%',
 	},
-	user_list__table: {
+	userlist__table: {
+		position: 'relative',
 		display: 'flex',
 		height: 'calc(100vh - 200px)',
 	},
-	search_box: {
+	searchbox: {
 		width: '100%',
 		padding: theme.spacing(3),
 	},
-	search_box__title: {
+	searchbox__title: {
 		fontWeight: 600,
 		marginBottom: theme.spacing(2),
 	},
@@ -54,7 +47,8 @@ const TABLE_HEADER = [
 	{ headerLabel: 'NAME', xs: 7, headerVariable: 'name' },
 ]
 
-const UserList = ({ setDialogVisible }) => {
+const UserList = props => {
+	const { onSelectAnUser } = props
 	const {
 		data: { userSearchValue },
 	} = useQuery(GET_USER_SEARCH_TEXT)
@@ -63,17 +57,32 @@ const UserList = ({ setDialogVisible }) => {
 		FETCH_USER_LIST,
 		{
 			variables: {
-				query: { searchText: userSearchValue, limit: LIMIT },
+				query: { searchText: userSearchValue, limit: PAGE_LIMIT },
 			},
 			notifyOnNetworkStatusChange: true,
+			onError: err => {
+				alert(err)
+			},
 		}
 	)
 	const {
 		data: { selectedUser },
-	} = useQuery(GET_SELECTED_USER)
+	} = useQuery(GET_SELECTED_USER, {
+		onError: err => {
+			alert(err)
+		},
+	})
 
-	const [setUserSearchValue] = useMutation(SET_USER_SEARCH_TEXT)
-	const [setSelectedUser] = useMutation(SET_SELECTED_USER)
+	const [setUserSearchValue] = useMutation(SET_USER_SEARCH_TEXT, {
+		onError: err => {
+			alert(err)
+		},
+	})
+	const [setSelectedUser] = useMutation(SET_SELECTED_USER, {
+		onError: err => {
+			alert(err)
+		},
+	})
 
 	const handleOnSearch = searchValue => {
 		setUserSearchValue({ variables: { searchValue } })
@@ -117,22 +126,26 @@ const UserList = ({ setDialogVisible }) => {
 				selectedUser,
 			},
 		})
-		setDialogVisible(false)
+		onSelectAnUser()
 	}
 
 	const classes = useStyles()
 	return (
 		<Box className={classes.root}>
-			<Box className={clsx(classes.userlist__container, classes.full_height)}>
-				<Box className={classes.search_box}>
-					<Typography variant='h5' className={classes.search_box__title}>
+			<Box className={classes.userlist__container}>
+				<Box className={classes.searchbox}>
+					<Typography variant='h5' className={classes.searchbox__title}>
 						User List
 					</Typography>
-					<SearchBox width={400} onSearch={handleOnSearch} />
+					<SearchBox
+						userSearchValue={userSearchValue}
+						width={400}
+						onSearch={handleOnSearch}
+					/>
 				</Box>
-				<Box className={classes.user_list__table}>
+				<Box className={classes.userlist__table}>
 					{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
-						<div>Loading...</div>
+						<Loading open={true} msg={'Loading...'} />
 					) : (
 						<LargeTable
 							items={data.userList.items}
@@ -149,10 +162,6 @@ const UserList = ({ setDialogVisible }) => {
 			</Box>
 		</Box>
 	)
-}
-
-UserList.propsTypes = {
-	setDialogVisible: PropTypes.func,
 }
 
 export default UserList

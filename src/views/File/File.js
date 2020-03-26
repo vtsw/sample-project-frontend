@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { useMutation } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box, Button, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
-import { UPLOAD_FILE } from './query'
+import { GET_FILE, UPLOAD_FILE, SET_UPLOADED_FILE } from './query'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -43,6 +43,12 @@ const useStyle = makeStyles(theme => ({
 		height: '100%',
 		width: '100%',
 	},
+	item__uploader__filename: {
+		width: 360,
+		whiteSpace: 'nowrap',
+		textOverflow: 'ellipsis',
+		overflow: 'hidden',
+	},
 	item__imageviewer: {
 		width: 462,
 		height: 324,
@@ -52,20 +58,37 @@ const useStyle = makeStyles(theme => ({
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginTop: theme.spacing(3),
+		overflow: 'hidden',
+	},
+	item__imageviewer__image: {
+		height: '100%',
 	},
 }))
 
 const File = () => {
-	const [uploadFile] = useMutation(UPLOAD_FILE)
+	const {
+		data: { file },
+	} = useQuery(GET_FILE)
+	const [setUploadedFile] = useMutation(SET_UPLOADED_FILE, {
+		onError: err => {
+			alert(err)
+		},
+	})
+	const [uploadFile] = useMutation(UPLOAD_FILE, {
+		onCompleted: ({ uploadImage }) => {
+			setUploadedFile({ variables: { file: uploadImage } })
+		},
+		onError: err => {
+			alert(err)
+		},
+	})
+
 	const onUploadFile = ({ target }) => {
 		const file = target.files[0]
-		console.log(file)
+
 		uploadFile({ variables: { file } })
-			.then(data => {
-				console.log(data)
-			})
-			.catch(error => console.error(error))
 	}
+
 	const classes = useStyle()
 
 	return (
@@ -88,15 +111,27 @@ const File = () => {
 							<input
 								accept='image/*'
 								className={classes.item__uploader__input}
-								id='uploading-input'
 								onChange={onUploadFile}
 								type='file'
 							/>
 						</Button>
-						<Typography variant='body2'>No file selected</Typography>
+						<Typography
+							variant='body2'
+							className={classes.item__uploader__filename}
+						>
+							{file.filename ? file.filename : 'No file selected'}
+						</Typography>
 					</Grid>
 					<Grid item className={classes.item__imageviewer}>
-						<Typography variant='body2'>image</Typography>
+						{file.link ? (
+							<img
+								alt={file.filename}
+								src={file.link}
+								className={classes.item__imageviewer__image}
+							/>
+						) : (
+							<Typography variant='body2'>image</Typography>
+						)}
 					</Grid>
 				</Grid>
 			</Box>

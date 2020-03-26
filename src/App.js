@@ -1,12 +1,11 @@
-import React, { Suspense, lazy } from 'react'
+import React, { Suspense, lazy, useEffect } from 'react'
 import { Route, Switch, withRouter } from 'react-router-dom'
 
-import { Box } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Grid } from '@material-ui/core'
 
 import { getToken } from '@src/shares/utils'
 
-import { NavBar } from '@views_components'
+import { NavBar, Loading } from '@views_components'
 
 const Main = lazy(() => import('@views/Main'))
 const Message = lazy(() => import('@views/Message'))
@@ -15,25 +14,11 @@ const SignIn = lazy(() => import('@views/SignIn'))
 const SignUp = lazy(() => import('@views/SignUp'))
 const File = lazy(() => import('@views/File'))
 
-const styles = {
-	root: {
-		display: 'flex',
-	},
-}
+const App = props => {
+	const { history, location } = props
 
-class App extends React.Component {
-	componentDidMount() {
-		this.onRouteChanged()
-	}
-	componentDidUpdate(prevProps) {
-		if (this.props.location !== prevProps.location) {
-			this.onRouteChanged()
-		}
-	}
-
-	onRouteChanged() {
+	useEffect(() => {
 		const authToken = getToken()
-		const { location, history } = this.props
 
 		if (!authToken && location.pathname === '/sign-up') {
 			return
@@ -43,34 +28,27 @@ class App extends React.Component {
 			history.push('/sign-in')
 			return
 		}
-	}
-	shouldRenderNavBar = () => {
-		const { location } = this.props
-		if (location.pathname === '/sign-in' || location.pathname === '/sign-up') {
-			return null
-		}
-		return <NavBar />
-	}
+	})
 
-	render() {
-		const { classes } = this.props
-		return (
-			<Box className={classes.root}>
-				{this.shouldRenderNavBar()}
+	return (
+		<Grid container wrap='nowrap'>
+			{location.pathname === '/sign-in' ||
+			location.pathname === '/sign-up' ? null : (
+				<NavBar />
+			)}
 
-				<Suspense fallback={<div>Loading...</div>}>
-					<Switch>
-						<Route exact path='/' component={Main} />
-						<Route path='/message' component={Message} />
-						<Route path='/user' component={User} />
-						<Route path='/sign-in' component={SignIn} />
-						<Route path='/sign-up' component={SignUp} />
-						<Route path='/file' component={File} />
-					</Switch>
-				</Suspense>
-			</Box>
-		)
-	}
+			<Suspense fallback={<Loading open={true} msg={'Loading...'} />}>
+				<Switch>
+					<Route exact path='/' component={Main} />
+					<Route path='/message' component={Message} />
+					<Route path='/user' component={User} />
+					<Route path='/sign-in' component={SignIn} />
+					<Route path='/sign-up' component={SignUp} />
+					<Route path='/file' component={File} />
+				</Switch>
+			</Suspense>
+		</Grid>
+	)
 }
 
-export default withRouter(withStyles(styles)(App))
+export default withRouter(App)

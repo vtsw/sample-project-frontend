@@ -1,53 +1,45 @@
 import React, { useState } from 'react'
-import {
-	Grid,
-	TextField,
-	Typography,
-	Button,
-	makeStyles,
-} from '@material-ui/core'
+import { Grid, TextField, Button, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
-	save: {
-		padding: '16px',
+	root: {
+		padding: theme.spacing(2),
 	},
-	textField: {
-		width: '328px',
+	textfield: {
+		width: 328,
 	},
-	buttonSave: {
-		color: theme.palette.common.white,
-		marginLeft: '8px',
-		width: '56px',
-		boxShadow: 'none',
+	savebutton: {
+		marginLeft: theme.spacing(1),
+		width: 56,
 		textTransform: 'none',
-		background: theme.palette.common.green,
-		'&:hover': {
-			background: theme.palette.common.green,
-		},
 	},
 }))
 
-export default function BoxCreate({ handleCreate }) {
+const BoxCreate = props => {
+	const { handleCreate } = props
 	const [createVal, setCreateVal] = useState('')
 	const classes = useStyles()
 
 	return (
-		<Grid container alignItems='stretch' className={classes.save}>
+		<Grid container alignItems='stretch' className={classes.root}>
 			<TextField
 				variant='outlined'
 				label='Text'
 				placeholder='text...'
 				type='text'
 				onChange={e => setCreateVal(e.target.value)}
-				className={classes.textField}
+				className={classes.textfield}
 			/>
 			<Button
 				variant='contained'
-				className={classes.buttonSave}
+				color='primary'
+				className={classes.savebutton}
 				onClick={() => handleCreate(createVal)}
 			>
-				<Typography variant='caption'>Save</Typography>
+				Save
 			</Button>
 		</Grid>
 	)
 }
+
+export default BoxCreate

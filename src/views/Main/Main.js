@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import clsx from 'clsx'
-import { Box, Grid, makeStyles, Typography } from '@material-ui/core'
+
 import { useQuery } from '@apollo/react-hooks'
-import { USER_LIST } from './query'
+
+import { Box, Grid, makeStyles, Typography } from '@material-ui/core'
+
+import { SearchBox, Loading, LargeTable } from '@views_components'
 import { ListMessageOfUser } from './components'
-import Loading from '../components/Loading'
-import LargeTable from '../components/LargeTable/LargeTable'
-import { SearchBox } from '@views_components'
-import { NETWORK_STATUS_FETCH_MORE } from '../../configs.local'
+
+import { USER_LIST } from './query'
+import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -15,21 +17,20 @@ const useStyle = makeStyles(theme => ({
 		height: '100vh',
 		position: 'relative',
 	},
-	full_height: {
+	fullheight: {
 		height: '100%',
 	},
 	container: {
 		padding: theme.spacing(3),
 	},
-
-	user_list__container: {
+	container__searchbox__largetable: {
 		display: 'flex',
 		flexDirection: 'column',
 		border: `1px solid ${theme.palette.common.border}`,
 		marginRight: theme.spacing(1.5),
 	},
 
-	search_box: {
+	searchbox: {
 		padding: theme.spacing(3),
 	},
 	overlay: {
@@ -130,12 +131,15 @@ const Main = () => {
 				open={loading && networkStatus !== NETWORK_STATUS_FETCH_MORE}
 				msg={'Loading...'}
 			/>
-			<Grid container className={clsx(classes.full_height, classes.container)}>
+			<Grid container className={clsx(classes.fullheight, classes.container)}>
 				<Grid item xs={4}>
 					<Box
-						className={clsx(classes.user_list__container, classes.full_height)}
+						className={clsx(
+							classes.container__searchbox__largetable,
+							classes.fullheight
+						)}
 					>
-						<Box className={classes.search_box}>
+						<Box className={classes.searchbox}>
 							<SearchBox width={390} onSearch={handleSearch} />
 						</Box>
 						{userList && userList.items && (
@@ -167,4 +171,5 @@ const Main = () => {
 		</Box>
 	)
 }
+
 export default Main

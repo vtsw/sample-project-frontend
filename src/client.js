@@ -1,5 +1,5 @@
 import { ApolloClient } from 'apollo-client'
-import { createHttpLink } from 'apollo-link-http'
+import { createUploadLink } from 'apollo-upload-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
 
@@ -26,10 +26,18 @@ const resolvers = {
 			})
 			return selectedUser
 		},
+		setUploadedFile: (_, { file }, { cache }) => {
+			cache.writeData({
+				data: {
+					file,
+				},
+			})
+			return file
+		},
 	},
 }
 
-const httpLink = createHttpLink({
+const httpLink = createUploadLink({
 	uri: APOLLO_SERVER,
 	credentials: 'same-origin',
 })
@@ -61,6 +69,11 @@ cache.writeData({
 			name: '',
 			email: '',
 			__typename: 'User',
+		},
+		file: {
+			filename: '',
+			link: '',
+			__typename: 'File',
 		},
 	},
 })

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import clsx from 'clsx'
+
 import { Box, Button, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Search } from '@material-ui/icons'
@@ -12,45 +11,47 @@ const useStyles = makeStyles(theme => ({
 		maxWidth: ({ width }) => width,
 		width: '100%',
 	},
-	search_btn: {
+	searchinput: {
+		width: '80%',
+	},
+	searchbutton: {
 		color: theme.palette.common.white,
 		padding: 0,
 	},
-	search_btn__icon: {
+	searchbutton__icon: {
 		fontSize: '2rem',
-	},
-	search_input: {
-		width: '80%',
 	},
 }))
 
-const SearchBox = ({ width, onSearch }) => {
-	const [searchValue, setSearchValue] = useState('')
+const SearchBox = props => {
+	const { userSearchValue, width, onSearch } = props
+	const [searchValue, setSearchValue] = useState(userSearchValue)
 	const classes = useStyles({ width })
+
 	return (
 		<Box className={classes.root}>
 			<TextField
 				value={searchValue}
 				variant='outlined'
 				placeholder='search...'
-				className={clsx(classes.margin, classes.search_input)}
+				className={classes.searchinput}
 				onChange={e => setSearchValue(e.target.value)}
+				onKeyDown={e => {
+					if (e.keyCode === 13) {
+						onSearch(searchValue)
+					}
+				}}
 			/>
 			<Button
 				variant='contained'
 				size='large'
-				className={classes.search_btn}
+				className={classes.searchbutton}
 				onClick={() => onSearch(searchValue)}
 			>
-				<Search className={classes.search_btn__icon} />
+				<Search className={classes.searchbutton__icon} />
 			</Button>
 		</Box>
 	)
-}
-
-SearchBox.propsTypes = {
-	width: PropTypes.string,
-	onSearch: PropTypes.func,
 }
 
 export default SearchBox
