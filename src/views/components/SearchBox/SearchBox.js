@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import { Box, Button, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Search } from '@material-ui/icons'
+import { useMutation } from '@apollo/react-hooks'
+import { SET_USER_SEARCH_TEXT } from '@views/User/query'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -27,7 +29,10 @@ const SearchBox = props => {
 	const { userSearchValue, width, onSearch } = props
 	const [searchValue, setSearchValue] = useState(userSearchValue)
 	const classes = useStyles({ width })
-
+	const [setUserSearchValue] = useMutation(SET_USER_SEARCH_TEXT)
+	const handleSearchTextChange = text => {
+		setUserSearchValue({ variables: { text } })
+	}
 	return (
 		<Box className={classes.root}>
 			<TextField
@@ -35,7 +40,10 @@ const SearchBox = props => {
 				variant='outlined'
 				placeholder='search...'
 				className={classes.searchinput}
-				onChange={e => setSearchValue(e.target.value)}
+				onChange={e => {
+					setSearchValue(e.target.value)
+					handleSearchTextChange(e.target.value)
+				}}
 				onKeyDown={e => {
 					if (e.keyCode === 13) {
 						onSearch(searchValue)

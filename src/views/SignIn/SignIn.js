@@ -59,6 +59,14 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+// const theme = createMuiTheme({
+// // 	palette: {
+// // 		primary: {
+// // 			main: teal[600],
+// // 		},
+// // 	},
+// // })
+
 const SignIn = props => {
 	const { history } = props
 	const [email, setEmail] = useState('')

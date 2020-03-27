@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box, Typography } from '@material-ui/core'
@@ -49,7 +48,9 @@ const TABLE_HEADER = [
 
 const UserList = props => {
 	const { onSelectAnUser } = props
-	const { data: { userSearchValue } } = useQuery(GET_USER_SEARCH_TEXT)
+	const {
+		data: { userSearchValue },
+	} = useQuery(GET_USER_SEARCH_TEXT)
 
 	const { loading, data, fetchMore, networkStatus } = useQuery(
 		FETCH_USER_LIST,
@@ -63,7 +64,9 @@ const UserList = props => {
 			},
 		}
 	)
-	const { data: { selectedUser } } = useQuery(GET_SELECTED_USER, {
+	const {
+		data: { selectedUser },
+	} = useQuery(GET_SELECTED_USER, {
 		onError: err => {
 			alert(err)
 		},
@@ -134,9 +137,9 @@ const UserList = props => {
 						User List
 					</Typography>
 					<SearchBox
-						userSearchValue={userSearchValue}
 						width={400}
 						onSearch={handleOnSearch}
+						defaultValue={userSearchValue}
 					/>
 				</Box>
 				<Box className={classes.userlist__table}>
