@@ -109,6 +109,8 @@ const FormEditor = props => {
 		setName(selectedUser.name)
 	}, [selectedUser])
 
+	const hasSelectedUser =
+		selectedUser.id && selectedUser.name && selectedUser.email
 	const classes = useStyles()
 
 	const onCancel = () => {
@@ -218,11 +220,9 @@ const FormEditor = props => {
 	return (
 		<Box className={classes.root}>
 			<Typography variant='h5' className={classes.formtitle}>
-				{selectedUser.id && selectedUser.name && selectedUser.email
-					? 'Modify'
-					: 'Sign up'}
+				{hasSelectedUser ? 'Modify' : 'Sign up'}
 			</Typography>
-			<Box className={classes.formcontent}>
+			<div className={classes.formcontent}>
 				<TextField
 					value={email}
 					label='EMAIL'
@@ -241,6 +241,7 @@ const FormEditor = props => {
 					onChange={e => setName(e.target.value)}
 				/>
 				<TextField
+					id='formeditor-password'
 					value={password}
 					label='PASSWORD'
 					variant='outlined'
@@ -250,6 +251,7 @@ const FormEditor = props => {
 					onChange={e => setPassword(e.target.value)}
 				/>
 				<TextField
+					id='formeditor-password-confirm'
 					value={confirmPassword}
 					label='PASSWORD CONFIRM'
 					variant='outlined'
@@ -258,21 +260,22 @@ const FormEditor = props => {
 					className={classes.forminput}
 					onChange={e => setConfirmPassword(e.target.value)}
 				/>
-			</Box>
-			<Box className={classes.formbuttons}>
+			</div>
+			<div className={classes.formbuttons}>
 				<Button
+					data-cy='submit-button'
 					variant='contained'
-					color='primary'
 					size='large'
 					fullWidth
 					className={classes.formbutton}
-					onClick={onSubmit}
+					onClick={() => {
+						setOpenConfirmDeleteDialog(true)
+					}}
 				>
-					{selectedUser.id && selectedUser.name && selectedUser.email
-						? 'Save'
-						: 'Register'}
+					Delete
+					{hasSelectedUser ? 'Save' : 'Register'}
 				</Button>
-				{selectedUser.id && selectedUser.name && selectedUser.email ? (
+				{hasSelectedUser ? (
 					<Button
 						variant='contained'
 						size='large'
@@ -294,7 +297,7 @@ const FormEditor = props => {
 				>
 					Cancel
 				</Button>
-			</Box>
+			</div>
 			<DeleteDialog
 				open={openConfirmDeleteDialog}
 				onClose={() => {
