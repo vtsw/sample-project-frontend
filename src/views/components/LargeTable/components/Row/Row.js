@@ -43,7 +43,8 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const Row = ({ forwardedRef, index, data, style }) => {
+const Row = props => {
+	const { forwardedRef, index, data, style } = props
 	const classes = useStyles({ style, index })
 	const {
 		items,

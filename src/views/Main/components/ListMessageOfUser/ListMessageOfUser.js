@@ -21,7 +21,8 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const ListMessageOfUser = ({ selectedUser }) => {
+const ListMessageOfUser = props => {
+	const { selectedUser } = props
 	const classes = useStyles()
 	const [modifyDialogVisible, setModifyDialogVisible] = useState(false)
 	const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)

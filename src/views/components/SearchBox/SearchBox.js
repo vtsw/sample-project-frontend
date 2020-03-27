@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { Box, Button, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Search } from '@material-ui/icons'
+import { useMutation } from '@apollo/react-hooks'
+import { SET_USER_SEARCH_TEXT } from '@views/User/query'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -27,6 +28,10 @@ const useStyles = makeStyles(theme => ({
 const SearchBox = ({ width, onSearch, defaultValue }) => {
 	const [searchValue, setSearchValue] = useState(defaultValue)
 	const classes = useStyles({ width })
+	const [setUserSearchValue] = useMutation(SET_USER_SEARCH_TEXT)
+	const handleSearchTextChange = text => {
+		setUserSearchValue({ variables: { text } })
+	}
 	return (
 		<Box className={classes.root}>
 			<TextField
@@ -34,7 +39,10 @@ const SearchBox = ({ width, onSearch, defaultValue }) => {
 				variant='outlined'
 				placeholder='search...'
 				className={clsx(classes.margin, classes.search_input)}
-				onChange={e => setSearchValue(e.target.value)}
+				onChange={e => {
+					setSearchValue(e.target.value)
+					handleSearchTextChange(e.target.value)
+				}}
 			/>
 			<Button
 				variant='contained'
@@ -46,11 +54,6 @@ const SearchBox = ({ width, onSearch, defaultValue }) => {
 			</Button>
 		</Box>
 	)
-}
-
-SearchBox.propsTypes = {
-	width: PropTypes.string,
-	onSearch: PropTypes.func,
 }
 
 export default SearchBox

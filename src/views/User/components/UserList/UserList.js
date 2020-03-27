@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box, Typography } from '@material-ui/core'
@@ -54,7 +53,8 @@ const TABLE_HEADER = [
 	{ headerLabel: 'NAME', xs: 7, headerVariable: 'name' },
 ]
 
-const UserList = ({ setDialogVisible }) => {
+const UserList = props => {
+	const { setDialogVisible } = props
 	const {
 		data: { userSearchValue },
 	} = useQuery(GET_USER_SEARCH_TEXT)
@@ -124,11 +124,15 @@ const UserList = ({ setDialogVisible }) => {
 	return (
 		<Box className={classes.root}>
 			<Box className={clsx(classes.userlist__container, classes.full_height)}>
-				<Box className={classes.search_box}>
-					<Typography variant='h5' className={classes.search_box__title}>
+				<Box className={classes.searchbox}>
+					<Typography variant='h5' className={classes.searchbox__title}>
 						User List
 					</Typography>
-					<SearchBox width={400} onSearch={handleOnSearch} />
+					<SearchBox
+						width={400}
+						onSearch={handleOnSearch}
+						defaultValue={userSearchValue}
+					/>
 				</Box>
 				<Box className={classes.user_list__table}>
 					{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
@@ -149,10 +153,6 @@ const UserList = ({ setDialogVisible }) => {
 			</Box>
 		</Box>
 	)
-}
-
-UserList.propsTypes = {
-	setDialogVisible: PropTypes.func,
 }
 
 export default UserList

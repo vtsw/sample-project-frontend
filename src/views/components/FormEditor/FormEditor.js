@@ -74,7 +74,8 @@ const theme = createMuiTheme({
 	},
 })
 
-const FormEditor = ({ history }) => {
+const FormEditor = props => {
+	const { history } = props
 	const isAuthenticated = getToken()
 
 	const {

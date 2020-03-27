@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import {
+	Button,
 	Grid,
+	makeStyles,
 	TextField,
 	Typography,
-	Button,
-	makeStyles,
 } from '@material-ui/core'
+import { useMutation } from '@apollo/react-hooks'
+import { SET_MESSAGE_CREATE_TEXT } from '@views/Message/query'
 
 const useStyles = makeStyles(theme => ({
 	save: {
@@ -27,10 +29,14 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function BoxCreate({ handleCreate, defaultValue }) {
+const BoxCreate = props => {
+	const { handleCreate, defaultValue } = props
 	const [createVal, setCreateVal] = useState(defaultValue)
 	const classes = useStyles()
-
+	const [setMessageCreateValueOfMain] = useMutation(SET_MESSAGE_CREATE_TEXT)
+	const handleCreateTextChange = text => {
+		setMessageCreateValueOfMain({ variables: { createValue: text } })
+	}
 	return (
 		<Grid container alignItems='stretch' className={classes.save}>
 			<TextField
@@ -38,7 +44,10 @@ export default function BoxCreate({ handleCreate, defaultValue }) {
 				label='Text'
 				placeholder='text...'
 				type='text'
-				onChange={e => setCreateVal(e.target.value)}
+				onChange={e => {
+					setCreateVal(e.target.value)
+					handleCreateTextChange(e.target.value)
+				}}
 				className={classes.textField}
 				defaultValue={defaultValue}
 			/>
@@ -52,3 +61,4 @@ export default function BoxCreate({ handleCreate, defaultValue }) {
 		</Grid>
 	)
 }
+export default BoxCreate

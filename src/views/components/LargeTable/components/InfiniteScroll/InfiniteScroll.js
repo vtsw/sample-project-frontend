@@ -15,19 +15,20 @@ const RefForwarder = React.forwardRef((props, ref) => (
 	<Row forwardedRef={ref} {...props} />
 ))
 
-const InfiniteScroll = ({
-	hasNextPage,
-	isNextPageLoading,
-	loadNextPage,
-	items = [],
-	columns = [
-		{ headerLabel: 'EMAIL', width: { xs: 1 }, headerVariable: 'email' },
-	],
-	onClickRow = () => {},
-	isIconClose = false,
-	selectedRow = {},
-	handleDeleteRow = () => {},
-}) => {
+const InfiniteScroll = props => {
+	const {
+		hasNextPage,
+		isNextPageLoading,
+		loadNextPage,
+		items = [],
+		columns = [
+			{ headerLabel: 'EMAIL', width: { xs: 1 }, headerVariable: 'email' },
+		],
+		onClickRow = () => {},
+		isIconClose = false,
+		selectedRow = {},
+		handleDeleteRow = () => {},
+	} = props
 	const classes = useStyles()
 	const itemCount = hasNextPage ? items.length + 1 : items.length
 	const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage

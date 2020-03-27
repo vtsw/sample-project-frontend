@@ -72,6 +72,4 @@ const User = () => {
 	)
 }
 
-User.propsTypes = {}
-
 export default User

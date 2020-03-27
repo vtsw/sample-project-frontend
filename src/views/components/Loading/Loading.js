@@ -13,7 +13,8 @@ const useStyles = makeStyles({
 		zIndex: 1000,
 	},
 })
-export default function Loading({ open, msg }) {
+const Loading = ({ open, msg }) => {
 	const classes = useStyles()
 	return open && <div className={classes.root}>{msg}</div>
 }
+export default Loading

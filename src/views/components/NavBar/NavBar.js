@@ -78,6 +78,4 @@ const NavBar = ({ location, history }) => {
 	)
 }
 
-NavBar.propsTypes = {}
-
 export default withRouter(NavBar)

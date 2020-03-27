@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function BoxSearch({ handleSearch, defaultValue }) {
+const BoxSearch = ({ handleSearch, defaultValue }) => {
 	const classes = useStyles()
 	const [searchVal, setSearchVal] = useState(defaultValue)
 	return (
@@ -51,3 +51,4 @@ export default function BoxSearch({ handleSearch, defaultValue }) {
 		</Grid>
 	)
 }
+export default BoxSearch
