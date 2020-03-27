@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { FormEditor } from '@views_components'
 import { WelcomeDialog, UserList } from './components'
 
-import { GET_SELECTED_USER } from '@views/User/query'
+import { GET_SELECTED_USER } from '@views/User/queries'
 
 const useStyles = makeStyles(theme => ({
 	root: {

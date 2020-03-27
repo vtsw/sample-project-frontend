@@ -9,14 +9,16 @@ import { makeStyles } from '@material-ui/core/styles'
 import { DeleteDialog } from '@views_components'
 
 import {
-	CREATE_USER,
-	UPDATE_USER,
-	DELETE_USER,
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
 	GET_SELECTED_USER,
+} from '@views/User/queries'
+import {
+	CREATE_USER,
+	UPDATE_USER,
+	DELETE_USER,
 	SET_SELECTED_USER,
-} from '@views/User/query'
+} from '@views/User/mutations'
 import { useCreateAUser, useDeleteAUser } from './useMutations'
 
 import { getToken } from '@src/shares/utils'

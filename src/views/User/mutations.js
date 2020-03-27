@@ -1,56 +1,31 @@
 import gql from 'graphql-tag'
-
-const USER_FIELDS = gql`
-	fragment UserFields on User {
-		id
-		name
-		email
-	}
-`
+import { USER } from './fragments'
 
 const CREATE_USER = gql`
 	mutation CreateUser($user: CreateUserInput!) {
 		createUser(user: $user) {
-			...UserFields
+			...User
 		}
 	}
-	${USER_FIELDS}
+	${USER}
 `
 
 const UPDATE_USER = gql`
 	mutation UpdateUser($user: UpdateUserInput!) {
 		updateUser(user: $user) {
-			...UserFields
+			...User
 		}
 	}
-	${USER_FIELDS}
+	${USER}
 `
 
 const DELETE_USER = gql`
 	mutation DeleteUser($id: ID!) {
 		deleteUser(id: $id) {
-			...UserFields
+			...User
 		}
 	}
-	${USER_FIELDS}
-`
-
-const FETCH_USER_LIST = gql`
-	query FetchUserList($query: UserListInput) {
-		userList(query: $query) {
-			items {
-				...UserFields
-			}
-			hasNext
-		}
-	}
-	${USER_FIELDS}
-`
-
-const GET_USER_SEARCH_TEXT = gql`
-	query UserSearchValue {
-		userSearchValue @client
-	}
+	${USER}
 `
 
 const SET_USER_SEARCH_TEXT = gql`
@@ -59,31 +34,19 @@ const SET_USER_SEARCH_TEXT = gql`
 	}
 `
 
-const GET_SELECTED_USER = gql`
-	query GetSelectedUser {
-		selectedUser @client {
-			...UserFields
-		}
-	}
-	${USER_FIELDS}
-`
-
 const SET_SELECTED_USER = gql`
 	mutation SetSelectedUser($selectedUser: User!) {
 		setSelectedUser(selectedUser: $selectedUser) @client {
-			...UserFields
+			...User
 		}
 	}
-	${USER_FIELDS}
+	${USER}
 `
 
 export {
 	CREATE_USER,
 	UPDATE_USER,
 	DELETE_USER,
-	FETCH_USER_LIST,
-	GET_USER_SEARCH_TEXT,
 	SET_USER_SEARCH_TEXT,
-	GET_SELECTED_USER,
 	SET_SELECTED_USER,
 }

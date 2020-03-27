@@ -10,10 +10,9 @@ import { SearchBox, LargeTable, Loading } from '@views_components'
 import {
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
-	SET_USER_SEARCH_TEXT,
 	GET_SELECTED_USER,
-	SET_SELECTED_USER,
-} from '@views/User/query'
+} from '@views/User/queries'
+import { SET_USER_SEARCH_TEXT, SET_SELECTED_USER } from '@views/User/mutations'
 import { PAGE_LIMIT, NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({

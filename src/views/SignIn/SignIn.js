@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { setToken } from '@src/shares/utils'
 import { SIGN_IN } from './query'
-import { SET_UPLOADED_FILE } from '@views/File/query'
+import { SET_UPLOADED_FILE } from '@views/File/mutations'
 
 const useStyles = makeStyles(theme => ({
 	root: {
