@@ -1,5 +1,5 @@
 const dotenv = require('dotenv').config({
-	path: __dirname + '/.env.production',
+	path: __dirname + '/.env.prod',
 })
 const webpack = require('webpack')
 const merge = require('webpack-merge')

@@ -1,4 +1,3 @@
-const dotenv = require('dotenv').config({ path: __dirname + '/.env' })
 const { resolve } = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -11,7 +10,6 @@ module.exports = {
 	},
 	output: {
 		path: resolve(__dirname, 'dist'),
-		filename: '[name].[hash:8].js',
 		publicPath: '/',
 	},
 	resolve: {
@@ -50,7 +48,6 @@ module.exports = {
 	devServer: {
 		contentBase: resolve(__dirname, 'dist'),
 		port: 3000,
-		host: '0.0.0.0',
 		historyApiFallback: true,
 	},
 	plugins: [

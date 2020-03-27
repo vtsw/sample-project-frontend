@@ -1,7 +1,6 @@
 const dotenv = require('dotenv').config({
-	path: __dirname + '/.env.development',
+	path: __dirname + '/.env.dev',
 })
-const { resolve } = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const common = require('./webpack.common')

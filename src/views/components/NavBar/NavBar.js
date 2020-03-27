@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -41,7 +41,7 @@ const navbarItems = [
 
 const NavBar = props => {
 	const { location, history } = props
-	const [currentPage, setCurrentPage] = React.useState(location.pathname)
+	const [currentPage, setCurrentPage] = useState(location.pathname)
 	const classes = useStyles()
 	const handleOnChangePage = page => {
 		setCurrentPage(page)
