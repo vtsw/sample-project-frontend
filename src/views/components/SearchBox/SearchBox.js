@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import { Box, Button, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Search } from '@material-ui/icons'
+import { useMutation } from '@apollo/react-hooks'
+import { SET_USER_SEARCH_TEXT } from '@views/User/mutations'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -24,8 +26,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const SearchBox = props => {
-	const { userSearchValue, width, onSearch } = props
-	const [searchValue, setSearchValue] = useState(userSearchValue)
+	const { defaultValue, width, onSearch } = props
+	const [searchValue, setSearchValue] = useState(defaultValue)
 	const classes = useStyles({ width })
 
 	return (

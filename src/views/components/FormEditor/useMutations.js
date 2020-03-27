@@ -42,9 +42,7 @@ const useDeleteAUser = (query, updateQuery, vars) => {
 				},
 			})
 		},
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 }
 

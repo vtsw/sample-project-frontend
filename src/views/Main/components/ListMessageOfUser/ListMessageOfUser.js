@@ -4,7 +4,12 @@ import { useMutation, useQuery } from '@apollo/react-hooks'
 
 import { Box, Typography, makeStyles } from '@material-ui/core'
 
-import { LargeTable, DeleteDialog, ModifyDialog } from '@views_components'
+import {
+	LargeTable,
+	DeleteDialog,
+	ModifyDialog,
+	Loading,
+} from '@views_components'
 
 import { MESSAGE_LIST } from '../../query'
 import { DELETE_MESSAGE, UPDATE_MESSAGE } from '../../../Message/mutation'
@@ -32,16 +37,19 @@ const ListMessageOfUser = props => {
 	const [selectedMessage, setSelectedMessage] = useState('')
 	const [message, setMessage] = useState(false)
 
-	const { data: dataMsg, fetchMore, networkStatus } = useQuery(MESSAGE_LIST, {
-		variables: {
-			query: {
-				userId: selectedUser && selectedUser.id,
-				limit: 20,
+	const { data: dataMsg, fetchMore, networkStatus, loading } = useQuery(
+		MESSAGE_LIST,
+		{
+			variables: {
+				query: {
+					userId: selectedUser && selectedUser.id,
+					limit: 20,
+				},
 			},
-		},
-		fetchPolicy: 'network-only',
-		notifyOnNetworkStatusChange: true,
-	})
+			fetchPolicy: 'network-only',
+			notifyOnNetworkStatusChange: true,
+		}
+	)
 
 	useEffect(() => {
 		if (dataMsg && dataMsg.messageList) {
@@ -54,9 +62,7 @@ const ListMessageOfUser = props => {
 			const update = message.filter(item => item.id !== data.deleteMessage.id)
 			setMessage(update)
 		},
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 
 	const [updateMsg] = useMutation(UPDATE_MESSAGE, {
@@ -68,9 +74,7 @@ const ListMessageOfUser = props => {
 			})
 			setMessage(update)
 		},
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 	const handleUpdateMessage = value => {
 		updateMsg({
@@ -126,56 +130,65 @@ const ListMessageOfUser = props => {
 	const classes = useStyles()
 
 	return (
-		message && (
-			<Box className={classes.root}>
-				<Typography variant='h5' className={classes.listtitle}>
-					Total {message.length}
-				</Typography>
+		<React.Fragment>
+			{message ? (
+				<Box className={classes.root}>
+					{loading ? (
+						<Loading open={true} msg={'Loading...'} />
+					) : (
+						<React.Fragment>
+							<Typography variant='h5' className={classes.listtitle}>
+								Total {message.length}
+							</Typography>
+							<LargeTable
+								items={message}
+								onClickRow={onSelectAMessage}
+								selectedRow={selectedMessage}
+								columns={columns}
+								isIconClose={true}
+								handleDeleteRow={dataRow => {
+									setDeleteDialogVisible(true)
+									setSelectedMessage(dataRow)
+								}}
+								loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
+								loadNextPage={loadNextMessagePage}
+								hasNextPage={dataMsg.messageList && dataMsg.messageList.hasNext}
+							/>
+						</React.Fragment>
+					)}
 
-				<LargeTable
-					items={message}
-					onClickRow={onSelectAMessage}
-					selectedRow={selectedMessage}
-					columns={columns}
-					isIconClose={true}
-					handleDeleteRow={dataRow => {
-						setDeleteDialogVisible(true)
-						setSelectedMessage(dataRow)
-					}}
-					loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
-					loadNextPage={loadNextMessagePage}
-					hasNextPage={dataMsg.messageList && dataMsg.messageList.hasNext}
-				/>
-
-				<DeleteDialog
-					open={deleteDialogVisible}
-					onClose={() => {
-						setDeleteDialogVisible(false)
-					}}
-					onAgree={() => {
-						setDeleteDialogVisible(false)
-						handleDeleteMessage()
-					}}
-					onDisagree={() => {
-						setDeleteDialogVisible(false)
-					}}
-				/>
-				<ModifyDialog
-					open={modifyDialogVisible}
-					onClose={() => {
-						setModifyDialogVisible(false)
-					}}
-					valueDefault={valueDefault}
-					onAgree={value => {
-						setModifyDialogVisible(false)
-						handleUpdateMessage(value)
-					}}
-					onDisagree={() => {
-						setModifyDialogVisible(false)
-					}}
-				/>
-			</Box>
-		)
+					<DeleteDialog
+						open={deleteDialogVisible}
+						onClose={() => {
+							setDeleteDialogVisible(false)
+						}}
+						onAgree={() => {
+							setDeleteDialogVisible(false)
+							handleDeleteMessage()
+						}}
+						onDisagree={() => {
+							setDeleteDialogVisible(false)
+						}}
+					/>
+					<ModifyDialog
+						open={modifyDialogVisible}
+						onClose={() => {
+							setModifyDialogVisible(false)
+						}}
+						valueDefault={valueDefault}
+						onAgree={value => {
+							setModifyDialogVisible(false)
+							handleUpdateMessage(value)
+						}}
+						onDisagree={() => {
+							setModifyDialogVisible(false)
+						}}
+					/>
+				</Box>
+			) : (
+				<Loading open={true} msg={'Loading...'} style={{ width: '100%' }} />
+			)}
+		</React.Fragment>
 	)
 }
 

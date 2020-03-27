@@ -16,7 +16,6 @@ const File = lazy(() => import('@views/File'))
 
 const App = props => {
 	const { history, location } = props
-
 	useEffect(() => {
 		const authToken = getToken()
 
@@ -26,6 +25,11 @@ const App = props => {
 
 		if (!authToken && location.pathname !== '/sign-in') {
 			history.push('/sign-in')
+			return
+		}
+
+		if (authToken && location.pathname === '/sign-in') {
+			history.push('/')
 			return
 		}
 	})

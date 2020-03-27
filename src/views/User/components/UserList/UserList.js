@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box, Typography } from '@material-ui/core'
@@ -67,20 +66,14 @@ const UserList = props => {
 	const {
 		data: { selectedUser },
 	} = useQuery(GET_SELECTED_USER, {
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 
 	const [setUserSearchValue] = useMutation(SET_USER_SEARCH_TEXT, {
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 	const [setSelectedUser] = useMutation(SET_SELECTED_USER, {
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 
 	const handleOnSearch = searchValue => {
@@ -137,9 +130,9 @@ const UserList = props => {
 						User List
 					</Typography>
 					<SearchBox
-						userSearchValue={userSearchValue}
 						width={400}
 						onSearch={handleOnSearch}
+						defaultValue={userSearchValue}
 					/>
 				</Box>
 				<Box className={classes.userlist__table}>

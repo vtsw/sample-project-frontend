@@ -71,9 +71,7 @@ const File = () => {
 		data: { file },
 	} = useQuery(GET_FILE)
 	const [setUploadedFile] = useMutation(SET_UPLOADED_FILE, {
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 
 	const { data } = useQuery(GET_USER_INFO, {
@@ -84,18 +82,14 @@ const File = () => {
 				setUploadedFile({ variables: { file: image } })
 			}
 		},
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 
 	const [uploadFile] = useMutation(UPLOAD_FILE, {
 		onCompleted: ({ uploadImage }) => {
 			setUploadedFile({ variables: { file: uploadImage } })
 		},
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 
 	const onUploadFile = ({ target }) => {

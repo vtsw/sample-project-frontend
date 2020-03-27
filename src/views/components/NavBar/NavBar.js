@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
+
+import { useMutation } from '@apollo/react-hooks'
+import { RESET_CACHE } from './mutations'
 
 import NavBarItem from './NavBarItem'
 
 import { deleteToken } from '@src/shares/utils'
+import { initialState } from '@src/client'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -42,7 +46,15 @@ const navbarItems = [
 
 const NavBar = props => {
 	const { location, history } = props
-	const [currentPage, setCurrentPage] = React.useState(location.pathname)
+	const [currentPage, setCurrentPage] = useState(location.pathname)
+	const [resetCache, { client }] = useMutation(RESET_CACHE, {
+		onCompleted: async () => {
+			await client.resetStore()
+			client.writeData({ data: initialState })
+		},
+		onError: err => alert(err),
+	})
+
 	const classes = useStyles()
 	const handleOnChangePage = page => {
 		setCurrentPage(page)
@@ -65,6 +77,7 @@ const NavBar = props => {
 			<li
 				className={classes.tab}
 				onClick={() => {
+					resetCache({ variables: { data: initialState } })
 					deleteToken()
 					handleOnChangePage('/sign-in')
 				}}

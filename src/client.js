@@ -36,6 +36,45 @@ const resolvers = {
 			}
 			return file
 		},
+		setUserSearchValueOfMain: (_, { searchValue }, { cache }) => {
+			cache.writeData({
+				data: {
+					userSearchValueOfMain: searchValue,
+				},
+			})
+			return searchValue
+		},
+		setSelectedUserOfMain: (_, { selectedUser }, { cache }) => {
+			cache.writeData({
+				data: {
+					selectedUserOfMain: selectedUser,
+				},
+			})
+			return selectedUser
+		},
+
+		setMessageSearchValueOfMain: (_, { searchValue }, { cache }) => {
+			cache.writeData({
+				data: {
+					messageSearchValueOfMessage: searchValue,
+				},
+			})
+			return searchValue
+		},
+		setMessageCreateValueOfMain: (_, { createValue }, { cache }) => {
+			cache.writeData({
+				data: {
+					messageCreateValueOfMessage: createValue,
+				},
+			})
+			return createValue
+		},
+		resetCache: (_, { data }, { cache }) => {
+			cache.writeData({
+				data,
+			})
+			return data
+		},
 	},
 }
 
@@ -63,21 +102,32 @@ const client = new ApolloClient({
 	resolvers,
 })
 
-cache.writeData({
-	data: {
-		userSearchValue: '',
-		selectedUser: {
-			id: '',
-			name: '',
-			email: '',
-			__typename: 'User',
-		},
-		file: {
-			filename: '',
-			link: '',
-			__typename: 'File',
-		},
+const initialState = {
+	userSearchValue: '',
+	messageCreateValueOfMessage: '',
+	messageSearchValueOfMessage: '',
+	userSearchValueOfMain: '',
+	selectedUser: {
+		id: '',
+		name: '',
+		email: '',
+		__typename: 'User',
 	},
+	file: {
+		filename: '',
+		link: '',
+		__typename: 'File',
+	},
+	selectedUserOfMain: {
+		id: '',
+		name: '',
+		email: '',
+		__typename: 'UserOfMain',
+	},
+}
+
+cache.writeData({
+	data: initialState,
 })
 
-export default client
+export { client, initialState }
