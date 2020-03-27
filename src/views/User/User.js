@@ -42,9 +42,9 @@ const User = () => {
 			<Grid container className={classes.container}>
 				<Grid item xs={4}>
 					<Box className={classes.item__signup}>
-						{dialogVisible && !selectedUser.id
-							? (<WelcomeDialog onCreateUser={() => setDialogVisible(false)} />)
-							: null}
+						{dialogVisible && !selectedUser.id ? (
+							<WelcomeDialog onCreateUser={() => setDialogVisible(false)} />
+						) : null}
 						<FormEditor />
 					</Box>
 				</Grid>

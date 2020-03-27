@@ -162,7 +162,8 @@ const Message = () => {
 					},
 				}
 			},
-		}).then(x => console.log('fetch time = ', Date.now() - startFetchTime))}
+		}).then(x => console.log('fetch time = ', Date.now() - startFetchTime))
+	}
 
 	useEffect(() => {
 		if (data && data.messageList) {

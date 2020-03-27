@@ -49,7 +49,9 @@ const TABLE_HEADER = [
 
 const UserList = props => {
 	const { onSelectAnUser } = props
-	const { data: { userSearchValue } } = useQuery(GET_USER_SEARCH_TEXT)
+	const {
+		data: { userSearchValue },
+	} = useQuery(GET_USER_SEARCH_TEXT)
 
 	const { loading, data, fetchMore, networkStatus } = useQuery(
 		FETCH_USER_LIST,
@@ -63,7 +65,9 @@ const UserList = props => {
 			},
 		}
 	)
-	const { data: { selectedUser } } = useQuery(GET_SELECTED_USER, {
+	const {
+		data: { selectedUser },
+	} = useQuery(GET_SELECTED_USER, {
 		onError: err => {
 			alert(err)
 		},
