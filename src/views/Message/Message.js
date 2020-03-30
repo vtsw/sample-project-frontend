@@ -9,8 +9,9 @@ import {
 	LargeTable,
 	DeleteDialog,
 	ModifyDialog,
+	InputActionBox,
 } from '@views_components'
-import { BoxCreate, BoxSearch } from './components'
+
 import {
 	MESSAGE_LIST,
 	GET_MESSAGE_SEARCH_TEXT,
@@ -31,6 +32,12 @@ const useStyle = makeStyles(theme => ({
 	container: {
 		border: `1px solid ${theme.palette.common.border}`,
 		height: '100%',
+	},
+	item__actionbox: {
+		padding: theme.spacing(2),
+	},
+	divider: {
+		borderTop: `1px solid ${theme.palette.common.border}`,
 	},
 }))
 
@@ -201,19 +208,26 @@ const Message = () => {
 				msg={'Loading...'}
 			/>
 			<Grid container direction='column' className={classes.container}>
-				<Grid item>
-					<BoxCreate
-						handleCreate={handleCreateMessage}
+				<Grid item className={classes.item__actionbox}>
+					<InputActionBox
+						width={328}
+						placeholder='text...'
+						type='create'
+						saveOnChange={true}
 						defaultValue={messageCreateValueOfMessage}
+						onSubmit={handleCreateMessage}
 					/>
 				</Grid>
-				<Grid item>
-					<BoxSearch
-						handleSearch={handleSearch}
+				<div className={classes.divider} />
+				<Grid item className={classes.item__actionbox}>
+					<InputActionBox
+						width={328}
+						placeholder='search...'
+						type='search'
 						defaultValue={messageSearchValueOfMessage}
+						onSubmit={handleSearch}
 					/>
 				</Grid>
-
 				{contents && contents.items && (
 					<LargeTable
 						items={contents.items}

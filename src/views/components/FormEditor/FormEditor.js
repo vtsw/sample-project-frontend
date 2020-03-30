@@ -264,15 +264,13 @@ const FormEditor = props => {
 			<div className={classes.formbuttons}>
 				<Button
 					data-cy='submit-button'
+					color='primary'
 					variant='contained'
 					size='large'
 					fullWidth
 					className={classes.formbutton}
-					onClick={() => {
-						setOpenConfirmDeleteDialog(true)
-					}}
+					onClick={onSubmit}
 				>
-					Delete
 					{hasSelectedUser ? 'Save' : 'Register'}
 				</Button>
 				{hasSelectedUser ? (

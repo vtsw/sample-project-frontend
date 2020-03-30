@@ -10,7 +10,7 @@ import {
 	SET_SELECTED_USER_OF_MAIN,
 } from './query'
 
-import { SearchBox, Loading, LargeTable } from '@views_components'
+import { InputActionBox, Loading, LargeTable } from '@views_components'
 import { ListMessageOfUser } from './components'
 
 import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
@@ -172,10 +172,12 @@ const Main = () => {
 						)}
 					>
 						<Box className={classes.searchbox}>
-							<SearchBox
-								width={390}
-								onSearch={handleSearch}
+							<InputActionBox
+								width={328}
+								placeholder='search...'
+								type='search'
 								defaultValue={userSearchValueOfMain}
+								onSubmit={handleSearch}
 							/>
 						</Box>
 						{userList && userList.items && (
