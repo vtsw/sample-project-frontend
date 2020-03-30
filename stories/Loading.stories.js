@@ -1,6 +1,6 @@
 import React from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { light } from 'react-syntax-highlighter/dist/esm/styles/prism'
+
 // import { Loading as ExampleLoading } from '@views_components'
 import Loading from '../src/views/components/Loading'
 
@@ -51,9 +51,7 @@ export const LoadingScreen = () => {
 			<div style={{ position: 'relative', width: '100px', height: '100px' }}>
 				<Loading open={true} msg='...Loaing' />
 			</div>
-			<SyntaxHighlighter language='javascript' style={light}>
-				{codeString}
-			</SyntaxHighlighter>
+			<SyntaxHighlighter language='javascript'>{codeString}</SyntaxHighlighter>
 
 			<h1>Props</h1>
 

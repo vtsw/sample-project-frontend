@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const NavBar = ({ location, history }) => {
+const NavBar = ({ location = { pathname: '' }, history }) => {
 	const [currentPage, setCurrentPage] = React.useState(location.pathname)
 	const classes = useStyles()
 	const handleOnChangePage = page => {
@@ -81,3 +81,5 @@ const NavBar = ({ location, history }) => {
 NavBar.propsTypes = {}
 
 export default withRouter(NavBar)
+
+export { NavBar }

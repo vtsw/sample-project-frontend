@@ -1,6 +1,5 @@
 import React from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { light } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 import Tables from '../src/views/components/Tables/Tables'
 import LargeTable from '../src/views/components/LargeTable/LargeTable'
@@ -149,7 +148,7 @@ export const Largetable = () => {
 						// hasNextPage={dataMsg.messageList && dataMsg.messageList.hasNext}
 					/>
 				</div>
-				<SyntaxHighlighter language='javascript' style={light}>
+				<SyntaxHighlighter language='javascript'>
 					{codeString}
 				</SyntaxHighlighter>
 

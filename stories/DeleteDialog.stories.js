@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { light } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 import Tables from '../src/views/components/Tables/Tables'
 import DeleteDialog from '../src/views/components/DeleteDialog/DeleteDialog'
@@ -87,9 +86,7 @@ export const Deletedialog = () => {
 					}}
 				/>
 			</div>
-			<SyntaxHighlighter language='javascript' style={light}>
-				{codeString}
-			</SyntaxHighlighter>
+			<SyntaxHighlighter language='javascript'>{codeString}</SyntaxHighlighter>
 
 			<h1>Props</h1>
 
