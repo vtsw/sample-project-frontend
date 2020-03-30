@@ -19,4 +19,5 @@ const Loading = props => {
 
 	return open && <div className={classes.root}>{msg}</div>
 }
+
 export default Loading

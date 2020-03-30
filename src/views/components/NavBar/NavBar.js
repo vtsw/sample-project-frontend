@@ -40,7 +40,7 @@ const navbarItems = [
 ]
 
 const NavBar = props => {
-	const { location, history } = props
+	const { location = { pathname: '' }, history } = props
 	const [currentPage, setCurrentPage] = useState(location.pathname)
 	const classes = useStyles()
 	const handleOnChangePage = page => {
@@ -75,3 +75,5 @@ const NavBar = props => {
 }
 
 export default withRouter(NavBar)
+
+export { NavBar }
