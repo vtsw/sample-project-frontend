@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const ActionInputBox = props => {
+const CreateInputBox = props => {
 	const { width, onSubmit } = props
 	const {
 		data: { messageCreateValueOfMessage },
@@ -73,4 +73,4 @@ const ActionInputBox = props => {
 	)
 }
 
-export default ActionInputBox
+export default CreateInputBox
