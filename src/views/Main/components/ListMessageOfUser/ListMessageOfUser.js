@@ -54,23 +54,37 @@ const ListMessageOfUser = props => {
 			const update = message.filter(item => item.id !== data.deleteMessage.id)
 			setMessage(update)
 		},
-		onError: err => {
-			alert(err)
-		},
+		// update(cache, { data: { deleteMessage } }) {
+		// 	const queryOptions = {
+		// 		query: MESSAGE_LIST,
+		// 		variables: {
+		// 			query: {
+		// 				userId: selectedUser && selectedUser.id,
+		// 				limit: 20,
+		// 			},
+		// 		},
+		// 	}
+		// 	const { messageList } = cache.readQuery(queryOptions)
+		// 	const index = messageList.items.findIndex(
+		// 		item => item.id === deleteMessage.id
+		// 	)
+
+		// 	if (index > -1) {
+		// 		const items = messageList.items.splice(index, 1)
+		// 		console.log(items, index)
+		// 		cache.writeQuery({
+		// 			...queryOptions,
+		// 			data: {
+		// 				messageList,
+		// 			},
+		// 		})
+		// 	}
+		// },
+		onError: err => alert(err),
 	})
 
 	const [updateMsg] = useMutation(UPDATE_MESSAGE, {
-		onCompleted: ({ updateMessage }) => {
-			const update = message.map(item => {
-				if (item.id === updateMessage.id)
-					return { ...item, content: updateMessage.content }
-				return item
-			})
-			setMessage(update)
-		},
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 	const handleUpdateMessage = value => {
 		updateMsg({
@@ -129,11 +143,11 @@ const ListMessageOfUser = props => {
 		message && (
 			<Box className={classes.root}>
 				<Typography variant='h5' className={classes.listtitle}>
-					Total {message.length}
+					Total {dataMsg.messageList.items.length}
 				</Typography>
 
 				<LargeTable
-					items={message}
+					items={dataMsg.messageList.items}
 					onClickRow={onSelectAMessage}
 					selectedRow={selectedMessage}
 					columns={columns}
