@@ -13,7 +13,9 @@ import {
 
 import { MESSAGE_LIST } from '../../query'
 import { DELETE_MESSAGE, UPDATE_MESSAGE } from '../../../Message/mutation'
-import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
+import { useDeleteMessage } from '@views/Message/useMutations'
+
+import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -39,7 +41,7 @@ const ListMessageOfUser = props => {
 	const messageListQueryVars = {
 		query: {
 			userId: selectedUser && selectedUser.id,
-			limit: 20,
+			limit: PAGE_LIMIT,
 		},
 	}
 	const { data: dataMsg, fetchMore, networkStatus, loading } = useQuery(
@@ -51,29 +53,11 @@ const ListMessageOfUser = props => {
 		}
 	)
 
-	const [deleteMsg] = useMutation(DELETE_MESSAGE, {
-		update(cache, { data: { deleteMessage } }) {
-			const { messageList } = cache.readQuery({
-				query: MESSAGE_LIST,
-				variables: messageListQueryVars,
-			})
-			const index = messageList.items.findIndex(
-				item => item.id === deleteMessage.id
-			)
-
-			if (index > -1) {
-				messageList.items.splice(index, 1)
-				cache.writeQuery({
-					query: MESSAGE_LIST,
-					variables: messageListQueryVars,
-					data: {
-						messageList,
-					},
-				})
-			}
-		},
-		onError: err => alert(err),
-	})
+	const [deleteMessage] = useDeleteMessage(
+		DELETE_MESSAGE,
+		MESSAGE_LIST,
+		messageListQueryVars
+	)
 
 	const [updateMsg] = useMutation(UPDATE_MESSAGE, {
 		onError: err => alert(err),
@@ -85,7 +69,7 @@ const ListMessageOfUser = props => {
 	}
 
 	const handleDeleteMessage = () => {
-		deleteMsg({ variables: { id: selectedMessage.id } })
+		deleteMessage({ variables: { id: selectedMessage.id } })
 	}
 
 	const onSelectAMessage = dataRow => {

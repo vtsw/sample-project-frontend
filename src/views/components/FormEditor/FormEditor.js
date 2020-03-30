@@ -17,7 +17,7 @@ import {
 	GET_SELECTED_USER,
 	SET_SELECTED_USER,
 } from '@views/User/query'
-import { useCreateAUser, useDeleteAUser } from './useMutations'
+import { useCreateUser, useDeleteUser } from './useMutations'
 
 import { getToken } from '@src/shares/utils'
 import { PAGE_LIMIT } from '@src/configs.local'
@@ -84,7 +84,7 @@ const FormEditor = props => {
 			alert(err)
 		},
 	})
-	const [createNewUser] = useCreateAUser(
+	const [createNewUser] = useCreateUser(
 		CREATE_USER,
 		FETCH_USER_LIST,
 		{
@@ -92,7 +92,7 @@ const FormEditor = props => {
 		},
 		authToken
 	)
-	const [deleteUser] = useDeleteAUser(DELETE_USER, FETCH_USER_LIST, {
+	const [deleteUser] = useDeleteUser(DELETE_USER, FETCH_USER_LIST, {
 		query: { searchText: userSearchValue, limit: PAGE_LIMIT },
 	})
 

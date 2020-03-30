@@ -7,7 +7,7 @@ const genQueryOptions = (query, variables) => {
 	}
 }
 
-const useCreateAUser = (query, updateQuery, vars, authToken) => {
+const useCreateUser = (query, updateQuery, vars, authToken) => {
 	return useMutation(
 		query,
 		authToken &&
@@ -29,7 +29,7 @@ const useCreateAUser = (query, updateQuery, vars, authToken) => {
 	)
 }
 
-const useDeleteAUser = (query, updateQuery, vars) => {
+const useDeleteUser = (query, updateQuery, vars) => {
 	return useMutation(query, {
 		update(cache, { data: { deleteUser } }) {
 			const options = genQueryOptions(updateQuery, vars)
@@ -48,4 +48,4 @@ const useDeleteAUser = (query, updateQuery, vars) => {
 	})
 }
 
-export { useCreateAUser, useDeleteAUser }
+export { useCreateUser, useDeleteUser }

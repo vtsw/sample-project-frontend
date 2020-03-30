@@ -52,7 +52,7 @@ const UserList = props => {
 		data: { userSearchValue },
 	} = useQuery(GET_USER_SEARCH_TEXT)
 
-	const { loading, data, fetchMore, networkStatus } = useQuery(
+	const { loading, error, data, fetchMore, networkStatus } = useQuery(
 		FETCH_USER_LIST,
 		{
 			variables: {
@@ -129,6 +129,9 @@ const UserList = props => {
 	}
 
 	const classes = useStyles()
+
+	if (error) return <p>Error :(</p>
+
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.userlist__container}>
