@@ -11,8 +11,13 @@ import {
 	ModifyDialog,
 } from '@views_components'
 import { BoxCreate, BoxSearch } from './components'
-
-import { MESSAGE_LIST } from './query'
+import {
+	MESSAGE_LIST,
+	GET_MESSAGE_SEARCH_TEXT,
+	GET_MESSAGE_CREATE_TEXT,
+	SET_MESSAGE_SEARCH_TEXT,
+	SET_MESSAGE_CREATE_TEXT,
+} from './query'
 import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './mutation'
 import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
@@ -35,9 +40,27 @@ const Message = () => {
 
 	const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
 	const [openConfirmModify, setOpenConfirmModify] = useState(false)
-	const [searchText, setSearchText] = useState('')
 
 	const [selectedMessage, setSelectedMessage] = useState(false)
+
+	const {
+		data: { messageSearchValueOfMessage },
+	} = useQuery(GET_MESSAGE_SEARCH_TEXT)
+
+	const {
+		data: { messageCreateValueOfMessage },
+	} = useQuery(GET_MESSAGE_CREATE_TEXT)
+
+	const { loading, error, data, fetchMore, networkStatus } = useQuery(
+		MESSAGE_LIST,
+		{
+			variables: { query: { limit: 20 } },
+			notifyOnNetworkStatusChange: true,
+		}
+	)
+
+	const [setMessageSearchValueOfMain] = useMutation(SET_MESSAGE_SEARCH_TEXT)
+	const [setMessageCreateValueOfMain] = useMutation(SET_MESSAGE_CREATE_TEXT)
 
 	const [createMessage] = useMutation(CREATE_MESSAGE, {
 		onCompleted: data => {
@@ -96,44 +119,37 @@ const Message = () => {
 		createMessage({
 			variables: { message: { content: createVal } },
 		})
+		setMessageCreateValueOfMain({ variables: { createValue: createVal } })
 	}
 
-	console.log('Start loading message list')
-	const { loading, error, data, fetchMore, networkStatus } = useQuery(
-		MESSAGE_LIST,
-		{
-			fetchPolicy: 'network-only',
-			variables: { query: { limit: 20 } },
-			notifyOnNetworkStatusChange: true,
-		}
-	)
-	console.log('Stop loading message list')
-
 	const handleSearch = value => {
-		setSearchText(value)
-		fetchMore({
-			variables: {
-				query: {
-					limit: 10,
-					skip: contents.items.length,
-					searchText: value,
-				},
-			},
-			updateQuery: (prev, { fetchMoreResult }) => {
-				if (!fetchMoreResult) return prev
-				const fetchedMessageList = fetchMoreResult.messageList
-				let cacheMessageList = prev.messageList
-				const hasNext = fetchedMessageList.hasNext
-
-				return {
-					messageList: {
-						...cacheMessageList,
-						items: fetchedMessageList.items,
-						hasNext,
+		setMessageSearchValueOfMain({ variables: { searchValue: value } })
+		if (value === messageSearchValueOfMessage) {
+			return false
+		} else {
+			fetchMore({
+				variables: {
+					query: {
+						limit: 20,
+						searchText: value,
 					},
-				}
-			},
-		})
+				},
+				updateQuery: (prev, { fetchMoreResult }) => {
+					if (!fetchMoreResult) return prev
+					const fetchedMessageList = fetchMoreResult.messageList
+					let cacheMessageList = prev.messageList
+					const hasNext = fetchedMessageList.hasNext
+
+					return {
+						messageList: {
+							...cacheMessageList,
+							items: fetchedMessageList.items,
+							hasNext,
+						},
+					}
+				},
+			})
+		}
 	}
 
 	const loadNextMessagePage = () => {
@@ -143,7 +159,7 @@ const Message = () => {
 				query: {
 					limit: 10,
 					skip: contents.items.length,
-					searchText: searchText,
+					searchText: messageSearchValueOfMessage,
 				},
 			},
 			updateQuery: (prev, { fetchMoreResult }) => {
@@ -162,7 +178,7 @@ const Message = () => {
 					},
 				}
 			},
-		}).then(x => console.log('fetch time = ', Date.now() - startFetchTime))
+		})
 	}
 
 	useEffect(() => {
@@ -186,10 +202,16 @@ const Message = () => {
 			/>
 			<Grid container direction='column' className={classes.container}>
 				<Grid item>
-					<BoxCreate handleCreate={handleCreateMessage} />
+					<BoxCreate
+						handleCreate={handleCreateMessage}
+						defaultValue={messageCreateValueOfMessage}
+					/>
 				</Grid>
 				<Grid item>
-					<BoxSearch handleSearch={handleSearch} />
+					<BoxSearch
+						handleSearch={handleSearch}
+						defaultValue={messageSearchValueOfMessage}
+					/>
 				</Grid>
 
 				{contents && contents.items && (

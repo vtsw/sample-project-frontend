@@ -59,6 +59,14 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+// const theme = createMuiTheme({
+// // 	palette: {
+// // 		primary: {
+// // 			main: teal[600],
+// // 		},
+// // 	},
+// // })
+
 const SignIn = props => {
 	const { history } = props
 	const [email, setEmail] = useState('')
@@ -93,7 +101,7 @@ const SignIn = props => {
 				<Typography variant='h5' className={classes.title}>
 					Sign in
 				</Typography>
-				<div className={classes.cardcontent}>
+				<div className={classes.cardContent}>
 					<TextField
 						value={email}
 						label='EMAIL'
@@ -115,6 +123,7 @@ const SignIn = props => {
 				</div>
 				<div className={classes.actions}>
 					<Button
+						data-cy='signin-button'
 						variant='contained'
 						color='primary'
 						size='large'
@@ -125,6 +134,7 @@ const SignIn = props => {
 						Sign in
 					</Button>
 					<Typography
+						data-cy='signup-text'
 						variant='body2'
 						className={classes.signuptext}
 						onClick={() => history.push('/sign-up')}

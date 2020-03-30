@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles({
@@ -20,5 +19,4 @@ const Loading = props => {
 
 	return open && <div className={classes.root}>{msg}</div>
 }
-
 export default Loading

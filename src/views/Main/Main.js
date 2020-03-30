@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import clsx from 'clsx'
-
-import { useQuery } from '@apollo/react-hooks'
-
 import { Box, Grid, makeStyles, Typography } from '@material-ui/core'
+import { useQuery, useMutation } from '@apollo/react-hooks'
+import {
+	USER_LIST,
+	GET_USER_SEARCH_TEXT,
+	GET_SELECTED_USER_OF_MAIN,
+	SET_USER_SEARCH_TEXT,
+	SET_SELECTED_USER_OF_MAIN,
+} from './query'
 
 import { SearchBox, Loading, LargeTable } from '@views_components'
 import { ListMessageOfUser } from './components'
 
-import { USER_LIST } from './query'
 import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyle = makeStyles(theme => ({
@@ -29,7 +33,10 @@ const useStyle = makeStyles(theme => ({
 		border: `1px solid ${theme.palette.common.border}`,
 		marginRight: theme.spacing(1.5),
 	},
-
+	searchbox__title: {
+		fontWeight: 600,
+		marginBottom: theme.spacing(2),
+	},
 	searchbox: {
 		padding: theme.spacing(3),
 	},
@@ -46,21 +53,22 @@ const useStyle = makeStyles(theme => ({
 const Main = () => {
 	const [userList, setUserList] = useState({})
 	const classes = useStyle()
-	const [searchValue, setSearchValue] = useState('')
-	const [selectedUser, setSelectedUser] = useState('')
 
-	const handleChoseImage = object => {
-		setSelectedUser(object)
-	}
+	const {
+		data: { userSearchValueOfMain },
+	} = useQuery(GET_USER_SEARCH_TEXT)
 
-	const { loading, error, data, fetchMore, networkStatus } = useQuery(
-		USER_LIST,
-		{
-			fetchPolicy: 'network-only',
-			variables: { query: { limit: 20 } },
-			notifyOnNetworkStatusChange: true,
-		}
-	)
+	const {
+		data: { selectedUserOfMain },
+	} = useQuery(GET_SELECTED_USER_OF_MAIN)
+
+	const { loading, data, fetchMore, networkStatus } = useQuery(USER_LIST, {
+		variables: { query: { limit: 20 } },
+		notifyOnNetworkStatusChange: true,
+	})
+
+	const [setSearchValue] = useMutation(SET_USER_SEARCH_TEXT)
+	const [setSelectedUser] = useMutation(SET_SELECTED_USER_OF_MAIN)
 
 	useEffect(() => {
 		if (data && data.userList) {
@@ -68,7 +76,16 @@ const Main = () => {
 		}
 	}, [data])
 
-	if (error) return <p>Error :(</p>
+	const handleChoseImage = object => {
+		setSelectedUser({
+			variables: {
+				selectedUser: {
+					...object,
+					__typename: 'UserOfMain',
+				},
+			},
+		})
+	}
 
 	const columns = [
 		{ headerLabel: 'EMAIL', xs: 6, headerVariable: 'email' },
@@ -76,28 +93,43 @@ const Main = () => {
 	]
 
 	const handleSearch = inputVal => {
-		setSearchValue(inputVal)
-		fetchMore({
-			variables: {
-				query: { searchText: inputVal, limit: 10 },
-			},
-			updateQuery: (prev, { fetchMoreResult }) => {
-				if (!fetchMoreResult) {
-					return prev
-				} else {
-					const fetchedUserList = fetchMoreResult.userList
-					let cacheUserList = prev.userList
-					const hasNext = fetchedUserList.hasNext
-					return {
-						userList: {
-							...cacheUserList,
-							items: fetchedUserList.items,
-							hasNext,
-						},
+		setSearchValue({ variables: { searchValue: inputVal } })
+		if (inputVal === userSearchValueOfMain) {
+			return false
+		} else {
+			fetchMore({
+				variables: {
+					query: { searchText: inputVal, limit: 10 },
+				},
+				updateQuery: (prev, { fetchMoreResult }) => {
+					if (!fetchMoreResult) {
+						return prev
+					} else {
+						const fetchedUserList = fetchMoreResult.userList
+						let cacheUserList = prev.userList
+						const hasNext = fetchedUserList.hasNext
+
+						return {
+							userList: {
+								...cacheUserList,
+								items: fetchedUserList.items,
+								hasNext,
+							},
+						}
 					}
-				}
-			},
-		})
+				},
+			})
+			setSelectedUser({
+				variables: {
+					selectedUser: {
+						id: '',
+						name: '',
+						email: '',
+						__typename: 'UserOfMain',
+					},
+				},
+			})
+		}
 	}
 
 	const loadNextUserPage = () =>
@@ -106,7 +138,7 @@ const Main = () => {
 				query: {
 					limit: 10,
 					skip: userList.items.length,
-					searchText: searchValue,
+					searchText: userSearchValueOfMain,
 				},
 			},
 			updateQuery: (prev, { fetchMoreResult }) => {
@@ -140,13 +172,17 @@ const Main = () => {
 						)}
 					>
 						<Box className={classes.searchbox}>
-							<SearchBox width={390} onSearch={handleSearch} />
+							<SearchBox
+								width={390}
+								onSearch={handleSearch}
+								defaultValue={userSearchValueOfMain}
+							/>
 						</Box>
 						{userList && userList.items && (
 							<LargeTable
 								items={userList.items}
 								onClickRow={handleChoseImage}
-								selectedRow={selectedUser}
+								selectedRow={selectedUserOfMain}
 								columns={columns}
 								loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 								isIconClose={false}
@@ -157,8 +193,8 @@ const Main = () => {
 					</Box>
 				</Grid>
 				<Grid item xs={8}>
-					{selectedUser && selectedUser.id ? (
-						<ListMessageOfUser selectedUser={selectedUser} />
+					{selectedUserOfMain && selectedUserOfMain.id ? (
+						<ListMessageOfUser selectedUser={selectedUserOfMain} />
 					) : (
 						<Box className={classes.overlay}>
 							<Typography variant='subtitle2' color='primary' gutterBottom>

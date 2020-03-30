@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box, Typography } from '@material-ui/core'
@@ -138,9 +137,9 @@ const UserList = props => {
 						User List
 					</Typography>
 					<SearchBox
-						userSearchValue={userSearchValue}
 						width={400}
 						onSearch={handleOnSearch}
+						defaultValue={userSearchValue}
 					/>
 				</Box>
 				<Box className={classes.userlist__table}>
