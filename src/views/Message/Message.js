@@ -9,13 +9,14 @@ import {
 	LargeTable,
 	DeleteDialog,
 	ModifyDialog,
-	InputActionBox,
+	ActionInputBox,
 } from '@views_components'
+
+import { CreateInputBox } from './components'
 
 import {
 	MESSAGE_LIST,
 	GET_MESSAGE_SEARCH_TEXT,
-	GET_MESSAGE_CREATE_TEXT,
 	SET_MESSAGE_SEARCH_TEXT,
 	SET_MESSAGE_CREATE_TEXT,
 } from './query'
@@ -53,10 +54,6 @@ const Message = () => {
 	const {
 		data: { messageSearchValueOfMessage },
 	} = useQuery(GET_MESSAGE_SEARCH_TEXT)
-
-	const {
-		data: { messageCreateValueOfMessage },
-	} = useQuery(GET_MESSAGE_CREATE_TEXT)
 
 	const { loading, error, data, fetchMore, networkStatus } = useQuery(
 		MESSAGE_LIST,
@@ -209,18 +206,11 @@ const Message = () => {
 			/>
 			<Grid container direction='column' className={classes.container}>
 				<Grid item className={classes.item__actionbox}>
-					<InputActionBox
-						width={328}
-						placeholder='text...'
-						type='create'
-						saveOnChange={true}
-						defaultValue={messageCreateValueOfMessage}
-						onSubmit={handleCreateMessage}
-					/>
+					<CreateInputBox width={328} onSubmit={handleCreateMessage} />
 				</Grid>
 				<div className={classes.divider} />
 				<Grid item className={classes.item__actionbox}>
-					<InputActionBox
+					<ActionInputBox
 						width={328}
 						placeholder='search...'
 						type='search'

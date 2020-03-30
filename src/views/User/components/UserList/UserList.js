@@ -4,7 +4,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { InputActionBox, LargeTable, Loading } from '@views_components'
+import { ActionInputBox, LargeTable, Loading } from '@views_components'
 
 import {
 	FETCH_USER_LIST,
@@ -136,7 +136,7 @@ const UserList = props => {
 					<Typography variant='h5' className={classes.searchbox__title}>
 						User List
 					</Typography>
-					<InputActionBox
+					<ActionInputBox
 						width={328}
 						placeholder='Search'
 						type='search'
