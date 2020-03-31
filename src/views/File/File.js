@@ -5,6 +5,8 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import { Box, Button, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
+import { FetchImage } from './components'
+
 import { GET_USER_INFO, GET_FILE } from './queries'
 import { UPLOAD_FILE, SET_UPLOADED_FILE } from './mutations'
 
@@ -133,10 +135,10 @@ const File = () => {
 					</Grid>
 					<Grid item className={classes.item__imageviewer}>
 						{file.link ? (
-							<img
+							<FetchImage
 								alt={file.filename}
 								src={file.link}
-								className={classes.item__imageviewer__image}
+								styles={classes.item__imageviewer__image}
 							/>
 						) : (
 							<Typography variant='body2'>image</Typography>
