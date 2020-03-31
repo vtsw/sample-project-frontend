@@ -35,18 +35,9 @@ const CreateInputBox = props => {
 		data: { messageCreateValueOfMessage },
 	} = useQuery(GET_MESSAGE_CREATE_TEXT)
 	const [setMessageCreateValueOfMain] = useMutation(SET_MESSAGE_CREATE_TEXT)
-	const [value, setValue] = useState(messageCreateValueOfMessage || '')
 
 	const handleOnInputChange = value => {
-		console.log(value)
-		setValue(value)
 		setMessageCreateValueOfMain({ variables: { createValue: value } })
-	}
-
-	const handleOnSubmit = (e) => {
-		onSubmit(e)
-		setValue('')
-		setMessageCreateValueOfMain({ variables: { createValue: '' } })
 	}
 
 	const classes = useStyles({ width })
@@ -54,8 +45,8 @@ const CreateInputBox = props => {
 	return (
 		<Box className={classes.root}>
 			<ActionInputBox
-				defaultValue={value}
-				onSubmit={handleOnSubmit}
+				defaultValue={messageCreateValueOfMessage}
+				onSubmit={onSubmit}
 				onChange={handleOnInputChange}
 				width={width}
 			/>

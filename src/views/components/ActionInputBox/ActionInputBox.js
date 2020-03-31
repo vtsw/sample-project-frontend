@@ -25,11 +25,17 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ActionInputBox = props => {
-	const { type, placeholder, defaultValue, width, onSubmit, onChange = () => {} } = props
+	const {
+		type,
+		placeholder,
+		defaultValue,
+		width,
+		onSubmit,
+		onChange = () => {},
+	} = props
 	const [value, setValue] = useState(defaultValue)
 
 	const classes = useStyles({ width })
-	console.log('Render')
 
 	return (
 		<Box className={classes.root}>
@@ -53,7 +59,10 @@ const ActionInputBox = props => {
 				variant='contained'
 				size='large'
 				className={classes.button}
-				onClick={() => onSubmit(value)}
+				onClick={() => {
+					onSubmit(value)
+					setValue('')
+				}}
 			>
 				{type === 'search' ? <Search className={classes.icon} /> : 'Save'}
 			</Button>

@@ -7,13 +7,18 @@ const genQueryOptions = (query, variables) => {
 	}
 }
 
-const useCreateAUser = (query, updateQuery, vars, authToken) => {
+const useCreateAUser = (
+	createUserMutation,
+	fetchUserListQuery,
+	vars,
+	authToken
+) => {
 	return useMutation(
-		query,
+		createUserMutation,
 		authToken &&
 			!vars.query.searchText && {
 				update(cache, { data: { createUser } }) {
-					const options = genQueryOptions(updateQuery, vars)
+					const options = genQueryOptions(fetchUserListQuery, vars)
 					const { userList } = cache.readQuery(options)
 					cache.writeQuery({
 						...options,
@@ -29,10 +34,10 @@ const useCreateAUser = (query, updateQuery, vars, authToken) => {
 	)
 }
 
-const useDeleteAUser = (query, updateQuery, vars) => {
-	return useMutation(query, {
+const useDeleteAUser = (deleteUserMutation, fetchUserListQuery, vars) => {
+	return useMutation(deleteUserMutation, {
 		update(cache, { data: { deleteUser } }) {
-			const options = genQueryOptions(updateQuery, vars)
+			const options = genQueryOptions(fetchUserListQuery, vars)
 			const { userList } = cache.readQuery(options)
 			const items = userList.items.filter(item => item.id !== deleteUser.id)
 			cache.writeQuery({
