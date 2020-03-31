@@ -123,7 +123,7 @@ const Message = () => {
 		createMessage({
 			variables: { message: { content: createVal } },
 		})
-		setMessageCreateValueOfMain({ variables: { createValue: createVal } })
+		// setMessageCreateValueOfMain({ variables: { createValue: '' } })
 	}
 
 	const handleSearch = value => {

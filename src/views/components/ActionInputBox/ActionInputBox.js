@@ -25,10 +25,11 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ActionInputBox = props => {
-	const { type, placeholder, defaultValue, width, onSubmit } = props
+	const { type, placeholder, defaultValue, width, onSubmit, onChange = () => {} } = props
 	const [value, setValue] = useState(defaultValue)
 
 	const classes = useStyles({ width })
+	console.log('Render')
 
 	return (
 		<Box className={classes.root}>
@@ -37,7 +38,10 @@ const ActionInputBox = props => {
 				variant='outlined'
 				placeholder={placeholder}
 				className={classes.input}
-				onChange={e => setValue(e.target.value)}
+				onChange={e => {
+					setValue(e.target.value)
+					onChange(e.target.value)
+				}}
 				onKeyDown={e => {
 					if (e.keyCode === 13) {
 						onSubmit(value)

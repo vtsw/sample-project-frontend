@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-
+import clsx from 'clsx'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
 import { Box, Button, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { SET_MESSAGE_CREATE_TEXT } from '@views/Message/query'
-import { GET_MESSAGE_CREATE_TEXT } from '../../query'
+import { GET_MESSAGE_CREATE_TEXT } from '../../../Message/query'
+import { ActionInputBox } from '../../index'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -37,38 +38,27 @@ const CreateInputBox = props => {
 	const [value, setValue] = useState(messageCreateValueOfMessage || '')
 
 	const handleOnInputChange = value => {
+		console.log(value)
 		setValue(value)
 		setMessageCreateValueOfMain({ variables: { createValue: value } })
+	}
+
+	const handleOnSubmit = (e) => {
+		onSubmit(e)
+		setValue('')
+		setMessageCreateValueOfMain({ variables: { createValue: '' } })
 	}
 
 	const classes = useStyles({ width })
 
 	return (
 		<Box className={classes.root}>
-			<TextField
-				value={value}
-				variant='outlined'
-				placeholder='text...'
-				className={classes.input}
-				onChange={e => handleOnInputChange(e.target.value)}
-				onKeyDown={e => {
-					if (e.keyCode === 13) {
-						onSubmit(value)
-					}
-				}}
+			<ActionInputBox
+				defaultValue={value}
+				onSubmit={handleOnSubmit}
+				onChange={handleOnInputChange}
+				width={width}
 			/>
-			<Button
-				color='primary'
-				variant='contained'
-				size='large'
-				className={classes.button}
-				onClick={() => {
-					onSubmit(value)
-					handleOnInputChange('')
-				}}
-			>
-				Save
-			</Button>
 		</Box>
 	)
 }
