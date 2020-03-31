@@ -42,7 +42,7 @@ const BoxCreate = props => {
 					setCreateVal(e.target.value)
 					handleCreateTextChange(e.target.value)
 				}}
-				className={classes.textField}
+				className={classes.textfield}
 				defaultValue={defaultValue}
 			/>
 			<Button
