@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
@@ -10,18 +10,17 @@ import {
 	DeleteDialog,
 	ModifyDialog,
 	ActionInputBox,
+	CreateInputBox,
 } from '@views_components'
-
-import { CreateInputBox } from './components'
 
 import {
 	MESSAGE_LIST,
 	GET_MESSAGE_SEARCH_TEXT,
 	SET_MESSAGE_SEARCH_TEXT,
 	SET_MESSAGE_CREATE_TEXT,
-} from './query'
-import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './mutation'
-import { useCreateMessage, useDeleteMessage } from './useMutations'
+} from './gql/query'
+import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './gql/mutation'
+import { useCreateMessage, useDeleteMessage } from './gql/useMutations'
 
 import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
@@ -127,7 +126,6 @@ const Message = () => {
 	}
 
 	const loadNextMessagePage = () => {
-		const startFetchTime = Date.now()
 		fetchMore({
 			variables: {
 				query: {

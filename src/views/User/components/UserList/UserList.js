@@ -9,10 +9,13 @@ import { ActionInputBox, LargeTable, Loading } from '@views_components'
 import {
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
-	SET_USER_SEARCH_TEXT,
 	GET_SELECTED_USER,
+} from '@views/User/gql/query'
+import {
+	SET_USER_SEARCH_TEXT,
 	SET_SELECTED_USER,
-} from '@views/User/query'
+} from '@views/User/gql/mutation'
+
 import { PAGE_LIMIT, NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
@@ -88,7 +91,7 @@ const UserList = props => {
 		setSelectedUser({
 			variables: {
 				selectedUser: {
-					id: selectedUser.id + '_reset',
+					id: '',
 					name: '',
 					email: '',
 					__typename: 'User',

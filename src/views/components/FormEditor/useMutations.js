@@ -27,9 +27,7 @@ const useCreateUser = (
 						},
 					})
 				},
-				onError: err => {
-					alert(err)
-				},
+				onError: err => alert(err),
 			}
 	)
 }
@@ -47,9 +45,7 @@ const useDeleteUser = (deleteUserMutation, fetchUserListQuery, vars) => {
 				},
 			})
 		},
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 }
 

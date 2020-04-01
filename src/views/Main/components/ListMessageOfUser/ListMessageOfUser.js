@@ -11,9 +11,9 @@ import {
 	Loading,
 } from '@views_components'
 
-import { MESSAGE_LIST } from '../../query'
-import { DELETE_MESSAGE, UPDATE_MESSAGE } from '../../../Message/mutation'
-import { useDeleteMessage } from '@views/Message/useMutations'
+import { MESSAGE_LIST } from '@views/Message/gql/query'
+import { DELETE_MESSAGE, UPDATE_MESSAGE } from '@views/Message/gql/mutation'
+import { useDeleteMessage } from '@views/Message/gql/useMutations'
 
 import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 

@@ -1,19 +1,13 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
+
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { setToken } from '@src/shares/utils'
 
-const SIGN_IN = gql`
-	mutation SignIn($user: LoginUserInput!) {
-		login(user: $user) {
-			token
-		}
-	}
-`
+import { SIGN_IN } from './query'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -59,40 +53,28 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-// const theme = createMuiTheme({
-// // 	palette: {
-// // 		primary: {
-// // 			main: teal[600],
-// // 		},
-// // 	},
-// // })
-
 const SignIn = props => {
 	const { history } = props
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
 	const [signIn] = useMutation(SIGN_IN, {
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 
 	const classes = useStyles()
 
 	const onSignIn = () => {
-		signIn({ variables: { user: { email, password } } })
-			.then(
-				({
-					data: {
-						login: { token },
-					},
-				}) => {
-					setToken(token)
-					history.push('/')
-				}
-			)
-			.catch(error => console.error(error))
+		signIn({ variables: { user: { email, password } } }).then(
+			({
+				data: {
+					login: { token },
+				},
+			}) => {
+				setToken(token)
+				history.push('/')
+			}
+		)
 	}
 
 	return (

@@ -1,17 +1,18 @@
 import gql from 'graphql-tag'
 
+import { MESSAGE } from './fragment'
+
 const MESSAGE_LIST = gql`
 	query MessageList($query: MessageListInput) {
 		messageList(query: $query) {
 			items {
-				content
-				id
-				lastModified
+				...Message
 			}
 			hasNext
 			total
 		}
 	}
+	${MESSAGE}
 `
 
 const GET_MESSAGE_SEARCH_TEXT = gql`

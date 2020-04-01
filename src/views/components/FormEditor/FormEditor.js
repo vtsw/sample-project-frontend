@@ -9,14 +9,16 @@ import { makeStyles } from '@material-ui/core/styles'
 import { DeleteDialog } from '@views_components'
 
 import {
-	CREATE_USER,
-	UPDATE_USER,
-	DELETE_USER,
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
 	GET_SELECTED_USER,
+} from '@views/User/gql/query'
+import {
+	CREATE_USER,
+	UPDATE_USER,
+	DELETE_USER,
 	SET_SELECTED_USER,
-} from '@views/User/query'
+} from '@views/User/gql/mutation'
 import { useCreateUser, useDeleteUser } from './useMutations'
 
 import { getToken } from '@src/shares/utils'
@@ -160,14 +162,9 @@ const FormEditor = props => {
 		if (password) userInfo = { ...userInfo, password }
 		updateUser({
 			variables: { user: userInfo },
+		}).then(() => {
+			onCancel()
 		})
-			.then(() => {
-				onCancel()
-			})
-			.catch(error => {
-				alert(error.message)
-				console.error(error)
-			})
 	}
 
 	const createAUser = () => {
@@ -175,14 +172,9 @@ const FormEditor = props => {
 			variables: { user: { email, name, password } },
 			refetchQueries: shouldUseRefetchQueries(),
 			awaitRefetchQueries: !!userSearchValue,
+		}).then(() => {
+			onCancel()
 		})
-			.then(() => {
-				onCancel()
-			})
-			.catch(error => {
-				alert(error.message)
-				console.error(error)
-			})
 	}
 
 	const onSubmit = () => {
@@ -200,21 +192,19 @@ const FormEditor = props => {
 	}
 
 	const onAgreeDeleteAnUser = () => {
-		deleteUser({ variables: { id: userId } })
-			.then(() => {
-				setSelectedUser({
-					variables: {
-						selectedUser: {
-							id: userId + '_reset',
-							name: '',
-							email: '',
-							__typename: 'User',
-						},
+		deleteUser({ variables: { id: userId } }).then(() => {
+			setSelectedUser({
+				variables: {
+					selectedUser: {
+						id: userId + '_reset',
+						name: '',
+						email: '',
+						__typename: 'User',
 					},
-				})
-				setOpenConfirmDeleteDialog(false)
+				},
 			})
-			.catch(error => console.error(error))
+			setOpenConfirmDeleteDialog(false)
+		})
 	}
 
 	return (
