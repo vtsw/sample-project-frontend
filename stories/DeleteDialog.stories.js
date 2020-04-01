@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-
 import Tables from '../src/views/components/Tables/Tables'
 import DeleteDialog from '../src/views/components/DeleteDialog/DeleteDialog'
+import { action } from '@storybook/addon-actions'
 
 export default {
 	title: 'Component Api|Deletedialog',
+	// decorators: [withKnobs],
 }
 
 const propsDetail = [
@@ -67,12 +68,30 @@ export const Deletedialog = () => {
 		...
 	)
 	`
+
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column' }}>
 			<h1>Example</h1>
 
 			<div>
-				<button onClick={() => setOpenPopup(true)}>Open popup</button>
+				<button
+					onClick={e => {
+						console.log('onClick')
+						setOpenPopup(true)
+						action('click')(e)
+					}}
+					// onMouseOver={e => {
+					// 	console.log('onMouseOver')
+					// 	// setOpenPopup(true)
+					// 	action('hovered')(e)
+					// }}
+					// {...actions({
+					// 	onClick: 'button -click',
+					// 	onMouseOver: 'on mouse over',
+					// })}
+				>
+					Open popup
+				</button>
 				<DeleteDialog
 					open={openPopup}
 					onClose={() => {

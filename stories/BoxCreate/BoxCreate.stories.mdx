@@ -1,0 +1,27 @@
+import { Meta, Story, Preview,Props } from '@storybook/addon-docs/blocks';
+import BoxCreate from './BoxCreate'
+
+import * as stories from './BoxCreate.stories.js';
+
+<Meta title="Component Api|BoxCreate" />
+
+# BoxCreate
+With `MDX` we can define a story for `Box Create` right in the middle of our
+markdown documentation.
+
+
+
+
+  <Story name="Basic">
+    {stories.basic()}
+  </Story>
+
+
+```jsx 
+<BoxCreate handleCreate={(valueInput) => {// valueInput}} />
+```
+
+# PropsType
+
+<Props of={BoxCreate}/>
+

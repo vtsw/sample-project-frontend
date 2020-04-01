@@ -1,0 +1,28 @@
+import { Meta, Story, Preview,Props } from '@storybook/addon-docs/blocks';
+import SignIn from './SignIn'
+
+import * as stories from './SignIn.stories.js';
+
+<Meta title="Component Api|SignIn" />
+
+# SignIn
+With `MDX` we can define a story for `Box Create` right in the middle of our
+markdown documentation.
+
+
+
+
+  <Story name="SignIn">
+    {stories.signIn()}
+  </Story>
+
+
+```jsx 
+
+<Route path='/sign-in' component={SignIn} />
+```
+
+# PropsType
+
+<Props of={SignIn}/>
+
