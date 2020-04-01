@@ -67,6 +67,7 @@ const useStyles = makeStyles(theme => ({
 
 const FormEditor = props => {
 	const { history } = props
+	const classes = useStyles()
 	const authToken = getToken()
 
 	const {
@@ -77,14 +78,10 @@ const FormEditor = props => {
 	} = useQuery(GET_SELECTED_USER)
 
 	const [setSelectedUser] = useMutation(SET_SELECTED_USER, {
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 	const [updateUser] = useMutation(UPDATE_USER, {
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 	const [createNewUser] = useCreateUser(
 		CREATE_USER,
@@ -113,7 +110,6 @@ const FormEditor = props => {
 
 	const hasSelectedUser =
 		selectedUser.id && selectedUser.name && selectedUser.email
-	const classes = useStyles()
 
 	const onCancel = () => {
 		if (!authToken) {
@@ -196,7 +192,7 @@ const FormEditor = props => {
 			setSelectedUser({
 				variables: {
 					selectedUser: {
-						id: userId + '_reset',
+						id: '',
 						name: '',
 						email: '',
 						__typename: 'User',

@@ -32,11 +32,11 @@ const InfiniteScroll = props => {
 		selectedRow = {},
 		handleDeleteRow = () => {},
 	} = props
+	const classes = useStyles()
 
 	const itemCount = hasNextPage ? items.length + 1 : items.length
 	const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage
 	const isItemLoaded = index => !hasNextPage || index < items.length
-	const classes = useStyles()
 
 	return (
 		<InfiniteLoader

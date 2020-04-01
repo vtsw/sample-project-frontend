@@ -55,14 +55,14 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = props => {
 	const { history } = props
+	const classes = useStyles()
+
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
 	const [signIn] = useMutation(SIGN_IN, {
 		onError: err => alert(err),
 	})
-
-	const classes = useStyles()
 
 	const onSignIn = () => {
 		signIn({ variables: { user: { email, password } } }).then(

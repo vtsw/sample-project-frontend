@@ -26,9 +26,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const User = () => {
-	const [dialogVisible, setDialogVisible] = useState(true)
-
 	const classes = useStyles()
+
+	const [dialogVisible, setDialogVisible] = useState(true)
 
 	return (
 		<Box className={classes.root}>
@@ -42,7 +42,7 @@ const User = () => {
 					</Box>
 				</Grid>
 				<Grid item xs={8}>
-					<UserList onSelectAnUser={() => setDialogVisible(false)} />
+					<UserList onSelectUser={() => setDialogVisible(false)} />
 				</Grid>
 			</Grid>
 		</Box>

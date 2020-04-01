@@ -10,7 +10,7 @@ import {
 } from '@views/Message/gql/query'
 
 const CreateInputBox = props => {
-	const { width, onSubmit } = props
+	const { width, onSubmit, placeholder } = props
 	const {
 		data: { messageCreateValueOfMessage },
 	} = useQuery(GET_MESSAGE_CREATE_TEXT)
@@ -22,10 +22,11 @@ const CreateInputBox = props => {
 
 	return (
 		<ActionInputBox
-			defaultValue={messageCreateValueOfMessage}
-			onSubmit={onSubmit}
-			onChange={handleOnInputChange}
 			width={width}
+			defaultValue={messageCreateValueOfMessage}
+			placeholder={placeholder}
+			onChange={handleOnInputChange}
+			onSubmit={onSubmit}
 		/>
 	)
 }

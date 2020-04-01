@@ -25,15 +25,28 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ActionInputBox = props => {
-	const {
-		type,
-		placeholder,
-		defaultValue,
-		width,
-		onSubmit,
-		onChange = () => {},
-	} = props
+	const { type, placeholder, defaultValue, width, onSubmit, onChange } = props
 	const [value, setValue] = useState(defaultValue)
+
+	const handleOnInputChange = e => {
+		setValue(e.target.value)
+		if (onChange) {
+			onChange(e.target.value)
+		}
+	}
+
+	const handleOnSubmit = () => {
+		onSubmit(value)
+		if (onChange) {
+			setValue('')
+		}
+	}
+
+	const handleOnKeyDown = e => {
+		if (e.keyCode === 13) {
+			onSubmit(value)
+		}
+	}
 
 	const classes = useStyles({ width })
 
@@ -44,24 +57,15 @@ const ActionInputBox = props => {
 				variant='outlined'
 				placeholder={placeholder}
 				className={classes.input}
-				onChange={e => {
-					setValue(e.target.value)
-					onChange(e.target.value)
-				}}
-				onKeyDown={e => {
-					if (e.keyCode === 13) {
-						onSubmit(value)
-					}
-				}}
+				onChange={handleOnInputChange}
+				onKeyDown={handleOnKeyDown}
 			/>
 			<Button
 				color={`${type === 'search' ? 'default' : 'primary'}`}
 				variant='contained'
 				size='large'
 				className={classes.button}
-				onClick={() => {
-					onSubmit(value)
-				}}
+				onClick={handleOnSubmit}
 			>
 				{type === 'search' ? <Search className={classes.icon} /> : 'Save'}
 			</Button>

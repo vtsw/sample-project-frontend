@@ -41,8 +41,10 @@ const navbarItems = [
 
 const NavBar = props => {
 	const { location, history } = props
-	const [currentPage, setCurrentPage] = useState(location.pathname)
 	const classes = useStyles()
+
+	const [currentPage, setCurrentPage] = useState(location.pathname)
+
 	const handleOnChangePage = page => {
 		setCurrentPage(page)
 		history.push(page)

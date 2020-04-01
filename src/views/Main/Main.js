@@ -2,17 +2,15 @@ import React from 'react'
 import clsx from 'clsx'
 import { Box, Grid, makeStyles, Typography } from '@material-ui/core'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import {
-	GET_USER_SEARCH_TEXT,
-	GET_SELECTED_USER_OF_MAIN,
-	SET_USER_SEARCH_TEXT,
-	SET_SELECTED_USER_OF_MAIN,
-} from './gql/query'
 
 import { FETCH_USER_LIST } from '@views/User/gql/query'
 
-import { ActionInputBox, Loading, LargeTable } from '@views_components'
+import { Loading, LargeTable } from '@views_components'
+import { SearchUserBox } from '@views/User/components'
 import { ListMessageOfUser } from './components'
+
+import { GET_USER_SEARCH_TEXT, GET_SELECTED_USER_OF_MAIN } from './gql/query'
+import { SET_USER_SEARCH_TEXT, SET_SELECTED_USER_OF_MAIN } from './gql/mutation'
 
 import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
@@ -68,6 +66,7 @@ const Main = () => {
 		{
 			variables: { query: { limit: 20 } },
 			notifyOnNetworkStatusChange: true,
+			onError: err => alert(err),
 		}
 	)
 
@@ -166,7 +165,7 @@ const Main = () => {
 						)}
 					>
 						<Box className={classes.searchbox}>
-							<ActionInputBox
+							<SearchUserBox
 								width={328}
 								placeholder='search...'
 								type='search'

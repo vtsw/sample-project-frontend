@@ -9,9 +9,8 @@ import {
 	LargeTable,
 	DeleteDialog,
 	ModifyDialog,
-	ActionInputBox,
-	CreateInputBox,
 } from '@views_components'
+import { CreateMessageBox, SearchMessageBox } from './components'
 
 import {
 	MESSAGE_LIST,
@@ -43,11 +42,16 @@ const useStyle = makeStyles(theme => ({
 	},
 }))
 
+const tableHeaders = [
+	{ headerLabel: 'DATE', xs: 5, headerVariable: 'lastModified' },
+	{ headerLabel: 'CONTENT', xs: 7, headerVariable: 'content' },
+]
+
 const Message = () => {
 	const classes = useStyle()
 
-	const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
-	const [openConfirmModify, setOpenConfirmModify] = useState(false)
+	const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)
+	const [confirmDialogVisible, setConfirmDialogVisible] = useState(false)
 
 	const [selectedMessage, setSelectedMessage] = useState(false)
 
@@ -60,6 +64,7 @@ const Message = () => {
 		{
 			variables: { query: { limit: PAGE_LIMIT } },
 			notifyOnNetworkStatusChange: true,
+			onError: err => alert(err),
 		}
 	)
 
@@ -78,21 +83,12 @@ const Message = () => {
 		onError: err => alert(err),
 	})
 
-	const handleDeleteMessage = id => {
-		deleteMessage({ variables: { id } })
-	}
-
-	const handleUpdateMessage = value => {
-		updateMessage({
-			variables: { message: { id: selectedMessage.id, content: value } },
-		})
-	}
-
 	const handleCreateMessage = createVal => {
 		createMessage({
 			variables: { message: { content: createVal } },
-		})
-		setMessageCreateValueOfMain({ variables: { createValue: '' } })
+		}).then(() =>
+			setMessageCreateValueOfMain({ variables: { createValue: '' } })
+		)
 	}
 
 	const handleSearch = value => {
@@ -153,22 +149,42 @@ const Message = () => {
 		})
 	}
 
-	if (error) return <p>Error :(</p>
+	const handleOnSelectMessage = message => {
+		setConfirmDialogVisible(true)
+		setSelectedMessage(message)
+	}
 
-	const columns = [
-		{ headerLabel: 'DATE', xs: 5, headerVariable: 'lastModified' },
-		{ headerLabel: 'CONTENT', xs: 7, headerVariable: 'content' },
-	]
+	const handleOnDeleteMessage = message => {
+		setDeleteDialogVisible(true)
+		setSelectedMessage(message)
+	}
+
+	const handleOnAgreeDeleteMessage = () => {
+		setDeleteDialogVisible(false)
+		deleteMessage({ variables: { id: selectedMessage.id } })
+	}
+
+	const handleOnAgreeModifyMessage = message => {
+		updateMessage({
+			variables: { message: { id: selectedMessage.id, content: message } },
+		})
+	}
+
+	if (error) return <p>Error :(</p>
 
 	return (
 		<Box className={classes.root}>
 			<Grid container direction='column' className={classes.container}>
 				<Grid item className={classes.item__actionbox}>
-					<CreateInputBox width={328} onSubmit={handleCreateMessage} />
+					<CreateMessageBox
+						width={328}
+						placeholder='text...'
+						onSubmit={handleCreateMessage}
+					/>
 				</Grid>
 				<div className={classes.divider} />
 				<Grid item className={classes.item__actionbox}>
-					<ActionInputBox
+					<SearchMessageBox
 						width={328}
 						placeholder='search...'
 						type='search'
@@ -182,16 +198,10 @@ const Message = () => {
 				) : (
 					<LargeTable
 						items={data.messageList.items}
-						onClickRow={object => {
-							setOpenConfirmModify(true)
-							setSelectedMessage(object)
-						}}
-						handleDeleteRow={object => {
-							setOpenConfirmDelete(true)
-							setSelectedMessage(object)
-						}}
+						onClickRow={handleOnSelectMessage}
+						handleDeleteRow={handleOnDeleteMessage}
 						selectedRow={selectedMessage}
-						columns={columns}
+						columns={tableHeaders}
 						loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 						isIconClose={true}
 						loadNextPage={loadNextMessagePage}
@@ -201,30 +211,24 @@ const Message = () => {
 			</Grid>
 
 			<DeleteDialog
-				open={openConfirmDelete}
+				open={deleteDialogVisible}
 				onClose={() => {
-					setOpenConfirmDelete(false)
+					setDeleteDialogVisible(false)
 				}}
-				onAgree={() => {
-					setOpenConfirmDelete(false)
-					handleDeleteMessage(selectedMessage.id)
-				}}
+				onAgree={handleOnAgreeDeleteMessage}
 				onDisagree={() => {
-					setOpenConfirmDelete(false)
+					setDeleteDialogVisible(false)
 				}}
 			/>
 			<ModifyDialog
-				open={openConfirmModify}
+				open={confirmDialogVisible}
 				onClose={() => {
-					setOpenConfirmModify(false)
+					setConfirmDialogVisible(false)
 				}}
 				valueDefault={selectedMessage.content}
-				onAgree={value => {
-					setOpenConfirmModify(false)
-					handleUpdateMessage(value)
-				}}
+				onAgree={handleOnAgreeModifyMessage}
 				onDisagree={() => {
-					setOpenConfirmModify(false)
+					setConfirmDialogVisible(false)
 				}}
 			/>
 		</Box>

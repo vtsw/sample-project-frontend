@@ -1,22 +1,20 @@
 import gql from 'graphql-tag'
 
-import { MESSAGE } from './fragment'
+import { USER } from './fragment'
 
-const DELETE_MESSAGE = gql`
-	mutation DeleteMessage($id: ID!) {
-		deleteMessage(id: $id) {
-			...Message
+const SET_SELECTED_USER_OF_MAIN = gql`
+	mutation SetSelectedUserOfMain($selectedUser: User!) {
+		setSelectedUserOfMain(selectedUser: $selectedUser) @client {
+			...User
 		}
 	}
-	${MESSAGE}
-`
-const UPDATE_MESSAGE = gql`
-	mutation UpdateMessage($message: UpdateMessageInput!) {
-		updateMessage(message: $message) {
-			...Message
-		}
-	}
-	${MESSAGE}
+	${USER}
 `
 
-export { DELETE_MESSAGE, UPDATE_MESSAGE }
+const SET_USER_SEARCH_TEXT = gql`
+	mutation SetUserSearchValueOfMain($searchValue: String!) {
+		setUserSearchValueOfMain(searchValue: $searchValue) @client
+	}
+`
+
+export { SET_SELECTED_USER_OF_MAIN, SET_USER_SEARCH_TEXT }
