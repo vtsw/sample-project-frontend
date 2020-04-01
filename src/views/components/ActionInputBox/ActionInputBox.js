@@ -61,7 +61,6 @@ const ActionInputBox = props => {
 				className={classes.button}
 				onClick={() => {
 					onSubmit(value)
-					setValue('')
 				}}
 			>
 				{type === 'search' ? <Search className={classes.icon} /> : 'Save'}

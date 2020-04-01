@@ -43,8 +43,8 @@ const InfiniteScroll = props => {
 			isItemLoaded={isItemLoaded}
 			itemCount={itemCount}
 			loadMoreItems={loadMoreItems}
-			threshold={1}
-			minimumBatchSize={1}
+			threshold={10}
+			minimumBatchSize={10}
 		>
 			{props => {
 				const { onItemsRendered, ref } = props
