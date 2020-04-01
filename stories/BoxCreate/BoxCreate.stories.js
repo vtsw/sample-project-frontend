@@ -11,22 +11,6 @@ export default {
 	decorators: [storyFn => <WithApolloProvider>{storyFn()}</WithApolloProvider>],
 }
 
-const propsDetail = [
-	{
-		propsName: 'handleCreate',
-		propsType: 'function',
-		defaultValue: 'required',
-		description:
-			'When you click button "Save", you will run this function, what contain value of input nearby.',
-	},
-	{
-		propsName: 'defaultValue',
-		propsType: 'string',
-		defaultValue: `''`,
-		description: 'It is a default value of input',
-	},
-]
-
 export const basic = () => {
 	return (
 		<ThemeProvider theme={muiTheme}>
