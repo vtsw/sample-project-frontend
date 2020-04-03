@@ -76,19 +76,9 @@ export const Deletedialog = () => {
 			<div>
 				<button
 					onClick={e => {
-						console.log('onClick')
 						setOpenPopup(true)
 						action('click')(e)
 					}}
-					// onMouseOver={e => {
-					// 	console.log('onMouseOver')
-					// 	// setOpenPopup(true)
-					// 	action('hovered')(e)
-					// }}
-					// {...actions({
-					// 	onClick: 'button -click',
-					// 	onMouseOver: 'on mouse over',
-					// })}
 				>
 					Open popup
 				</button>

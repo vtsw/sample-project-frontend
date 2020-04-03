@@ -3,7 +3,7 @@ import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { action } from '@storybook/addon-actions'
 import { DeleteDialog } from '@views_components'
-import { linkTo } from '@storybook/addon-links'
+import LinkTo from '@storybook/addon-links/react'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -115,10 +115,10 @@ const FormEditor = () => {
 					size='large'
 					fullWidth
 					className={classes.formbutton}
-					// onClick={action('Handle Cancel')}
-					onClick={linkTo('SignIn', 'signIn')}
 				>
-					Cancel
+					<LinkTo kind='component-api-signin' story='sign-in'>
+						Cancel
+					</LinkTo>
 				</Button>
 			</div>
 			<DeleteDialog

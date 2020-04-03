@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import { linkTo } from '@storybook/addon-links'
+import LinkTo from '@storybook/addon-links/react'
+import { action } from '@storybook/addon-actions'
+import { text } from '@storybook/addon-knobs'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -48,7 +50,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const SignIn = props => {
-	const { handleSignIn } = props
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
@@ -57,6 +58,25 @@ const SignIn = props => {
 	const onSignIn = () => {
 		handleSignIn({ email, password })
 	}
+	const mail = text('email', 'example@gmail.com')
+	const pass = text('pass', '12345')
+
+	const handleSignIn = ({ email, password }) => {
+		action('Sign-in')({ email, password })
+
+		if (!email) {
+			alert('empty email')
+			return
+		}
+		if (!password) {
+			alert('empty password')
+			return
+		}
+
+		if (mail === email && pass === password) alert('Logged in')
+		else alert('Wrong pass or email')
+	}
+
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.container}>
@@ -94,14 +114,23 @@ const SignIn = props => {
 						onClick={onSignIn}
 					>
 						Sign in
-					</Button>
+					</Button>{' '}
 					<Typography
 						data-cy='signup-text'
 						variant='body2'
 						className={classes.signuptext}
-						onClick={linkTo('SignUp', 'signUp')}
+						// onClick={linkTo('SignUp', 'signUp')}
 					>
-						sign up
+						{' '}
+						<LinkTo
+							kind='component-api-signup'
+							story='sign-up'
+							// story='SignUp' // it only use when have more than 2 story in abcxyz.stories.js
+							// // target='_blank'
+							// style={{ color: '#1474f3' }}
+						>
+							sign up
+						</LinkTo>
 					</Typography>
 				</div>
 			</Box>

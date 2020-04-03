@@ -28,10 +28,7 @@ const BoxCreate = props => {
 	const { handleCreate, defaultValue } = props
 	const [createVal, setCreateVal] = useState(defaultValue)
 	const classes = useStyles()
-	// const [setMessageCreateValueOfMain] = useMutation(SET_MESSAGE_CREATE_TEXT)
-	const handleCreateTextChange = text => {
-		// setMessageCreateValueOfMain({ variables: { createValue: text } })
-	}
+	const handleCreateTextChange = text => {}
 	return (
 		<Grid container alignItems='stretch' className={classes.root}>
 			<TextField

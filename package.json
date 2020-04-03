@@ -46,6 +46,7 @@
     "apollo-client": "^2.6.8",
     "clsx": "^1.1.0",
     "core-js": "2",
+    "faker": "^4.1.0",
     "graphql-tag": "^2.10.3",
     "graphql-tools": "^4.0.7",
     "prop-types": "^15.7.2",
