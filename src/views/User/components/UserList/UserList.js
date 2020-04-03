@@ -4,15 +4,19 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { SearchBox, LargeTable, Loading } from '@views_components'
+import { LargeTable, Loading } from '@views_components'
+import SearchUserBox from '../SearchUserBox'
 
 import {
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
-	SET_USER_SEARCH_TEXT,
 	GET_SELECTED_USER,
+} from '@views/User/gql/query'
+import {
+	SET_USER_SEARCH_TEXT,
 	SET_SELECTED_USER,
-} from '@views/User/query'
+} from '@views/User/gql/mutation'
+
 import { PAGE_LIMIT, NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
@@ -41,13 +45,15 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const TABLE_HEADER = [
+const tableHeaders = [
 	{ headerLabel: 'EMAIL', xs: 5, headerVariable: 'email' },
 	{ headerLabel: 'NAME', xs: 7, headerVariable: 'name' },
 ]
 
 const UserList = props => {
-	const { onSelectAnUser } = props
+	const { onSelectUser } = props
+	const classes = useStyles()
+
 	const {
 		data: { userSearchValue },
 	} = useQuery(GET_USER_SEARCH_TEXT)
@@ -67,20 +73,14 @@ const UserList = props => {
 	const {
 		data: { selectedUser },
 	} = useQuery(GET_SELECTED_USER, {
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 
 	const [setUserSearchValue] = useMutation(SET_USER_SEARCH_TEXT, {
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 	const [setSelectedUser] = useMutation(SET_SELECTED_USER, {
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 
 	const handleOnSearch = searchValue => {
@@ -88,7 +88,7 @@ const UserList = props => {
 		setSelectedUser({
 			variables: {
 				selectedUser: {
-					id: selectedUser.id + '_reset',
+					id: '',
 					name: '',
 					email: '',
 					__typename: 'User',
@@ -119,16 +119,14 @@ const UserList = props => {
 			},
 		})
 
-	const selectAnUser = selectedUser => {
+	const handleOnSelectUser = selectedUser => {
 		setSelectedUser({
 			variables: {
 				selectedUser,
 			},
 		})
-		onSelectAnUser()
+		onSelectUser()
 	}
-
-	const classes = useStyles()
 
 	if (error) return <p>Error :(</p>
 
@@ -139,10 +137,12 @@ const UserList = props => {
 					<Typography variant='h5' className={classes.searchbox__title}>
 						User List
 					</Typography>
-					<SearchBox
-						width={400}
-						onSearch={handleOnSearch}
+					<SearchUserBox
+						width={328}
+						placeholder='Search'
+						type='search'
 						defaultValue={userSearchValue}
+						onSubmit={handleOnSearch}
 					/>
 				</Box>
 				<Box className={classes.userlist__table}>
@@ -151,9 +151,9 @@ const UserList = props => {
 					) : (
 						<LargeTable
 							items={data.userList.items}
-							onClickRow={selectAnUser}
+							onClickRow={handleOnSelectUser}
 							selectedRow={selectedUser}
-							columns={TABLE_HEADER}
+							columns={tableHeaders}
 							isIconClose={false}
 							loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 							loadNextPage={loadNextUserPage}
