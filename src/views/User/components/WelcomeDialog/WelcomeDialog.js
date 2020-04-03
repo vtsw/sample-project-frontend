@@ -40,6 +40,7 @@ const WelcomeDialog = props => {
 					Welcome to Vatech !!!
 				</Typography>
 				<Button
+					data-cy='create-user-button'
 					variant='contained'
 					fullWidth
 					className={classes.button}
