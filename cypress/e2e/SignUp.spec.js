@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { generateRandomNumber } from '../utils'
 
 let userInfo = {}
@@ -7,6 +8,21 @@ const existingUser = {
 }
 
 const baseUrl = window.location.origin
+
+const navigateFromSignInPageToSignUpPage = () =>
+	cy
+		.get('[data-cy=signup-text]')
+		.should('exist')
+		.click()
+
+const navigateFromMainPageToFormEditorOfUserPage = () =>
+	cy
+		.get('[data-cy=user-page]')
+		.should('exist')
+		.click()
+		.get('[data-cy=create-user-button')
+		.should('exist')
+		.click()
 
 describe('Sign up', () => {
 	beforeEach(() => {
@@ -22,9 +38,7 @@ describe('Sign up', () => {
 	})
 
 	it('should allow users to register in sign up page', () => {
-		cy.get('[data-cy=signup-text]')
-			.should('exist')
-			.click()
+		navigateFromSignInPageToSignUpPage()
 		cy.registerUser(
 			userInfo.email,
 			userInfo.name,
@@ -37,9 +51,7 @@ describe('Sign up', () => {
 	})
 
 	it('should not allow an existing user to register in sign up page', () => {
-		cy.get('[data-cy=signup-text]')
-			.should('exist')
-			.click()
+		navigateFromSignInPageToSignUpPage()
 		cy.registerUser(
 			existingUser.email,
 			userInfo.name,
@@ -48,17 +60,11 @@ describe('Sign up', () => {
 		)
 		cy.url().should('equal', `${baseUrl}/sign-up`)
 		cy.get('[data-cy=submit-button]').should('exist')
-		cy.log('Email already exists')
 	})
 
 	it('should allow users to register in user page', () => {
 		cy.signIn(existingUser.email, existingUser.password)
-		cy.get('[data-cy=user-page]')
-			.should('exist')
-			.click()
-			.get('[data-cy=create-user-button')
-			.should('exist')
-			.click()
+		navigateFromMainPageToFormEditorOfUserPage()
 		cy.registerUser(
 			userInfo.email,
 			userInfo.name,
@@ -71,12 +77,7 @@ describe('Sign up', () => {
 
 	it('should not allow users to register in user page', () => {
 		cy.signIn(existingUser.email, existingUser.password)
-		cy.get('[data-cy=user-page]')
-			.should('exist')
-			.click()
-			.get('[data-cy=create-user-button')
-			.should('exist')
-			.click()
+		navigateFromMainPageToFormEditorOfUserPage()
 		cy.registerUser(
 			existingUser.email,
 			userInfo.name,

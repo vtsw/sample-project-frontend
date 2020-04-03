@@ -73,6 +73,14 @@ const SignIn = props => {
 	const [password, setPassword] = useState('')
 
 	const [signIn] = useMutation(SIGN_IN, {
+		// onCompleted: ({
+		// 	data: {
+		// 		login: { token },
+		// 	},
+		// }) => {
+		// 	setToken(token)
+		// 	history.push('/')
+		// },
 		onError: err => {
 			alert(err)
 		},

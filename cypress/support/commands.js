@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import '@testing-library/cypress/add-commands'
 
 Cypress.Commands.add('signIn', (email, password) => {
@@ -24,3 +25,10 @@ Cypress.Commands.add(
 			.click()
 	}
 )
+
+//turn off all uncaught exception handling
+Cypress.on('uncaught:exception', () => {
+	// returning false here prevents Cypress from
+	// failing the test
+	return false
+})
