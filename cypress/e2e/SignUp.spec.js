@@ -1,12 +1,6 @@
 import { generateRandomNumber } from '../utils'
 
-const randomUserName = `steve${generateRandomNumber(10000000, 1000000000000)}`
-const userInfo = {
-	email: `${randomUserName}@gmail.com`,
-	name: `${randomUserName}`,
-	password: 'steve12',
-	confirmPassword: 'steve12',
-}
+let userInfo = {}
 const existingUser = {
 	email: 'steve1@gmail.com',
 	password: '123',
@@ -16,75 +10,81 @@ const baseUrl = window.location.origin
 
 describe('Sign up', () => {
 	beforeEach(() => {
+		const randomUserName = `stevevo${generateRandomNumber(100, 1000000000000)}`
+		userInfo = {
+			email: `${randomUserName}@gmail.com`,
+			name: `${randomUserName}`,
+			password: '111',
+			confirmPassword: '111',
+		}
+
 		cy.visit('/')
 	})
 
-	// it('should allow users to register in sign up page', () => {
-	// 	cy.get('[data-cy=signup-text]')
-	// 		.should('exist')
-	// 		.click()
-	// 		.get('[type=email]')
-	// 		.type(userInfo.email)
-	// 		.get('[type=text]')
-	// 		.type(userInfo.name)
-	// 		.get('#formeditor-password')
-	// 		.type(userInfo.password)
-	// 		.get('#formeditor-password-confirm')
-	// 		.type(userInfo.confirmPassword)
-	// 	cy.get('[data-cy=submit-button]')
-	// 		.click()
-	// 		.url()
-	// 		.should('equal', `${baseUrl}/sign-in`)
-	// 	cy.get('[data-cy=signin-button]').should('exist')
-	// })
+	it('should allow users to register in sign up page', () => {
+		cy.get('[data-cy=signup-text]')
+			.should('exist')
+			.click()
+		cy.registerUser(
+			userInfo.email,
+			userInfo.name,
+			userInfo.password,
+			userInfo.confirmPassword
+		)
 
-	// it('should not allow an existing user to register in sign up page', () => {
-	// 	cy.get('[data-cy=signup-text]')
-	// 		.should('exist')
-	// 		.click()
-	// 		.get('[type=email]')
-	// 		.type(existingUser.email)
-	// 		.get('[type=text]')
-	// 		.type(userInfo.name)
-	// 		.get('#formeditor-password')
-	// 		.type(existingUser.password)
-	// 		.get('#formeditor-password-confirm')
-	// 		.type(existingUser.password)
-	// 	cy.get('[data-cy=submit-button]')
-	// 		.click()
-	// 		.url()
-	// 		.should('equal', `${baseUrl}/sign-up`)
-	// 	cy.get('[data-cy=submit-button]').should('exist')
-	// 	cy.log('Email already exists')
-	// })
+		cy.url().should('equal', `${baseUrl}/sign-in`)
+		cy.get('[data-cy=signin-button]').should('exist')
+	})
+
+	it('should not allow an existing user to register in sign up page', () => {
+		cy.get('[data-cy=signup-text]')
+			.should('exist')
+			.click()
+		cy.registerUser(
+			existingUser.email,
+			userInfo.name,
+			userInfo.password,
+			userInfo.confirmPassword
+		)
+		cy.url().should('equal', `${baseUrl}/sign-up`)
+		cy.get('[data-cy=submit-button]').should('exist')
+		cy.log('Email already exists')
+	})
 
 	it('should allow users to register in user page', () => {
-		cy.get('[type=email]')
-			.type(existingUser.email)
-			.get('[type=password]')
-			.type(existingUser.password)
-			.get('[data-cy=signin-button]')
-			.click()
-
+		cy.signIn(existingUser.email, existingUser.password)
 		cy.get('[data-cy=user-page]')
 			.should('exist')
 			.click()
 			.get('[data-cy=create-user-button')
 			.should('exist')
 			.click()
-			.get('[data-cy=email-input')
-			.type(userInfo.email)
-			.get('[data-cy=name-input')
-			.type(userInfo.name)
-			.get('[data-cy=password-input')
-			.type(userInfo.password)
-			.get('[data-cy=confirm-password-input')
-			.type(userInfo.confirmPassword)
-		cy.get('[data-cy=submit-button]')
-			.click()
-			.url()
-			.should('equal', `${baseUrl}/user`)
+		cy.registerUser(
+			userInfo.email,
+			userInfo.name,
+			userInfo.password,
+			userInfo.confirmPassword
+		)
 		cy.findAllByText(userInfo.email).should('exist')
 		cy.findAllByText(userInfo.name).should('exist')
+	})
+
+	it('should not allow users to register in user page', () => {
+		cy.signIn(existingUser.email, existingUser.password)
+		cy.get('[data-cy=user-page]')
+			.should('exist')
+			.click()
+			.get('[data-cy=create-user-button')
+			.should('exist')
+			.click()
+		cy.registerUser(
+			existingUser.email,
+			userInfo.name,
+			userInfo.password,
+			userInfo.confirmPassword
+		)
+		cy.on('window:alert', error => {
+			expect(error.message).to.equal('GraphQL error: The email already exists.')
+		})
 	})
 })
