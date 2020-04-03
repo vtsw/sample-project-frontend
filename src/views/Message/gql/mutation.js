@@ -1,31 +1,30 @@
 import gql from 'graphql-tag'
 
+import { MESSAGE } from './fragment'
+
 const DELETE_MESSAGE = gql`
 	mutation DeleteMessage($id: ID!) {
 		deleteMessage(id: $id) {
-			id
-			lastModified
-			content
+			...Message
 		}
 	}
+	${MESSAGE}
 `
 const UPDATE_MESSAGE = gql`
 	mutation UpdateMessage($message: UpdateMessageInput!) {
 		updateMessage(message: $message) {
-			id
-			lastModified
-			content
+			...Message
 		}
 	}
+	${MESSAGE}
 `
 const CREATE_MESSAGE = gql`
 	mutation CreateMessage($message: CreateMessageInput!) {
 		createMessage(message: $message) {
-			id
-			lastModified
-			content
+			...Message
 		}
 	}
+	${MESSAGE}
 `
 
 export { DELETE_MESSAGE, UPDATE_MESSAGE, CREATE_MESSAGE }

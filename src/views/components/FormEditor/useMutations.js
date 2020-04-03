@@ -7,13 +7,18 @@ const genQueryOptions = (query, variables) => {
 	}
 }
 
-const useCreateUser = (query, updateQuery, vars, authToken) => {
+const useCreateUser = (
+	createUserMutation,
+	fetchUserListQuery,
+	vars,
+	authToken
+) => {
 	return useMutation(
-		query,
+		createUserMutation,
 		authToken &&
 			!vars.query.searchText && {
 				update(cache, { data: { createUser } }) {
-					const options = genQueryOptions(updateQuery, vars)
+					const options = genQueryOptions(fetchUserListQuery, vars)
 					const { userList } = cache.readQuery(options)
 					cache.writeQuery({
 						...options,
@@ -22,17 +27,15 @@ const useCreateUser = (query, updateQuery, vars, authToken) => {
 						},
 					})
 				},
-				onError: err => {
-					alert(err)
-				},
+				onError: err => alert(err),
 			}
 	)
 }
 
-const useDeleteUser = (query, updateQuery, vars) => {
-	return useMutation(query, {
+const useDeleteUser = (deleteUserMutation, fetchUserListQuery, vars) => {
+	return useMutation(deleteUserMutation, {
 		update(cache, { data: { deleteUser } }) {
-			const options = genQueryOptions(updateQuery, vars)
+			const options = genQueryOptions(fetchUserListQuery, vars)
 			const { userList } = cache.readQuery(options)
 			const items = userList.items.filter(item => item.id !== deleteUser.id)
 			cache.writeQuery({
@@ -42,9 +45,7 @@ const useDeleteUser = (query, updateQuery, vars) => {
 				},
 			})
 		},
-		onError: err => {
-			alert(err)
-		},
+		onError: err => alert(err),
 	})
 }
 

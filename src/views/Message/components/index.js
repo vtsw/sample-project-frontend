@@ -1,2 +1,2 @@
-export { default as BoxCreate } from './BoxCreate'
-export { default as BoxSearch } from './BoxSearch'
+export { default as CreateMessageBox } from './CreateMessageBox'
+export { default as SearchMessageBox } from './SearchMessageBox'

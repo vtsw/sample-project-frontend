@@ -40,6 +40,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const ModifyDialog = props => {
 	const { open, onClose, onAgree, valueDefault = '', onDisagree } = props
 	const classes = useStyles()
+
 	const [value, setValue] = useState()
 
 	useEffect(() => {

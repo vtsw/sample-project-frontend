@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react'
+import React, { Suspense, lazy, useEffect } from 'react'
 import { Route, Switch, withRouter } from 'react-router-dom'
 
 import { Grid } from '@material-ui/core'
@@ -14,8 +14,7 @@ const SignIn = lazy(() => import('@views/SignIn'))
 const SignUp = lazy(() => import('@views/SignUp'))
 
 const App = props => {
-	console.log(props)
-	const { history, location, match, staticContext } = props
+	const { history, location } = props
 
 	useEffect(() => {
 		const authToken = getToken()
