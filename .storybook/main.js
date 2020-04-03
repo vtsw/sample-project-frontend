@@ -1,7 +1,7 @@
 const { resolve } = require('path')
 
 module.exports = {
-  stories: ['../stories/**/*.stories.js'],
+  stories: ['../stories/**/*.stories.(js|mdx)'],
   addons: [
     '@storybook/react',
     '@storybook/addon-links/register',

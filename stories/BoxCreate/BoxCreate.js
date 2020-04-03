@@ -7,8 +7,6 @@ import {
 	TextField,
 	Typography,
 } from '@material-ui/core'
-// import { useMutation } from '@apollo/react-hooks'
-// import { SET_MESSAGE_CREATE_TEXT } from '@views/Message/query'
 
 const useStyles = makeStyles(theme => ({
 	root: {

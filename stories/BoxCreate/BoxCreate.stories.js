@@ -6,7 +6,8 @@ import muiTheme from '../../src/theme/muiTheme'
 
 export default {
 	title: 'Component Api|BoxCreate',
-	component: BoxCreate,
+	// component: BoxCreate,
+	includeStories: [],
 }
 
 export const basic = () => {

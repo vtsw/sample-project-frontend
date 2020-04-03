@@ -5,7 +5,8 @@ import muiTheme from '../../src/theme/muiTheme'
 
 export default {
 	title: 'Component Api|SignUp',
-	component: SignUp,
+	// component: SignUp,
+	includeStories: [],
 }
 
 export const signUp = () => {

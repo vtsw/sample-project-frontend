@@ -6,7 +6,6 @@ import { action } from '@storybook/addon-actions'
 
 export default {
 	title: 'Component Api|Deletedialog',
-	// decorators: [withKnobs],
 }
 
 const propsDetail = [

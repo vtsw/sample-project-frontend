@@ -55,7 +55,7 @@ function Tables({ data }) {
 				accessor: 'propsName',
 			},
 			{
-				Header: 'PropsType',
+				Header: 'PropTypes',
 				accessor: 'propsType',
 				Cell: cellInfo => {
 					return (

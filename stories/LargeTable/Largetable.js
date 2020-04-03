@@ -1,15 +1,10 @@
 import React, { useState } from 'react'
 import { action } from '@storybook/addon-actions'
 import { DeleteDialog, ModifyDialog } from '@views_components'
-import {
-	boolean,
-	withKnobs,
-	number,
-	object,
-	select,
-} from '@storybook/addon-knobs'
+import { boolean, object } from '@storybook/addon-knobs'
 import LargeTable from '../../src/views/components/LargeTable/LargeTable'
 import data from './generatorData'
+import PropTypes from 'prop-types'
 
 const Largetable = () => {
 	const [message, setMessage] = useState(data(50))
@@ -58,7 +53,7 @@ const Largetable = () => {
 					setMessage([...message, ...data(10)])
 					action('loadNextPage')()
 				}}
-				hasNextPage={boolean('hasNextPage', true)}
+				hasNextPage={boolean('hasNextPage', false)}
 			/>
 			<DeleteDialog
 				open={deleteDialogVisible}
@@ -101,3 +96,26 @@ const Largetable = () => {
 }
 
 export default Largetable
+
+Largetable.propTypes = {
+	items: PropTypes.array.isRequired,
+	onClickRow: PropTypes.func.isRequired,
+	selectedRow: PropTypes.object,
+	columns: PropTypes.array.isRequired,
+	isIconClose: PropTypes.bool,
+	handleDeleteRow: PropTypes.func,
+	loadNextPage: PropTypes.func,
+	hasNextPage: PropTypes.bool,
+	loadingMore: PropTypes.bool,
+}
+Largetable.defaultProps = {
+	items: [],
+	// onClickRow: '_',
+	selectedRow: {},
+	columns: [],
+	isIconClose: false,
+	// handleDeleteRow: '_',
+	// loadNextPage: '_',
+	hasNextPage: false,
+	loadingMore: false,
+}
