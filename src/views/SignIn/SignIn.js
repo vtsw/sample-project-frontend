@@ -6,7 +6,7 @@ import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { setToken } from '@src/shares/utils'
-import { SIGN_IN } from './query'
+import { SIGN_IN } from './gql/query'
 import { SET_UPLOADED_FILE } from '@views/File/mutations'
 
 const useStyles = makeStyles(theme => ({
@@ -55,6 +55,8 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = props => {
 	const { history } = props
+	const classes = useStyles()
+
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
@@ -71,8 +73,6 @@ const SignIn = props => {
 		onError: err => alert(err),
 		fetchPolicy: 'no-cache',
 	})
-
-	const classes = useStyles()
 
 	return (
 		<Box className={classes.root}>

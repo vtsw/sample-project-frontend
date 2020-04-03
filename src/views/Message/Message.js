@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
@@ -10,16 +10,18 @@ import {
 	DeleteDialog,
 	ModifyDialog,
 } from '@views_components'
-import { BoxCreate, BoxSearch } from './components'
+import { CreateMessageBox, SearchMessageBox } from './components'
+
 import {
 	MESSAGE_LIST,
 	GET_MESSAGE_SEARCH_TEXT,
-	GET_MESSAGE_CREATE_TEXT,
 	SET_MESSAGE_SEARCH_TEXT,
 	SET_MESSAGE_CREATE_TEXT,
-} from './query'
-import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './mutation'
-import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
+} from './gql/query'
+import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './gql/mutation'
+import { useCreateMessage, useDeleteMessage } from './gql/useMutations'
+
+import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -32,14 +34,24 @@ const useStyle = makeStyles(theme => ({
 		border: `1px solid ${theme.palette.common.border}`,
 		height: '100%',
 	},
+	item__actionbox: {
+		padding: theme.spacing(2),
+	},
+	divider: {
+		borderTop: `1px solid ${theme.palette.common.border}`,
+	},
 }))
+
+const tableHeaders = [
+	{ headerLabel: 'DATE', xs: 5, headerVariable: 'lastModified' },
+	{ headerLabel: 'CONTENT', xs: 7, headerVariable: 'content' },
+]
 
 const Message = () => {
 	const classes = useStyle()
-	const [contents, setContents] = useState({})
 
-	const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
-	const [openConfirmModify, setOpenConfirmModify] = useState(false)
+	const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)
+	const [confirmDialogVisible, setConfirmDialogVisible] = useState(false)
 
 	const [selectedMessage, setSelectedMessage] = useState(false)
 
@@ -47,73 +59,36 @@ const Message = () => {
 		data: { messageSearchValueOfMessage },
 	} = useQuery(GET_MESSAGE_SEARCH_TEXT)
 
-	const {
-		data: { messageCreateValueOfMessage },
-	} = useQuery(GET_MESSAGE_CREATE_TEXT)
-
 	const { loading, error, data, fetchMore, networkStatus } = useQuery(
 		MESSAGE_LIST,
 		{
-			variables: { query: { limit: 20 } },
+			variables: { query: { limit: PAGE_LIMIT } },
 			notifyOnNetworkStatusChange: true,
+			onError: err => alert(err),
 		}
 	)
 
 	const [setMessageSearchValueOfMain] = useMutation(SET_MESSAGE_SEARCH_TEXT)
 	const [setMessageCreateValueOfMain] = useMutation(SET_MESSAGE_CREATE_TEXT)
 
-	const [createMessage] = useMutation(CREATE_MESSAGE, {
-		onCompleted: data => {
-			const update = {
-				...contents,
-				items: [data.createMessage, ...contents.items],
-			}
-			setContents(update)
-		},
-		onError: err => alert(err),
+	const [createMessage] = useCreateMessage(CREATE_MESSAGE, MESSAGE_LIST, {
+		query: { limit: PAGE_LIMIT },
 	})
 
-	const [deleteMessage] = useMutation(DELETE_MESSAGE, {
-		onCompleted: data => {
-			const update = {
-				...contents,
-				items: contents.items.filter(item => item.id !== data.deleteMessage.id),
-			}
-			setContents(update)
-		},
-		onError: err => alert(err),
+	const [deleteMessage] = useDeleteMessage(DELETE_MESSAGE, MESSAGE_LIST, {
+		query: { limit: PAGE_LIMIT },
 	})
 
 	const [updateMessage] = useMutation(UPDATE_MESSAGE, {
-		onCompleted: ({ updateMessage }) => {
-			const update = {
-				...contents,
-				items: contents.items.map(item => {
-					if (item.id === updateMessage.id)
-						return { ...item, content: updateMessage.content }
-					return item
-				}),
-			}
-			setContents(update)
-		},
 		onError: err => alert(err),
 	})
-
-	const handleDeleteMessage = id => {
-		deleteMessage({ variables: { id } })
-	}
-
-	const handleUpdateMessage = value => {
-		updateMessage({
-			variables: { message: { id: selectedMessage.id, content: value } },
-		})
-	}
 
 	const handleCreateMessage = createVal => {
 		createMessage({
 			variables: { message: { content: createVal } },
-		})
-		setMessageCreateValueOfMain({ variables: { createValue: createVal } })
+		}).then(() =>
+			setMessageCreateValueOfMain({ variables: { createValue: '' } })
+		)
 	}
 
 	const handleSearch = value => {
@@ -151,7 +126,7 @@ const Message = () => {
 			variables: {
 				query: {
 					limit: 10,
-					skip: contents.items.length,
+					skip: data.messageList.items.length,
 					searchText: messageSearchValueOfMessage,
 				},
 			},
@@ -174,85 +149,86 @@ const Message = () => {
 		})
 	}
 
-	useEffect(() => {
-		if (data && data.messageList) {
-			setContents(data.messageList)
-		}
-	}, [data])
+	const handleOnSelectMessage = message => {
+		setConfirmDialogVisible(true)
+		setSelectedMessage(message)
+	}
+
+	const handleOnDeleteMessage = message => {
+		setDeleteDialogVisible(true)
+		setSelectedMessage(message)
+	}
+
+	const handleOnAgreeDeleteMessage = () => {
+		setDeleteDialogVisible(false)
+		deleteMessage({ variables: { id: selectedMessage.id } })
+	}
+
+	const handleOnAgreeModifyMessage = message => {
+		updateMessage({
+			variables: { message: { id: selectedMessage.id, content: message } },
+		})
+	}
 
 	if (error) return <p>Error :(</p>
 
-	const columns = [
-		{ headerLabel: 'DATE', xs: 5, headerVariable: 'lastModified' },
-		{ headerLabel: 'CONTENT', xs: 7, headerVariable: 'content' },
-	]
-
 	return (
 		<Box className={classes.root}>
-			<Loading
-				open={loading && networkStatus !== NETWORK_STATUS_FETCH_MORE}
-				msg={'Loading...'}
-			/>
 			<Grid container direction='column' className={classes.container}>
-				<Grid item>
-					<BoxCreate
-						handleCreate={handleCreateMessage}
-						defaultValue={messageCreateValueOfMessage}
+				<Grid item className={classes.item__actionbox}>
+					<CreateMessageBox
+						width={328}
+						placeholder='text...'
+						onSubmit={handleCreateMessage}
 					/>
 				</Grid>
-				<Grid item>
-					<BoxSearch
-						handleSearch={handleSearch}
+				<div className={classes.divider} />
+				<Grid item className={classes.item__actionbox}>
+					<SearchMessageBox
+						width={328}
+						placeholder='search...'
+						type='search'
 						defaultValue={messageSearchValueOfMessage}
+						onSubmit={handleSearch}
 					/>
 				</Grid>
 
-				{contents && contents.items && (
+				{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
+					<Loading open={true} msg={'Loading...'} />
+				) : (
 					<LargeTable
-						items={contents.items}
-						onClickRow={object => {
-							setOpenConfirmModify(true)
-							setSelectedMessage(object)
-						}}
-						handleDeleteRow={object => {
-							setOpenConfirmDelete(true)
-							setSelectedMessage(object)
-						}}
+						items={data.messageList.items}
+						onClickRow={handleOnSelectMessage}
+						handleDeleteRow={handleOnDeleteMessage}
 						selectedRow={selectedMessage}
-						columns={columns}
+						columns={tableHeaders}
 						loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 						isIconClose={true}
 						loadNextPage={loadNextMessagePage}
-						hasNextPage={contents.hasNext}
+						hasNextPage={data.messageList.hasNext}
 					/>
 				)}
 			</Grid>
 
 			<DeleteDialog
-				open={openConfirmDelete}
+				open={deleteDialogVisible}
 				onClose={() => {
-					setOpenConfirmDelete(false)
+					setDeleteDialogVisible(false)
 				}}
-				onAgree={() => {
-					setOpenConfirmDelete(false)
-					handleDeleteMessage(selectedMessage.id)
-				}}
+				onAgree={handleOnAgreeDeleteMessage}
 				onDisagree={() => {
-					setOpenConfirmDelete(false)
+					setDeleteDialogVisible(false)
 				}}
 			/>
 			<ModifyDialog
-				open={openConfirmModify}
+				open={confirmDialogVisible}
 				onClose={() => {
-					setOpenConfirmModify(false)
+					setConfirmDialogVisible(false)
 				}}
 				valueDefault={selectedMessage.content}
-				onAgree={value => {
-					setOpenConfirmModify(false)
-					handleUpdateMessage(value)
-				}}
+				onAgree={handleOnAgreeModifyMessage}
 				onDisagree={() => {
-					setOpenConfirmModify(false)
+					setConfirmDialogVisible(false)
 				}}
 			/>
 		</Box>

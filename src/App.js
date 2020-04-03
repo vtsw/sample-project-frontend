@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core'
 
 import { getToken } from '@src/shares/utils'
 
-import { NavBar, Loading } from '@views_components'
+import { NavBar, SuspenseLoading } from '@views_components'
 
 const Main = lazy(() => import('@views/Main'))
 const Message = lazy(() => import('@views/Message'))
@@ -16,6 +16,7 @@ const File = lazy(() => import('@views/File'))
 
 const App = props => {
 	const { history, location } = props
+
 	useEffect(() => {
 		const authToken = getToken()
 
@@ -41,7 +42,7 @@ const App = props => {
 				<NavBar />
 			)}
 
-			<Suspense fallback={<Loading open={true} msg={'Loading...'} />}>
+			<Suspense fallback={<SuspenseLoading />}>
 				<Switch>
 					<Route exact path='/' component={Main} />
 					<Route path='/message' component={Message} />

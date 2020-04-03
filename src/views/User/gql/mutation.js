@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { USER } from './fragments'
+import { USER } from './fragment'
 
 const CREATE_USER = gql`
 	mutation CreateUser($user: CreateUserInput!) {

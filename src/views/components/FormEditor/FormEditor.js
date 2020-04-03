@@ -12,14 +12,14 @@ import {
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
 	GET_SELECTED_USER,
-} from '@views/User/queries'
+} from '@views/User/gql/query'
 import {
 	CREATE_USER,
 	UPDATE_USER,
 	DELETE_USER,
 	SET_SELECTED_USER,
-} from '@views/User/mutations'
-import { useCreateAUser, useDeleteAUser } from './useMutations'
+} from '@views/User/gql/mutation'
+import { useCreateUser, useDeleteUser } from './useMutations'
 
 import { getToken } from '@src/shares/utils'
 import { PAGE_LIMIT } from '@src/configs.local'
@@ -67,6 +67,7 @@ const useStyles = makeStyles(theme => ({
 
 const FormEditor = props => {
 	const { history } = props
+	const classes = useStyles()
 	const authToken = getToken()
 
 	const {
@@ -82,7 +83,7 @@ const FormEditor = props => {
 	const [updateUser] = useMutation(UPDATE_USER, {
 		onError: err => alert(err),
 	})
-	const [createNewUser] = useCreateAUser(
+	const [createNewUser] = useCreateUser(
 		CREATE_USER,
 		FETCH_USER_LIST,
 		{
@@ -90,7 +91,7 @@ const FormEditor = props => {
 		},
 		authToken
 	)
-	const [deleteUser] = useDeleteAUser(DELETE_USER, FETCH_USER_LIST, {
+	const [deleteUser] = useDeleteUser(DELETE_USER, FETCH_USER_LIST, {
 		query: { searchText: userSearchValue, limit: PAGE_LIMIT },
 	})
 
@@ -109,7 +110,6 @@ const FormEditor = props => {
 
 	const hasSelectedUser =
 		selectedUser.id && selectedUser.name && selectedUser.email
-	const classes = useStyles()
 
 	const onCancel = () => {
 		if (!authToken) {
@@ -158,14 +158,9 @@ const FormEditor = props => {
 		if (password) userInfo = { ...userInfo, password }
 		updateUser({
 			variables: { user: userInfo },
+		}).then(() => {
+			onCancel()
 		})
-			.then(() => {
-				onCancel()
-			})
-			.catch(error => {
-				alert(error.message)
-				console.error(error)
-			})
 	}
 
 	const createAUser = () => {
@@ -173,14 +168,9 @@ const FormEditor = props => {
 			variables: { user: { email, name, password } },
 			refetchQueries: shouldUseRefetchQueries(),
 			awaitRefetchQueries: !!userSearchValue,
+		}).then(() => {
+			onCancel()
 		})
-			.then(() => {
-				onCancel()
-			})
-			.catch(error => {
-				alert(error.message)
-				console.error(error)
-			})
 	}
 
 	const onSubmit = () => {
@@ -198,21 +188,19 @@ const FormEditor = props => {
 	}
 
 	const onAgreeDeleteAnUser = () => {
-		deleteUser({ variables: { id: userId } })
-			.then(() => {
-				setSelectedUser({
-					variables: {
-						selectedUser: {
-							id: userId + '_reset',
-							name: '',
-							email: '',
-							__typename: 'User',
-						},
+		deleteUser({ variables: { id: userId } }).then(() => {
+			setSelectedUser({
+				variables: {
+					selectedUser: {
+						id: '',
+						name: '',
+						email: '',
+						__typename: 'User',
 					},
-				})
-				setOpenConfirmDeleteDialog(false)
+				},
 			})
-			.catch(error => console.error(error))
+			setOpenConfirmDeleteDialog(false)
+		})
 	}
 
 	return (

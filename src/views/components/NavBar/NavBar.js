@@ -51,11 +51,12 @@ const NavBar = props => {
 		onCompleted: async () => {
 			await client.resetStore()
 			client.writeData({ data: initialState })
+			deleteToken()
+			handleOnChangePage('/sign-in')
 		},
 		onError: err => alert(err),
 	})
 
-	const classes = useStyles()
 	const handleOnChangePage = page => {
 		setCurrentPage(page)
 		history.push(page)
@@ -64,6 +65,13 @@ const NavBar = props => {
 	const setActiveTab = pathname => {
 		return currentPage === pathname ? classes.active : ''
 	}
+
+	const handleOnLogOut = () => {
+		resetCache({ variables: { data: initialState } })
+	}
+
+	const classes = useStyles()
+
 	return (
 		<ul className={classes.root}>
 			{navbarItems.map((item, index) => (
@@ -74,14 +82,7 @@ const NavBar = props => {
 					{...item}
 				/>
 			))}
-			<li
-				className={classes.tab}
-				onClick={() => {
-					resetCache({ variables: { data: initialState } })
-					deleteToken()
-					handleOnChangePage('/sign-in')
-				}}
-			>
+			<li className={classes.tab} onClick={handleOnLogOut}>
 				Logout
 			</li>
 		</ul>

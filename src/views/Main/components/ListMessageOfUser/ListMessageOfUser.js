@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
 import { Box, Typography, makeStyles } from '@material-ui/core'
 
 import {
-	LargeTable,
 	DeleteDialog,
 	ModifyDialog,
+	LargeTable,
 	Loading,
 } from '@views_components'
 
-import { MESSAGE_LIST } from '../../query'
-import { DELETE_MESSAGE, UPDATE_MESSAGE } from '../../../Message/mutation'
-import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
+import { MESSAGE_LIST } from '@views/Message/gql/query'
+import { DELETE_MESSAGE, UPDATE_MESSAGE } from '@views/Message/gql/mutation'
+import { useDeleteMessage } from '@views/Message/gql/useMutations'
+
+import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -30,66 +32,43 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+const tableHeaders = [
+	{ headerLabel: 'DATE', xs: 5, headerVariable: 'lastModified' },
+	{ headerLabel: 'CONTENT', xs: 7, headerVariable: 'content' },
+]
+
 const ListMessageOfUser = props => {
 	const { selectedUser } = props
+	const classes = useStyles()
+
 	const [modifyDialogVisible, setModifyDialogVisible] = useState(false)
 	const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)
 	const [selectedMessage, setSelectedMessage] = useState('')
-	const [message, setMessage] = useState(false)
 
+	const messageListQueryVars = {
+		query: {
+			userId: selectedUser && selectedUser.id,
+			limit: PAGE_LIMIT,
+		},
+	}
 	const { data: dataMsg, fetchMore, networkStatus, loading } = useQuery(
 		MESSAGE_LIST,
 		{
-			variables: {
-				query: {
-					userId: selectedUser && selectedUser.id,
-					limit: 20,
-				},
-			},
+			variables: messageListQueryVars,
 			fetchPolicy: 'network-only',
 			notifyOnNetworkStatusChange: true,
 		}
 	)
 
-	useEffect(() => {
-		if (dataMsg && dataMsg.messageList) {
-			setMessage(dataMsg.messageList.items)
-		}
-	}, [dataMsg])
+	const [deleteMessage] = useDeleteMessage(
+		DELETE_MESSAGE,
+		MESSAGE_LIST,
+		messageListQueryVars
+	)
 
-	const [deleteMsg] = useMutation(DELETE_MESSAGE, {
-		onCompleted: data => {
-			const update = message.filter(item => item.id !== data.deleteMessage.id)
-			setMessage(update)
-		},
+	const [updateMessage] = useMutation(UPDATE_MESSAGE, {
 		onError: err => alert(err),
 	})
-
-	const [updateMsg] = useMutation(UPDATE_MESSAGE, {
-		onCompleted: ({ updateMessage }) => {
-			const update = message.map(item => {
-				if (item.id === updateMessage.id)
-					return { ...item, content: updateMessage.content }
-				return item
-			})
-			setMessage(update)
-		},
-		onError: err => alert(err),
-	})
-	const handleUpdateMessage = value => {
-		updateMsg({
-			variables: { message: { id: selectedMessage.id, content: value } },
-		})
-	}
-
-	const handleDeleteMessage = () => {
-		deleteMsg({ variables: { id: selectedMessage.id } })
-	}
-
-	const onSelectAMessage = dataRow => {
-		setSelectedMessage(dataRow)
-		setModifyDialogVisible(true)
-	}
 
 	const loadNextMessagePage = () =>
 		fetchMore({
@@ -97,7 +76,7 @@ const ListMessageOfUser = props => {
 				query: {
 					userId: selectedUser && selectedUser.id,
 					limit: 10,
-					skip: message.length,
+					skip: dataMsg.messageList.items.length,
 				},
 			},
 			updateQuery: (prev, { fetchMoreResult }) => {
@@ -117,78 +96,79 @@ const ListMessageOfUser = props => {
 			},
 		})
 
-	const columns = [
-		{ headerLabel: 'DATE', xs: 5, headerVariable: 'lastModified' },
-		{ headerLabel: 'CONTENT', xs: 7, headerVariable: 'content' },
-	]
+	const handleOnSelectMessage = message => {
+		setSelectedMessage(message)
+		setModifyDialogVisible(true)
+	}
+
+	const handleOnDeleteMessage = message => {
+		setDeleteDialogVisible(true)
+		setSelectedMessage(message)
+	}
+
+	const handleOnAgreeDeleteMessage = () => {
+		setDeleteDialogVisible(false)
+		deleteMessage({ variables: { id: selectedMessage.id } })
+	}
+
+	const handleOnAgreeModifyMessage = message => {
+		updateMessage({
+			variables: { message: { id: selectedMessage.id, content: message } },
+		})
+	}
 
 	const valueDefault =
-		message &&
-		message.find(item => item.id === selectedMessage.id) &&
-		message.find(item => item.id === selectedMessage.id).content
-
-	const classes = useStyles()
+		dataMsg &&
+		dataMsg.messageList.items.find(item => item.id === selectedMessage.id) &&
+		dataMsg.messageList.items.find(item => item.id === selectedMessage.id)
+			.content
 
 	return (
-		<React.Fragment>
-			{message ? (
-				<Box className={classes.root}>
-					{loading ? (
-						<Loading open={true} msg={'Loading...'} />
-					) : (
-						<React.Fragment>
-							<Typography variant='h5' className={classes.listtitle}>
-								Total {message.length}
-							</Typography>
-							<LargeTable
-								items={message}
-								onClickRow={onSelectAMessage}
-								selectedRow={selectedMessage}
-								columns={columns}
-								isIconClose={true}
-								handleDeleteRow={dataRow => {
-									setDeleteDialogVisible(true)
-									setSelectedMessage(dataRow)
-								}}
-								loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
-								loadNextPage={loadNextMessagePage}
-								hasNextPage={dataMsg.messageList && dataMsg.messageList.hasNext}
-							/>
-						</React.Fragment>
-					)}
-
-					<DeleteDialog
-						open={deleteDialogVisible}
-						onClose={() => {
-							setDeleteDialogVisible(false)
-						}}
-						onAgree={() => {
-							setDeleteDialogVisible(false)
-							handleDeleteMessage()
-						}}
-						onDisagree={() => {
-							setDeleteDialogVisible(false)
-						}}
-					/>
-					<ModifyDialog
-						open={modifyDialogVisible}
-						onClose={() => {
-							setModifyDialogVisible(false)
-						}}
-						valueDefault={valueDefault}
-						onAgree={value => {
-							setModifyDialogVisible(false)
-							handleUpdateMessage(value)
-						}}
-						onDisagree={() => {
-							setModifyDialogVisible(false)
-						}}
-					/>
-				</Box>
+		<Box className={classes.root}>
+			{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
+				<Loading open={true} msg={'Loading...'} />
 			) : (
-				<Loading open={true} msg={'Loading...'} style={{ width: '100%' }} />
+				<React.Fragment>
+					<Typography variant='h5' className={classes.listtitle}>
+						Total {dataMsg.messageList.items.length}
+					</Typography>
+
+					<LargeTable
+						items={dataMsg.messageList.items}
+						onClickRow={handleOnSelectMessage}
+						selectedRow={selectedMessage}
+						columns={tableHeaders}
+						isIconClose={true}
+						handleDeleteRow={handleOnDeleteMessage}
+						loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
+						loadNextPage={loadNextMessagePage}
+						hasNextPage={dataMsg.messageList && dataMsg.messageList.hasNext}
+					/>
+				</React.Fragment>
 			)}
-		</React.Fragment>
+
+			<DeleteDialog
+				open={deleteDialogVisible}
+				onClose={() => {
+					setDeleteDialogVisible(false)
+				}}
+				onAgree={handleOnAgreeDeleteMessage}
+				onDisagree={() => {
+					setDeleteDialogVisible(false)
+				}}
+			/>
+			<ModifyDialog
+				open={modifyDialogVisible}
+				onClose={() => {
+					setModifyDialogVisible(false)
+				}}
+				valueDefault={valueDefault}
+				onAgree={handleOnAgreeModifyMessage}
+				onDisagree={() => {
+					setModifyDialogVisible(false)
+				}}
+			/>
+		</Box>
 	)
 }
 

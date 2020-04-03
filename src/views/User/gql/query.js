@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { USER } from './fragments'
+import { USER } from './fragment'
 
 const FETCH_USER_LIST = gql`
 	query FetchUserList($query: UserListInput) {

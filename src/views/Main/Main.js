@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import clsx from 'clsx'
 import { Box, Grid, makeStyles, Typography } from '@material-ui/core'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import {
-	USER_LIST,
-	GET_USER_SEARCH_TEXT,
-	GET_SELECTED_USER_OF_MAIN,
-	SET_USER_SEARCH_TEXT,
-	SET_SELECTED_USER_OF_MAIN,
-} from './query'
 
-import { SearchBox, Loading, LargeTable } from '@views_components'
+import { FETCH_USER_LIST } from '@views/User/gql/query'
+
+import { Loading, LargeTable } from '@views_components'
+import { SearchUserBox } from '@views/User/components'
 import { ListMessageOfUser } from './components'
+
+import { GET_USER_SEARCH_TEXT, GET_SELECTED_USER_OF_MAIN } from './gql/query'
+import { SET_USER_SEARCH_TEXT, SET_SELECTED_USER_OF_MAIN } from './gql/mutation'
 
 import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
@@ -28,6 +27,7 @@ const useStyle = makeStyles(theme => ({
 		padding: theme.spacing(3),
 	},
 	container__searchbox__largetable: {
+		position: 'relative',
 		display: 'flex',
 		flexDirection: 'column',
 		border: `1px solid ${theme.palette.common.border}`,
@@ -51,7 +51,6 @@ const useStyle = makeStyles(theme => ({
 }))
 
 const Main = () => {
-	const [userList, setUserList] = useState({})
 	const classes = useStyle()
 
 	const {
@@ -62,19 +61,17 @@ const Main = () => {
 		data: { selectedUserOfMain },
 	} = useQuery(GET_SELECTED_USER_OF_MAIN)
 
-	const { loading, data, fetchMore, networkStatus } = useQuery(USER_LIST, {
-		variables: { query: { limit: 20 } },
-		notifyOnNetworkStatusChange: true,
-	})
+	const { loading, data, fetchMore, networkStatus } = useQuery(
+		FETCH_USER_LIST,
+		{
+			variables: { query: { limit: 20 } },
+			notifyOnNetworkStatusChange: true,
+			onError: err => alert(err),
+		}
+	)
 
 	const [setSearchValue] = useMutation(SET_USER_SEARCH_TEXT)
 	const [setSelectedUser] = useMutation(SET_SELECTED_USER_OF_MAIN)
-
-	useEffect(() => {
-		if (data && data.userList) {
-			setUserList(data.userList)
-		}
-	}, [data])
 
 	const handleChoseImage = object => {
 		setSelectedUser({
@@ -137,7 +134,7 @@ const Main = () => {
 			variables: {
 				query: {
 					limit: 10,
-					skip: userList.items.length,
+					skip: data.userList.items.length,
 					searchText: userSearchValueOfMain,
 				},
 			},
@@ -159,10 +156,6 @@ const Main = () => {
 
 	return (
 		<Box className={classes.root}>
-			<Loading
-				open={loading && networkStatus !== NETWORK_STATUS_FETCH_MORE}
-				msg={'Loading...'}
-			/>
 			<Grid container className={clsx(classes.fullheight, classes.container)}>
 				<Grid item xs={4}>
 					<Box
@@ -172,22 +165,26 @@ const Main = () => {
 						)}
 					>
 						<Box className={classes.searchbox}>
-							<SearchBox
-								width={390}
-								onSearch={handleSearch}
+							<SearchUserBox
+								width={328}
+								placeholder='search...'
+								type='search'
 								defaultValue={userSearchValueOfMain}
+								onSubmit={handleSearch}
 							/>
 						</Box>
-						{userList && userList.items && (
+						{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
+							<Loading open={true} msg={'Loading...'} />
+						) : (
 							<LargeTable
-								items={userList.items}
+								items={data.userList.items}
 								onClickRow={handleChoseImage}
 								selectedRow={selectedUserOfMain}
 								columns={columns}
 								loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 								isIconClose={false}
 								loadNextPage={loadNextUserPage}
-								hasNextPage={userList.hasNext}
+								hasNextPage={data.userList.hasNext}
 							/>
 						)}
 					</Box>
