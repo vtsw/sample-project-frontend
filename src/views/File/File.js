@@ -136,8 +136,8 @@ const File = () => {
 					<Grid item className={classes.item__imageviewer}>
 						{file.link ? (
 							<FetchImage
-								alt={file.filename}
-								src={file.link}
+								fileName={file.filename}
+								fileLink={file.link}
 								styles={classes.item__imageviewer__image}
 							/>
 						) : (

@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react'
 import { getToken } from '@src/shares/utils'
 
 const FetchImage = props => {
-	const { alt, src, styles } = props
+	const { fileName, fileLink, styles } = props
 	const [imageUrl, setImageUrl] = useState('')
 
 	const fetchAuthImage = async () => {
 		const token = getToken()
-		const res = await fetch(src, {
+		const res = await fetch(fileLink, {
 			headers: {
 				authorization: token ? `Bearer ${token}` : '',
 			},
@@ -21,11 +21,11 @@ const FetchImage = props => {
 
 	useEffect(() => {
 		fetchAuthImage()
-	}, [])
+	}, [fileLink])
 
 	return (
 		<React.Fragment>
-			<img src={imageUrl} alt={alt} className={styles} />
+			<img src={imageUrl} alt={fileName} className={styles} />
 		</React.Fragment>
 	)
 }
