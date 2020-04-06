@@ -77,11 +77,13 @@ const File = () => {
 	})
 
 	const { data } = useQuery(GET_USER_INFO, {
-		onCompleted: ({ me: { image } }) => {
-			// when reload page
-			// prevent GET_USER_INFO query use its latest cache when user log out
-			if (!file.filename) {
-				setUploadedFile({ variables: { file: image } })
+		onCompleted: data => {
+			if (data && data.me && data.me.image) {
+				// when reload page
+				// prevent GET_USER_INFO query use its latest cache when user log out
+				if (!file.filename) {
+					setUploadedFile({ variables: { file: data.me.image } })
+				}
 			}
 		},
 		onError: err => alert(err),

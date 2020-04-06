@@ -49,10 +49,10 @@ const NavBar = props => {
 	const [currentPage, setCurrentPage] = useState(location.pathname)
 	const [resetCache, { client }] = useMutation(RESET_CACHE, {
 		onCompleted: async () => {
-			await client.resetStore()
-			client.writeData({ data: initialState })
 			deleteToken()
 			handleOnChangePage('/sign-in')
+			await client.resetStore()
+			client.writeData({ data: initialState })
 		},
 		onError: err => alert(err),
 	})
