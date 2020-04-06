@@ -18,7 +18,7 @@ module.exports = {
 	testEnvironment: 'jsdom',
 
 	// The glob patterns Jest uses to detect test files
-	testMatch: ['**/__tests__/**/*.js?(x)', '**/?(*.)+(spec|test).js?(x)'],
+	testMatch: ['**/tests/**/*.js?(x)'],
 
 	// An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
 	testPathIgnorePatterns: ['\\\\node_modules\\\\', '/public/'],
@@ -33,7 +33,7 @@ module.exports = {
 	verbose: true,
 	moduleNameMapper: {
 		'^@src(.*)$': '<rootDir>/src$1',
-		'^@components(.*)$': '<rootDir>/src/components$1',
-		'^@pages(.*)$': '<rootDir>/src/pages$1',
+		'^@views_components(.*)$': '<rootDir>/src/views/components$1',
+		'^@views(.*)$': '<rootDir>/src/views$1',
 	},
 }

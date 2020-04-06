@@ -2,6 +2,7 @@ import { ApolloClient } from 'apollo-client'
 import { createUploadLink } from 'apollo-upload-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
+import fetch from 'isomorphic-fetch'
 
 import { getToken } from './shares/utils'
 import { APOLLO_SERVER } from './configs.local'
@@ -81,6 +82,7 @@ const resolvers = {
 const httpLink = createUploadLink({
 	uri: APOLLO_SERVER,
 	credentials: 'same-origin',
+	fetch,
 })
 
 const authLink = setContext((_, { headers }) => {
