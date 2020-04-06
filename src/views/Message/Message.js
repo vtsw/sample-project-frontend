@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
@@ -10,16 +10,16 @@ import {
 	DeleteDialog,
 	ModifyDialog,
 } from '@views_components'
-import { BoxCreate, BoxSearch } from './components'
+import { CreateMessageBox, SearchMessageBox } from './components'
+
 import {
 	MESSAGE_LIST,
 	GET_MESSAGE_SEARCH_TEXT,
-	GET_MESSAGE_CREATE_TEXT,
 	SET_MESSAGE_SEARCH_TEXT,
 	SET_MESSAGE_CREATE_TEXT,
-} from './query'
-import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './mutation'
-import { useCreateMessage, useDeleteMessage } from './useMutations'
+} from './gql/query'
+import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './gql/mutation'
+import { useCreateMessage, useDeleteMessage } from './gql/useMutations'
 
 import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
@@ -34,13 +34,24 @@ const useStyle = makeStyles(theme => ({
 		border: `1px solid ${theme.palette.common.border}`,
 		height: '100%',
 	},
+	item__actionbox: {
+		padding: theme.spacing(2),
+	},
+	divider: {
+		borderTop: `1px solid ${theme.palette.common.border}`,
+	},
 }))
+
+const tableHeaders = [
+	{ headerLabel: 'DATE', xs: 5, headerVariable: 'lastModified' },
+	{ headerLabel: 'CONTENT', xs: 7, headerVariable: 'content' },
+]
 
 const Message = () => {
 	const classes = useStyle()
 
-	const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
-	const [openConfirmModify, setOpenConfirmModify] = useState(false)
+	const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)
+	const [confirmDialogVisible, setConfirmDialogVisible] = useState(false)
 
 	const [selectedMessage, setSelectedMessage] = useState(false)
 
@@ -48,15 +59,12 @@ const Message = () => {
 		data: { messageSearchValueOfMessage },
 	} = useQuery(GET_MESSAGE_SEARCH_TEXT)
 
-	const {
-		data: { messageCreateValueOfMessage },
-	} = useQuery(GET_MESSAGE_CREATE_TEXT)
-
 	const { loading, error, data, fetchMore, networkStatus } = useQuery(
 		MESSAGE_LIST,
 		{
 			variables: { query: { limit: PAGE_LIMIT } },
 			notifyOnNetworkStatusChange: true,
+			onError: err => alert(err),
 		}
 	)
 
@@ -75,21 +83,12 @@ const Message = () => {
 		onError: err => alert(err),
 	})
 
-	const handleDeleteMessage = id => {
-		deleteMessage({ variables: { id } })
-	}
-
-	const handleUpdateMessage = value => {
-		updateMessage({
-			variables: { message: { id: selectedMessage.id, content: value } },
-		})
-	}
-
 	const handleCreateMessage = createVal => {
 		createMessage({
 			variables: { message: { content: createVal } },
-		})
-		setMessageCreateValueOfMain({ variables: { createValue: createVal } })
+		}).then(() =>
+			setMessageCreateValueOfMain({ variables: { createValue: '' } })
+		)
 	}
 
 	const handleSearch = value => {
@@ -97,80 +96,108 @@ const Message = () => {
 		if (value === messageSearchValueOfMessage) {
 			return false
 		} else {
+			try {
+				fetchMore({
+					variables: {
+						query: {
+							limit: PAGE_LIMIT,
+							searchText: value,
+						},
+					},
+					updateQuery: (prev, { fetchMoreResult }) => {
+						if (!fetchMoreResult) return prev
+						const fetchedMessageList = fetchMoreResult.messageList
+						let cacheMessageList = prev.messageList
+						const hasNext = fetchedMessageList.hasNext
+
+						return {
+							messageList: {
+								...cacheMessageList,
+								items: fetchedMessageList.items,
+								hasNext,
+							},
+						}
+					},
+				})
+			} catch (error) {
+				alert(error.message)
+			}
+		}
+	}
+
+	const loadNextMessagePage = () => {
+		try {
 			fetchMore({
 				variables: {
 					query: {
-						limit: 20,
-						searchText: value,
+						limit: PAGE_LIMIT,
+						skip: data.messageList.items.length,
+						searchText: messageSearchValueOfMessage,
 					},
 				},
 				updateQuery: (prev, { fetchMoreResult }) => {
 					if (!fetchMoreResult) return prev
 					const fetchedMessageList = fetchMoreResult.messageList
 					let cacheMessageList = prev.messageList
+
+					const items = [...cacheMessageList.items, ...fetchedMessageList.items]
 					const hasNext = fetchedMessageList.hasNext
 
 					return {
 						messageList: {
 							...cacheMessageList,
-							items: fetchedMessageList.items,
+							items,
 							hasNext,
 						},
 					}
 				},
 			})
+		} catch (error) {
+			alert(error.message)
 		}
 	}
 
-	const loadNextMessagePage = () => {
-		const startFetchTime = Date.now()
-		fetchMore({
-			variables: {
-				query: {
-					limit: 10,
-					skip: data.messageList.items.length,
-					searchText: messageSearchValueOfMessage,
-				},
-			},
-			updateQuery: (prev, { fetchMoreResult }) => {
-				if (!fetchMoreResult) return prev
-				const fetchedMessageList = fetchMoreResult.messageList
-				let cacheMessageList = prev.messageList
+	const handleOnSelectMessage = message => {
+		setConfirmDialogVisible(true)
+		setSelectedMessage(message)
+	}
 
-				const items = [...cacheMessageList.items, ...fetchedMessageList.items]
-				const hasNext = fetchedMessageList.hasNext
+	const handleOnDeleteMessage = message => {
+		setDeleteDialogVisible(true)
+		setSelectedMessage(message)
+	}
 
-				return {
-					messageList: {
-						...cacheMessageList,
-						items,
-						hasNext,
-					},
-				}
-			},
+	const handleOnAgreeDeleteMessage = () => {
+		setDeleteDialogVisible(false)
+		deleteMessage({ variables: { id: selectedMessage.id } })
+	}
+
+	const handleOnAgreeModifyMessage = message => {
+		updateMessage({
+			variables: { message: { id: selectedMessage.id, content: message } },
 		})
 	}
 
 	if (error) return <p>Error :(</p>
 
-	const columns = [
-		{ headerLabel: 'DATE', xs: 5, headerVariable: 'lastModified' },
-		{ headerLabel: 'CONTENT', xs: 7, headerVariable: 'content' },
-	]
-
 	return (
 		<Box className={classes.root}>
 			<Grid container direction='column' className={classes.container}>
-				<Grid item>
-					<BoxCreate
-						handleCreate={handleCreateMessage}
-						defaultValue={messageCreateValueOfMessage}
+				<Grid item className={classes.item__actionbox}>
+					<CreateMessageBox
+						width={328}
+						placeholder='text...'
+						onSubmit={handleCreateMessage}
 					/>
 				</Grid>
-				<Grid item>
-					<BoxSearch
-						handleSearch={handleSearch}
+				<div className={classes.divider} />
+				<Grid item className={classes.item__actionbox}>
+					<SearchMessageBox
+						width={328}
+						placeholder='search...'
+						type='search'
 						defaultValue={messageSearchValueOfMessage}
+						onSubmit={handleSearch}
 					/>
 				</Grid>
 
@@ -179,16 +206,10 @@ const Message = () => {
 				) : (
 					<LargeTable
 						items={data.messageList.items}
-						onClickRow={object => {
-							setOpenConfirmModify(true)
-							setSelectedMessage(object)
-						}}
-						handleDeleteRow={object => {
-							setOpenConfirmDelete(true)
-							setSelectedMessage(object)
-						}}
+						onClickRow={handleOnSelectMessage}
+						handleDeleteRow={handleOnDeleteMessage}
 						selectedRow={selectedMessage}
-						columns={columns}
+						columns={tableHeaders}
 						loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 						isIconClose={true}
 						loadNextPage={loadNextMessagePage}
@@ -198,30 +219,24 @@ const Message = () => {
 			</Grid>
 
 			<DeleteDialog
-				open={openConfirmDelete}
+				open={deleteDialogVisible}
 				onClose={() => {
-					setOpenConfirmDelete(false)
+					setDeleteDialogVisible(false)
 				}}
-				onAgree={() => {
-					setOpenConfirmDelete(false)
-					handleDeleteMessage(selectedMessage.id)
-				}}
+				onAgree={handleOnAgreeDeleteMessage}
 				onDisagree={() => {
-					setOpenConfirmDelete(false)
+					setDeleteDialogVisible(false)
 				}}
 			/>
 			<ModifyDialog
-				open={openConfirmModify}
+				open={confirmDialogVisible}
 				onClose={() => {
-					setOpenConfirmModify(false)
+					setConfirmDialogVisible(false)
 				}}
 				valueDefault={selectedMessage.content}
-				onAgree={value => {
-					setOpenConfirmModify(false)
-					handleUpdateMessage(value)
-				}}
+				onAgree={handleOnAgreeModifyMessage}
 				onDisagree={() => {
-					setOpenConfirmModify(false)
+					setConfirmDialogVisible(false)
 				}}
 			/>
 		</Box>

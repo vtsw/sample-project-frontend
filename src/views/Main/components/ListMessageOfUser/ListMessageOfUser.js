@@ -11,9 +11,9 @@ import {
 	Loading,
 } from '@views_components'
 
-import { MESSAGE_LIST } from '../../query'
-import { DELETE_MESSAGE, UPDATE_MESSAGE } from '../../../Message/mutation'
-import { useDeleteMessage } from '@views/Message/useMutations'
+import { MESSAGE_LIST } from '@views/Message/gql/query'
+import { DELETE_MESSAGE, UPDATE_MESSAGE } from '@views/Message/gql/mutation'
+import { useDeleteMessage } from '@views/Message/gql/useMutations'
 
 import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
@@ -32,8 +32,15 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+const tableHeaders = [
+	{ headerLabel: 'DATE', xs: 5, headerVariable: 'lastModified' },
+	{ headerLabel: 'CONTENT', xs: 7, headerVariable: 'content' },
+]
+
 const ListMessageOfUser = props => {
 	const { selectedUser } = props
+	const classes = useStyles()
+
 	const [modifyDialogVisible, setModifyDialogVisible] = useState(false)
 	const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)
 	const [selectedMessage, setSelectedMessage] = useState('')
@@ -59,62 +66,68 @@ const ListMessageOfUser = props => {
 		messageListQueryVars
 	)
 
-	const [updateMsg] = useMutation(UPDATE_MESSAGE, {
+	const [updateMessage] = useMutation(UPDATE_MESSAGE, {
 		onError: err => alert(err),
 	})
-	const handleUpdateMessage = value => {
-		updateMsg({
-			variables: { message: { id: selectedMessage.id, content: value } },
-		})
+
+	const loadNextMessagePage = () => {
+		try {
+			fetchMore({
+				variables: {
+					query: {
+						userId: selectedUser && selectedUser.id,
+						limit: 10,
+						skip: dataMsg.messageList.items.length,
+					},
+				},
+				updateQuery: (prev, { fetchMoreResult }) => {
+					if (!fetchMoreResult) return prev
+					const fetchedMessageList = fetchMoreResult.messageList
+					let cacheMessageList = prev.messageList
+					const items = [...cacheMessageList.items, ...fetchedMessageList.items]
+					const hasNext = fetchedMessageList.hasNext
+
+					return {
+						messageList: {
+							...cacheMessageList,
+							items,
+							hasNext,
+						},
+					}
+				},
+			})
+		} catch (error) {
+			alert(error.message)
+		}
 	}
 
-	const handleDeleteMessage = () => {
-		deleteMessage({ variables: { id: selectedMessage.id } })
-	}
-
-	const onSelectAMessage = dataRow => {
-		setSelectedMessage(dataRow)
+	const handleOnSelectMessage = message => {
+		setSelectedMessage(message)
 		setModifyDialogVisible(true)
 	}
 
-	const loadNextMessagePage = () =>
-		fetchMore({
-			variables: {
-				query: {
-					userId: selectedUser && selectedUser.id,
-					limit: 10,
-					skip: dataMsg.messageList.items.length,
-				},
-			},
-			updateQuery: (prev, { fetchMoreResult }) => {
-				if (!fetchMoreResult) return prev
-				const fetchedMessageList = fetchMoreResult.messageList
-				let cacheMessageList = prev.messageList
-				const items = [...cacheMessageList.items, ...fetchedMessageList.items]
-				const hasNext = fetchedMessageList.hasNext
+	const handleOnDeleteMessage = message => {
+		setDeleteDialogVisible(true)
+		setSelectedMessage(message)
+	}
 
-				return {
-					messageList: {
-						...cacheMessageList,
-						items,
-						hasNext,
-					},
-				}
-			},
-		})
+	const handleOnAgreeDeleteMessage = () => {
+		deleteMessage({ variables: { id: selectedMessage.id } }).then(() =>
+			setDeleteDialogVisible(false)
+		)
+	}
 
-	const TABLE_HEADER = [
-		{ headerLabel: 'DATE', xs: 5, headerVariable: 'lastModified' },
-		{ headerLabel: 'CONTENT', xs: 7, headerVariable: 'content' },
-	]
+	const handleOnAgreeModifyMessage = message => {
+		updateMessage({
+			variables: { message: { id: selectedMessage.id, content: message } },
+		}).then(() => setModifyDialogVisible(false))
+	}
 
 	const valueDefault =
 		dataMsg &&
 		dataMsg.messageList.items.find(item => item.id === selectedMessage.id) &&
 		dataMsg.messageList.items.find(item => item.id === selectedMessage.id)
 			.content
-
-	const classes = useStyles()
 
 	return (
 		<Box className={classes.root}>
@@ -128,14 +141,11 @@ const ListMessageOfUser = props => {
 
 					<LargeTable
 						items={dataMsg.messageList.items}
-						onClickRow={onSelectAMessage}
+						onClickRow={handleOnSelectMessage}
 						selectedRow={selectedMessage}
-						columns={TABLE_HEADER}
+						columns={tableHeaders}
 						isIconClose={true}
-						handleDeleteRow={dataRow => {
-							setDeleteDialogVisible(true)
-							setSelectedMessage(dataRow)
-						}}
+						handleDeleteRow={handleOnDeleteMessage}
 						loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 						loadNextPage={loadNextMessagePage}
 						hasNextPage={dataMsg.messageList && dataMsg.messageList.hasNext}
@@ -148,10 +158,7 @@ const ListMessageOfUser = props => {
 				onClose={() => {
 					setDeleteDialogVisible(false)
 				}}
-				onAgree={() => {
-					setDeleteDialogVisible(false)
-					handleDeleteMessage()
-				}}
+				onAgree={handleOnAgreeDeleteMessage}
 				onDisagree={() => {
 					setDeleteDialogVisible(false)
 				}}
@@ -162,10 +169,7 @@ const ListMessageOfUser = props => {
 					setModifyDialogVisible(false)
 				}}
 				valueDefault={valueDefault}
-				onAgree={value => {
-					setModifyDialogVisible(false)
-					handleUpdateMessage(value)
-				}}
+				onAgree={handleOnAgreeModifyMessage}
 				onDisagree={() => {
 					setModifyDialogVisible(false)
 				}}

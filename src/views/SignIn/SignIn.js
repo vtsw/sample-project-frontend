@@ -1,19 +1,13 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
+
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { setToken } from '@src/shares/utils'
-
-const SIGN_IN = gql`
-	mutation SignIn($user: LoginUserInput!) {
-		login(user: $user) {
-			token
-		}
-	}
-`
+import { SIGN_IN } from './gql/query'
+import { SET_UPLOADED_FILE } from '@views/File/gql/mutation'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -59,49 +53,26 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-// const theme = createMuiTheme({
-// // 	palette: {
-// // 		primary: {
-// // 			main: teal[600],
-// // 		},
-// // 	},
-// // })
-
 const SignIn = props => {
 	const { history } = props
+	const classes = useStyles()
+
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
-	const [signIn] = useMutation(SIGN_IN, {
-		// onCompleted: ({
-		// 	data: {
-		// 		login: { token },
-		// 	},
-		// }) => {
-		// 	setToken(token)
-		// 	history.push('/')
-		// },
-		onError: err => {
-			alert(err)
-		},
+	const [setUploadedFile] = useMutation(SET_UPLOADED_FILE, {
+		onError: err => alert(err),
 	})
 
-	const classes = useStyles()
-
-	const onSignIn = () => {
-		signIn({ variables: { user: { email, password } } })
-			.then(
-				({
-					data: {
-						login: { token },
-					},
-				}) => {
-					setToken(token)
-					history.push('/')
-				}
-			)
-			.catch(error => console.error(error))
-	}
+	const [signIn] = useMutation(SIGN_IN, {
+		onCompleted: ({ login: { token, user } }) => {
+			setUploadedFile({ variables: { file: user.image } })
+			setToken(token)
+			history.push('/')
+		},
+		onError: err => alert(err),
+		fetchPolicy: 'no-cache',
+	})
 
 	return (
 		<Box className={classes.root}>
@@ -137,7 +108,7 @@ const SignIn = props => {
 						size='large'
 						fullWidth
 						className={classes.button}
-						onClick={onSignIn}
+						onClick={() => signIn({ variables: { user: { email, password } } })}
 					>
 						Sign in
 					</Button>

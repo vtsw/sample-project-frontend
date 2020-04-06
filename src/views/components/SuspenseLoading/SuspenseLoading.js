@@ -3,7 +3,7 @@ import React from 'react'
 import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import Loading from '../Loading'
+import { Loading } from '@views_components'
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -17,6 +17,7 @@ const useStyles = makeStyles(() => ({
 
 const SuspenseLoading = () => {
 	const classes = useStyles()
+
 	return (
 		<Box className={classes.root}>
 			<Loading open={true} msg={'Loading...'} />

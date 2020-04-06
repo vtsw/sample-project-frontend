@@ -2,18 +2,17 @@ import React from 'react'
 import clsx from 'clsx'
 import { Box, Grid, makeStyles, Typography } from '@material-ui/core'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import {
-	USER_LIST,
-	GET_USER_SEARCH_TEXT,
-	GET_SELECTED_USER_OF_MAIN,
-	SET_USER_SEARCH_TEXT,
-	SET_SELECTED_USER_OF_MAIN,
-} from './query'
 
-import { SearchBox, Loading, LargeTable } from '@views_components'
+import { FETCH_USER_LIST } from '@views/User/gql/query'
+
+import { Loading, LargeTable } from '@views_components'
+import { SearchUserBox } from '@views/User/components'
 import { ListMessageOfUser } from './components'
 
-import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
+import { GET_USER_SEARCH_TEXT, GET_SELECTED_USER_OF_MAIN } from './gql/query'
+import { SET_USER_SEARCH_TEXT, SET_SELECTED_USER_OF_MAIN } from './gql/mutation'
+
+import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -62,10 +61,14 @@ const Main = () => {
 		data: { selectedUserOfMain },
 	} = useQuery(GET_SELECTED_USER_OF_MAIN)
 
-	const { loading, data, fetchMore, networkStatus } = useQuery(USER_LIST, {
-		variables: { query: { limit: 20 } },
-		notifyOnNetworkStatusChange: true,
-	})
+	const { loading, data, fetchMore, networkStatus } = useQuery(
+		FETCH_USER_LIST,
+		{
+			variables: { query: { limit: PAGE_LIMIT } },
+			notifyOnNetworkStatusChange: true,
+			onError: err => alert(err),
+		}
+	)
 
 	const [setSearchValue] = useMutation(SET_USER_SEARCH_TEXT)
 	const [setSelectedUser] = useMutation(SET_SELECTED_USER_OF_MAIN)
@@ -91,28 +94,32 @@ const Main = () => {
 		if (inputVal === userSearchValueOfMain) {
 			return false
 		} else {
-			fetchMore({
-				variables: {
-					query: { searchText: inputVal, limit: 10 },
-				},
-				updateQuery: (prev, { fetchMoreResult }) => {
-					if (!fetchMoreResult) {
-						return prev
-					} else {
-						const fetchedUserList = fetchMoreResult.userList
-						let cacheUserList = prev.userList
-						const hasNext = fetchedUserList.hasNext
+			try {
+				fetchMore({
+					variables: {
+						query: { searchText: inputVal, limit: PAGE_LIMIT },
+					},
+					updateQuery: (prev, { fetchMoreResult }) => {
+						if (!fetchMoreResult) {
+							return prev
+						} else {
+							const fetchedUserList = fetchMoreResult.userList
+							let cacheUserList = prev.userList
+							const hasNext = fetchedUserList.hasNext
 
-						return {
-							userList: {
-								...cacheUserList,
-								items: fetchedUserList.items,
-								hasNext,
-							},
+							return {
+								userList: {
+									...cacheUserList,
+									items: fetchedUserList.items,
+									hasNext,
+								},
+							}
 						}
-					}
-				},
-			})
+					},
+				})
+			} catch (error) {
+				alert(error.message)
+			}
 			setSelectedUser({
 				variables: {
 					selectedUser: {
@@ -126,30 +133,35 @@ const Main = () => {
 		}
 	}
 
-	const loadNextUserPage = () =>
-		fetchMore({
-			variables: {
-				query: {
-					limit: 10,
-					skip: data.userList.items.length,
-					searchText: userSearchValueOfMain,
-				},
-			},
-			updateQuery: (prev, { fetchMoreResult }) => {
-				if (!fetchMoreResult) return prev
-				const fetchedUserList = fetchMoreResult.userList
-				let cacheUserList = prev.userList
-				const items = [...cacheUserList.items, ...fetchedUserList.items]
-				const hasNext = fetchedUserList.hasNext
-				return {
-					userList: {
-						...cacheUserList,
-						items,
-						hasNext,
+	const loadNextUserPage = () => {
+		try {
+			fetchMore({
+				variables: {
+					query: {
+						limit: PAGE_LIMIT,
+						skip: data.userList.items.length,
+						searchText: userSearchValueOfMain,
 					},
-				}
-			},
-		})
+				},
+				updateQuery: (prev, { fetchMoreResult }) => {
+					if (!fetchMoreResult) return prev
+					const fetchedUserList = fetchMoreResult.userList
+					let cacheUserList = prev.userList
+					const items = [...cacheUserList.items, ...fetchedUserList.items]
+					const hasNext = fetchedUserList.hasNext
+					return {
+						userList: {
+							...cacheUserList,
+							items,
+							hasNext,
+						},
+					}
+				},
+			})
+		} catch (error) {
+			alert(error.message)
+		}
+	}
 
 	return (
 		<Box className={classes.root}>
@@ -162,10 +174,12 @@ const Main = () => {
 						)}
 					>
 						<Box className={classes.searchbox}>
-							<SearchBox
-								width={390}
-								onSearch={handleSearch}
+							<SearchUserBox
+								width={328}
+								placeholder='search...'
+								type='search'
 								defaultValue={userSearchValueOfMain}
+								onSubmit={handleSearch}
 							/>
 						</Box>
 						{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
@@ -184,7 +198,7 @@ const Main = () => {
 						)}
 					</Box>
 				</Grid>
-				<Grid item xs={8}>
+				<Grid item xs={8} className={classes.item__messagelist}>
 					{selectedUserOfMain && selectedUserOfMain.id ? (
 						<ListMessageOfUser selectedUser={selectedUserOfMain} />
 					) : (
