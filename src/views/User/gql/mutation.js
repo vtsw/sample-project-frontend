@@ -28,12 +28,6 @@ const DELETE_USER = gql`
 	${USER}
 `
 
-const GET_USER_SEARCH_TEXT = gql`
-	query UserSearchValue {
-		userSearchValue @client
-	}
-`
-
 const SET_USER_SEARCH_TEXT = gql`
 	mutation SetUserSearchValue($searchValue: String!) {
 		setUserSearchValue(searchValue: $searchValue) @client
@@ -53,7 +47,6 @@ export {
 	CREATE_USER,
 	UPDATE_USER,
 	DELETE_USER,
-	GET_USER_SEARCH_TEXT,
 	SET_USER_SEARCH_TEXT,
 	SET_SELECTED_USER,
 }

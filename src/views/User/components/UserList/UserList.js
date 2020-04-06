@@ -97,27 +97,32 @@ const UserList = props => {
 		})
 	}
 
-	const loadNextUserPage = () =>
-		fetchMore({
-			variables: {
-				query: { skip: data.userList.items.length },
-			},
-			updateQuery: (prev, { fetchMoreResult }) => {
-				if (!fetchMoreResult) return prev
-				const fetchedUserList = fetchMoreResult.userList
-				let cacheUserList = prev.userList
-				const items = [...cacheUserList.items, ...fetchedUserList.items]
-				const hasNext = fetchedUserList.hasNext
+	const loadNextUserPage = () => {
+		try {
+			fetchMore({
+				variables: {
+					query: { skip: data.userList.items.length },
+				},
+				updateQuery: (prev, { fetchMoreResult }) => {
+					if (!fetchMoreResult) return prev
+					const fetchedUserList = fetchMoreResult.userList
+					let cacheUserList = prev.userList
+					const items = [...cacheUserList.items, ...fetchedUserList.items]
+					const hasNext = fetchedUserList.hasNext
 
-				return {
-					userList: {
-						...cacheUserList,
-						items,
-						hasNext,
-					},
-				}
-			},
-		})
+					return {
+						userList: {
+							...cacheUserList,
+							items,
+							hasNext,
+						},
+					}
+				},
+			})
+		} catch (error) {
+			alert(error.message)
+		}
+	}
 
 	const handleOnSelectUser = selectedUser => {
 		setSelectedUser({

@@ -5,7 +5,7 @@ import { ApolloProvider } from '@apollo/react-hooks'
 import { ThemeProvider } from '@material-ui/core/styles'
 
 import muiTheme from './theme/muiTheme'
-import client from './client'
+import { client } from './client'
 
 import App from './App'
 

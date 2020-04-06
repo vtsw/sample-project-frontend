@@ -96,57 +96,65 @@ const Message = () => {
 		if (value === messageSearchValueOfMessage) {
 			return false
 		} else {
+			try {
+				fetchMore({
+					variables: {
+						query: {
+							limit: PAGE_LIMIT,
+							searchText: value,
+						},
+					},
+					updateQuery: (prev, { fetchMoreResult }) => {
+						if (!fetchMoreResult) return prev
+						const fetchedMessageList = fetchMoreResult.messageList
+						let cacheMessageList = prev.messageList
+						const hasNext = fetchedMessageList.hasNext
+
+						return {
+							messageList: {
+								...cacheMessageList,
+								items: fetchedMessageList.items,
+								hasNext,
+							},
+						}
+					},
+				})
+			} catch (error) {
+				alert(error.message)
+			}
+		}
+	}
+
+	const loadNextMessagePage = () => {
+		try {
 			fetchMore({
 				variables: {
 					query: {
-						limit: 20,
-						searchText: value,
+						limit: PAGE_LIMIT,
+						skip: data.messageList.items.length,
+						searchText: messageSearchValueOfMessage,
 					},
 				},
 				updateQuery: (prev, { fetchMoreResult }) => {
 					if (!fetchMoreResult) return prev
 					const fetchedMessageList = fetchMoreResult.messageList
 					let cacheMessageList = prev.messageList
+
+					const items = [...cacheMessageList.items, ...fetchedMessageList.items]
 					const hasNext = fetchedMessageList.hasNext
 
 					return {
 						messageList: {
 							...cacheMessageList,
-							items: fetchedMessageList.items,
+							items,
 							hasNext,
 						},
 					}
 				},
 			})
+		} catch (error) {
+			alert(error.message)
 		}
-	}
-
-	const loadNextMessagePage = () => {
-		fetchMore({
-			variables: {
-				query: {
-					limit: 10,
-					skip: data.messageList.items.length,
-					searchText: messageSearchValueOfMessage,
-				},
-			},
-			updateQuery: (prev, { fetchMoreResult }) => {
-				if (!fetchMoreResult) return prev
-				const fetchedMessageList = fetchMoreResult.messageList
-				let cacheMessageList = prev.messageList
-
-				const items = [...cacheMessageList.items, ...fetchedMessageList.items]
-				const hasNext = fetchedMessageList.hasNext
-
-				return {
-					messageList: {
-						...cacheMessageList,
-						items,
-						hasNext,
-					},
-				}
-			},
-		})
 	}
 
 	const handleOnSelectMessage = message => {

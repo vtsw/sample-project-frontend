@@ -12,7 +12,7 @@ import { ListMessageOfUser } from './components'
 import { GET_USER_SEARCH_TEXT, GET_SELECTED_USER_OF_MAIN } from './gql/query'
 import { SET_USER_SEARCH_TEXT, SET_SELECTED_USER_OF_MAIN } from './gql/mutation'
 
-import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
+import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -64,7 +64,7 @@ const Main = () => {
 	const { loading, data, fetchMore, networkStatus } = useQuery(
 		FETCH_USER_LIST,
 		{
-			variables: { query: { limit: 20 } },
+			variables: { query: { limit: PAGE_LIMIT } },
 			notifyOnNetworkStatusChange: true,
 			onError: err => alert(err),
 		}
@@ -94,28 +94,32 @@ const Main = () => {
 		if (inputVal === userSearchValueOfMain) {
 			return false
 		} else {
-			fetchMore({
-				variables: {
-					query: { searchText: inputVal, limit: 10 },
-				},
-				updateQuery: (prev, { fetchMoreResult }) => {
-					if (!fetchMoreResult) {
-						return prev
-					} else {
-						const fetchedUserList = fetchMoreResult.userList
-						let cacheUserList = prev.userList
-						const hasNext = fetchedUserList.hasNext
+			try {
+				fetchMore({
+					variables: {
+						query: { searchText: inputVal, limit: PAGE_LIMIT },
+					},
+					updateQuery: (prev, { fetchMoreResult }) => {
+						if (!fetchMoreResult) {
+							return prev
+						} else {
+							const fetchedUserList = fetchMoreResult.userList
+							let cacheUserList = prev.userList
+							const hasNext = fetchedUserList.hasNext
 
-						return {
-							userList: {
-								...cacheUserList,
-								items: fetchedUserList.items,
-								hasNext,
-							},
+							return {
+								userList: {
+									...cacheUserList,
+									items: fetchedUserList.items,
+									hasNext,
+								},
+							}
 						}
-					}
-				},
-			})
+					},
+				})
+			} catch (error) {
+				alert(error.message)
+			}
 			setSelectedUser({
 				variables: {
 					selectedUser: {
@@ -129,30 +133,35 @@ const Main = () => {
 		}
 	}
 
-	const loadNextUserPage = () =>
-		fetchMore({
-			variables: {
-				query: {
-					limit: 10,
-					skip: data.userList.items.length,
-					searchText: userSearchValueOfMain,
-				},
-			},
-			updateQuery: (prev, { fetchMoreResult }) => {
-				if (!fetchMoreResult) return prev
-				const fetchedUserList = fetchMoreResult.userList
-				let cacheUserList = prev.userList
-				const items = [...cacheUserList.items, ...fetchedUserList.items]
-				const hasNext = fetchedUserList.hasNext
-				return {
-					userList: {
-						...cacheUserList,
-						items,
-						hasNext,
+	const loadNextUserPage = () => {
+		try {
+			fetchMore({
+				variables: {
+					query: {
+						limit: PAGE_LIMIT,
+						skip: data.userList.items.length,
+						searchText: userSearchValueOfMain,
 					},
-				}
-			},
-		})
+				},
+				updateQuery: (prev, { fetchMoreResult }) => {
+					if (!fetchMoreResult) return prev
+					const fetchedUserList = fetchMoreResult.userList
+					let cacheUserList = prev.userList
+					const items = [...cacheUserList.items, ...fetchedUserList.items]
+					const hasNext = fetchedUserList.hasNext
+					return {
+						userList: {
+							...cacheUserList,
+							items,
+							hasNext,
+						},
+					}
+				},
+			})
+		} catch (error) {
+			alert(error.message)
+		}
+	}
 
 	return (
 		<Box className={classes.root}>
@@ -189,7 +198,7 @@ const Main = () => {
 						)}
 					</Box>
 				</Grid>
-				<Grid item xs={8}>
+				<Grid item xs={8} className={classes.item__messagelist}>
 					{selectedUserOfMain && selectedUserOfMain.id ? (
 						<ListMessageOfUser selectedUser={selectedUserOfMain} />
 					) : (

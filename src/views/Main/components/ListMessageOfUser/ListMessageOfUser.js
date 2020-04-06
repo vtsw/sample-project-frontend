@@ -70,31 +70,36 @@ const ListMessageOfUser = props => {
 		onError: err => alert(err),
 	})
 
-	const loadNextMessagePage = () =>
-		fetchMore({
-			variables: {
-				query: {
-					userId: selectedUser && selectedUser.id,
-					limit: 10,
-					skip: dataMsg.messageList.items.length,
-				},
-			},
-			updateQuery: (prev, { fetchMoreResult }) => {
-				if (!fetchMoreResult) return prev
-				const fetchedMessageList = fetchMoreResult.messageList
-				let cacheMessageList = prev.messageList
-				const items = [...cacheMessageList.items, ...fetchedMessageList.items]
-				const hasNext = fetchedMessageList.hasNext
-
-				return {
-					messageList: {
-						...cacheMessageList,
-						items,
-						hasNext,
+	const loadNextMessagePage = () => {
+		try {
+			fetchMore({
+				variables: {
+					query: {
+						userId: selectedUser && selectedUser.id,
+						limit: 10,
+						skip: dataMsg.messageList.items.length,
 					},
-				}
-			},
-		})
+				},
+				updateQuery: (prev, { fetchMoreResult }) => {
+					if (!fetchMoreResult) return prev
+					const fetchedMessageList = fetchMoreResult.messageList
+					let cacheMessageList = prev.messageList
+					const items = [...cacheMessageList.items, ...fetchedMessageList.items]
+					const hasNext = fetchedMessageList.hasNext
+
+					return {
+						messageList: {
+							...cacheMessageList,
+							items,
+							hasNext,
+						},
+					}
+				},
+			})
+		} catch (error) {
+			alert(error.message)
+		}
+	}
 
 	const handleOnSelectMessage = message => {
 		setSelectedMessage(message)
@@ -107,14 +112,15 @@ const ListMessageOfUser = props => {
 	}
 
 	const handleOnAgreeDeleteMessage = () => {
-		setDeleteDialogVisible(false)
-		deleteMessage({ variables: { id: selectedMessage.id } })
+		deleteMessage({ variables: { id: selectedMessage.id } }).then(() =>
+			setDeleteDialogVisible(false)
+		)
 	}
 
 	const handleOnAgreeModifyMessage = message => {
 		updateMessage({
 			variables: { message: { id: selectedMessage.id, content: message } },
-		})
+		}).then(() => setModifyDialogVisible(false))
 	}
 
 	const valueDefault =
