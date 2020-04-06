@@ -7,8 +7,8 @@ import { makeStyles } from '@material-ui/styles'
 
 import { FetchImage } from './components'
 
-import { GET_USER_INFO, GET_FILE } from './queries'
-import { UPLOAD_FILE, SET_UPLOADED_FILE } from './mutations'
+import { GET_USER_INFO, GET_FILE } from './gql/query'
+import { UPLOAD_FILE, SET_UPLOADED_FILE } from './gql/mutation'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -69,6 +69,7 @@ const useStyle = makeStyles(theme => ({
 }))
 
 const File = () => {
+	const classes = useStyle()
 	const {
 		data: { file },
 	} = useQuery(GET_FILE)
@@ -78,12 +79,10 @@ const File = () => {
 
 	const { data } = useQuery(GET_USER_INFO, {
 		onCompleted: data => {
-			if (data && data.me && data.me.image) {
+			if (data && data.me && data.me.image && !file.filename) {
 				// when reload page
 				// prevent GET_USER_INFO query use its latest cache when user log out
-				if (!file.filename) {
-					setUploadedFile({ variables: { file: data.me.image } })
-				}
+				setUploadedFile({ variables: { file: data.me.image } })
 			}
 		},
 		onError: err => alert(err),
@@ -101,8 +100,6 @@ const File = () => {
 
 		uploadFile({ variables: { file } })
 	}
-
-	const classes = useStyle()
 
 	return (
 		<Box className={classes.root}>

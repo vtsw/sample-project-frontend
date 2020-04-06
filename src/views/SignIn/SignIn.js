@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { setToken } from '@src/shares/utils'
 import { SIGN_IN } from './gql/query'
-import { SET_UPLOADED_FILE } from '@views/File/mutations'
+import { SET_UPLOADED_FILE } from '@views/File/gql/mutation'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -71,7 +71,7 @@ const SignIn = props => {
 			history.push('/')
 		},
 		onError: err => alert(err),
-		fetchPolicy: 'no-cache',
+		fetchPolicy: 'network-only',
 	})
 
 	return (

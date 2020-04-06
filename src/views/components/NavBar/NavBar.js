@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { useMutation } from '@apollo/react-hooks'
-import { RESET_CACHE } from './mutations'
+import { RESET_CACHE } from './gql/mutation'
 
 import NavBarItem from './NavBarItem'
 
@@ -46,6 +46,8 @@ const navbarItems = [
 
 const NavBar = props => {
 	const { location, history } = props
+	const classes = useStyles()
+
 	const [currentPage, setCurrentPage] = useState(location.pathname)
 	const [resetCache, { client }] = useMutation(RESET_CACHE, {
 		onCompleted: async () => {
@@ -69,8 +71,6 @@ const NavBar = props => {
 	const handleOnLogOut = () => {
 		resetCache({ variables: { data: initialState } })
 	}
-
-	const classes = useStyles()
 
 	return (
 		<ul className={classes.root}>

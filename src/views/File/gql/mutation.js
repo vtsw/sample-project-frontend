@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { FILE } from './fragments'
+import { FILE } from './fragment'
 
 const UPLOAD_FILE = gql`
 	mutation UploadFile($file: Upload!) {
