@@ -5,7 +5,7 @@ import { USER } from './fragment'
 const GET_SELECTED_USER_OF_MAIN = gql`
 	query {
 		selectedUserOfMain @client {
-			...User
+			...UserOfMain
 		}
 	}
 	${USER}

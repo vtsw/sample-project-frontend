@@ -12,6 +12,7 @@ const Message = lazy(() => import('@views/Message'))
 const User = lazy(() => import('@views/User'))
 const SignIn = lazy(() => import('@views/SignIn'))
 const SignUp = lazy(() => import('@views/SignUp'))
+const File = lazy(() => import('@views/File'))
 
 const App = props => {
 	const { history, location } = props
@@ -25,6 +26,11 @@ const App = props => {
 
 		if (!authToken && location.pathname !== '/sign-in') {
 			history.push('/sign-in')
+			return
+		}
+
+		if (authToken && location.pathname === '/sign-in') {
+			history.push('/')
 			return
 		}
 	})
@@ -43,11 +49,11 @@ const App = props => {
 					<Route path='/user' component={User} />
 					<Route path='/sign-in' component={SignIn} />
 					<Route path='/sign-up' component={SignUp} />
+					<Route path='/file' component={File} />
 				</Switch>
 			</Suspense>
 		</Grid>
 	)
-	// }
 }
 
 export default withRouter(App)

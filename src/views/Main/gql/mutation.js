@@ -5,7 +5,7 @@ import { USER } from './fragment'
 const SET_SELECTED_USER_OF_MAIN = gql`
 	mutation SetSelectedUserOfMain($selectedUser: User!) {
 		setSelectedUserOfMain(selectedUser: $selectedUser) @client {
-			...User
+			...UserOfMain
 		}
 	}
 	${USER}

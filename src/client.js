@@ -1,5 +1,5 @@
 import { ApolloClient } from 'apollo-client'
-import { createHttpLink } from 'apollo-link-http'
+import { createUploadLink } from 'apollo-upload-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
 
@@ -26,7 +26,16 @@ const resolvers = {
 			})
 			return selectedUser
 		},
-
+		setUploadedFile: (_, { file }, { cache }) => {
+			if (file) {
+				cache.writeData({
+					data: {
+						file,
+					},
+				})
+			}
+			return file
+		},
 		setUserSearchValueOfMain: (_, { searchValue }, { cache }) => {
 			cache.writeData({
 				data: {
@@ -60,10 +69,16 @@ const resolvers = {
 			})
 			return createValue
 		},
+		resetCache: (_, { data }, { cache }) => {
+			cache.writeData({
+				data,
+			})
+			return data
+		},
 	},
 }
 
-const httpLink = createHttpLink({
+const httpLink = createUploadLink({
 	uri: APOLLO_SERVER,
 	credentials: 'same-origin',
 })
@@ -87,25 +102,32 @@ const client = new ApolloClient({
 	resolvers,
 })
 
-cache.writeData({
-	data: {
-		userSearchValue: '',
-		messageCreateValueOfMessage: '',
-		messageSearchValueOfMessage: '',
-		userSearchValueOfMain: '',
-		selectedUser: {
-			id: '',
-			name: '',
-			email: '',
-			__typename: 'User',
-		},
-		selectedUserOfMain: {
-			id: '',
-			name: '',
-			email: '',
-			__typename: 'UserOfMain',
-		},
+const initialState = {
+	userSearchValue: '',
+	messageCreateValueOfMessage: '',
+	messageSearchValueOfMessage: '',
+	userSearchValueOfMain: '',
+	selectedUser: {
+		id: '',
+		name: '',
+		email: '',
+		__typename: 'User',
 	},
+	file: {
+		filename: '',
+		link: '',
+		__typename: 'File',
+	},
+	selectedUserOfMain: {
+		id: '',
+		name: '',
+		email: '',
+		__typename: 'UserOfMain',
+	},
+}
+
+cache.writeData({
+	data: initialState,
 })
 
-export default client
+export { client, initialState }
