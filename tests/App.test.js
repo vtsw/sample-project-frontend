@@ -1,38 +1,32 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+
+import { createMockClient } from 'mock-apollo-client'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { ApolloProvider } from '@apollo/react-hooks'
+
 import { Router, Route } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
-import { render, fireEvent } from '@testing-library/react'
-import '@testing-library/jest-dom/extend-expect'
-
-import { MockedProvider } from '@apollo/react-testing'
+import { render } from '@testing-library/react'
 
 import { App } from '../src/App'
-import { RESET_CACHE } from '@views_components/NavBar/gql/mutation'
-import { initialState } from '@src/client'
 
-const mocks = [
-	{
-		request: {
-			query: RESET_CACHE,
-			variables: { data: initialState },
-		},
-		result: { data: initialState },
-	},
-]
+import { initialState, resolvers } from '@src/client'
 
 describe('<App/>', () => {
-	it('should render without crashing 1', () => {
+	const cache = new InMemoryCache()
+	cache.writeData({
+		data: { ...initialState, messageCreateValueOfMessage: '' },
+	})
+	const mockClient = createMockClient({ cache, resolvers })
+	it('should match snapshot', () => {
 		const history = createMemoryHistory()
-		const { container, getByText } = render(
+		const { container } = render(
 			<Router history={history}>
-				<MockedProvider mocks={mocks}>
+				<ApolloProvider client={mockClient}>
 					<Route component={App} />
-				</MockedProvider>
+				</ApolloProvider>
 			</Router>
 		)
-		// console.log(getByText(/Sign in/i))
-		expect(history.location.pathname).toBe('/sign-in')
-		// ReactDOM.render(<App />, container)
+		expect(container.firstChild).toMatchSnapshot()
 	})
 })

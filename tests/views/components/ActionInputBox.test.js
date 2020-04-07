@@ -4,7 +4,7 @@ import { render, fireEvent, cleanup } from '@testing-library/react'
 import { ActionInputBox } from '@views_components'
 
 describe('ActionInputBox', () => {
-	let mockProps = {
+	const mockProps = {
 		type: 'search',
 		placeholder: 'search...',
 		defaultValue: '',
@@ -17,7 +17,7 @@ describe('ActionInputBox', () => {
 		cleanup()
 	})
 
-	it('should matches snapshot', () => {
+	it('should matche snapshot', () => {
 		const props = { ...mockProps }
 		const { container } = render(<ActionInputBox {...props} />)
 
