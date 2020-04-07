@@ -7,7 +7,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { CreateMessageBox } from '@views/Message/components'
 
 import { initialState, resolvers } from '@src/client'
-import { renderWithApolloClient } from '@tests/utils/shared'
+import { renderWithApolloClient } from '@tests/shares/utils'
 
 describe('CreateMessageBox', () => {
 	const mockProps = {
@@ -35,7 +35,7 @@ describe('CreateMessageBox', () => {
 			mockClient
 		)
 
-		expect(container.firstChild).toMatchSnapshot()
+		expect(container).toMatchSnapshot()
 	})
 
 	it('should render a input with "text..." placeholder and a button with "Save" title', () => {

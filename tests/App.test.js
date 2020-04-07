@@ -27,6 +27,6 @@ describe('<App/>', () => {
 				</ApolloProvider>
 			</Router>
 		)
-		expect(container.firstChild).toMatchSnapshot()
+		expect(container).toMatchSnapshot()
 	})
 })

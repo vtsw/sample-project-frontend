@@ -46,7 +46,6 @@
     "apollo-upload-client": "^12.1.0",
     "clsx": "^1.1.0",
     "core-js": "2",
-    "es6-promise": "^4.2.8",
     "graphql-tag": "^2.10.3",
     "history": "^4.10.1",
     "isomorphic-fetch": "^2.2.1",

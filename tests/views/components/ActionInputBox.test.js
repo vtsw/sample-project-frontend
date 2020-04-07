@@ -17,11 +17,11 @@ describe('ActionInputBox', () => {
 		cleanup()
 	})
 
-	it('should matche snapshot', () => {
+	it('should match snapshot', () => {
 		const props = { ...mockProps }
 		const { container } = render(<ActionInputBox {...props} />)
 
-		expect(container.firstChild).toMatchSnapshot()
+		expect(container).toMatchSnapshot()
 	})
 
 	it('should render 1 input and 1 button', () => {
