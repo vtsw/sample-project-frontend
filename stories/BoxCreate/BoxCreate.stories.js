@@ -13,7 +13,7 @@ export default {
 export const basic = () => {
 	return (
 		<ThemeProvider theme={muiTheme}>
-			<BoxCreate handleCreate={action('handleCreate')} />
+			<BoxCreate onSubmit={action('onSubmit')} />
 		</ThemeProvider>
 	)
 }
