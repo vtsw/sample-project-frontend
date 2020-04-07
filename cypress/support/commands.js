@@ -12,7 +12,7 @@ Cypress.Commands.add('signIn', (email, password) => {
 
 Cypress.Commands.add(
 	'registerUser',
-	(email, name, password, confirmPassword) => {
+	({ email, name, password, confirmPassword }) => {
 		cy.get('[data-cy=email-input')
 			.type(email)
 			.get('[data-cy=name-input')
