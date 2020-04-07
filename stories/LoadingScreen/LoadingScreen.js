@@ -1,6 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core'
 import PropTypes from 'prop-types'
+import { Loading } from '../../src/views/components'
 
 const useStyles = makeStyles({
 	root: {
@@ -16,9 +17,7 @@ const useStyles = makeStyles({
 })
 const LoadingScreen = props => {
 	const { open, msg } = props
-	const classes = useStyles()
-
-	return open && <div className={classes.root}>{msg}</div>
+	return <Loading open={open} msg={msg} />
 }
 
 export default LoadingScreen

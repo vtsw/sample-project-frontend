@@ -124,6 +124,7 @@ const initialState = {
 		email: '',
 		__typename: 'UserOfMain',
 	},
+	__typename: 'Data',
 }
 
 cache.writeData({
