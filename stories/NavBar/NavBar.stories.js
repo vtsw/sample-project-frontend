@@ -9,21 +9,6 @@ export default {
 	includeStories: [],
 }
 
-const propsDetail = [
-	{
-		propsName: 'location',
-		propsType: 'object',
-		defaultValue: 'required',
-		description: 'it is props of withRouter() passes to navbar',
-	},
-	{
-		propsName: 'history',
-		propsType: 'required',
-		defaultValue: `required`,
-		description: 'it is props of withRouter() passes to navbar',
-	},
-]
-
 export const Navbar = () => {
 	return (
 		<ThemeProvider theme={muiTheme}>

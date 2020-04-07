@@ -1,54 +1,35 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import {
-	Button,
-	Grid,
-	makeStyles,
-	TextField,
-	Typography,
-} from '@material-ui/core'
+import { Grid, makeStyles } from '@material-ui/core'
+import ActionInputBox from '../../src/views/components/ActionInputBox'
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		padding: theme.spacing(2),
 	},
-	textfield: {
-		width: 328,
-	},
-	savebutton: {
-		marginLeft: theme.spacing(1),
-		width: 56,
-		textTransform: 'none',
-	},
 }))
 
 const BoxCreate = props => {
-	const { handleCreate, defaultValue } = props
-	const [createVal, setCreateVal] = useState(defaultValue)
+	const {
+		type = 'create',
+		placeholder = '',
+		defaultValue = '',
+		width = 328,
+		onSubmit,
+		onChange = () => {},
+	} = props
+
 	const classes = useStyles()
-	const handleCreateTextChange = text => {}
 	return (
 		<Grid container alignItems='stretch' className={classes.root}>
-			<TextField
-				variant='outlined'
-				label='Text'
-				placeholder='text...'
-				type='text'
-				onChange={e => {
-					setCreateVal(e.target.value)
-					handleCreateTextChange(e.target.value)
-				}}
-				className={classes.textField}
+			<ActionInputBox
+				type={type}
+				placeholder={placeholder}
 				defaultValue={defaultValue}
+				width={width}
+				onSubmit={onSubmit}
+				onChange={onChange}
 			/>
-			<Button
-				variant='contained'
-				color='primary'
-				className={classes.savebutton}
-				onClick={() => handleCreate(createVal)}
-			>
-				Save
-			</Button>
 		</Grid>
 	)
 }

@@ -17,7 +17,7 @@ export const basic = () => {
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<div>
 					<button
-						onClick={e => {
+						onClick={() => {
 							setOpenPopup(true)
 							action('Open popup')()
 						}}

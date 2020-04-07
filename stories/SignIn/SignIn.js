@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const SignIn = props => {
+const SignIn = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 

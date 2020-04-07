@@ -2,9 +2,13 @@ import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 
+import { useMutation } from '@apollo/react-hooks'
+import { RESET_CACHE } from './gql/mutation'
+
 import NavBarItem from './NavBarItem'
 
 import { deleteToken } from '@src/shares/utils'
+import { initialState } from '@src/client'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -37,6 +41,7 @@ const navbarItems = [
 	{ page: 'main', pathname: '/' },
 	{ page: 'user', pathname: '/user' },
 	{ page: 'message', pathname: '/message' },
+	{ page: 'file', pathname: '/file' },
 ]
 
 const NavBar = props => {
@@ -44,6 +49,15 @@ const NavBar = props => {
 	const classes = useStyles()
 
 	const [currentPage, setCurrentPage] = useState(location.pathname)
+	const [resetCache, { client }] = useMutation(RESET_CACHE, {
+		onCompleted: async () => {
+			deleteToken()
+			handleOnChangePage('/sign-in')
+			await client.resetStore()
+			client.writeData({ data: initialState })
+		},
+		onError: err => alert(err),
+	})
 
 	const handleOnChangePage = page => {
 		setCurrentPage(page)
@@ -53,6 +67,11 @@ const NavBar = props => {
 	const setActiveTab = pathname => {
 		return currentPage === pathname ? classes.active : ''
 	}
+
+	const handleOnLogOut = () => {
+		resetCache({ variables: { data: initialState } })
+	}
+
 	return (
 		<ul className={classes.root}>
 			{navbarItems.map((item, index) => (
@@ -63,13 +82,7 @@ const NavBar = props => {
 					{...item}
 				/>
 			))}
-			<li
-				className={classes.tab}
-				onClick={() => {
-					deleteToken()
-					handleOnChangePage('/sign-in')
-				}}
-			>
+			<li className={classes.tab} onClick={handleOnLogOut}>
 				Logout
 			</li>
 		</ul>

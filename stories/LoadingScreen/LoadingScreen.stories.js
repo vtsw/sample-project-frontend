@@ -6,21 +6,6 @@ export default {
 	includeStories: [],
 }
 
-const propsDetail = [
-	{
-		propsName: 'loading',
-		propsType: 'Boolean',
-		defaultValue: 'false',
-		description: 'A status check when it show loading screen',
-	},
-	{
-		propsName: 'msg',
-		propsType: 'String',
-		defaultValue: `''`,
-		description: 'Text show in loading screen',
-	},
-]
-
 export const basic = () => {
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column' }}>
