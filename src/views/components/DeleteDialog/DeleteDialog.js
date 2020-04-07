@@ -9,6 +9,7 @@ import {
 	Slide,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -82,3 +83,13 @@ const DeleteDialog = props => {
 }
 
 export default DeleteDialog
+
+DeleteDialog.propTypes = {
+	open: PropTypes.bool.isRequired,
+	onClose: PropTypes.func.isRequired,
+	onAgree: PropTypes.func.isRequired,
+	onDisagree: PropTypes.func.isRequired,
+}
+DeleteDialog.defaultProps = {
+	open: false,
+}

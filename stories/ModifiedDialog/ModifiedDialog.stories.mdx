@@ -1,0 +1,55 @@
+import { Meta, Story, Preview,Props } from '@storybook/addon-docs/blocks';
+import ModifiedDialog from '../../src/views/components/ModifyDialog/ModifyDialog'
+
+import * as stories from './ModifiedDialog.stories.js';
+
+<Meta title="Component Api|ModifiedDialog" />
+
+# ModifiedDialog
+With `MDX` we can define a story for `Modified Dialog` right in the middle of our
+markdown documentation.
+
+
+
+
+  <Story name="Basic">
+    {stories.basic()}
+  </Story>
+
+
+```jsx 
+	import { ModifyDialog } from '@views_components'
+
+
+	...
+	const [modifyDialogVisible, setModifyDialogVisible] = useState(false)
+	...
+
+	const handleAgree = () => {
+		// do something when hit button agree
+	}
+
+	return (
+		...
+		<ModifyDialog
+			open={modifyDialogVisible}
+			onClose={() => {
+				setModifyDialogVisible(false)
+			}}
+			// valueDefault={valueDefault}
+			onAgree={() => {
+				setModifyDialogVisible(false)
+				handleAgree()
+			}}
+			onDisagree={() => {
+				setModifyDialogVisible(false)
+			}}
+		/>
+		...
+  )
+```
+
+# PropTypes
+
+<Props of={ModifiedDialog}/>
+

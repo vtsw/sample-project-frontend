@@ -8,7 +8,7 @@ export default {
 	includeStories: [],
 }
 
-export const LargeTable = () => {
+export const basic = () => {
 	return (
 		<ThemeProvider theme={muiTheme}>
 			<Largetable />

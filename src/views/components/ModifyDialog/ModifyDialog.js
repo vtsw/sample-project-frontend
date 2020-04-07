@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
+import PropTypes from 'prop-types'
 import {
 	Dialog,
 	DialogTitle,
@@ -106,3 +106,15 @@ const ModifyDialog = props => {
 }
 
 export default ModifyDialog
+
+ModifyDialog.propTypes = {
+	open: PropTypes.bool.isRequired,
+	onClose: PropTypes.func.isRequired,
+	onAgree: PropTypes.func.isRequired,
+	onDisagree: PropTypes.func.isRequired,
+	valueDefault: PropTypes.string,
+}
+ModifyDialog.defaultProps = {
+	open: false,
+	valueDefault: '',
+}
