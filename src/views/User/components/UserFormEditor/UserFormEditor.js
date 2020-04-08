@@ -111,23 +111,25 @@ const UserFormEditor = () => {
 		})
 	}
 
+	const handleOnCancel = () => {
+		setSelectedUser({
+			variables: {
+				selectedUser: {
+					id: '',
+					name: '',
+					email: '',
+					__typename: 'User',
+				},
+			},
+		})
+	}
+
 	return (
 		<React.Fragment>
 			<FormEditor
 				selectedUser={selectedUser}
 				onSubmit={onSubmit}
-				onCancel={() =>
-					setSelectedUser({
-						variables: {
-							selectedUser: {
-								id: '',
-								name: '',
-								email: '',
-								__typename: 'User',
-							},
-						},
-					})
-				}
+				onCancel={handleOnCancel}
 				onDelete={() => setOpenConfirmDeleteDialog(true)}
 			/>
 			<DeleteDialog
