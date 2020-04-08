@@ -71,7 +71,7 @@ const SignIn = props => {
 			history.push('/')
 		},
 		onError: err => alert(err),
-		fetchPolicy: 'network-only',
+		fetchPolicy: 'no-cache',
 	})
 
 	return (
