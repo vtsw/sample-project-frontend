@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent, cleanup } from '@testing-library/react'
+import { act, cleanup, fireEvent, render } from '@testing-library/react'
 
 import { ActionInputBox } from '@views_components'
 
@@ -60,5 +60,17 @@ describe('ActionInputBox', () => {
 		fireEvent.change(input, { target: { value: 'Hello world' } })
 
 		expect(input.value).toBe('Hello world')
+	})
+
+	it('should enable input when focus on input', async () => {
+		const props = { ...mockProps }
+		const { getByPlaceholderText } = render(<ActionInputBox {...props} />)
+		const input = getByPlaceholderText(props.placeholder)
+
+		act(() => {
+			input.focus()
+		})
+
+		expect(input).toBe(document.activeElement)
 	})
 })

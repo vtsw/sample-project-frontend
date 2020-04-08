@@ -12,7 +12,7 @@ module.exports = {
 	moduleFileExtensions: ['js', 'json', 'jsx'],
 
 	// The paths to modules that run some code to configure or set up the testing environment before each test
-	setupFiles: ['<rootDir>/enzyme.config.js'],
+	setupFiles: ['<rootDir>/enzyme.config.js', '<rootDir>/setupJest.js'],
 
 	// The test environment that will be used for testing
 	testEnvironment: 'jsdom',

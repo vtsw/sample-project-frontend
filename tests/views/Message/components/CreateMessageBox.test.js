@@ -1,5 +1,5 @@
 import React from 'react'
-import { fireEvent, cleanup, act } from '@testing-library/react'
+import { act, cleanup, fireEvent } from '@testing-library/react'
 
 import { createMockClient } from 'mock-apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -78,5 +78,20 @@ describe('CreateMessageBox', () => {
 		})
 
 		expect(input.value).toBe('Hello world')
+	})
+
+	it('should enable input when focus on input', async () => {
+		const props = { ...mockProps }
+		const { getByPlaceholderText } = renderWithApolloClient(
+			<CreateMessageBox {...props} />,
+			mockClient
+		)
+		const input = getByPlaceholderText(props.placeholder)
+
+		act(() => {
+			input.focus()
+		})
+
+		expect(input).toBe(document.activeElement)
 	})
 })

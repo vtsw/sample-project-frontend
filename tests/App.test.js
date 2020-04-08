@@ -15,9 +15,13 @@ import { initialState, resolvers } from '@src/client'
 describe('<App/>', () => {
 	const cache = new InMemoryCache()
 	cache.writeData({
-		data: { ...initialState, messageCreateValueOfMessage: '' },
+		data: initialState,
 	})
-	const mockClient = createMockClient({ cache, resolvers })
+	const mockClient = createMockClient({
+		cache,
+		resolvers,
+	})
+
 	it('should match snapshot', () => {
 		const history = createMemoryHistory()
 		const { container } = render(

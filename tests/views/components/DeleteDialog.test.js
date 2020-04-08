@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, render, fireEvent, cleanup } from '@testing-library/react'
+import { render, fireEvent, cleanup } from '@testing-library/react'
 
 import { DeleteDialog } from '@views_components'
 
