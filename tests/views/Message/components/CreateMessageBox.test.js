@@ -29,9 +29,8 @@ describe('CreateMessageBox', () => {
 	})
 
 	it('should match snapshot', () => {
-		const props = { ...mockProps }
 		const { container } = renderWithApolloClient(
-			<CreateMessageBox {...props} />,
+			<CreateMessageBox {...mockProps} />,
 			mockClient
 		)
 
@@ -39,35 +38,32 @@ describe('CreateMessageBox', () => {
 	})
 
 	it('should render a input with "text..." placeholder and a button with "Save" title', () => {
-		let props = { ...mockProps }
 		const { getByPlaceholderText, getByText } = renderWithApolloClient(
-			<CreateMessageBox {...props} />,
+			<CreateMessageBox {...mockProps} />,
 			mockClient
 		)
 
-		expect(getByPlaceholderText(props.placeholder)).toBeTruthy()
+		expect(getByPlaceholderText(mockProps.placeholder)).toBeTruthy()
 		expect(getByText('Save')).toBeTruthy()
 	})
 
 	it('should call correctly onSubmit function when click "Save" button', () => {
-		const props = { ...mockProps }
 		const { getByText } = renderWithApolloClient(
-			<CreateMessageBox {...props} />,
+			<CreateMessageBox {...mockProps} />,
 			mockClient
 		)
 
 		fireEvent.click(getByText('Save'))
 
-		expect(props.onSubmit).toHaveBeenCalled()
+		expect(mockProps.onSubmit).toHaveBeenCalled()
 	})
 
 	it('should change value of input', async () => {
-		const props = { ...mockProps }
 		const { getByPlaceholderText } = renderWithApolloClient(
-			<CreateMessageBox {...props} />,
+			<CreateMessageBox {...mockProps} />,
 			mockClient
 		)
-		const input = getByPlaceholderText(props.placeholder)
+		const input = getByPlaceholderText(mockProps.placeholder)
 
 		expect(input.value).toBe('')
 
@@ -81,12 +77,11 @@ describe('CreateMessageBox', () => {
 	})
 
 	it('should enable input when focus on input', async () => {
-		const props = { ...mockProps }
 		const { getByPlaceholderText } = renderWithApolloClient(
-			<CreateMessageBox {...props} />,
+			<CreateMessageBox {...mockProps} />,
 			mockClient
 		)
-		const input = getByPlaceholderText(props.placeholder)
+		const input = getByPlaceholderText(mockProps.placeholder)
 
 		act(() => {
 			input.focus()

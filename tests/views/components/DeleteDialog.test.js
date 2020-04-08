@@ -16,8 +16,7 @@ describe('DeleteDialog', () => {
 	})
 
 	it('should match snapshot', () => {
-		const props = { ...mockProps }
-		const { container } = render(<DeleteDialog {...props} />)
+		const { container } = render(<DeleteDialog {...mockProps} />)
 
 		expect(container).toMatchSnapshot()
 	})

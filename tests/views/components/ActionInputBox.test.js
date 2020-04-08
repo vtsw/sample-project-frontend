@@ -18,8 +18,7 @@ describe('ActionInputBox', () => {
 	})
 
 	it('should match snapshot', () => {
-		const props = { ...mockProps }
-		const { container } = render(<ActionInputBox {...props} />)
+		const { container } = render(<ActionInputBox {...mockProps} />)
 
 		expect(container).toMatchSnapshot()
 	})
@@ -42,18 +41,16 @@ describe('ActionInputBox', () => {
 	})
 
 	it('should call correctly onSubmit function when click button', () => {
-		const props = { ...mockProps }
-		const { getByTestId } = render(<ActionInputBox {...props} />)
+		const { getByTestId } = render(<ActionInputBox {...mockProps} />)
 
 		fireEvent.click(getByTestId('search-icon'))
 
-		expect(props.onSubmit).toHaveBeenCalled()
+		expect(mockProps.onSubmit).toHaveBeenCalled()
 	})
 
 	it('should change value of input', () => {
-		const props = { ...mockProps }
-		const { getByPlaceholderText } = render(<ActionInputBox {...props} />)
-		const input = getByPlaceholderText(props.placeholder)
+		const { getByPlaceholderText } = render(<ActionInputBox {...mockProps} />)
+		const input = getByPlaceholderText(mockProps.placeholder)
 
 		expect(input.value).toBe('')
 
@@ -63,9 +60,8 @@ describe('ActionInputBox', () => {
 	})
 
 	it('should enable input when focus on input', async () => {
-		const props = { ...mockProps }
-		const { getByPlaceholderText } = render(<ActionInputBox {...props} />)
-		const input = getByPlaceholderText(props.placeholder)
+		const { getByPlaceholderText } = render(<ActionInputBox {...mockProps} />)
+		const input = getByPlaceholderText(mockProps.placeholder)
 
 		act(() => {
 			input.focus()
