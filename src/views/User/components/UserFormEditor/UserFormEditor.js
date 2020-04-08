@@ -32,7 +32,6 @@ const UserFormEditor = () => {
 	const {
 		data: { selectedUser },
 	} = useQuery(GET_SELECTED_USER)
-
 	const [setSelectedUser] = useMutation(SET_SELECTED_USER, {
 		onError: err => alert(err),
 	})
@@ -95,7 +94,7 @@ const UserFormEditor = () => {
 	}
 
 	const onSubmit = ({ id, email, name, password }) => {
-		if (selectedUser.id && selectedUser.name && selectedUser.email) {
+		if (selectedUser.id) {
 			updateUserInfo({ id, email, name, password })
 		} else {
 			createUser({ email, name, password })

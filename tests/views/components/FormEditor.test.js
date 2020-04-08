@@ -1,65 +1,86 @@
 import React from 'react'
 
-import { createMockClient } from 'mock-apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { ApolloProvider } from '@apollo/react-hooks'
-
 import { render, fireEvent, cleanup } from '@testing-library/react'
 
 import { FormEditor } from '@views_components'
 
-import { renderWithRouter } from '@tests/shares/utils'
-
-import { initialState, resolvers } from '@src/client'
-
 describe('FormEditor', () => {
-	const cache = new InMemoryCache()
-	cache.writeData({
-		data: initialState,
-	})
-	const mockClient = createMockClient({
-		cache,
-		resolvers,
-	})
+	const mockProps = {
+		selectedUser: {},
+		onSubmit: jest.fn(),
+		onCancel: jest.fn(),
+		onDelete: jest.fn(),
+	}
 
 	afterEach(() => {
 		cleanup()
 	})
 
 	it('should match snapshot', () => {
-		const { container } = renderWithRouter(
-			<ApolloProvider client={mockClient}>
-				<FormEditor />
-			</ApolloProvider>
-		)
+		const { container } = render(<FormEditor {...mockProps} />)
 
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should render Sign up form without crashing', () => {
-		const { getByText, getByTestId } = renderWithRouter(
-			<ApolloProvider client={mockClient}>
-				<FormEditor />
-			</ApolloProvider>
-		)
+	describe('SignUp', () => {
+		afterEach(() => {
+			cleanup()
+		})
 
-		expect(getByText('Sign up')).toBeTruthy()
-		expect(getByTestId('formeditor-email-input')).toBeTruthy()
-		expect(getByTestId('formeditor-name-input')).toBeTruthy()
-		expect(getByTestId('formeditor-password-input')).toBeTruthy()
-		expect(getByTestId('formeditor-password-confirm-input')).toBeTruthy()
-		expect(getByTestId('formeditor-submit-button')).toBeTruthy()
-		expect(getByTestId('formeditor-cancel-button')).toBeTruthy()
+		it('should render without crashing', () => {
+			const { getByText, getByTestId } = render(<FormEditor {...mockProps} />)
+
+			expect(getByText('Sign up')).toBeTruthy()
+			expect(getByTestId('formeditor-email-input')).toBeTruthy()
+			expect(getByTestId('formeditor-name-input')).toBeTruthy()
+			expect(getByTestId('formeditor-password-input')).toBeTruthy()
+			expect(getByTestId('formeditor-password-confirm-input')).toBeTruthy()
+			expect(getByTestId('formeditor-submit-button')).toBeTruthy()
+			expect(getByTestId('formeditor-cancel-button')).toBeTruthy()
+		})
+
+		it('should call correctly onSubmit function when click Modify button', () => {
+			const { getByTestId } = render(<FormEditor {...mockProps} />)
+
+			const submitButton = getByTestId('formeditor-submit-button')
+
+			fireEvent.click(submitButton)
+
+			expect(mockProps.onSubmit).toHaveBeenCalled()
+		})
 	})
 
-	// it('should call correctly onAgree function when click Yes button', () => {
-	// 	const props = { ...mockProps, open: true }
-	// 	const { getByText } = render(<FormEditor {...props} />)
+	describe('Modify', () => {
+		const props = {
+			...mockProps,
+			selectedUser: { id: '123', email: 'steve1@gmail.com', name: 'steve1' },
+		}
 
-	// 	const yesButton = getByText('Yes')
+		afterEach(() => {
+			cleanup()
+		})
 
-	// 	fireEvent.click(yesButton)
+		it('should render without crashing', () => {
+			const { getByText, getByTestId } = render(<FormEditor {...props} />)
 
-	// 	expect(props.onAgree).toHaveBeenCalled()
-	// })
+			expect(getByText('Modify')).toBeTruthy()
+			expect(getByTestId('formeditor-email-input')).toBeTruthy()
+			expect(getByTestId('formeditor-name-input')).toBeTruthy()
+			expect(getByTestId('formeditor-password-input')).toBeTruthy()
+			expect(getByTestId('formeditor-password-confirm-input')).toBeTruthy()
+			expect(getByTestId('formeditor-submit-button')).toBeTruthy()
+			expect(getByTestId('formeditor-delete-button')).toBeTruthy()
+			expect(getByTestId('formeditor-cancel-button')).toBeTruthy()
+		})
+
+		it('should call correctly onSubmit function when click Register button', () => {
+			const { getByTestId } = render(<FormEditor {...props} />)
+
+			const submitButton = getByTestId('formeditor-submit-button')
+
+			fireEvent.click(submitButton)
+
+			expect(props.onSubmit).toHaveBeenCalled()
+		})
+	})
 })
