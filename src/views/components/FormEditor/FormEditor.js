@@ -1,28 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 
-import { useQuery, useMutation } from '@apollo/react-hooks'
-
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-
-import { DeleteDialog } from '@views_components'
-
-import {
-	FETCH_USER_LIST,
-	GET_USER_SEARCH_TEXT,
-	GET_SELECTED_USER,
-} from '@views/User/gql/query'
-import {
-	CREATE_USER,
-	UPDATE_USER,
-	DELETE_USER,
-	SET_SELECTED_USER,
-} from '@views/User/gql/mutation'
-import { useCreateUser, useDeleteUser } from './useMutations'
-
-import { getToken } from '@src/shares/utils'
-import { PAGE_LIMIT } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -66,69 +46,21 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const FormEditor = props => {
-	const { history } = props
+	const { selectedUser, onSubmit, onCancel, onDelete } = props
 	const classes = useStyles()
-	const authToken = getToken()
 
-	const {
-		data: { userSearchValue },
-	} = useQuery(GET_USER_SEARCH_TEXT)
-	const {
-		data: { selectedUser },
-	} = useQuery(GET_SELECTED_USER)
-
-	const [setSelectedUser] = useMutation(SET_SELECTED_USER, {
-		onError: err => alert(err),
-	})
-	const [updateUser] = useMutation(UPDATE_USER, {
-		onError: err => alert(err),
-	})
-	const [createNewUser] = useCreateUser(
-		CREATE_USER,
-		FETCH_USER_LIST,
-		{
-			query: { searchText: userSearchValue, limit: PAGE_LIMIT },
-		},
-		authToken
-	)
-	const [deleteUser] = useDeleteUser(DELETE_USER, FETCH_USER_LIST, {
-		query: { searchText: userSearchValue, limit: PAGE_LIMIT },
-	})
-
-	const [userId, setUserId] = useState('')
 	const [email, setEmail] = useState('')
 	const [name, setName] = useState('')
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
-	const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false)
 
 	useEffect(() => {
-		setUserId(selectedUser.id)
 		setEmail(selectedUser.email)
 		setName(selectedUser.name)
 	}, [selectedUser])
 
 	const hasSelectedUser =
 		selectedUser.id && selectedUser.name && selectedUser.email
-
-	const onCancel = () => {
-		if (!authToken) {
-			history.push('/sign-in')
-			return
-		}
-		setSelectedUser({
-			variables: {
-				selectedUser: {
-					id: userId + '_reset',
-					name: '',
-					email: '',
-					__typename: 'User',
-				},
-			},
-		})
-		setPassword('')
-		setConfirmPassword('')
-	}
 
 	const validateForm = () => {
 		const emailRegex = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/gm
@@ -140,69 +72,6 @@ const FormEditor = props => {
 		return true
 	}
 
-	const shouldUseRefetchQueries = () => {
-		return userSearchValue
-			? [
-					{
-						query: FETCH_USER_LIST,
-						variables: {
-							query: { searchText: userSearchValue, limit: PAGE_LIMIT },
-						},
-					},
-			  ]
-			: []
-	}
-
-	const updateUserInfo = () => {
-		let userInfo = { id: userId, email, name }
-		if (password) userInfo = { ...userInfo, password }
-		updateUser({
-			variables: { user: userInfo },
-		}).then(() => {
-			onCancel()
-		})
-	}
-
-	const createAUser = () => {
-		createNewUser({
-			variables: { user: { email, name, password } },
-			refetchQueries: shouldUseRefetchQueries(),
-			awaitRefetchQueries: !!userSearchValue,
-		}).then(() => {
-			onCancel()
-		})
-	}
-
-	const onSubmit = () => {
-		const isValid = validateForm()
-
-		if (isValid) {
-			if (selectedUser.id && selectedUser.name && selectedUser.email) {
-				updateUserInfo()
-			} else {
-				createAUser()
-			}
-		} else {
-			alert('Not valid!!!!')
-		}
-	}
-
-	const onAgreeDeleteAnUser = () => {
-		deleteUser({ variables: { id: userId } }).then(() => {
-			setSelectedUser({
-				variables: {
-					selectedUser: {
-						id: '',
-						name: '',
-						email: '',
-						__typename: 'User',
-					},
-				},
-			})
-			setOpenConfirmDeleteDialog(false)
-		})
-	}
-
 	return (
 		<Box className={classes.root}>
 			<Typography variant='h5' className={classes.formtitle}>
@@ -210,7 +79,7 @@ const FormEditor = props => {
 			</Typography>
 			<div className={classes.formcontent}>
 				<TextField
-					data-testid='email-input'
+					data-testid='formeditor-email-input'
 					value={email}
 					label='EMAIL'
 					variant='outlined'
@@ -219,7 +88,7 @@ const FormEditor = props => {
 					onChange={e => setEmail(e.target.value.toLowerCase())}
 				/>
 				<TextField
-					data-testid='name-input'
+					data-testid='formeditor-name-input'
 					value={name}
 					label='NAME'
 					variant='outlined'
@@ -229,7 +98,7 @@ const FormEditor = props => {
 					onChange={e => setName(e.target.value)}
 				/>
 				<TextField
-					data-testid='password-input'
+					data-testid='formeditor-password-input'
 					value={password}
 					label='PASSWORD'
 					variant='outlined'
@@ -239,7 +108,7 @@ const FormEditor = props => {
 					onChange={e => setPassword(e.target.value)}
 				/>
 				<TextField
-					data-testid='confirm-password-input'
+					data-testid='formeditor-password-confirm-input'
 					value={confirmPassword}
 					label='PASSWORD CONFIRM'
 					variant='outlined'
@@ -251,49 +120,57 @@ const FormEditor = props => {
 			</div>
 			<div className={classes.formbuttons}>
 				<Button
-					data-testid='submit-button'
+					data-testid='formeditor-submit-button'
 					color='primary'
 					variant='contained'
 					size='large'
 					fullWidth
 					className={classes.formbutton}
-					onClick={onSubmit}
+					onClick={() => {
+						const isValidatedForm = validateForm()
+						if (isValidatedForm) {
+							onSubmit({ id: selectedUser.id, email, name, password })
+							if (!selectedUser.id) {
+								setEmail('')
+								setName('')
+							}
+							setPassword('')
+							setConfirmPassword('')
+						} else {
+							alert('Form is not valid!!!')
+						}
+					}}
 				>
 					{hasSelectedUser ? 'Save' : 'Register'}
 				</Button>
 				{hasSelectedUser ? (
 					<Button
+						data-testid='formeditor-delete-button'
 						variant='contained'
 						size='large'
 						fullWidth
 						className={classes.formbutton}
-						onClick={() => {
-							setOpenConfirmDeleteDialog(true)
-						}}
+						onClick={onDelete}
 					>
 						Delete
 					</Button>
 				) : null}
 				<Button
+					data-testid='formeditor-cancel-button'
 					variant='contained'
 					size='large'
 					fullWidth
 					className={classes.formbutton}
-					onClick={onCancel}
+					onClick={() => {
+						onCancel().then(() => {
+							setPassword('')
+							setConfirmPassword('')
+						})
+					}}
 				>
 					Cancel
 				</Button>
 			</div>
-			<DeleteDialog
-				open={openConfirmDeleteDialog}
-				onClose={() => {
-					setOpenConfirmDeleteDialog(false)
-				}}
-				onAgree={onAgreeDeleteAnUser}
-				onDisagree={() => {
-					setOpenConfirmDeleteDialog(false)
-				}}
-			/>
 		</Box>
 	)
 }

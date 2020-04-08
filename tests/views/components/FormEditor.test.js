@@ -37,25 +37,19 @@ describe('FormEditor', () => {
 	})
 
 	it('should render Sign up form without crashing', () => {
-		const {
-			getByText,
-			getByTestId,
-			queryAllByLabelText,
-			findAllByLabelText,
-		} = renderWithRouter(
+		const { getByText, getByTestId } = renderWithRouter(
 			<ApolloProvider client={mockClient}>
 				<FormEditor />
 			</ApolloProvider>
 		)
 
-		console.log(getByTestId('form-editor-email'))
-
 		expect(getByText('Sign up')).toBeTruthy()
-		// expect(queryByLabelText('EMAIL')).toBeTruthy()
-		// expect(getByText('NAME')).toBeTruthy()
-		// expect(getByText('PASSWORD')).toBeTruthy()
-		// expect(getByText('PASSWORD CONFIRM')).toBeTruthy()
-		// expect(getByText('Register')).toBeTruthy()
+		expect(getByTestId('formeditor-email-input')).toBeTruthy()
+		expect(getByTestId('formeditor-name-input')).toBeTruthy()
+		expect(getByTestId('formeditor-password-input')).toBeTruthy()
+		expect(getByTestId('formeditor-password-confirm-input')).toBeTruthy()
+		expect(getByTestId('formeditor-submit-button')).toBeTruthy()
+		expect(getByTestId('formeditor-cancel-button')).toBeTruthy()
 	})
 
 	// it('should call correctly onAgree function when click Yes button', () => {

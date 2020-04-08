@@ -13,15 +13,15 @@ Cypress.Commands.add('signIn', (email, password) => {
 Cypress.Commands.add(
 	'registerUser',
 	({ email, name, password, confirmPassword }) => {
-		cy.get('[data-testid=email-input')
+		cy.get('[data-testid=formeditor-email-input')
 			.type(email)
-			.get('[data-testid=name-input')
+			.get('[data-testid=formeditor-name-input')
 			.type(name)
-			.get('[data-testid=password-input')
+			.get('[data-testid=formeditor-password-input')
 			.type(password)
-			.get('[data-testid=confirm-password-input')
+			.get('[data-testid=formeditor-password-confirm-input')
 			.type(confirmPassword)
-			.get('[data-testid=submit-button]')
+			.get('[data-testid=formeditor-submit-button]')
 			.click()
 	}
 )

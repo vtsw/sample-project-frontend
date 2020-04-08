@@ -44,7 +44,7 @@ describe('Sign up', () => {
 		const tmpUser = { ...userInfo, email: existingUser.email }
 		cy.registerUser(tmpUser)
 		cy.url().should('equal', `${baseUrl}/sign-up`)
-		cy.get('[data-testid=submit-button]').should('exist')
+		cy.get('[data-testid=formeditor-submit-button]').should('exist')
 	})
 
 	it('should allow users to register in user page', () => {

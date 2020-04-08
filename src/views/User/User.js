@@ -3,8 +3,7 @@ import React, { useState } from 'react'
 import { Box, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { FormEditor } from '@views_components'
-import { WelcomeDialog, UserList } from './components'
+import { WelcomeDialog, UserList, UserFormEditor } from './components'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -38,7 +37,7 @@ const User = () => {
 						{dialogVisible ? (
 							<WelcomeDialog onCreateUser={() => setDialogVisible(false)} />
 						) : null}
-						<FormEditor />
+						<UserFormEditor />
 					</Box>
 				</Grid>
 				<Grid item xs={8}>
