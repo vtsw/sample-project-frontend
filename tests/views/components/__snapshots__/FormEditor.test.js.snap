@@ -157,7 +157,7 @@ exports[`FormEditor should match snapshot 1`] = `
     >
       <button
         class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-formbutton-6 MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge MuiButton-fullWidth"
-        data-cy="submit-button"
+        data-testid="submit-button"
         tabindex="0"
         type="button"
       >

@@ -16,25 +16,25 @@ const navigateToSignInPage = () => {
 
 const navigateFromSignInPageToSignUpPage = () =>
 	cy
-		.get('[data-cy=signup-text]')
+		.get('[data-testid=signup-text]')
 		.should('exist')
 		.click()
 
 const navigateFromMainPageToFormEditorOfUserPage = () =>
 	cy
-		.get('[data-cy=user-page]')
+		.get('[data-testid=user-page]')
 		.should('exist')
 		.click()
-		.get('[data-cy=create-user-button')
+		.get('[data-testid=create-user-button')
 		.should('exist')
 		.click()
 
 export default {
-	withNavigation: withNavigation,
-	navigateToSignInPage: navigateToSignInPage,
-	navigateToSignUpPage: navigateToSignUpPage,
+	withNavigation,
+	navigateToSignInPage,
+	navigateToSignUpPage,
 	SignUp: {
-		navigateFromSignInPageToSignUpPage: navigateFromSignInPageToSignUpPage,
-		navigateFromMainPageToFormEditorOfUserPage: navigateFromMainPageToFormEditorOfUserPage,
+		navigateFromSignInPageToSignUpPage,
+		navigateFromMainPageToFormEditorOfUserPage,
 	},
 }

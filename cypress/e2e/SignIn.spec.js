@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import { generateRandomNumber } from '../utils'
 import { Navigation } from './common'
-const SignUpNav = Navigation.SignUp
 
 const unregisteredUser = {
 	email: 'unregistereduser999@gmail.com',
@@ -33,7 +32,7 @@ describe('Sign in', () => {
 		cy.registerUser(randomUserInfo)
 		registeredUser = randomUserInfo
 		cy.url().should('equal', `${baseUrl}/sign-in`)
-		cy.get('[data-cy=signin-button]').should('exist')
+		cy.get('[data-testid=signin-button]').should('exist')
 	})
 
 	it('should allow a registered user to sign in', () => {
@@ -46,6 +45,6 @@ describe('Sign in', () => {
 	it('should not allow an unregistered user to sign in', () => {
 		cy.signIn(unregisteredUser.email, unregisteredUser.password)
 		cy.url().should('equal', `${baseUrl}/sign-in`)
-		cy.get('[data-cy=signin-button]').should('exist')
+		cy.get('[data-testid=signin-button]').should('exist')
 	})
 })

@@ -6,22 +6,22 @@ Cypress.Commands.add('signIn', (email, password) => {
 		.type(email)
 		.get('[type=password]')
 		.type(password)
-		.get('[data-cy=signin-button]')
+		.get('[data-testid=signin-button]')
 		.click()
 })
 
 Cypress.Commands.add(
 	'registerUser',
 	({ email, name, password, confirmPassword }) => {
-		cy.get('[data-cy=email-input')
+		cy.get('[data-testid=email-input')
 			.type(email)
-			.get('[data-cy=name-input')
+			.get('[data-testid=name-input')
 			.type(name)
-			.get('[data-cy=password-input')
+			.get('[data-testid=password-input')
 			.type(password)
-			.get('[data-cy=confirm-password-input')
+			.get('[data-testid=confirm-password-input')
 			.type(confirmPassword)
-			.get('[data-cy=submit-button]')
+			.get('[data-testid=submit-button]')
 			.click()
 	}
 )

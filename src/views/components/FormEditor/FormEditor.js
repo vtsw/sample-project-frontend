@@ -210,7 +210,7 @@ const FormEditor = props => {
 			</Typography>
 			<div className={classes.formcontent}>
 				<TextField
-					data-cy='email-input'
+					data-testid='email-input'
 					value={email}
 					label='EMAIL'
 					variant='outlined'
@@ -219,7 +219,7 @@ const FormEditor = props => {
 					onChange={e => setEmail(e.target.value.toLowerCase())}
 				/>
 				<TextField
-					data-cy='name-input'
+					data-testid='name-input'
 					value={name}
 					label='NAME'
 					variant='outlined'
@@ -229,7 +229,7 @@ const FormEditor = props => {
 					onChange={e => setName(e.target.value)}
 				/>
 				<TextField
-					data-cy='password-input'
+					data-testid='password-input'
 					value={password}
 					label='PASSWORD'
 					variant='outlined'
@@ -239,7 +239,7 @@ const FormEditor = props => {
 					onChange={e => setPassword(e.target.value)}
 				/>
 				<TextField
-					data-cy='confirm-password-input'
+					data-testid='confirm-password-input'
 					value={confirmPassword}
 					label='PASSWORD CONFIRM'
 					variant='outlined'
@@ -251,7 +251,7 @@ const FormEditor = props => {
 			</div>
 			<div className={classes.formbuttons}>
 				<Button
-					data-cy='submit-button'
+					data-testid='submit-button'
 					color='primary'
 					variant='contained'
 					size='large'

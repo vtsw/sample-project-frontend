@@ -102,7 +102,7 @@ const SignIn = props => {
 				</div>
 				<div className={classes.actions}>
 					<Button
-						data-cy='signin-button'
+						data-testid='signin-button'
 						variant='contained'
 						color='primary'
 						size='large'
@@ -113,7 +113,7 @@ const SignIn = props => {
 						Sign in
 					</Button>
 					<Typography
-						data-cy='signup-text'
+						data-testid='signup-text'
 						variant='body2'
 						className={classes.signuptext}
 						onClick={() => history.push('/sign-up')}

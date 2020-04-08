@@ -5,7 +5,7 @@ const NavBarItem = props => {
 
 	return (
 		<li
-			data-cy={`${page}-page`}
+			data-testid={`${page}-page`}
 			className={styles}
 			onClick={() => handleOnChangePage(pathname)}
 		>
