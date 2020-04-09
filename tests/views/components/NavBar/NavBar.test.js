@@ -1,17 +1,16 @@
 import React from 'react'
+import { cleanup } from '@testing-library/react'
 
 import { createMockClient } from 'mock-apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloProvider } from '@apollo/react-hooks'
 
-import { Route } from 'react-router-dom'
-
-import { App } from '../src/App'
+import { NavBar } from '@views_components'
 
 import { renderWithRouter } from '@tests/shares/utils'
 import { initialState, resolvers } from '@src/client'
 
-describe('<App/>', () => {
+describe('NavBar', () => {
 	const cache = new InMemoryCache()
 	cache.writeData({
 		data: initialState,
@@ -21,12 +20,17 @@ describe('<App/>', () => {
 		resolvers,
 	})
 
+	afterEach(() => {
+		cleanup()
+	})
+
 	it('should match snapshot', () => {
 		const { container } = renderWithRouter(
 			<ApolloProvider client={mockClient}>
-				<Route component={App} />
+				<NavBar />
 			</ApolloProvider>
 		)
+
 		expect(container).toMatchSnapshot()
 	})
 })

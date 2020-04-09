@@ -28,8 +28,8 @@ describe('InfiniteTable', () => {
 
 	it.each(headerItems)('should render %s header correctly', item => {
 		const { getByTestId } = render(<InfiniteTable {...mockProps} />)
-		const headerTestId = `tableheader-${item}`
+		const headerItem = `tableheader-${item}`
 
-		expect(getByTestId(headerTestId)).toBeTruthy()
+		expect(getByTestId(headerItem)).toBeTruthy()
 	})
 })

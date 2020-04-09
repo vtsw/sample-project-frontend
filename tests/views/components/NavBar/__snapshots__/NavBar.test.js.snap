@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavBar should match snapshot 1`] = `
+<div>
+  <ul
+    class="makeStyles-root-1"
+  >
+    <li
+      class="makeStyles-tab-2 makeStyles-active-3"
+      data-testid="navbaritem-main"
+    >
+      main
+    </li>
+    <li
+      class="makeStyles-tab-2 "
+      data-testid="navbaritem-user"
+    >
+      user
+    </li>
+    <li
+      class="makeStyles-tab-2 "
+      data-testid="navbaritem-message"
+    >
+      message
+    </li>
+    <li
+      class="makeStyles-tab-2 "
+      data-testid="navbaritem-file"
+    >
+      file
+    </li>
+    <li
+      class="makeStyles-tab-2"
+      data-testid="navbaritem-logout"
+    >
+      Logout
+    </li>
+  </ul>
+</div>
+`;
