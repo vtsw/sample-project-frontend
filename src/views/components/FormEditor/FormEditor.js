@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
 
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -46,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const FormEditor = props => {
-	const { selectedUser, onSubmit, onCancel, onDelete } = props
+	const { selectedUser = {}, onSubmit, onCancel, onDelete } = props
 	const classes = useStyles()
 
 	const [email, setEmail] = useState('')
@@ -55,33 +54,62 @@ const FormEditor = props => {
 	const [confirmPassword, setConfirmPassword] = useState('')
 
 	useEffect(() => {
-		setEmail(selectedUser.email)
-		setName(selectedUser.name)
+		if (selectedUser.id) {
+			setEmail(selectedUser.email)
+			setName(selectedUser.name)
+		}
 	}, [selectedUser])
 
-	const hasSelectedUser =
-		selectedUser.id && selectedUser.name && selectedUser.email
-
-	const validateForm = () => {
+	const validateForm = (email, name, password, confirmPassword) => {
 		const emailRegex = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/gm
 		const isValidEmail = email.match(emailRegex)
 
-		if (isValidEmail === null || password !== confirmPassword) {
+		if (isValidEmail === null || password !== confirmPassword || !name) {
 			return false
 		}
 		return true
 	}
 
+	const resetForm = () => {
+		if (!selectedUser.id) {
+			setEmail('')
+			setName('')
+		}
+		setPassword('')
+		setConfirmPassword('')
+	}
+
+	const handleOnSubmit = () => {
+		const isValidatedForm = validateForm(email, name, password, confirmPassword)
+
+		if (isValidatedForm) {
+			onSubmit({ id: selectedUser.id, email, name, password })
+			resetForm()
+		} else {
+			alert('Form is not valid!!!')
+		}
+	}
+
+	const handleOnCancel = () => {
+		onCancel()
+		resetForm()
+	}
+
 	return (
 		<Box className={classes.root}>
-			<Typography variant='h5' className={classes.formtitle}>
-				{hasSelectedUser ? 'Modify' : 'Sign up'}
+			<Typography
+				data-testid='formeditor-title'
+				variant='h5'
+				className={classes.formtitle}
+			>
+				{selectedUser.id ? 'Modify' : 'Sign up'}
 			</Typography>
 			<div className={classes.formcontent}>
 				<TextField
 					data-testid='formeditor-email-input'
 					value={email}
 					label='EMAIL'
+					placeholder='Email'
 					variant='outlined'
 					type='email'
 					className={classes.forminput}
@@ -91,6 +119,7 @@ const FormEditor = props => {
 					data-testid='formeditor-name-input'
 					value={name}
 					label='NAME'
+					placeholder='Name'
 					variant='outlined'
 					type='text'
 					autoComplete='true'
@@ -101,6 +130,7 @@ const FormEditor = props => {
 					data-testid='formeditor-password-input'
 					value={password}
 					label='PASSWORD'
+					placeholder='Password'
 					variant='outlined'
 					type='password'
 					autoComplete='true'
@@ -111,6 +141,7 @@ const FormEditor = props => {
 					data-testid='formeditor-password-confirm-input'
 					value={confirmPassword}
 					label='PASSWORD CONFIRM'
+					placeholder='Password Confirm'
 					variant='outlined'
 					type='password'
 					autoComplete='true'
@@ -126,24 +157,11 @@ const FormEditor = props => {
 					size='large'
 					fullWidth
 					className={classes.formbutton}
-					onClick={() => {
-						const isValidatedForm = validateForm()
-						if (isValidatedForm) {
-							onSubmit({ id: selectedUser.id, email, name, password })
-							if (!selectedUser.id) {
-								setEmail('')
-								setName('')
-							}
-							setPassword('')
-							setConfirmPassword('')
-						} else {
-							alert('Form is not valid!!!')
-						}
-					}}
+					onClick={handleOnSubmit}
 				>
-					{hasSelectedUser ? 'Save' : 'Register'}
+					{selectedUser.id ? 'Save' : 'Register'}
 				</Button>
-				{hasSelectedUser ? (
+				{selectedUser.id ? (
 					<Button
 						data-testid='formeditor-delete-button'
 						variant='contained'
@@ -161,12 +179,7 @@ const FormEditor = props => {
 					size='large'
 					fullWidth
 					className={classes.formbutton}
-					onClick={() => {
-						onCancel().then(() => {
-							setPassword('')
-							setConfirmPassword('')
-						})
-					}}
+					onClick={handleOnCancel}
 				>
 					Cancel
 				</Button>
@@ -175,4 +188,4 @@ const FormEditor = props => {
 	)
 }
 
-export default withRouter(FormEditor)
+export default FormEditor

@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core'
 
 import { getToken } from '@src/shares/utils'
 
-import { NavBar, SuspenseLoading } from '@views_components'
+import { NavBar, SuspenseLoading, Loading } from '@views_components'
 
 const Main = lazy(() => import('@views/Main'))
 const Message = lazy(() => import('@views/Message'))
@@ -35,6 +35,13 @@ const App = props => {
 		}
 	})
 
+	const fallbackOfSuspense =
+		location.pathname === '/sign-in' || location.pathname === '/sign-up' ? (
+			<Loading open={true} msg={'Loading...'} />
+		) : (
+			<SuspenseLoading />
+		)
+
 	return (
 		<Grid container wrap='nowrap'>
 			{location.pathname === '/sign-in' ||
@@ -42,7 +49,7 @@ const App = props => {
 				<NavBar />
 			)}
 
-			<Suspense fallback={<SuspenseLoading />}>
+			<Suspense fallback={fallbackOfSuspense}>
 				<Switch>
 					<Route exact path='/' component={Main} />
 					<Route path='/message' component={Message} />

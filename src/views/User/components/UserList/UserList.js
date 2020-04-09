@@ -4,7 +4,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { LargeTable, Loading } from '@views_components'
+import { InfiniteTable, Loading } from '@views_components'
 import SearchUserBox from '../SearchUserBox'
 
 import {
@@ -154,7 +154,7 @@ const UserList = props => {
 					{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
 						<Loading open={true} msg={'Loading...'} />
 					) : (
-						<LargeTable
+						<InfiniteTable
 							items={data.userList.items}
 							onClickRow={handleOnSelectUser}
 							selectedRow={selectedUser}

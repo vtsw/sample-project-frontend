@@ -77,7 +77,8 @@ const File = () => {
 		onError: err => alert(err),
 	})
 
-	const { data } = useQuery(GET_USER_INFO, {
+	// eslint-disable-next-line no-unused-vars
+	const _ = useQuery(GET_USER_INFO, {
 		onCompleted: data => {
 			if (data && data.me && data.me.image && !file.filename) {
 				// when reload page

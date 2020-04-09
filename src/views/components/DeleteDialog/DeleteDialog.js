@@ -53,11 +53,15 @@ const DeleteDialog = props => {
 			onClose={onClose}
 			classes={{ paper: classes.root }}
 		>
-			<DialogTitle className={clsx(classes.nopadding, classes.title)}>
+			<DialogTitle
+				data-testid='deletedialog-title'
+				className={clsx(classes.nopadding, classes.title)}
+			>
 				Delete!
 			</DialogTitle>
 			<DialogActions className={classes.nopadding}>
 				<Button
+					data-testid='deletedialog-agreebutton'
 					variant='contained'
 					color='primary'
 					className={classes.button}
@@ -68,6 +72,7 @@ const DeleteDialog = props => {
 					Yes
 				</Button>
 				<Button
+					data-testid='deletedialog-disagreebutton'
 					variant='contained'
 					className={classes.button}
 					onClick={() => {

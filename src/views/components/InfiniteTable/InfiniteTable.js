@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const LargeTable = props => {
+const InfiniteTable = props => {
 	const { items, columns, loadNextPage, loadingMore } = props
 	const classes = useStyles()
 
@@ -30,7 +30,11 @@ const LargeTable = props => {
 			<Grid container className={classes.container__header}>
 				{columns.map(column => (
 					<Grid item xs={column.xs} key={column.headerVariable}>
-						<Typography variant='body2' className={classes.item__header}>
+						<Typography
+							data-testid={`tableheader-${column.headerVariable}`}
+							variant='body2'
+							className={classes.item__header}
+						>
 							{column.headerLabel}
 						</Typography>
 					</Grid>
@@ -49,4 +53,4 @@ const LargeTable = props => {
 	)
 }
 
-export default LargeTable
+export default InfiniteTable
