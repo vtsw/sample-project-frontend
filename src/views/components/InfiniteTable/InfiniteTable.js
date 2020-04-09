@@ -30,7 +30,11 @@ const InfiniteTable = props => {
 			<Grid container className={classes.container__header}>
 				{columns.map(column => (
 					<Grid item xs={column.xs} key={column.headerVariable}>
-						<Typography variant='body2' className={classes.item__header}>
+						<Typography
+							data-testid={`tableheader-${column.headerVariable}`}
+							variant='body2'
+							className={classes.item__header}
+						>
 							{column.headerLabel}
 						</Typography>
 					</Grid>

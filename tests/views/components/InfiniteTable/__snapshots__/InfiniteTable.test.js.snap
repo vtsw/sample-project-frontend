@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfiniteTable should match snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root MuiBox-root-5 makeStyles-root-1"
+  >
+    <div
+      class="MuiGrid-root makeStyles-container__header-2 MuiGrid-container"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+      >
+        <p
+          class="MuiTypography-root makeStyles-item__header-3 MuiTypography-body2"
+          data-testid="tableheader-email"
+        >
+          EMAIL
+        </p>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+      >
+        <p
+          class="MuiTypography-root makeStyles-item__header-3 MuiTypography-body2"
+          data-testid="tableheader-name"
+        >
+          NAME
+        </p>
+      </div>
+    </div>
+    <div
+      class="MuiBox-root MuiBox-root-139 makeStyles-root-1"
+    >
+      <div
+        style="overflow: visible; height: 0px; width: 0px;"
+      />
+      <div
+        class="resize-triggers"
+      >
+        <div
+          class="expand-trigger"
+        >
+          <div
+            style="width: 1px; height: 1px;"
+          />
+        </div>
+        <div
+          class="contract-trigger"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

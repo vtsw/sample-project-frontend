@@ -14,10 +14,6 @@ describe('FormEditor', () => {
 		onDelete: jest.fn(),
 	}
 
-	beforeEach(() => {
-		jest.spyOn(window, 'alert').mockImplementation(() => 'Form is not valid!!!')
-	})
-
 	afterEach(() => {
 		cleanup()
 	})
@@ -160,9 +156,11 @@ describe('FormEditor', () => {
 
 		const submitButton = getByTestId('formeditor-submit-button')
 
+		jest.spyOn(window, 'alert').mockImplementation(() => 'Form is not valid!!!')
 		fireEvent.click(submitButton)
 
 		expect(mockProps.onSubmit).toHaveBeenCalledTimes(0)
+		expect(window.alert).toHaveBeenCalled()
 	})
 
 	it('should call onCancel when click Cancel button', () => {
