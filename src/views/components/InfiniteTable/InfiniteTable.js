@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const LargeTable = props => {
+const InfiniteTable = props => {
 	const { items, columns, loadNextPage, loadingMore } = props
 	const classes = useStyles()
 
@@ -49,4 +49,4 @@ const LargeTable = props => {
 	)
 }
 
-export default LargeTable
+export default InfiniteTable

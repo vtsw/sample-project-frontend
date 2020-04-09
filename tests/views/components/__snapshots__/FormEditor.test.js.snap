@@ -7,6 +7,7 @@ exports[`FormEditor should match snapshot 1`] = `
   >
     <h5
       class="MuiTypography-root makeStyles-formtitle-2 MuiTypography-h5"
+      data-testid="formeditor-title"
     >
       Sign up
     </h5>
@@ -29,6 +30,7 @@ exports[`FormEditor should match snapshot 1`] = `
           <input
             aria-invalid="false"
             class="MuiInputBase-input MuiOutlinedInput-input"
+            placeholder="Email"
             type="email"
             value=""
           />
@@ -63,6 +65,7 @@ exports[`FormEditor should match snapshot 1`] = `
             aria-invalid="false"
             autocomplete="true"
             class="MuiInputBase-input MuiOutlinedInput-input"
+            placeholder="Name"
             type="text"
             value=""
           />
@@ -97,6 +100,7 @@ exports[`FormEditor should match snapshot 1`] = `
             aria-invalid="false"
             autocomplete="true"
             class="MuiInputBase-input MuiOutlinedInput-input"
+            placeholder="Password"
             type="password"
             value=""
           />
@@ -131,6 +135,7 @@ exports[`FormEditor should match snapshot 1`] = `
             aria-invalid="false"
             autocomplete="true"
             class="MuiInputBase-input MuiOutlinedInput-input"
+            placeholder="Password Confirm"
             type="password"
             value=""
           />

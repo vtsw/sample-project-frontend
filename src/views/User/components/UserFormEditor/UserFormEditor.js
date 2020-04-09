@@ -123,13 +123,17 @@ const UserFormEditor = () => {
 		})
 	}
 
+	const handleOnDelete = () => {
+		setOpenConfirmDeleteDialog(true)
+	}
+
 	return (
 		<React.Fragment>
 			<FormEditor
 				selectedUser={selectedUser}
 				onSubmit={onSubmit}
 				onCancel={handleOnCancel}
-				onDelete={() => setOpenConfirmDeleteDialog(true)}
+				onDelete={handleOnDelete}
 			/>
 			<DeleteDialog
 				open={openConfirmDeleteDialog}

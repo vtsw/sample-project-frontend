@@ -6,7 +6,7 @@ import { Box, Grid, makeStyles } from '@material-ui/core'
 
 import {
 	Loading,
-	LargeTable,
+	InfiniteTable,
 	DeleteDialog,
 	ModifyDialog,
 } from '@views_components'
@@ -19,7 +19,7 @@ import {
 	SET_MESSAGE_CREATE_TEXT,
 } from './gql/query'
 import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './gql/mutation'
-import { useCreateMessage, useDeleteMessage } from './gql/useMutations'
+import { useCreateMessage, useDeleteMessage } from './gql/useMutation'
 
 import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
@@ -204,7 +204,7 @@ const Message = () => {
 				{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
 					<Loading open={true} msg={'Loading...'} />
 				) : (
-					<LargeTable
+					<InfiniteTable
 						items={data.messageList.items}
 						onClickRow={handleOnSelectMessage}
 						handleDeleteRow={handleOnDeleteMessage}

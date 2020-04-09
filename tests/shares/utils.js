@@ -6,6 +6,13 @@ import { ApolloProvider } from '@apollo/react-hooks'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 
+const mockUser = {
+	email: 'stevevo@gmail.com',
+	name: 'stevevo',
+	password: '111',
+	confirmPassword: '111',
+}
+
 const renderWithApolloClient = (component, mockClient) => {
 	return render(
 		<ApolloProvider client={mockClient}>{component}</ApolloProvider>
@@ -28,4 +35,4 @@ const renderWithRouter = (
 	}
 }
 
-export { renderWithApolloClient, renderWithRouter }
+export { renderWithApolloClient, renderWithRouter, mockUser }

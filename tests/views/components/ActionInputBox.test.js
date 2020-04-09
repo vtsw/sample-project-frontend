@@ -59,7 +59,7 @@ describe('ActionInputBox', () => {
 		expect(input.value).toBe('Hello world')
 	})
 
-	it('should enable input when focus on input', async () => {
+	it('should enable input when focus on input', () => {
 		const { getByPlaceholderText } = render(<ActionInputBox {...mockProps} />)
 		const input = getByPlaceholderText(mockProps.placeholder)
 

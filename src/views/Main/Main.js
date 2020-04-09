@@ -5,7 +5,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { FETCH_USER_LIST } from '@views/User/gql/query'
 
-import { Loading, LargeTable } from '@views_components'
+import { Loading, InfiniteTable } from '@views_components'
 import { SearchUserBox } from '@views/User/components'
 import { ListMessageOfUser } from './components'
 
@@ -185,7 +185,7 @@ const Main = () => {
 						{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
 							<Loading open={true} msg={'Loading...'} />
 						) : (
-							<LargeTable
+							<InfiniteTable
 								items={data.userList.items}
 								onClickRow={handleChoseImage}
 								selectedRow={selectedUserOfMain}

@@ -97,7 +97,11 @@ const FormEditor = props => {
 
 	return (
 		<Box className={classes.root}>
-			<Typography variant='h5' className={classes.formtitle}>
+			<Typography
+				data-testid='formeditor-title'
+				variant='h5'
+				className={classes.formtitle}
+			>
 				{selectedUser.id ? 'Modify' : 'Sign up'}
 			</Typography>
 			<div className={classes.formcontent}>
@@ -105,6 +109,7 @@ const FormEditor = props => {
 					data-testid='formeditor-email-input'
 					value={email}
 					label='EMAIL'
+					placeholder='Email'
 					variant='outlined'
 					type='email'
 					className={classes.forminput}
@@ -114,6 +119,7 @@ const FormEditor = props => {
 					data-testid='formeditor-name-input'
 					value={name}
 					label='NAME'
+					placeholder='Name'
 					variant='outlined'
 					type='text'
 					autoComplete='true'
@@ -124,6 +130,7 @@ const FormEditor = props => {
 					data-testid='formeditor-password-input'
 					value={password}
 					label='PASSWORD'
+					placeholder='Password'
 					variant='outlined'
 					type='password'
 					autoComplete='true'
@@ -134,6 +141,7 @@ const FormEditor = props => {
 					data-testid='formeditor-password-confirm-input'
 					value={confirmPassword}
 					label='PASSWORD CONFIRM'
+					placeholder='Password Confirm'
 					variant='outlined'
 					type='password'
 					autoComplete='true'

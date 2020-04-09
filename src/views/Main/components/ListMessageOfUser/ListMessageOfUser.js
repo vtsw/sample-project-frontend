@@ -7,13 +7,13 @@ import { Box, Typography, makeStyles } from '@material-ui/core'
 import {
 	DeleteDialog,
 	ModifyDialog,
-	LargeTable,
+	InfiniteTable,
 	Loading,
 } from '@views_components'
 
 import { MESSAGE_LIST } from '@views/Message/gql/query'
 import { DELETE_MESSAGE, UPDATE_MESSAGE } from '@views/Message/gql/mutation'
-import { useDeleteMessage } from '@views/Message/gql/useMutations'
+import { useDeleteMessage } from '@views/Message/gql/useMutation'
 
 import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
@@ -139,7 +139,7 @@ const ListMessageOfUser = props => {
 						Total {dataMsg.messageList.items.length}
 					</Typography>
 
-					<LargeTable
+					<InfiniteTable
 						items={dataMsg.messageList.items}
 						onClickRow={handleOnSelectMessage}
 						selectedRow={selectedMessage}
