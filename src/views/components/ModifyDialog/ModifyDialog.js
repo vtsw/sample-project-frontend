@@ -59,6 +59,14 @@ const ModifyDialog = props => {
 		onDisagree && onDisagree()
 	}
 
+	const handleOnKeyDown = e => {
+		if (e.keyCode === 13) {
+			handleUpdate()
+		} else if (e.keyCode === 32) {
+			handleCancel()
+		}
+	}
+
 	return (
 		<Dialog
 			TransitionComponent={Transition}
@@ -66,26 +74,24 @@ const ModifyDialog = props => {
 			onClose={onClose}
 			classes={{ paper: classes.root }}
 		>
-			<DialogTitle className={classes.title}>Modify!</DialogTitle>
+			<DialogTitle data-testid='modifydialog-title' className={classes.title}>
+				Modify!
+			</DialogTitle>
 			<DialogContent>
 				<TextField
+					data-testid='modifydialog-input'
 					autoFocus
 					variant='outlined'
 					placeholder='placeholder'
 					defaultValue={valueDefault}
 					onChange={e => setValue(e.target.value)}
 					className={classes.textfield}
-					onKeyDown={e => {
-						if (e.keyCode === 13) {
-							handleUpdate()
-						} else if (e.keyCode === 32) {
-							handleCancel()
-						}
-					}}
+					onKeyDown={handleOnKeyDown}
 				/>
 			</DialogContent>
 			<DialogActions>
 				<Button
+					data-testid='modifydialog-agreebutton'
 					variant='contained'
 					color='primary'
 					onClick={handleUpdate}
@@ -94,6 +100,7 @@ const ModifyDialog = props => {
 					Yes
 				</Button>
 				<Button
+					data-testid='modifydialog-disagreebutton'
 					variant='contained'
 					onClick={handleCancel}
 					className={classes.button}

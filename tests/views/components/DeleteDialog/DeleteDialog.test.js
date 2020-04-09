@@ -5,7 +5,7 @@ import { DeleteDialog } from '@views_components'
 
 describe('DeleteDialog', () => {
 	const mockProps = {
-		open: false,
+		open: true,
 		onClose: jest.fn(),
 		onAgree: jest.fn(),
 		onDisagree: jest.fn(),
@@ -21,23 +21,31 @@ describe('DeleteDialog', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should render without crashing when open', () => {
-		const props = { ...mockProps, open: true }
-		const { getByText } = render(<DeleteDialog {...props} />)
+	it('should render all elements without crashing', () => {
+		const { getByTestId } = render(<DeleteDialog {...mockProps} />)
 
-		expect(getByText('Delete!')).toBeTruthy()
-		expect(getByText('Yes')).toBeTruthy()
-		expect(getByText('No')).toBeTruthy()
+		expect(getByTestId('deletedialog-title')).toBeTruthy()
+		expect(getByTestId('deletedialog-agreebutton')).toBeTruthy()
+		expect(getByTestId('deletedialog-disagreebutton')).toBeTruthy()
 	})
 
 	it('should call correctly onAgree function when click Yes button', () => {
-		const props = { ...mockProps, open: true }
-		const { getByText } = render(<DeleteDialog {...props} />)
+		const { getByTestId } = render(<DeleteDialog {...mockProps} />)
 
-		const yesButton = getByText('Yes')
+		const agreeButton = getByTestId('deletedialog-agreebutton')
 
-		fireEvent.click(yesButton)
+		fireEvent.click(agreeButton)
 
-		expect(props.onAgree).toHaveBeenCalled()
+		expect(mockProps.onAgree).toHaveBeenCalled()
+	})
+
+	it('should call correctly onDisagree function when click Yes button', () => {
+		const { getByTestId } = render(<DeleteDialog {...mockProps} />)
+
+		const disagreeButton = getByTestId('deletedialog-disagreebutton')
+
+		fireEvent.click(disagreeButton)
+
+		expect(mockProps.onDisagree).toHaveBeenCalled()
 	})
 })
