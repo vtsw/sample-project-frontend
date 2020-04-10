@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SuspenseLoading should match snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root MuiBox-root-3 makeStyles-root-1"
+  >
+    <div
+      class="makeStyles-root-4"
+    >
+      Loading...
+    </div>
+  </div>
+</div>
+`;

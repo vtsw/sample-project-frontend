@@ -22,7 +22,7 @@ const navigateFromSignInPageToSignUpPage = () =>
 
 const navigateFromMainPageToFormEditorOfUserPage = () =>
 	cy
-		.get('[data-testid=user-page]')
+		.get('[data-testid=navbaritem-user]')
 		.should('exist')
 		.click()
 		.get('[data-testid=create-user-button')
