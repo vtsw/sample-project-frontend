@@ -45,7 +45,7 @@ const navbarItems = [
 ]
 
 const NavBar = props => {
-	const { location, history } = props
+	const { location = { pathname: '' }, history } = props
 	const classes = useStyles()
 
 	const [currentPage, setCurrentPage] = useState(location.pathname)
@@ -90,3 +90,5 @@ const NavBar = props => {
 }
 
 export default withRouter(NavBar)
+
+export { NavBar }
