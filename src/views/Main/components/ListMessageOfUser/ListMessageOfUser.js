@@ -60,6 +60,8 @@ const ListMessageOfUser = props => {
 		}
 	)
 
+	console.log('dataMsg', dataMsg, loading)
+
 	const [deleteMessage] = useDeleteMessage(
 		DELETE_MESSAGE,
 		MESSAGE_LIST,
