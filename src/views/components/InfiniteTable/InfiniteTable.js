@@ -26,7 +26,7 @@ const InfiniteTable = props => {
 	const classes = useStyles()
 
 	return (
-		<Box className={classes.root}>
+		<Box data-testid='infinitetable' className={classes.root}>
 			<Grid container className={classes.container__header}>
 				{columns.map(column => (
 					<Grid item xs={column.xs} key={column.headerVariable}>

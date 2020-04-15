@@ -1,0 +1,244 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`User should match snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root MuiBox-root-5 makeStyles-root-1"
+  >
+    <div
+      class="MuiGrid-root makeStyles-container-2 MuiGrid-container"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-4"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-109 makeStyles-item__signup-3"
+        >
+          <div
+            class="MuiBox-root MuiBox-root-113 makeStyles-root-110"
+          >
+            <div
+              class="MuiBox-root MuiBox-root-114"
+            >
+              <h6
+                class="MuiTypography-root makeStyles-welcometext-111 MuiTypography-subtitle1"
+              >
+                Welcome to Vatech !!!
+              </h6>
+              <button
+                class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-112 MuiButton-fullWidth"
+                data-testid="create-user-button"
+                tabindex="0"
+                type="button"
+              >
+                <span
+                  class="MuiButton-label"
+                >
+                  Create user
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            class="MuiBox-root MuiBox-root-183 makeStyles-root-177"
+          >
+            <h5
+              class="MuiTypography-root makeStyles-formtitle-178 MuiTypography-h5"
+              data-testid="formeditor-title"
+            >
+              Sign up
+            </h5>
+            <div
+              class="makeStyles-formcontent-180"
+            >
+              <div
+                class="MuiFormControl-root MuiTextField-root makeStyles-forminput-179"
+                data-testid="formeditor-email-input"
+              >
+                <label
+                  class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-outlined"
+                  data-shrink="false"
+                >
+                  EMAIL
+                </label>
+                <div
+                  class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+                >
+                  <input
+                    aria-invalid="false"
+                    class="MuiInputBase-input MuiOutlinedInput-input"
+                    placeholder="Email"
+                    type="email"
+                    value=""
+                  />
+                  <fieldset
+                    aria-hidden="true"
+                    class="PrivateNotchedOutline-root-242 MuiOutlinedInput-notchedOutline"
+                  >
+                    <legend
+                      class="PrivateNotchedOutline-legendLabelled-244"
+                    >
+                      <span>
+                        EMAIL
+                      </span>
+                    </legend>
+                  </fieldset>
+                </div>
+              </div>
+              <div
+                class="MuiFormControl-root MuiTextField-root makeStyles-forminput-179"
+                data-testid="formeditor-name-input"
+              >
+                <label
+                  class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-outlined"
+                  data-shrink="false"
+                >
+                  NAME
+                </label>
+                <div
+                  class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+                >
+                  <input
+                    aria-invalid="false"
+                    autocomplete="true"
+                    class="MuiInputBase-input MuiOutlinedInput-input"
+                    placeholder="Name"
+                    type="text"
+                    value=""
+                  />
+                  <fieldset
+                    aria-hidden="true"
+                    class="PrivateNotchedOutline-root-242 MuiOutlinedInput-notchedOutline"
+                  >
+                    <legend
+                      class="PrivateNotchedOutline-legendLabelled-244"
+                    >
+                      <span>
+                        NAME
+                      </span>
+                    </legend>
+                  </fieldset>
+                </div>
+              </div>
+              <div
+                class="MuiFormControl-root MuiTextField-root makeStyles-forminput-179"
+                data-testid="formeditor-password-input"
+              >
+                <label
+                  class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-outlined"
+                  data-shrink="false"
+                >
+                  PASSWORD
+                </label>
+                <div
+                  class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+                >
+                  <input
+                    aria-invalid="false"
+                    autocomplete="true"
+                    class="MuiInputBase-input MuiOutlinedInput-input"
+                    placeholder="Password"
+                    type="password"
+                    value=""
+                  />
+                  <fieldset
+                    aria-hidden="true"
+                    class="PrivateNotchedOutline-root-242 MuiOutlinedInput-notchedOutline"
+                  >
+                    <legend
+                      class="PrivateNotchedOutline-legendLabelled-244"
+                    >
+                      <span>
+                        PASSWORD
+                      </span>
+                    </legend>
+                  </fieldset>
+                </div>
+              </div>
+              <div
+                class="MuiFormControl-root MuiTextField-root makeStyles-forminput-179"
+                data-testid="formeditor-password-confirm-input"
+              >
+                <label
+                  class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-outlined"
+                  data-shrink="false"
+                >
+                  PASSWORD CONFIRM
+                </label>
+                <div
+                  class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+                >
+                  <input
+                    aria-invalid="false"
+                    autocomplete="true"
+                    class="MuiInputBase-input MuiOutlinedInput-input"
+                    placeholder="Password Confirm"
+                    type="password"
+                    value=""
+                  />
+                  <fieldset
+                    aria-hidden="true"
+                    class="PrivateNotchedOutline-root-242 MuiOutlinedInput-notchedOutline"
+                  >
+                    <legend
+                      class="PrivateNotchedOutline-legendLabelled-244"
+                    >
+                      <span>
+                        PASSWORD CONFIRM
+                      </span>
+                    </legend>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+            <div
+              class="makeStyles-formbuttons-181"
+            >
+              <button
+                class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-formbutton-182 MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge MuiButton-fullWidth"
+                data-testid="formeditor-submit-button"
+                tabindex="0"
+                type="button"
+              >
+                <span
+                  class="MuiButton-label"
+                >
+                  Register
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+              <button
+                class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-formbutton-182 MuiButton-containedSizeLarge MuiButton-sizeLarge MuiButton-fullWidth"
+                data-testid="formeditor-cancel-button"
+                tabindex="0"
+                type="button"
+              >
+                <span
+                  class="MuiButton-label"
+                >
+                  Cancel
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8"
+      >
+        <p>
+          Error :(
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;

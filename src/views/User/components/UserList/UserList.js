@@ -54,15 +54,18 @@ const UserList = props => {
 	const { onSelectUser } = props
 	const classes = useStyles()
 
-	const {
-		data: { userSearchValue },
-	} = useQuery(GET_USER_SEARCH_TEXT)
+	const { data: userSearchTextData } = useQuery(GET_USER_SEARCH_TEXT)
 
 	const { loading, error, data, fetchMore, networkStatus } = useQuery(
 		FETCH_USER_LIST,
 		{
 			variables: {
-				query: { searchText: userSearchValue, limit: PAGE_LIMIT },
+				query: {
+					searchText: userSearchTextData
+						? userSearchTextData.userSearchValue
+						: '',
+					limit: PAGE_LIMIT,
+				},
 			},
 			notifyOnNetworkStatusChange: true,
 			onError: err => {
@@ -70,9 +73,8 @@ const UserList = props => {
 			},
 		}
 	)
-	const {
-		data: { selectedUser },
-	} = useQuery(GET_SELECTED_USER, {
+
+	const { data: selectedUserData } = useQuery(GET_SELECTED_USER, {
 		onError: err => alert(err),
 	})
 
@@ -144,9 +146,11 @@ const UserList = props => {
 					</Typography>
 					<SearchUserBox
 						width={328}
-						placeholder='Search'
+						placeholder='search...'
 						type='search'
-						defaultValue={userSearchValue}
+						defaultValue={
+							userSearchTextData ? userSearchTextData.userSearchValue : ''
+						}
 						onSubmit={handleOnSearch}
 					/>
 				</Box>
@@ -157,7 +161,9 @@ const UserList = props => {
 						<InfiniteTable
 							items={data.userList.items}
 							onClickRow={handleOnSelectUser}
-							selectedRow={selectedUser}
+							selectedRow={
+								selectedUserData ? selectedUserData.selectedUser : {}
+							}
 							columns={tableHeaders}
 							isIconClose={false}
 							loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
