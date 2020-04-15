@@ -1,0 +1,27 @@
+import { Meta, Story, Preview,Props } from '@storybook/addon-docs/blocks';
+import NavBarDefault from './NavBarDefault'
+
+import * as stories from './NavBar.stories.js';
+
+<Meta title="Component Api|NavBar" />
+
+# NavBar
+With `MDX` we can define a story for `Nav Bar` right in the middle of our
+markdown documentation.
+
+
+
+
+  <Story name="Basic">
+    {stories.NavBarStory()}
+  </Story>
+
+
+```jsx
+<NavBarDefault />
+```
+
+# PropTypes
+
+<Props of={NavBarDefault}/>
+

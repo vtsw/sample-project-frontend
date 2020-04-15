@@ -1,0 +1,28 @@
+import { Meta, Story, Preview,Props } from '@storybook/addon-docs/blocks';
+import SignUp from './SignUp'
+
+import * as stories from './SignUp.stories.js';
+
+<Meta title="Component Api|SignUp" />
+
+# SignUp
+With `MDX` we can define a story for `Sign Up` right in the middle of our
+markdown documentation.
+
+
+
+
+  <Story name="SignUp">
+    {stories.signUp()}
+  </Story>
+
+
+```jsx 
+
+<Route path='/sign-in' component={SignUp} />
+```
+
+# PropTypes
+
+<Props of={SignUp}/>
+

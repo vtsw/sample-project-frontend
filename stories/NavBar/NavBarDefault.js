@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
-
 import { makeStyles } from '@material-ui/core/styles'
-
-import NavBarItem from '../NavBarItem'
+import PropTypes from 'prop-types'
+import { deleteToken } from '@src/shares/utils'
+// import NavBarItem from '../../src/views/components/NavBar/NavBarItem'
+import { action } from '@storybook/addon-actions'
+import NavBar from '../../src/views/components/NavBar'
+import { BrowserRouter } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -11,6 +14,7 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		flexDirection: 'column',
 		height: '100vh',
+		width: '100px',
 	},
 	tab: {
 		fontSize: theme.typography.htmlFontSize,
@@ -31,40 +35,21 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const NavBarContainer = props => {
-	const { location = { pathname: '' }, history, items, handleOnLogOut } = props
+const NavBarDefault = () => {
 	const classes = useStyles()
-
-	const [currentPage, setCurrentPage] = useState(location.pathname || {})
-
-	const handleOnChangePage = page => {
-		setCurrentPage(page)
-		history.push(page)
-	}
-
-	const setActiveTab = pathname => {
-		return currentPage === pathname ? classes.active : ''
-	}
-
 	return (
-		<ul className={classes.root}>
-			{items.map((item, index) => (
-				<NavBarItem
-					key={index}
-					handleOnChangePage={handleOnChangePage}
-					styles={`${classes.tab} ${setActiveTab(item.pathname)}`}
-					{...item}
-				/>
-			))}
-			<li
-				data-testid='navbaritem-logout'
-				className={classes.tab}
-				onClick={handleOnLogOut}
-			>
-				Logout
-			</li>
-		</ul>
+		<BrowserRouter>
+			<div className={classes.root}>
+				<NavBar />
+			</div>
+		</BrowserRouter>
 	)
 }
 
-export default NavBarContainer
+export default NavBarDefault
+
+NavBarDefault.propTypes = {
+	location: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired,
+}
+NavBarDefault.defaultProps = {}
