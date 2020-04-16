@@ -47,7 +47,6 @@ exports[`ActionInputBox should match snapshot 1`] = `
           class="MuiSvgIcon-root makeStyles-icon-4"
           data-testid="search-icon"
           focusable="false"
-          role="presentation"
           viewBox="0 0 24 24"
         >
           <path

@@ -65,6 +65,7 @@ const Row = props => {
 
 	return (
 		<Grid
+			data-testid={`row-${item.id}`}
 			container
 			className={clsx(
 				classes.root,
@@ -75,6 +76,7 @@ const Row = props => {
 		>
 			{isIconClose && (
 				<CloseIcon
+					data-testid={`row-closeicon-${item.id}`}
 					className={classes.item__closeicon}
 					onClick={e => {
 						e.stopPropagation()

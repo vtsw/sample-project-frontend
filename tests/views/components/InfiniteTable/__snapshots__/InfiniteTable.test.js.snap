@@ -4,6 +4,7 @@ exports[`InfiniteTable should match snapshot 1`] = `
 <div>
   <div
     class="MuiBox-root MuiBox-root-5 makeStyles-root-1"
+    data-testid="infinitetable"
   >
     <div
       class="MuiGrid-root makeStyles-container__header-2 MuiGrid-container"
