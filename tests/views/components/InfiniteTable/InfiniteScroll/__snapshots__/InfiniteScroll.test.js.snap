@@ -9,10 +9,10 @@ exports[`InfiniteScroll should match snapshot 1`] = `
   >
     <div
       class="makeStyles-overflow-1"
-      style="height: 100px; width: 200px; overflow: auto; position: relative; will-change: transform;"
+      style="height: 700px; width: 200px; overflow: auto; position: relative; will-change: transform;"
     >
       <div
-        style="height: 300px; width: 100%;"
+        style="height: 11900px; width: 100%;"
       >
         <div
           class="MuiGrid-root makeStyles-root-2 makeStyles-root-7 MuiGrid-container"
@@ -117,7 +117,7 @@ exports[`InfiniteScroll should match snapshot 1`] = `
       class="expand-trigger"
     >
       <div
-        style="width: 201px; height: 101px;"
+        style="width: 201px; height: 701px;"
       />
     </div>
     <div

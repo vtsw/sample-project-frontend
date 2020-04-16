@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`InfiniteTable should match snapshot 1`] = `
-<div>
+<div
+  style="width: 300px; height: 700px;"
+>
   <div
     class="MuiBox-root MuiBox-root-5 makeStyles-root-1"
     data-testid="infinitetable"
@@ -35,7 +37,110 @@ exports[`InfiniteTable should match snapshot 1`] = `
     >
       <div
         style="overflow: visible; height: 0px; width: 0px;"
-      />
+      >
+        <div
+          class="makeStyles-overflow-140"
+          style="height: 700px; width: 200px; overflow: auto; position: relative; will-change: transform;"
+        >
+          <div
+            style="height: 11900px; width: 100%;"
+          >
+            <div
+              class="MuiGrid-root makeStyles-root-141 makeStyles-root-146 MuiGrid-container"
+              data-testid="row-5e68995fb6d0bc05829b6e79"
+            >
+              <div
+                class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-147 makeStyles-columns__item-144"
+                >
+                  <p
+                    class="MuiTypography-root makeStyles-columns__item__typo-145 MuiTypography-body2"
+                  >
+                    steve@example.com
+                  </p>
+                </div>
+              </div>
+              <div
+                class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-148 makeStyles-columns__item-144"
+                >
+                  <p
+                    class="MuiTypography-root makeStyles-columns__item__typo-145 MuiTypography-body2"
+                  >
+                    90412
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="MuiGrid-root makeStyles-root-141 makeStyles-root-149 MuiGrid-container"
+              data-testid="row-5e68b5c3dd814dd832cda79d"
+            >
+              <div
+                class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-150 makeStyles-columns__item-144"
+                >
+                  <p
+                    class="MuiTypography-root makeStyles-columns__item__typo-145 MuiTypography-body2"
+                  >
+                    nvdai2355@gmail.com
+                  </p>
+                </div>
+              </div>
+              <div
+                class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-151 makeStyles-columns__item-144"
+                >
+                  <p
+                    class="MuiTypography-root makeStyles-columns__item__typo-145 MuiTypography-body2"
+                  >
+                    asdasdasd
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="MuiGrid-root makeStyles-root-141 makeStyles-root-152 MuiGrid-container"
+              data-testid="row-5e68b792dd814d8efacda7ad"
+            >
+              <div
+                class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-153 makeStyles-columns__item-144"
+                >
+                  <p
+                    class="MuiTypography-root makeStyles-columns__item__typo-145 MuiTypography-body2"
+                  >
+                    nvdai235556@gmail.com
+                  </p>
+                </div>
+              </div>
+              <div
+                class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-154 makeStyles-columns__item-144"
+                >
+                  <p
+                    class="MuiTypography-root makeStyles-columns__item__typo-145 MuiTypography-body2"
+                  >
+                    nvdai235556
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div
         class="resize-triggers"
       >
@@ -43,7 +148,7 @@ exports[`InfiniteTable should match snapshot 1`] = `
           class="expand-trigger"
         >
           <div
-            style="width: 1px; height: 1px;"
+            style="width: 201px; height: 701px;"
           />
         </div>
         <div

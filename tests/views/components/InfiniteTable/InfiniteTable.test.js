@@ -1,10 +1,14 @@
 import React from 'react'
-
-import { cleanup, render } from '@testing-library/react'
+import { findDOMNode } from 'react-dom'
 
 import { InfiniteTable } from '@views_components'
 
-import { mockUserList, mockUserTableHeader } from '@tests/shares/utils'
+import {
+	mockUserList,
+	mockUserTableHeader,
+	renderDOMNode,
+	getMarkup,
+} from '@tests/shares/utils'
 
 describe('InfiniteTable', () => {
 	const mockProps = {
@@ -14,22 +18,23 @@ describe('InfiniteTable', () => {
 		loadNextPage: jest.fn(),
 	}
 
-	const headerItems = mockProps.columns.map(item => item.headerVariable)
-
-	afterEach(() => {
-		cleanup()
-	})
-
 	it('should match snapshot', () => {
-		const { container } = render(<InfiniteTable {...mockProps} />)
-
-		expect(container).toMatchSnapshot()
+		const rendered = findDOMNode(
+			renderDOMNode(getMarkup(<InfiniteTable {...mockProps} />))
+		)
+		expect(rendered).toMatchSnapshot()
 	})
 
-	it.each(headerItems)('should render %s header correctly', item => {
-		const { getByTestId } = render(<InfiniteTable {...mockProps} />)
-		const headerItem = `tableheader-${item}`
+	it.each(mockProps.columns.map(item => item.headerVariable))(
+		'should render %s header correctly',
+		item => {
+			const rendered = findDOMNode(
+				renderDOMNode(getMarkup(<InfiniteTable {...mockProps} />))
+			)
 
-		expect(getByTestId(headerItem)).toBeTruthy()
-	})
+			expect(
+				rendered.querySelectorAll(`[data-testid=tableheader-${item}]`)[0]
+			).toBeTruthy()
+		}
+	)
 })
