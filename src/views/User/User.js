@@ -35,7 +35,7 @@ const User = () => {
 				<Grid item xs={4}>
 					<Box className={classes.item__signup}>
 						{dialogVisible ? (
-							<WelcomeDialog onCreateUser={() => setDialogVisible(false)} />
+							<WelcomeDialog setDialogVisible={() => setDialogVisible(false)} />
 						) : null}
 						<UserFormEditor />
 					</Box>

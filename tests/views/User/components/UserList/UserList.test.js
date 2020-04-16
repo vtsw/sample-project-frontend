@@ -1,12 +1,12 @@
 import React from 'react'
+import { findDOMNode } from 'react-dom'
 
 import { MockedProvider } from '@apollo/react-testing'
-import { act, cleanup, fireEvent, render } from '@testing-library/react'
 import wait from 'waait'
 
 import { UserList } from '@views/User/components'
 
-import { mockUserList } from '@tests/shares/utils'
+import { mockUserList, renderDOMNode, getMarkup } from '@tests/shares/utils'
 import { FETCH_USER_LIST } from '@views/User/gql/query'
 
 const mockSearchText = 'nvdai'
@@ -17,22 +17,6 @@ const mocks = [
 			query: FETCH_USER_LIST,
 			variables: {
 				query: { searchText: '', limit: 30 },
-			},
-		},
-		result: {
-			data: {
-				userList: {
-					items: mockUserList,
-					hasNext: true,
-				},
-			},
-		},
-	},
-	{
-		request: {
-			query: FETCH_USER_LIST,
-			variables: {
-				query: { searchText: mockSearchText, limit: 30 },
 			},
 		},
 		result: {
@@ -72,53 +56,62 @@ const resolvers = {
 }
 
 describe('UserList', async () => {
-	let component
+	let rendered
 
-	beforeEach(async () => {
-		await act(async () => {
-			component = render(
-				<MockedProvider mocks={mocks} addTypename={false} resolvers={resolvers}>
-					<UserList />
-				</MockedProvider>
+	beforeEach(() => {
+		rendered = findDOMNode(
+			renderDOMNode(
+				getMarkup(
+					<MockedProvider
+						mocks={mocks}
+						addTypename={false}
+						resolvers={resolvers}
+					>
+						<UserList />
+					</MockedProvider>
+				)
 			)
-		})
-	})
-	afterEach(() => {
-		cleanup()
+		)
 	})
 
 	it('should match snapshot', async () => {
-		await act(async () => {
-			await wait(10)
-		})
+		await wait(10)
 
-		expect(component.container).toMatchSnapshot()
+		expect(rendered).toMatchSnapshot()
 	})
 
 	it('should render all elements without crashing', () => {
-		const { getByTestId, getByPlaceholderText, getByText } = component
-
-		expect(getByText('User List')).toBeTruthy()
-		expect(getByPlaceholderText('search...')).toBeTruthy()
-		expect(getByTestId('search-icon')).toBeTruthy()
-		expect(getByTestId('infinitetable')).toBeTruthy()
+		expect(
+			rendered.querySelectorAll('[data-testid=userlist-title]')[0]
+		).toBeTruthy()
+		expect(
+			rendered.querySelectorAll('[placeholder="search..."]')[0]
+		).toBeTruthy()
+		expect(
+			rendered.querySelectorAll('[data-testid=search-icon]')[0]
+		).toBeTruthy()
+		expect(
+			rendered.querySelectorAll('[data-testid=infinitetable]')[0]
+		).toBeTruthy()
 	})
 
 	it('should fetch successfully new user list with a new search text value', async () => {
-		const { getByTestId, getByPlaceholderText } = component
-
-		const input = getByPlaceholderText('search...')
+		const input = rendered.querySelectorAll('[placeholder="search..."]')[0]
+		const searchButton = rendered.querySelectorAll(
+			'[data-testid=actioninputbox-button]'
+		)[0]
 
 		expect(input.value).toBe('')
-
-		fireEvent.change(input, { target: { value: mockSearchText } })
+		input.value = mockSearchText
 
 		expect(input.value).toBe(mockSearchText)
 
-		await act(async () => {
-			await fireEvent.click(getByTestId('search-icon'))
-		})
+		searchButton.click()
 
-		expect(getByTestId('infinitetable')).toBeTruthy()
+		expect(rendered.textContent).toContain('Loading...')
+
+		await wait(10)
+
+		expect(rendered.textContent).toContain(mockSearchText)
 	})
 })

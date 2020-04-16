@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UserList should match snapshot 1`] = `
-<div>
+<div
+  style="width: 300px; height: 700px;"
+>
   <div
     class="MuiBox-root MuiBox-root-7 makeStyles-root-1"
   >
@@ -13,6 +15,7 @@ exports[`UserList should match snapshot 1`] = `
       >
         <h5
           class="MuiTypography-root makeStyles-searchbox__title-5 MuiTypography-h5"
+          data-testid="userlist-title"
         >
           User List
         </h5>
@@ -50,6 +53,7 @@ exports[`UserList should match snapshot 1`] = `
           </div>
           <button
             class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-42 MuiButton-containedSizeLarge MuiButton-sizeLarge"
+            data-testid="actioninputbox-button"
             tabindex="0"
             type="button"
           >
@@ -110,7 +114,110 @@ exports[`UserList should match snapshot 1`] = `
           >
             <div
               style="overflow: visible; height: 0px; width: 0px;"
-            />
+            >
+              <div
+                class="makeStyles-overflow-249"
+                style="height: 700px; width: 200px; overflow: auto; position: relative; will-change: transform;"
+              >
+                <div
+                  style="height: 11900px; width: 100%;"
+                >
+                  <div
+                    class="MuiGrid-root makeStyles-root-250 makeStyles-root-255 MuiGrid-container"
+                    data-testid="row-5e68995fb6d0bc05829b6e79"
+                  >
+                    <div
+                      class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+                    >
+                      <div
+                        class="MuiBox-root MuiBox-root-256 makeStyles-columns__item-253"
+                      >
+                        <p
+                          class="MuiTypography-root makeStyles-columns__item__typo-254 MuiTypography-body2"
+                        >
+                          steve@example.com
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+                    >
+                      <div
+                        class="MuiBox-root MuiBox-root-257 makeStyles-columns__item-253"
+                      >
+                        <p
+                          class="MuiTypography-root makeStyles-columns__item__typo-254 MuiTypography-body2"
+                        >
+                          90412
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="MuiGrid-root makeStyles-root-250 makeStyles-root-258 MuiGrid-container"
+                    data-testid="row-5e68b5c3dd814dd832cda79d"
+                  >
+                    <div
+                      class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+                    >
+                      <div
+                        class="MuiBox-root MuiBox-root-259 makeStyles-columns__item-253"
+                      >
+                        <p
+                          class="MuiTypography-root makeStyles-columns__item__typo-254 MuiTypography-body2"
+                        >
+                          nvdai2355@gmail.com
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+                    >
+                      <div
+                        class="MuiBox-root MuiBox-root-260 makeStyles-columns__item-253"
+                      >
+                        <p
+                          class="MuiTypography-root makeStyles-columns__item__typo-254 MuiTypography-body2"
+                        >
+                          asdasdasd
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="MuiGrid-root makeStyles-root-250 makeStyles-root-261 MuiGrid-container"
+                    data-testid="row-5e68b792dd814d8efacda7ad"
+                  >
+                    <div
+                      class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+                    >
+                      <div
+                        class="MuiBox-root MuiBox-root-262 makeStyles-columns__item-253"
+                      >
+                        <p
+                          class="MuiTypography-root makeStyles-columns__item__typo-254 MuiTypography-body2"
+                        >
+                          nvdai235556@gmail.com
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+                    >
+                      <div
+                        class="MuiBox-root MuiBox-root-263 makeStyles-columns__item-253"
+                      >
+                        <p
+                          class="MuiTypography-root makeStyles-columns__item__typo-254 MuiTypography-body2"
+                        >
+                          nvdai235556
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div
               class="resize-triggers"
             >
@@ -118,7 +225,7 @@ exports[`UserList should match snapshot 1`] = `
                 class="expand-trigger"
               >
                 <div
-                  style="width: 1px; height: 1px;"
+                  style="width: 201px; height: 701px;"
                 />
               </div>
               <div

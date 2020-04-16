@@ -141,7 +141,11 @@ const UserList = props => {
 		<Box className={classes.root}>
 			<Box className={classes.userlist__container}>
 				<Box className={classes.searchbox}>
-					<Typography variant='h5' className={classes.searchbox__title}>
+					<Typography
+						data-testid='userlist-title'
+						variant='h5'
+						className={classes.searchbox__title}
+					>
 						User List
 					</Typography>
 					<SearchUserBox

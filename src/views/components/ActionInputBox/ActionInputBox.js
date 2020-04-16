@@ -61,6 +61,7 @@ const ActionInputBox = props => {
 				onKeyDown={handleOnKeyDown}
 			/>
 			<Button
+				data-testid='actioninputbox-button'
 				color={`${type === 'search' ? 'default' : 'primary'}`}
 				variant='contained'
 				size='large'
