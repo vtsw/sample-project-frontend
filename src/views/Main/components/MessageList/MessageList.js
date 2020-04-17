@@ -11,6 +11,7 @@ import {
 	Loading,
 } from '@views_components'
 
+import { GET_SELECTED_USER_OF_MAIN } from '@views/Main/gql/query'
 import { MESSAGE_LIST } from '@views/Message/gql/query'
 import { DELETE_MESSAGE, UPDATE_MESSAGE } from '@views/Message/gql/mutation'
 import { useDeleteMessage } from '@views/Message/gql/useMutation'
@@ -30,6 +31,14 @@ const useStyles = makeStyles(theme => ({
 		padding: theme.spacing(3),
 		fontWeight: 700,
 	},
+	overlay: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		background: theme.palette.common.black,
+		height: '100%',
+		marginLeft: theme.spacing(1.5),
+	},
 }))
 
 const tableHeaders = [
@@ -37,28 +46,39 @@ const tableHeaders = [
 	{ headerLabel: 'CONTENT', xs: 7, headerVariable: 'content' },
 ]
 
-const ListMessageOfUser = props => {
-	const { selectedUser } = props
+const MessageList = () => {
 	const classes = useStyles()
 
 	const [modifyDialogVisible, setModifyDialogVisible] = useState(false)
 	const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)
 	const [selectedMessage, setSelectedMessage] = useState('')
 
+	const { data: selectedUserOfMainData } = useQuery(GET_SELECTED_USER_OF_MAIN)
+
 	const messageListQueryVars = {
 		query: {
-			userId: selectedUser && selectedUser.id,
+			userId:
+				selectedUserOfMainData && selectedUserOfMainData.selectedUserOfMain.id,
 			limit: PAGE_LIMIT,
 		},
 	}
 	const { data: dataMsg, fetchMore, networkStatus, loading } = useQuery(
 		MESSAGE_LIST,
 		{
-			variables: messageListQueryVars,
+			variables: {
+				query: {
+					userId: selectedUserOfMainData
+						? selectedUserOfMainData.selectedUserOfMain.id
+						: '',
+					limit: PAGE_LIMIT,
+				},
+			},
 			fetchPolicy: 'network-only',
 			notifyOnNetworkStatusChange: true,
 		}
 	)
+
+	console.log('MessageList', dataMsg, selectedUserOfMainData)
 
 	const [deleteMessage] = useDeleteMessage(
 		DELETE_MESSAGE,
@@ -75,7 +95,9 @@ const ListMessageOfUser = props => {
 			fetchMore({
 				variables: {
 					query: {
-						userId: selectedUser && selectedUser.id,
+						userId:
+							selectedUserOfMainData &&
+							selectedUserOfMainData.selectedUserOfMain.id,
 						limit: 10,
 						skip: dataMsg.messageList.items.length,
 					},
@@ -129,6 +151,16 @@ const ListMessageOfUser = props => {
 		dataMsg.messageList.items.find(item => item.id === selectedMessage.id)
 			.content
 
+	if (selectedUserOfMainData && !selectedUserOfMainData.selectedUserOfMain.id) {
+		return (
+			<Box className={classes.overlay}>
+				<Typography variant='subtitle2' color='primary' gutterBottom>
+					Select an item on the left.
+				</Typography>
+			</Box>
+		)
+	}
+
 	return (
 		<Box className={classes.root}>
 			{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
@@ -178,4 +210,4 @@ const ListMessageOfUser = props => {
 	)
 }
 
-export default ListMessageOfUser
+export default MessageList

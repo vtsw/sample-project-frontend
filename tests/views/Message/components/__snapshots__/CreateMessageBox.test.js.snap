@@ -36,6 +36,7 @@ exports[`CreateMessageBox should match snapshot 1`] = `
     </div>
     <button
       class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-3 MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
+      data-testid="actioninputbox-button"
       tabindex="0"
       type="button"
     >

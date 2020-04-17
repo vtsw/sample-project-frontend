@@ -167,6 +167,159 @@ const mockUserList = [
 	},
 ]
 
+const mockMessageList = [
+	{
+		id: '5e902a09035ac411cd04d22b',
+		content: '1212',
+		lastModified: '2020-04-10T08:10:49+00:00',
+	},
+	// {
+	// 	id: '5e6b34a80f14940526bb0780',
+	// 	content: '13s123x232s sadaa',
+	// 	lastModified: '2020-04-10T08:10:47+00:00',
+	// },
+	// {
+	// 	id: '5e8a886b71b355002f81c196',
+	// 	content: '1212312',
+	// 	lastModified: '2020-04-06T01:39:55+00:00',
+	// },
+	// {
+	// 	id: '5e87088cf2439c004b4b9ee5',
+	// 	content: '123123123',
+	// 	lastModified: '2020-04-03T09:57:32+00:00',
+	// },
+	// {
+	// 	id: '5e86f39d50e9e0045eadc459',
+	// 	content: '1212',
+	// 	lastModified: '2020-04-03T08:28:13+00:00',
+	// },
+	// {
+	// 	id: '5e86e348f93af80040f2fdd7',
+	// 	content: 'asdf',
+	// 	lastModified: '2020-04-03T07:18:32+00:00',
+	// },
+	// {
+	// 	id: '5e8436a72092ca00358c5acd',
+	// 	content: 'sdfsdfsdfsdf',
+	// 	lastModified: '2020-04-01T06:37:27+00:00',
+	// },
+	// {
+	// 	id: '5e8436852092ca00358c5acb',
+	// 	content: 'sdfsdfsdfsdfsdf',
+	// 	lastModified: '2020-04-01T06:36:53+00:00',
+	// },
+	// {
+	// 	id: '5e8435e92092ca00358c5ac7',
+	// 	content: '`11231',
+	// 	lastModified: '2020-04-01T06:34:17+00:00',
+	// },
+	// {
+	// 	id: '5e8435e22092ca00358c5ac5',
+	// 	content: 'sdfsdfsdfdsfsd',
+	// 	lastModified: '2020-04-01T06:34:10+00:00',
+	// },
+	// {
+	// 	id: '5e8434db2092ca00358c5ac3',
+	// 	content: 'sdfsdfsdf',
+	// 	lastModified: '2020-04-01T06:29:47+00:00',
+	// },
+	// {
+	// 	id: '5e8434b72092ca00358c5ac1',
+	// 	content: 'asdfasdfasdfasf',
+	// 	lastModified: '2020-04-01T06:29:11+00:00',
+	// },
+	// {
+	// 	id: '5e8434992092ca00358c5abf',
+	// 	content: 'sdfsdfdsf',
+	// 	lastModified: '2020-04-01T06:28:41+00:00',
+	// },
+	// {
+	// 	id: '5e8434892092ca00358c5abd',
+	// 	content: 'cxcvcxv',
+	// 	lastModified: '2020-04-01T06:28:25+00:00',
+	// },
+	// {
+	// 	id: '5e8434572092ca00358c5abb',
+	// 	content: 'sfsd',
+	// 	lastModified: '2020-04-01T06:27:35+00:00',
+	// },
+	// {
+	// 	id: '5e83ff4b2092ca00358c5ab9',
+	// 	content: 'sdfsdfsdfsd',
+	// 	lastModified: '2020-04-01T02:41:15+00:00',
+	// },
+	// {
+	// 	id: '5e83ff432092ca00358c5ab7',
+	// 	content: 'sdfsdfsdf',
+	// 	lastModified: '2020-04-01T02:41:07+00:00',
+	// },
+	// {
+	// 	id: '5e83feb92092ca00358c5ab5',
+	// 	content: 'sdfsddfdf',
+	// 	lastModified: '2020-04-01T02:38:49+00:00',
+	// },
+	// {
+	// 	id: '5e83f7e12092ca00358c5ab3',
+	// 	content: 'abc',
+	// 	lastModified: '2020-04-01T02:09:37+00:00',
+	// },
+	// {
+	// 	id: '5e83f7932092ca00358c5ab1',
+	// 	content: 'abc',
+	// 	lastModified: '2020-04-01T02:08:19+00:00',
+	// },
+	// {
+	// 	id: '5e831238ed7075003575d025',
+	// 	content: 'sdfsdfsd',
+	// 	lastModified: '2020-03-31T09:49:44+00:00',
+	// },
+	// {
+	// 	id: '5e83118ded7075003575d023',
+	// 	content: 'asdasdasd',
+	// 	lastModified: '2020-03-31T09:46:53+00:00',
+	// },
+	// {
+	// 	id: '5e831109ed7075003575d021',
+	// 	content: 'jhfgh',
+	// 	lastModified: '2020-03-31T09:44:41+00:00',
+	// },
+	// {
+	// 	id: '5e8310e0ed7075003575d01f',
+	// 	content: 'dfgdfgdfgertret',
+	// 	lastModified: '2020-03-31T09:44:00+00:00',
+	// },
+	// {
+	// 	id: '5e831054ed7075003575d01d',
+	// 	content: 'dfgdfgdfg',
+	// 	lastModified: '2020-03-31T09:41:40+00:00',
+	// },
+	// {
+	// 	id: '5e831014ed7075003575d01b',
+	// 	content: 'tyrtyrtyrtrtyrtyrtyrtyrtyrtytrytryrtyrt',
+	// 	lastModified: '2020-03-31T09:40:36+00:00',
+	// },
+	// {
+	// 	id: '5e830f47ed7075003575d019',
+	// 	content: 'weqwqe',
+	// 	lastModified: '2020-03-31T09:37:11+00:00',
+	// },
+	// {
+	// 	id: '5e830edeed7075003575d017',
+	// 	content: 'sdfsdfsdf',
+	// 	lastModified: '2020-03-31T09:35:26+00:00',
+	// },
+	// {
+	// 	id: '5e830eb2ed7075003575d015',
+	// 	content: 'dfgdfwerew',
+	// 	lastModified: '2020-03-31T09:34:42+00:00',
+	// },
+	// {
+	// 	id: '5e830e99ed7075003575d013',
+	// 	content: 'dfgdf',
+	// 	lastModified: '2020-03-31T09:34:17+00:00',
+	// },
+]
+
 const mockUserTableHeader = [
 	{ headerLabel: 'EMAIL', xs: 5, headerVariable: 'email' },
 	{ headerLabel: 'NAME', xs: 7, headerVariable: 'name' },
@@ -250,6 +403,7 @@ const getMarkup = component => {
 export {
 	mockUser,
 	mockUserList,
+	mockMessageList,
 	mockUserTableHeader,
 	mockMessageTableHeader,
 	renderWithApolloClient,

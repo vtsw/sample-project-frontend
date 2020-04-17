@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Main should match snapshot 1`] = `
+<div
+  style="width: 300px; height: 700px;"
+>
+  <div
+    class="MuiBox-root MuiBox-root-4 makeStyles-root-1"
+  >
+    <div
+      class="MuiGrid-root makeStyles-container__userlist__messagelist-2 MuiGrid-container"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-4"
+      >
+        <div>
+          Userlist
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8"
+      />
+    </div>
+  </div>
+</div>
+`;
