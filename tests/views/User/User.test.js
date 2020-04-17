@@ -1,37 +1,78 @@
 import React from 'react'
+import { findDOMNode } from 'react-dom'
 
-import { createMockClient } from 'mock-apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-
-import { act, cleanup } from '@testing-library/react'
+import { MockedProvider } from '@apollo/react-testing'
+import wait from 'waait'
+import { act } from '@testing-library/react'
 
 import User from '@views/User'
 
-import { renderWithApolloClient } from '@tests/shares/utils'
-import { initialState, resolvers } from '@src/client'
+import { mockUserList, renderDOMNode, getMarkup } from '@tests/shares/utils'
+import { FETCH_USER_LIST } from '@views/User/gql/query'
+
+const mocks = [
+	{
+		request: {
+			query: FETCH_USER_LIST,
+			variables: {
+				query: { searchText: '', limit: 30 },
+			},
+		},
+		result: {
+			data: {
+				userList: {
+					items: mockUserList,
+					hasNext: true,
+				},
+			},
+		},
+	},
+]
+
+const resolvers = {
+	Query: {
+		userSearchValue: () => {
+			return ''
+		},
+		selectedUser: () => {
+			return {
+				id: '123',
+				name: 'dai',
+				email: 'nvdai123@gmail.com',
+			}
+		},
+	},
+	Mutation: {
+		setUserSearchValue: (_, { searchValue }, { cache }) => {
+			cache.writeData({
+				data: {
+					userSearchValue: searchValue,
+				},
+			})
+			return searchValue
+		},
+	},
+}
 
 describe('User', () => {
-	const cache = new InMemoryCache()
-	cache.writeData({
-		data: initialState,
-	})
-	const mockClient = createMockClient({
-		cache,
-		resolvers,
-	})
-
-	afterEach(() => {
-		cleanup()
-	})
-
 	it('should match snapshot', async () => {
-		jest.spyOn(window, 'alert').mockImplementation(() => 'Mock alert!!!')
-		let wrapper
+		let rendered
 		await act(async () => {
-			const { container } = renderWithApolloClient(<User />, mockClient)
-			wrapper = container
+			rendered = findDOMNode(
+				renderDOMNode(
+					getMarkup(
+						<MockedProvider
+							mocks={mocks}
+							addTypename={false}
+							resolvers={resolvers}
+						>
+							<User />
+						</MockedProvider>
+					)
+				)
+			)
 		})
-
-		expect(wrapper).toMatchSnapshot()
+		await wait(10)
+		expect(rendered).toMatchSnapshot()
 	})
 })
