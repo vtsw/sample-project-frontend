@@ -1,0 +1,227 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserList should match snapshot 1`] = `
+<div
+  style="width: 300px; height: 700px;"
+>
+  <div
+    class="MuiBox-root MuiBox-root-6 makeStyles-root-1"
+  >
+    <div
+      class="MuiBox-root MuiBox-root-7 makeStyles-searchbox-3"
+    >
+      <div
+        class="MuiBox-root MuiBox-root-13 makeStyles-root-8"
+      >
+        <div
+          class="MuiFormControl-root MuiTextField-root makeStyles-input-9 makeStyles-input-12"
+        >
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiOutlinedInput-input"
+              placeholder="search..."
+              type="text"
+              value=""
+            />
+            <fieldset
+              aria-hidden="true"
+              class="PrivateNotchedOutline-root-52 MuiOutlinedInput-notchedOutline"
+              style="padding-left: 8px;"
+            >
+              <legend
+                class="PrivateNotchedOutline-legend-53"
+                style="width: 0.01px;"
+              >
+                <span>
+                  ​
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+        </div>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-10 MuiButton-containedSizeLarge MuiButton-sizeLarge"
+          data-testid="actioninputbox-button"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root makeStyles-icon-11"
+              data-testid="search-icon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+    </div>
+    <div
+      class="MuiBox-root MuiBox-root-111 makeStyles-root-108"
+      data-testid="infinitetable"
+    >
+      <div
+        class="MuiGrid-root makeStyles-container__header-109 MuiGrid-container"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+        >
+          <p
+            class="MuiTypography-root makeStyles-item__header-110 MuiTypography-body2"
+            data-testid="tableheader-email"
+          >
+            EMAIL
+          </p>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+        >
+          <p
+            class="MuiTypography-root makeStyles-item__header-110 MuiTypography-body2"
+            data-testid="tableheader-name"
+          >
+            NAME
+          </p>
+        </div>
+      </div>
+      <div
+        class="MuiBox-root MuiBox-root-245 makeStyles-root-108"
+      >
+        <div
+          style="overflow: visible; height: 0px; width: 0px;"
+        >
+          <div
+            class="makeStyles-overflow-246"
+            style="height: 700px; width: 200px; overflow: auto; position: relative; will-change: transform;"
+          >
+            <div
+              style="height: 11900px; width: 100%;"
+            >
+              <div
+                class="MuiGrid-root makeStyles-root-247 makeStyles-root-252 makeStyles-item__active-248 MuiGrid-container"
+                data-testid="row-5e68995fb6d0bc05829b6e79"
+              >
+                <div
+                  class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+                >
+                  <div
+                    class="MuiBox-root MuiBox-root-253 makeStyles-columns__item-250"
+                  >
+                    <p
+                      class="MuiTypography-root makeStyles-columns__item__typo-251 MuiTypography-body2"
+                    >
+                      steve@example.com
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+                >
+                  <div
+                    class="MuiBox-root MuiBox-root-254 makeStyles-columns__item-250"
+                  >
+                    <p
+                      class="MuiTypography-root makeStyles-columns__item__typo-251 MuiTypography-body2"
+                    >
+                      90412
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiGrid-root makeStyles-root-247 makeStyles-root-255 MuiGrid-container"
+                data-testid="row-5e68b5c3dd814dd832cda79d"
+              >
+                <div
+                  class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+                >
+                  <div
+                    class="MuiBox-root MuiBox-root-256 makeStyles-columns__item-250"
+                  >
+                    <p
+                      class="MuiTypography-root makeStyles-columns__item__typo-251 MuiTypography-body2"
+                    >
+                      nvdai2355@gmail.com
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+                >
+                  <div
+                    class="MuiBox-root MuiBox-root-257 makeStyles-columns__item-250"
+                  >
+                    <p
+                      class="MuiTypography-root makeStyles-columns__item__typo-251 MuiTypography-body2"
+                    >
+                      asdasdasd
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiGrid-root makeStyles-root-247 makeStyles-root-258 MuiGrid-container"
+                data-testid="row-5e68b792dd814d8efacda7ad"
+              >
+                <div
+                  class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+                >
+                  <div
+                    class="MuiBox-root MuiBox-root-259 makeStyles-columns__item-250"
+                  >
+                    <p
+                      class="MuiTypography-root makeStyles-columns__item__typo-251 MuiTypography-body2"
+                    >
+                      nvdai235556@gmail.com
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+                >
+                  <div
+                    class="MuiBox-root MuiBox-root-260 makeStyles-columns__item-250"
+                  >
+                    <p
+                      class="MuiTypography-root makeStyles-columns__item__typo-251 MuiTypography-body2"
+                    >
+                      nvdai235556
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="resize-triggers"
+        >
+          <div
+            class="expand-trigger"
+          >
+            <div
+              style="width: 201px; height: 701px;"
+            />
+          </div>
+          <div
+            class="contract-trigger"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
