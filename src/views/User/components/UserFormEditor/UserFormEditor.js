@@ -103,8 +103,8 @@ const UserFormEditor = () => {
 			variables: { id },
 		}).then(() => {
 			resetSelectedUser()
-			setOpenConfirmDeleteDialog(false)
 		})
+		setOpenConfirmDeleteDialog(false)
 	}
 
 	const handleOnCancel = () => {
