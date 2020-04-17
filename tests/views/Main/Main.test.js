@@ -15,13 +15,14 @@ import {
 } from '@tests/shares/utils'
 import { FETCH_USER_LIST } from '@views/User/gql/query'
 import { MESSAGE_LIST } from '@views/Message/gql/query'
+import { PAGE_LIMIT } from '@src/configs.local'
 
 const mocks = [
 	{
 		request: {
 			query: FETCH_USER_LIST,
 			variables: {
-				query: { limit: 30 },
+				query: { limit: PAGE_LIMIT },
 			},
 		},
 		result: {
@@ -37,7 +38,7 @@ const mocks = [
 		request: {
 			query: MESSAGE_LIST,
 			variables: {
-				query: { userId: '5e68995fb6d0bc05829b6e79', limit: 30 },
+				query: { userId: mockUserList[0].id, limit: PAGE_LIMIT },
 			},
 		},
 		result: {
@@ -50,23 +51,6 @@ const mocks = [
 			},
 		},
 	},
-	// {
-	// 	request: {
-	// 		query: MESSAGE_LIST,
-	// 		variables: {
-	// 			query: { userId: '5e68995fb6d0bc05829b6e79', limit: 10 },
-	// 		},
-	// 	},
-	// 	result: {
-	// 		data: {
-	// 			messageList: {
-	// 				items: mockMessageList,
-	// 				hasNext: true,
-	// 				total: 1,
-	// 			},
-	// 		},
-	// 	},
-	// },
 ]
 
 const resolvers = {
@@ -75,58 +59,32 @@ const resolvers = {
 			return ''
 		},
 		selectedUserOfMain: () => {
-			return {
-				id: '5e68995fb6d0bc05829b6e79',
-				name: '90412',
-				email: 'steve@example.com',
-			}
-		},
-	},
-	Mutation: {
-		setUserSearchValue: (_, { searchValue }, { cache }) => {
-			cache.writeData({
-				data: {
-					userSearchValue: searchValue,
-				},
-			})
-			return searchValue
+			return mockUserList[0]
 		},
 	},
 }
 
 describe('Main', () => {
 	it('should match snapshot', async () => {
-		// jest.spyOn(window, 'alert').mockImplementation(() => 'Form is not valid!!!')
-		let rendered = findDOMNode(
-			renderDOMNode(
-				getMarkup(
-					<MockedProvider
-						mocks={mocks}
-						addTypename={false}
-						resolvers={resolvers}
-					>
-						<Main />
-					</MockedProvider>
+		let rendered
+
+		await act(async () => {
+			rendered = findDOMNode(
+				renderDOMNode(
+					getMarkup(
+						<MockedProvider
+							mocks={mocks}
+							addTypename={false}
+							resolvers={resolvers}
+						>
+							<Main />
+						</MockedProvider>
+					)
 				)
 			)
-		)
-		// await act(async () => {
-		// 	rendered = findDOMNode(
-		// 		renderDOMNode(
-		// 			getMarkup(
-		// 				<MockedProvider
-		// 					mocks={mocks}
-		// 					addTypename={false}
-		// 					resolvers={resolvers}
-		// 				>
-		// 					<Main />
-		// 				</MockedProvider>
-		// 			)
-		// 		)
-		// 	)
-		// })
+		})
 		await wait(10)
-		// await waitFor(() => )
+
 		expect(rendered).toMatchSnapshot()
 	})
 })

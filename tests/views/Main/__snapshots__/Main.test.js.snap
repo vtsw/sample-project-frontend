@@ -13,13 +13,426 @@ exports[`Main should match snapshot 1`] = `
       <div
         class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-4"
       >
-        <div>
-          Userlist
+        <div
+          class="MuiBox-root MuiBox-root-112 makeStyles-root-108"
+        >
+          <div
+            class="MuiBox-root MuiBox-root-113 makeStyles-searchbox-110"
+          >
+            <div
+              class="MuiBox-root MuiBox-root-119 makeStyles-root-114"
+            >
+              <div
+                class="MuiFormControl-root MuiTextField-root makeStyles-input-115 makeStyles-input-118"
+              >
+                <div
+                  class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+                >
+                  <input
+                    aria-invalid="false"
+                    class="MuiInputBase-input MuiOutlinedInput-input"
+                    placeholder="search..."
+                    type="text"
+                    value=""
+                  />
+                  <fieldset
+                    aria-hidden="true"
+                    class="PrivateNotchedOutline-root-158 MuiOutlinedInput-notchedOutline"
+                    style="padding-left: 8px;"
+                  >
+                    <legend
+                      class="PrivateNotchedOutline-legend-159"
+                      style="width: 0.01px;"
+                    >
+                      <span>
+                        ​
+                      </span>
+                    </legend>
+                  </fieldset>
+                </div>
+              </div>
+              <button
+                class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-116 MuiButton-containedSizeLarge MuiButton-sizeLarge"
+                data-testid="actioninputbox-button"
+                tabindex="0"
+                type="button"
+              >
+                <span
+                  class="MuiButton-label"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root makeStyles-icon-117"
+                    data-testid="search-icon"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                    />
+                  </svg>
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            class="MuiBox-root MuiBox-root-274 makeStyles-root-271"
+            data-testid="infinitetable"
+          >
+            <div
+              class="MuiGrid-root makeStyles-container__header-272 MuiGrid-container"
+            >
+              <div
+                class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+              >
+                <p
+                  class="MuiTypography-root makeStyles-item__header-273 MuiTypography-body2"
+                  data-testid="tableheader-email"
+                >
+                  EMAIL
+                </p>
+              </div>
+              <div
+                class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+              >
+                <p
+                  class="MuiTypography-root makeStyles-item__header-273 MuiTypography-body2"
+                  data-testid="tableheader-name"
+                >
+                  NAME
+                </p>
+              </div>
+            </div>
+            <div
+              class="MuiBox-root MuiBox-root-305 makeStyles-root-271"
+            >
+              <div
+                style="overflow: visible; height: 0px; width: 0px;"
+              >
+                <div
+                  class="makeStyles-overflow-306"
+                  style="height: 700px; width: 200px; overflow: auto; position: relative; will-change: transform;"
+                >
+                  <div
+                    style="height: 11900px; width: 100%;"
+                  >
+                    <div
+                      class="MuiGrid-root makeStyles-root-307 makeStyles-root-312 makeStyles-item__active-308 MuiGrid-container"
+                      data-testid="row-5e68995fb6d0bc05829b6e79"
+                    >
+                      <div
+                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+                      >
+                        <div
+                          class="MuiBox-root MuiBox-root-313 makeStyles-columns__item-310"
+                        >
+                          <p
+                            class="MuiTypography-root makeStyles-columns__item__typo-311 MuiTypography-body2"
+                          >
+                            steve@example.com
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+                      >
+                        <div
+                          class="MuiBox-root MuiBox-root-314 makeStyles-columns__item-310"
+                        >
+                          <p
+                            class="MuiTypography-root makeStyles-columns__item__typo-311 MuiTypography-body2"
+                          >
+                            90412
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="MuiGrid-root makeStyles-root-307 makeStyles-root-315 MuiGrid-container"
+                      data-testid="row-5e68b5c3dd814dd832cda79d"
+                    >
+                      <div
+                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+                      >
+                        <div
+                          class="MuiBox-root MuiBox-root-316 makeStyles-columns__item-310"
+                        >
+                          <p
+                            class="MuiTypography-root makeStyles-columns__item__typo-311 MuiTypography-body2"
+                          >
+                            nvdai2355@gmail.com
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+                      >
+                        <div
+                          class="MuiBox-root MuiBox-root-317 makeStyles-columns__item-310"
+                        >
+                          <p
+                            class="MuiTypography-root makeStyles-columns__item__typo-311 MuiTypography-body2"
+                          >
+                            asdasdasd
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="MuiGrid-root makeStyles-root-307 makeStyles-root-318 MuiGrid-container"
+                      data-testid="row-5e68b792dd814d8efacda7ad"
+                    >
+                      <div
+                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+                      >
+                        <div
+                          class="MuiBox-root MuiBox-root-319 makeStyles-columns__item-310"
+                        >
+                          <p
+                            class="MuiTypography-root makeStyles-columns__item__typo-311 MuiTypography-body2"
+                          >
+                            nvdai235556@gmail.com
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+                      >
+                        <div
+                          class="MuiBox-root MuiBox-root-320 makeStyles-columns__item-310"
+                        >
+                          <p
+                            class="MuiTypography-root makeStyles-columns__item__typo-311 MuiTypography-body2"
+                          >
+                            nvdai235556
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="resize-triggers"
+              >
+                <div
+                  class="expand-trigger"
+                >
+                  <div
+                    style="width: 201px; height: 701px;"
+                  />
+                </div>
+                <div
+                  class="contract-trigger"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div
         class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8"
-      />
+      >
+        <div
+          class="MuiBox-root MuiBox-root-207 makeStyles-root-204"
+        >
+          <h5
+            class="MuiTypography-root makeStyles-listtitle-205 MuiTypography-h5"
+          >
+            Total 
+            30
+          </h5>
+          <div
+            class="MuiBox-root MuiBox-root-360 makeStyles-root-271"
+            data-testid="infinitetable"
+          >
+            <div
+              class="MuiGrid-root makeStyles-container__header-272 MuiGrid-container"
+            >
+              <div
+                class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+              >
+                <p
+                  class="MuiTypography-root makeStyles-item__header-273 MuiTypography-body2"
+                  data-testid="tableheader-lastModified"
+                >
+                  DATE
+                </p>
+              </div>
+              <div
+                class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+              >
+                <p
+                  class="MuiTypography-root makeStyles-item__header-273 MuiTypography-body2"
+                  data-testid="tableheader-content"
+                >
+                  CONTENT
+                </p>
+              </div>
+            </div>
+            <div
+              class="MuiBox-root MuiBox-root-361 makeStyles-root-271"
+            >
+              <div
+                style="overflow: visible; height: 0px; width: 0px;"
+              >
+                <div
+                  class="makeStyles-overflow-306"
+                  style="height: 700px; width: 200px; overflow: auto; position: relative; will-change: transform;"
+                >
+                  <div
+                    style="height: 11900px; width: 100%;"
+                  >
+                    <div
+                      class="MuiGrid-root makeStyles-root-307 makeStyles-root-362 MuiGrid-container"
+                      data-testid="row-5e902a09035ac411cd04d22b"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="MuiSvgIcon-root makeStyles-item__closeicon-309"
+                        data-testid="row-closeicon-5e902a09035ac411cd04d22b"
+                        focusable="false"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                        />
+                      </svg>
+                      <div
+                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+                      >
+                        <div
+                          class="MuiBox-root MuiBox-root-363 makeStyles-columns__item-310"
+                        >
+                          <p
+                            class="MuiTypography-root makeStyles-columns__item__typo-311 MuiTypography-body2"
+                          >
+                            2020-04-10T08:10:49+00:00
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+                      >
+                        <div
+                          class="MuiBox-root MuiBox-root-364 makeStyles-columns__item-310"
+                        >
+                          <p
+                            class="MuiTypography-root makeStyles-columns__item__typo-311 MuiTypography-body2"
+                          >
+                            1212
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="MuiGrid-root makeStyles-root-307 makeStyles-root-365 MuiGrid-container"
+                      data-testid="row-5e6b34a80f14940526bb0780"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="MuiSvgIcon-root makeStyles-item__closeicon-309"
+                        data-testid="row-closeicon-5e6b34a80f14940526bb0780"
+                        focusable="false"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                        />
+                      </svg>
+                      <div
+                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+                      >
+                        <div
+                          class="MuiBox-root MuiBox-root-366 makeStyles-columns__item-310"
+                        >
+                          <p
+                            class="MuiTypography-root makeStyles-columns__item__typo-311 MuiTypography-body2"
+                          >
+                            2020-04-10T08:10:47+00:00
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+                      >
+                        <div
+                          class="MuiBox-root MuiBox-root-367 makeStyles-columns__item-310"
+                        >
+                          <p
+                            class="MuiTypography-root makeStyles-columns__item__typo-311 MuiTypography-body2"
+                          >
+                            13s123x232s sadaa
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="MuiGrid-root makeStyles-root-307 makeStyles-root-368 MuiGrid-container"
+                      data-testid="row-5e8a886b71b355002f81c196"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="MuiSvgIcon-root makeStyles-item__closeicon-309"
+                        data-testid="row-closeicon-5e8a886b71b355002f81c196"
+                        focusable="false"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                        />
+                      </svg>
+                      <div
+                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+                      >
+                        <div
+                          class="MuiBox-root MuiBox-root-369 makeStyles-columns__item-310"
+                        >
+                          <p
+                            class="MuiTypography-root makeStyles-columns__item__typo-311 MuiTypography-body2"
+                          >
+                            2020-04-06T01:39:55+00:00
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+                      >
+                        <div
+                          class="MuiBox-root MuiBox-root-370 makeStyles-columns__item-310"
+                        >
+                          <p
+                            class="MuiTypography-root makeStyles-columns__item__typo-311 MuiTypography-body2"
+                          >
+                            1212312
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="resize-triggers"
+              >
+                <div
+                  class="expand-trigger"
+                >
+                  <div
+                    style="width: 201px; height: 701px;"
+                  />
+                </div>
+                <div
+                  class="contract-trigger"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

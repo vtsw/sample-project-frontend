@@ -58,7 +58,7 @@ const UserList = () => {
 
 	const { data: selectedUserOfMainData } = useQuery(GET_SELECTED_USER_OF_MAIN)
 
-	const { loading, data, fetchMore, networkStatus } = useQuery(
+	const { loading, error, data, fetchMore, networkStatus } = useQuery(
 		FETCH_USER_LIST,
 		{
 			variables: { query: { limit: PAGE_LIMIT } },
@@ -155,6 +155,8 @@ const UserList = () => {
 		}
 	}
 
+	if (error) return <p>Error :(</p>
+
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.searchbox}>
@@ -162,11 +164,7 @@ const UserList = () => {
 					width={328}
 					placeholder='search...'
 					type='search'
-					defaultValue={
-						userSearchValueOfMainData
-							? userSearchValueOfMainData.userSearchValueOfMain
-							: ''
-					}
+					defaultValue={userSearchValueOfMainData?.userSearchValueOfMain}
 					onSubmit={handleSearch}
 				/>
 			</Box>
@@ -176,16 +174,12 @@ const UserList = () => {
 				<InfiniteTable
 					items={data.userList.items}
 					onClickRow={handleChoseImage}
-					selectedRow={
-						selectedUserOfMainData
-							? selectedUserOfMainData.selectedUserOfMain
-							: ''
-					}
+					selectedRow={selectedUserOfMainData?.selectedUserOfMain}
 					columns={tableHeaders}
 					loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 					isIconClose={false}
 					loadNextPage={loadNextUserPage}
-					hasNextPage={data.userList.hasNext}
+					hasNextPage={data?.userList?.hasNext}
 				/>
 			)}
 		</Box>

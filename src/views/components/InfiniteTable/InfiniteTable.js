@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const InfiniteTable = props => {
-	const { items, columns, loadNextPage, loadingMore } = props
+	const { items = [], columns, loadNextPage, loadingMore } = props
 	const classes = useStyles()
 
 	return (

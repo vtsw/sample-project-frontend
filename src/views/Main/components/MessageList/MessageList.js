@@ -78,8 +78,6 @@ const MessageList = () => {
 		}
 	)
 
-	console.log('MessageList', dataMsg, selectedUserOfMainData)
-
 	const [deleteMessage] = useDeleteMessage(
 		DELETE_MESSAGE,
 		MESSAGE_LIST,
@@ -95,11 +93,9 @@ const MessageList = () => {
 			fetchMore({
 				variables: {
 					query: {
-						userId:
-							selectedUserOfMainData &&
-							selectedUserOfMainData.selectedUserOfMain.id,
+						userId: selectedUserOfMainData?.selectedUserOfMain?.id,
 						limit: 10,
-						skip: dataMsg.messageList.items.length,
+						skip: dataMsg?.messageList?.items.length,
 					},
 				},
 				updateQuery: (prev, { fetchMoreResult }) => {
@@ -151,7 +147,7 @@ const MessageList = () => {
 		dataMsg.messageList.items.find(item => item.id === selectedMessage.id)
 			.content
 
-	if (selectedUserOfMainData && !selectedUserOfMainData.selectedUserOfMain.id) {
+	if (!selectedUserOfMainData?.selectedUserOfMain.id) {
 		return (
 			<Box className={classes.overlay}>
 				<Typography variant='subtitle2' color='primary' gutterBottom>
@@ -168,11 +164,11 @@ const MessageList = () => {
 			) : (
 				<React.Fragment>
 					<Typography variant='h5' className={classes.listtitle}>
-						Total {dataMsg.messageList.items.length}
+						Total {dataMsg?.messageList?.items.length}
 					</Typography>
 
 					<InfiniteTable
-						items={dataMsg.messageList.items}
+						items={dataMsg?.messageList?.items}
 						onClickRow={handleOnSelectMessage}
 						selectedRow={selectedMessage}
 						columns={tableHeaders}
@@ -180,7 +176,7 @@ const MessageList = () => {
 						handleDeleteRow={handleOnDeleteMessage}
 						loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 						loadNextPage={loadNextMessagePage}
-						hasNextPage={dataMsg.messageList && dataMsg.messageList.hasNext}
+						hasNextPage={dataMsg?.messageList?.hasNext}
 					/>
 				</React.Fragment>
 			)}
