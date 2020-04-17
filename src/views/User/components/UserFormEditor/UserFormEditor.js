@@ -20,18 +20,14 @@ import { useCreateUser, useDeleteUser } from '@views/User/gql/useMutation'
 import { PAGE_LIMIT } from '@src/configs.local'
 
 const UserFormEditor = () => {
-	const {
-		data: { userSearchValue },
-	} = useQuery(GET_USER_SEARCH_TEXT)
+	const { data: userSearchTextData } = useQuery(GET_USER_SEARCH_TEXT)
 	const queryVariables = {
 		query: {
-			searchText: userSearchValue,
+			searchText: userSearchTextData ? userSearchTextData.userSearchValue : '',
 			limit: PAGE_LIMIT,
 		},
 	}
-	const {
-		data: { selectedUser },
-	} = useQuery(GET_SELECTED_USER)
+	const { data: selectedUserData } = useQuery(GET_SELECTED_USER)
 	const [setSelectedUser] = useMutation(SET_SELECTED_USER, {
 		onError: err => alert(err),
 	})
@@ -65,7 +61,7 @@ const UserFormEditor = () => {
 	}
 
 	const shouldUseRefetchQueries = () => {
-		return userSearchValue
+		return userSearchTextData && userSearchTextData.userSearchValue
 			? [
 					{
 						query: FETCH_USER_LIST,
@@ -89,12 +85,13 @@ const UserFormEditor = () => {
 		createNewUser({
 			variables: { user: { email, name, password } },
 			refetchQueries: shouldUseRefetchQueries(),
-			awaitRefetchQueries: !!userSearchValue,
+			awaitRefetchQueries:
+				!!userSearchTextData && userSearchTextData.userSearchValue,
 		})
 	}
 
 	const onSubmit = ({ id, email, name, password }) => {
-		if (selectedUser.id) {
+		if (selectedUserData.selectedUser.id) {
 			updateUserInfo({ id, email, name, password })
 		} else {
 			createUser({ email, name, password })
@@ -130,7 +127,7 @@ const UserFormEditor = () => {
 	return (
 		<React.Fragment>
 			<FormEditor
-				selectedUser={selectedUser}
+				selectedUser={selectedUserData ? selectedUserData.selectedUser : {}}
 				onSubmit={onSubmit}
 				onCancel={handleOnCancel}
 				onDelete={handleOnDelete}
@@ -140,7 +137,7 @@ const UserFormEditor = () => {
 				onClose={() => {
 					setOpenConfirmDeleteDialog(false)
 				}}
-				onAgree={() => onAgreeDeleteAnUser(selectedUser.id)}
+				onAgree={() => onAgreeDeleteAnUser(selectedUserData.selectedUser.id)}
 				onDisagree={() => {
 					setOpenConfirmDeleteDialog(false)
 				}}
