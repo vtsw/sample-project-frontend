@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WelcomeDialog should match snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root MuiBox-root-5 makeStyles-root-1"
+  >
+    <div
+      class="MuiBox-root MuiBox-root-6"
+    >
+      <h6
+        class="MuiTypography-root makeStyles-welcometext-2 MuiTypography-subtitle1"
+      >
+        Welcome to Vatech !!!
+      </h6>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-3 MuiButton-fullWidth"
+        data-testid="create-user-button"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          Create user
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;

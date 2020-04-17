@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
 import { Box, Button, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -53,9 +54,10 @@ const WelcomeDialog = props => {
 	)
 }
 
-export default WelcomeDialog
-
 WelcomeDialog.propTypes = {
 	setDialogVisible: PropTypes.func.isRequired,
 }
+
 WelcomeDialog.defaultProps = {}
+
+export default WelcomeDialog
