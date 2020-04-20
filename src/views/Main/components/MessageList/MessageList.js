@@ -57,8 +57,7 @@ const MessageList = () => {
 
 	const messageListQueryVars = {
 		query: {
-			userId:
-				selectedUserOfMainData && selectedUserOfMainData.selectedUserOfMain.id,
+			userId: selectedUserOfMainData?.selectedUserOfMain?.id,
 			limit: PAGE_LIMIT,
 		},
 	}
@@ -67,9 +66,7 @@ const MessageList = () => {
 		{
 			variables: {
 				query: {
-					userId: selectedUserOfMainData
-						? selectedUserOfMainData.selectedUserOfMain.id
-						: '',
+					userId: selectedUserOfMainData?.selectedUserOfMain?.id,
 					limit: PAGE_LIMIT,
 				},
 			},
@@ -94,7 +91,7 @@ const MessageList = () => {
 				variables: {
 					query: {
 						userId: selectedUserOfMainData?.selectedUserOfMain?.id,
-						limit: 10,
+						limit: PAGE_LIMIT,
 						skip: dataMsg?.messageList?.items.length,
 					},
 				},
@@ -164,7 +161,7 @@ const MessageList = () => {
 			) : (
 				<React.Fragment>
 					<Typography variant='h5' className={classes.listtitle}>
-						Total {dataMsg?.messageList?.items.length}
+						Total {dataMsg?.messageList?.items?.length}
 					</Typography>
 
 					<InfiniteTable

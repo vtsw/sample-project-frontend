@@ -41,29 +41,6 @@ describe('InfiniteScroll', () => {
 		expect(rendered.textContent).toContain(mockProps.items[2].email)
 	})
 
-	it('should render list of item with close icon without crashing', () => {
-		const props = { ...mockProps, isIconClose: true }
-		const rendered = findDOMNode(
-			renderDOMNode(getMarkup(<InfiniteScroll {...props} />))
-		)
-
-		expect(
-			rendered.querySelectorAll(
-				`[data-testid=row-closeicon-${mockProps.items[0].id}]`
-			)[0]
-		).toBeTruthy()
-		expect(
-			rendered.querySelectorAll(
-				`[data-testid=row-closeicon-${mockProps.items[1].id}]`
-			)[0]
-		).toBeTruthy()
-		expect(
-			rendered.querySelectorAll(
-				`[data-testid=row-closeicon-${mockProps.items[2].id}]`
-			)[0]
-		).toBeTruthy()
-	})
-
 	it('should call onClickRow correctly when click a row', () => {
 		const rendered = findDOMNode(
 			renderDOMNode(getMarkup(<InfiniteScroll {...mockProps} />))
