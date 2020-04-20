@@ -55,9 +55,7 @@ const Message = () => {
 
 	const [selectedMessage, setSelectedMessage] = useState(false)
 
-	const {
-		data: { messageSearchValueOfMessage },
-	} = useQuery(GET_MESSAGE_SEARCH_TEXT)
+	const { data: messageSearchTextData } = useQuery(GET_MESSAGE_SEARCH_TEXT)
 
 	const { loading, error, data, fetchMore, networkStatus } = useQuery(
 		MESSAGE_LIST,
@@ -93,10 +91,11 @@ const Message = () => {
 
 	const handleSearch = value => {
 		setMessageSearchValueOfMain({ variables: { searchValue: value } })
-		if (value === messageSearchValueOfMessage) {
+		if (value === messageSearchTextData?.messageSearchValueOfMessage) {
 			return false
 		} else {
 			try {
+				console.log('handleSearch')
 				fetchMore({
 					variables: {
 						query: {
@@ -132,7 +131,7 @@ const Message = () => {
 					query: {
 						limit: PAGE_LIMIT,
 						skip: data.messageList.items.length,
-						searchText: messageSearchValueOfMessage,
+						searchText: messageSearchTextData?.messageSearchValueOfMessage,
 					},
 				},
 				updateQuery: (prev, { fetchMoreResult }) => {
@@ -197,7 +196,7 @@ const Message = () => {
 						width={328}
 						placeholder='search...'
 						type='search'
-						defaultValue={messageSearchValueOfMessage}
+						defaultValue={messageSearchTextData?.messageSearchValueOfMessage}
 						onSubmit={handleSearch}
 					/>
 				</Grid>

@@ -48,7 +48,7 @@ const mocks = [
 				messageList: {
 					items: mockMessageList,
 					hasNext: true,
-					total: 30,
+					total: mockMessageList.length,
 				},
 			},
 		},

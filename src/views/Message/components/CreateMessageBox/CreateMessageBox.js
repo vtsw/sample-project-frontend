@@ -11,9 +11,7 @@ import {
 
 const CreateMessageBox = props => {
 	const { width, onSubmit, placeholder } = props
-	const {
-		data: { messageCreateValueOfMessage },
-	} = useQuery(GET_MESSAGE_CREATE_TEXT)
+	const { data: messageCreateData } = useQuery(GET_MESSAGE_CREATE_TEXT)
 	const [setMessageCreateValueOfMain] = useMutation(SET_MESSAGE_CREATE_TEXT)
 
 	const handleOnInputChange = value => {
@@ -22,7 +20,7 @@ const CreateMessageBox = props => {
 	return (
 		<ActionInputBox
 			width={width}
-			defaultValue={messageCreateValueOfMessage}
+			defaultValue={messageCreateData?.messageCreateValueOfMessage}
 			placeholder={placeholder}
 			onChange={handleOnInputChange}
 			onSubmit={onSubmit}

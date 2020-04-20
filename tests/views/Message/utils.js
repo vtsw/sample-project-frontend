@@ -3,31 +3,28 @@ import { findDOMNode } from 'react-dom'
 
 import { MockedProvider } from '@apollo/react-testing'
 
-import Main from '@views/Main'
+import Message from '@views/Message'
 
-import {
-	mockUserList,
-	mockMessageList,
-	renderDOMNode,
-	getMarkup,
-} from '@tests/shares/utils'
-import { FETCH_USER_LIST } from '@views/User/gql/query'
+import { mockMessageList, renderDOMNode, getMarkup } from '@tests/shares/utils'
 import { MESSAGE_LIST } from '@views/Message/gql/query'
 import { PAGE_LIMIT } from '@src/configs.local'
+
+const mockSearchText = 'abc'
 
 const mocks = [
 	{
 		request: {
-			query: FETCH_USER_LIST,
+			query: MESSAGE_LIST,
 			variables: {
 				query: { limit: PAGE_LIMIT },
 			},
 		},
 		result: {
 			data: {
-				userList: {
-					items: mockUserList,
+				messageList: {
+					items: mockMessageList,
 					hasNext: true,
+					total: 30,
 				},
 			},
 		},
@@ -36,7 +33,7 @@ const mocks = [
 		request: {
 			query: MESSAGE_LIST,
 			variables: {
-				query: { userId: mockUserList[0].id, limit: PAGE_LIMIT },
+				query: { searchText: mockSearchText, limit: PAGE_LIMIT },
 			},
 		},
 		result: {
@@ -53,25 +50,22 @@ const mocks = [
 
 const resolvers = {
 	Query: {
-		userSearchValueOfMain: () => {
+		messageSearchValueOfMessage: () => {
 			return ''
-		},
-		selectedUserOfMain: () => {
-			return mockUserList[0]
 		},
 	},
 }
 
-const findDOMNodeOfMain = () => {
+const findDOMNodeOfMessage = () => {
 	return findDOMNode(
 		renderDOMNode(
 			getMarkup(
 				<MockedProvider mocks={mocks} addTypename={false} resolvers={resolvers}>
-					<Main />
+					<Message />
 				</MockedProvider>
 			)
 		)
 	)
 }
 
-export { findDOMNodeOfMain }
+export { mockSearchText, findDOMNodeOfMessage }
