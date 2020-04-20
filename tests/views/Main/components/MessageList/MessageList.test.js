@@ -8,9 +8,10 @@ import {
 	openDeleteDialog,
 	modifyMessage,
 	findDOMNodeOfMessageList,
+	closeDialog,
 } from './utils'
 
-describe('MessageList', () => {
+describe('<MessageList />', () => {
 	it('should match snapshot', async () => {
 		let rendered
 		act(async () => {
@@ -40,7 +41,7 @@ describe('MessageList', () => {
 				await disagreeButton.click()
 			})
 
-			await waitFor(() => {
+			waitFor(() => {
 				expect(
 					document.querySelectorAll(`[data-testid=modifydialog-title]`)[0]
 				).toBeFalsy()
@@ -52,7 +53,7 @@ describe('MessageList', () => {
 			await openModifyDialog(rendered)
 			await modifyMessage(mockMessage)
 
-			await waitFor(() => {
+			waitFor(() => {
 				expect(
 					document.querySelectorAll(`[data-testid=modifydialog-title]`)[0]
 				).toBeFalsy()
@@ -72,7 +73,7 @@ describe('MessageList', () => {
 
 			expect(window.alert).toHaveBeenCalled()
 
-			await waitFor(() => {
+			waitFor(() => {
 				expect(
 					document.querySelectorAll(`[data-testid=modifydialog-title]`)[0]
 				).toBeFalsy()
@@ -82,14 +83,9 @@ describe('MessageList', () => {
 		it('should allow to click MuiBackdrop-root to close ModifyDialog', async () => {
 			await waait(10)
 			await openModifyDialog(rendered)
+			await closeDialog()
 
-			const MuiBackdrop = document.querySelectorAll(`.MuiBackdrop-root`)[0]
-
-			await act(async () => {
-				MuiBackdrop.click()
-			})
-
-			await waitFor(() => {
+			waitFor(() => {
 				expect(
 					document.querySelectorAll(`[data-testid=modifydialog-title]`)[0]
 				).toBeFalsy()
@@ -116,7 +112,7 @@ describe('MessageList', () => {
 				agreeButton.click()
 			})
 
-			await waitFor(() => {
+			waitFor(() => {
 				expect(
 					document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
 				).toBeFalsy()
@@ -135,7 +131,7 @@ describe('MessageList', () => {
 				disagreeButton.click()
 			})
 
-			await waitFor(() => {
+			waitFor(() => {
 				expect(
 					document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
 				).toBeFalsy()
@@ -145,16 +141,11 @@ describe('MessageList', () => {
 		it('should allow to click MuiBackdrop-root to close DeleteDialog', async () => {
 			await waait(10)
 			await openDeleteDialog(rendered)
+			await closeDialog()
 
-			const MuiBackdrop = document.querySelectorAll(`.MuiBackdrop-root`)[0]
-
-			await act(async () => {
-				MuiBackdrop.click()
-			})
-
-			await waitFor(() => {
+			waitFor(() => {
 				expect(
-					document.querySelectorAll(`[data-testid=modifydialog-title]`)[0]
+					document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
 				).toBeFalsy()
 			})
 		})

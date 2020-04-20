@@ -150,6 +150,14 @@ const findDOMNodeOfMessageList = () => {
 	)
 }
 
+const closeDialog = async () => {
+	const MuiBackdrop = document.querySelectorAll(`.MuiBackdrop-root`)[0]
+
+	await act(async () => {
+		MuiBackdrop.click()
+	})
+}
+
 export {
 	mockMessage,
 	mocks,
@@ -158,4 +166,5 @@ export {
 	openDeleteDialog,
 	modifyMessage,
 	findDOMNodeOfMessageList,
+	closeDialog,
 }
