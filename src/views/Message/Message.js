@@ -176,6 +176,7 @@ const Message = () => {
 		updateMessage({
 			variables: { message: { id: selectedMessage.id, content: message } },
 		})
+		setConfirmDialogVisible(false)
 	}
 
 	if (error) return <p>Error :(</p>

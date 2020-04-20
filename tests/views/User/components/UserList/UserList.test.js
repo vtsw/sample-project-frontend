@@ -1,13 +1,15 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 
+import { act } from '@testing-library/react'
 import { MockedProvider } from '@apollo/react-testing'
-import wait from 'waait'
+import waait from 'waait'
 
 import { UserList } from '@views/User/components'
 
 import { mockUserList, renderDOMNode, getMarkup } from '@tests/shares/utils'
 import { FETCH_USER_LIST } from '@views/User/gql/query'
+import { PAGE_LIMIT } from '@src/configs.local'
 
 const mockSearchText = 'nvdai'
 
@@ -16,7 +18,23 @@ const mocks = [
 		request: {
 			query: FETCH_USER_LIST,
 			variables: {
-				query: { searchText: '', limit: 30 },
+				query: { searchText: '', limit: PAGE_LIMIT },
+			},
+		},
+		result: {
+			data: {
+				userList: {
+					items: mockUserList,
+					hasNext: true,
+				},
+			},
+		},
+	},
+	{
+		request: {
+			query: FETCH_USER_LIST,
+			variables: {
+				query: { skip: mockUserList.length },
 			},
 		},
 		result: {
@@ -55,7 +73,7 @@ const resolvers = {
 	},
 }
 
-describe('UserList', async () => {
+describe('UserList', () => {
 	let rendered
 
 	beforeEach(() => {
@@ -73,27 +91,17 @@ describe('UserList', async () => {
 			)
 		)
 	})
-
 	it('should match snapshot', async () => {
-		await wait(10)
-
+		await act(async () => {
+			await waait(10)
+		})
 		expect(rendered).toMatchSnapshot()
 	})
 
-	it('should render all elements without crashing', () => {
-		expect(
-			rendered.querySelectorAll('[data-testid=userlist-title]')[0]
-		).toBeTruthy()
-		expect(
-			rendered.querySelectorAll('[placeholder="search..."]')[0]
-		).toBeTruthy()
-		expect(
-			rendered.querySelectorAll('[data-testid=search-icon]')[0]
-		).toBeTruthy()
-		expect(
-			rendered.querySelectorAll('[data-testid=infinitetable]')[0]
-		).toBeTruthy()
-	})
+	/**
+	 * TODO:
+	 * 	- implement test case when click search button -> loading -> new data
+	 */
 
 	it('should fetch successfully new user list with a new search text value', async () => {
 		const input = rendered.querySelectorAll('[placeholder="search..."]')[0]
@@ -103,14 +111,11 @@ describe('UserList', async () => {
 
 		expect(input.value).toBe('')
 		input.value = mockSearchText
-
 		expect(input.value).toBe(mockSearchText)
 
-		searchButton.click()
-
-		expect(rendered.textContent).toContain('Loading...')
-
-		await wait(10)
+		await act(async () => {
+			await searchButton.click()
+		})
 
 		expect(rendered.textContent).toContain(mockSearchText)
 	})
