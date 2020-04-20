@@ -1,8 +1,9 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 
+import { act } from '@testing-library/react'
 import { MockedProvider } from '@apollo/react-testing'
-import wait from 'waait'
+import waait from 'waait'
 
 import { UserList } from '@views/Main/components'
 
@@ -33,7 +34,7 @@ const mocks = [
 		request: {
 			query: FETCH_USER_LIST,
 			variables: {
-				query: { searchText: mockSearchText, limit: PAGE_LIMIT },
+				query: { limit: PAGE_LIMIT },
 			},
 		},
 		result: {
@@ -87,45 +88,28 @@ describe('UserList', async () => {
 		)
 	})
 
-	// afterEach(() => {
-	// 	renderDOMNode.unmount()
-	// })
-
 	it('should match snapshot', async () => {
-		await wait(10)
+		await act(async () => {
+			await waait(10)
+		})
 
 		expect(rendered).toMatchSnapshot()
 	})
 
-	// it('should render all elements without crashing', () => {
-	// 	expect(
-	// 		rendered.querySelectorAll('[placeholder="search..."]')[0]
-	// 	).toBeTruthy()
-	// 	expect(
-	// 		rendered.querySelectorAll('[data-testid=search-icon]')[0]
-	// 	).toBeTruthy()
-	// 	expect(
-	// 		rendered.querySelectorAll('[data-testid=infinitetable]')[0]
-	// 	).toBeTruthy()
-	// })
+	it('should fetch successfully new user list with a new search text value', async () => {
+		const input = rendered.querySelectorAll('[placeholder="search..."]')[0]
+		const searchButton = rendered.querySelectorAll(
+			'[data-testid=actioninputbox-button]'
+		)[0]
 
-	// it('should fetch successfully new user list with a new search text value', async () => {
-	// 	const input = rendered.querySelectorAll('[placeholder="search..."]')[0]
-	// 	const searchButton = rendered.querySelectorAll(
-	// 		'[data-testid=actioninputbox-button]'
-	// 	)[0]
+		expect(input.value).toBe('')
+		input.value = mockSearchText
+		expect(input.value).toBe(mockSearchText)
 
-	// 	expect(input.value).toBe('')
-	// 	input.value = mockSearchText
+		await act(async () => {
+			await searchButton.click()
+		})
 
-	// 	expect(input.value).toBe(mockSearchText)
-	// 	console.log(input.value)
-	// 	searchButton.click()
-
-	// 	expect(rendered.textContent).toContain('Loading...')
-
-	// 	await wait(10)
-
-	// 	expect(rendered.textContent).toContain(mockSearchText)
-	// })
+		expect(rendered.textContent).toContain(mockSearchText)
+	})
 })
