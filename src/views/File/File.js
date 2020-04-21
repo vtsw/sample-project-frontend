@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box, Button, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { FetchImage } from './components'
-
 import { GET_USER_INFO, GET_FILE } from './gql/query'
 import { UPLOAD_FILE, SET_UPLOADED_FILE } from './gql/mutation'
+
+import { getToken } from '@src/shares/utils'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -70,6 +70,7 @@ const useStyle = makeStyles(theme => ({
 
 const File = () => {
 	const classes = useStyle()
+	const [imageUrl, setImageUrl] = useState('')
 	const { data: fileData } = useQuery(GET_FILE)
 	const [setUploadedFile] = useMutation(SET_UPLOADED_FILE, {
 		onError: err => alert(err),
@@ -88,8 +89,10 @@ const File = () => {
 	})
 
 	const [uploadFile] = useMutation(UPLOAD_FILE, {
-		onCompleted: ({ uploadImage }) => {
+		onCompleted: async ({ uploadImage }) => {
 			setUploadedFile({ variables: { file: uploadImage } })
+			const imageUrl = await fetchAuthImage(uploadImage.link)
+			setImageUrl(imageUrl)
 		},
 		onError: err => alert(err),
 	})
@@ -99,6 +102,19 @@ const File = () => {
 
 		uploadFile({ variables: { file } })
 	}
+
+	const fetchAuthImage = async imageUrl => {
+		const token = getToken()
+		const res = await fetch(imageUrl, {
+			headers: {
+				authorization: token ? `Bearer ${token}` : '',
+			},
+		})
+		const blob = await res.blob()
+		const url = URL.createObjectURL(blob)
+		return url
+	}
+
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.container}>
@@ -135,11 +151,11 @@ const File = () => {
 						</Typography>
 					</Grid>
 					<Grid item className={classes.item__imageviewer}>
-						{fileData?.file.link ? (
-							<FetchImage
-								fileName={fileData?.file.filename}
-								fileLink={fileData?.file.link}
-								styles={classes.item__imageviewer__image}
+						{imageUrl ? (
+							<img
+								src={imageUrl}
+								alt={fileData?.file.filename}
+								className={classes.item__imageviewer__image}
 							/>
 						) : (
 							<Typography variant='body2'>image</Typography>

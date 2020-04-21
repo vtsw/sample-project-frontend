@@ -1,6 +1,6 @@
 import waait from 'waait'
 
-import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import { act, fireEvent } from '@testing-library/react'
 
 import { findDOMNodeOfFile, fileName, mockFile } from './utils'
 
@@ -25,8 +25,7 @@ describe('<File />', () => {
 
 		fireEvent.change(inputElement, { target: { files: [mockFile] } })
 		fireEvent.input(inputElement)
-		// await waait(10)
-		console.log(component.queryByText(mockFile.fileName))
-		// expect(component.queryByText(mockFile.fileName)).toBeTruthy()
+
+		expect(component.queryByText(fileName)).toBeTruthy()
 	})
 })
