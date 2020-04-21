@@ -165,6 +165,6 @@ export {
 	openModifyDialog,
 	openDeleteDialog,
 	modifyMessage,
-	findDOMNodeOfMessageList,
 	closeDialog,
+	findDOMNodeOfMessageList,
 }

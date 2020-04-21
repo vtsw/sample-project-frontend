@@ -3,6 +3,8 @@ import * as ReactDOM from 'react-dom'
 
 import { render } from '@testing-library/react'
 import { ApolloProvider } from '@apollo/react-hooks'
+import { act, fireEvent } from '@testing-library/react'
+import { MockedProvider } from '@apollo/react-testing'
 
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
@@ -400,6 +402,75 @@ const getMarkup = component => {
 	return <div style={{ width: '300px', height: '700px' }}>{component}</div>
 }
 
+const openModifyDialog = async rendered => {
+	const row = rendered.querySelectorAll(
+		`[data-testid=row-${mockMessageList[0].id}]`
+	)[0]
+
+	await act(async () => {
+		fireEvent.click(row)
+	})
+
+	const modifyDialogTitle = document.querySelectorAll(
+		`[data-testid=modifydialog-title]`
+	)[0]
+
+	expect(modifyDialogTitle).toBeTruthy()
+}
+
+const openDeleteDialog = async rendered => {
+	const closeIcon = rendered.querySelectorAll(
+		`[data-testid=row-closeicon-${mockMessageList[0].id}]`
+	)[0]
+
+	await act(async () => {
+		fireEvent.click(closeIcon)
+	})
+
+	const deleteDialogTitle = document.querySelectorAll(
+		`[data-testid=deletedialog-title]`
+	)[0]
+
+	expect(deleteDialogTitle).toBeTruthy()
+}
+
+const modifyMessage = async message => {
+	const input = document.querySelectorAll(`[placeholder=placeholder]`)[0]
+	const agreeButton = document.querySelectorAll(
+		'[data-testid=modifydialog-agreebutton]'
+	)[0]
+
+	await act(async () => {
+		fireEvent.change(input, { target: { value: message } })
+	})
+
+	expect(input.value).toBe(message)
+
+	await act(async () => {
+		fireEvent.click(agreeButton)
+	})
+}
+
+const findDOMNodeOfComponent = ({ mocks, resolvers, component }) => {
+	return ReactDOM.findDOMNode(
+		renderDOMNode(
+			getMarkup(
+				<MockedProvider mocks={mocks} addTypename={false} resolvers={resolvers}>
+					{component}
+				</MockedProvider>
+			)
+		)
+	)
+}
+
+const closeDialog = async () => {
+	const MuiBackdrop = document.querySelectorAll(`.MuiBackdrop-root`)[0]
+
+	await act(async () => {
+		MuiBackdrop.click()
+	})
+}
+
 export {
 	mockUser,
 	mockUserList,
@@ -411,4 +482,9 @@ export {
 	renderDOMNode,
 	getMarkup,
 	mockOffsetSize,
+	openModifyDialog,
+	openDeleteDialog,
+	modifyMessage,
+	closeDialog,
+	findDOMNodeOfComponent,
 }

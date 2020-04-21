@@ -12,24 +12,20 @@ import {
 } from './utils'
 
 describe('<MessageList />', () => {
-	it('should match snapshot', async () => {
-		let rendered
+	let rendered
+
+	beforeEach(() => {
 		act(async () => {
 			rendered = findDOMNodeOfMessageList()
 		})
-
+	})
+	it('should match snapshot', async () => {
 		await waait(10)
 
 		expect(rendered).toMatchSnapshot()
 	})
 
 	describe('ModifyDialog', () => {
-		let rendered
-
-		beforeEach(() => {
-			rendered = findDOMNodeOfMessageList()
-		})
-
 		it('should allow to click No button to close dialog', async () => {
 			await openModifyDialog(rendered)
 
@@ -60,7 +56,7 @@ describe('<MessageList />', () => {
 			})
 		})
 
-		it('should allow to submit a empty message', async () => {
+		it('should not allow to submit a empty message', async () => {
 			jest
 				.spyOn(window, 'alert')
 				.mockImplementation(
@@ -94,12 +90,6 @@ describe('<MessageList />', () => {
 	})
 
 	describe('DeleteDialog', () => {
-		let rendered
-
-		beforeEach(() => {
-			rendered = findDOMNodeOfMessageList()
-		})
-
 		it('should allow to click Yes button', async () => {
 			await waait(10)
 			await openDeleteDialog(rendered)

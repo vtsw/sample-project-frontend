@@ -1,19 +1,13 @@
-import React from 'react'
-import { findDOMNode } from 'react-dom'
-
-import { MockedProvider } from '@apollo/react-testing'
-
-import Message from '@views/Message'
-
-import { mockMessageList, renderDOMNode, getMarkup } from '@tests/shares/utils'
+import { mockMessageList, findDOMNodeOfComponent } from '@tests/shares/utils'
 import { MESSAGE_LIST } from '@views/Message/gql/query'
-import { CREATE_MESSAGE } from '@views/Message/gql/mutation'
+import { CREATE_MESSAGE, UPDATE_MESSAGE } from '@views/Message/gql/mutation'
 import { PAGE_LIMIT } from '@src/configs.local'
 
 const mockSearchText = 'abc'
-const mockMessageText = 'mockMessageText'
+const mockMessage = 'mock message'
 
 const mocks = [
+	// Query list of message
 	{
 		request: {
 			query: MESSAGE_LIST,
@@ -31,6 +25,7 @@ const mocks = [
 			},
 		},
 	},
+	// Query list of message when loadNextMessagePage is called
 	{
 		request: {
 			query: MESSAGE_LIST,
@@ -52,6 +47,7 @@ const mocks = [
 			},
 		},
 	},
+	// Query list of message when handleSearch is called
 	{
 		request: {
 			query: MESSAGE_LIST,
@@ -75,16 +71,35 @@ const mocks = [
 			},
 		},
 	},
+	// Query list of message when createMessage is called
 	{
 		request: {
 			query: CREATE_MESSAGE,
-			variables: { message: { content: mockMessageText } },
+			variables: { message: { content: mockMessage } },
 		},
 		result: {
 			data: {
 				createMessage: {
 					id: '5e6b34a80f1494052awb0ghy0',
-					content: mockMessageText,
+					content: mockMessage,
+					lastModified: '2020-04-20T08:10:47+00:00',
+				},
+			},
+		},
+	},
+	// Query list of message when updateMessage is called
+	{
+		request: {
+			query: UPDATE_MESSAGE,
+			variables: {
+				message: { id: mockMessageList[0].id, content: mockMessage },
+			},
+		},
+		result: {
+			data: {
+				updateMessage: {
+					id: mockMessageList[0].id,
+					content: mockMessage,
 					lastModified: '2020-04-20T08:10:47+00:00',
 				},
 			},
@@ -110,16 +125,8 @@ const resolvers = {
 	},
 }
 
-const findDOMNodeOfMessage = () => {
-	return findDOMNode(
-		renderDOMNode(
-			getMarkup(
-				<MockedProvider mocks={mocks} addTypename={false} resolvers={resolvers}>
-					<Message />
-				</MockedProvider>
-			)
-		)
-	)
+const findDOMNodeOfMessage = component => {
+	return findDOMNodeOfComponent({ mocks, resolvers, component })
 }
 
-export { mockSearchText, mockMessageText, findDOMNodeOfMessage }
+export { mockSearchText, mockMessage, findDOMNodeOfMessage }
