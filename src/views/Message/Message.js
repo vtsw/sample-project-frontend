@@ -95,7 +95,6 @@ const Message = () => {
 			return false
 		} else {
 			try {
-				console.log('handleSearch')
 				fetchMore({
 					variables: {
 						query: {

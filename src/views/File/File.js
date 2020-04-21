@@ -3,7 +3,7 @@ import React from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box, Button, Grid, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 import { FetchImage } from './components'
 
@@ -70,9 +70,7 @@ const useStyle = makeStyles(theme => ({
 
 const File = () => {
 	const classes = useStyle()
-	const {
-		data: { file },
-	} = useQuery(GET_FILE)
+	const { data: fileData } = useQuery(GET_FILE)
 	const [setUploadedFile] = useMutation(SET_UPLOADED_FILE, {
 		onError: err => alert(err),
 	})
@@ -80,7 +78,7 @@ const File = () => {
 	// eslint-disable-next-line no-unused-vars
 	const _ = useQuery(GET_USER_INFO, {
 		onCompleted: data => {
-			if (data && data.me && data.me.image && !file.filename) {
+			if (data?.me?.image && !fileData?.file.filename) {
 				// when reload page
 				// prevent GET_USER_INFO query use its latest cache when user log out
 				setUploadedFile({ variables: { file: data.me.image } })
@@ -101,7 +99,6 @@ const File = () => {
 
 		uploadFile({ variables: { file } })
 	}
-
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.container}>
@@ -114,12 +111,14 @@ const File = () => {
 				>
 					<Grid item className={classes.item__uploader}>
 						<Button
+							data-testid='file-selectbutton'
 							variant='contained'
 							size='small'
 							className={classes.item__uploader__button}
 						>
 							file select
 							<input
+								data-testid='file-input'
 								accept='image/*'
 								className={classes.item__uploader__input}
 								onChange={onUploadFile}
@@ -130,14 +129,16 @@ const File = () => {
 							variant='body2'
 							className={classes.item__uploader__filename}
 						>
-							{file.filename ? file.filename : 'No file selected'}
+							{fileData?.file.filename
+								? fileData?.file.filename
+								: 'No file selected'}
 						</Typography>
 					</Grid>
 					<Grid item className={classes.item__imageviewer}>
-						{file.link ? (
+						{fileData?.file.link ? (
 							<FetchImage
-								fileName={file.filename}
-								fileLink={file.link}
+								fileName={fileData?.file.filename}
+								fileLink={fileData?.file.link}
 								styles={classes.item__imageviewer__image}
 							/>
 						) : (

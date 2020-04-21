@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<File /> should match snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root MuiBox-root-11 makeStyles-root-1"
+  >
+    <div
+      class="MuiBox-root MuiBox-root-12 makeStyles-container-2"
+    >
+      <div
+        class="MuiGrid-root makeStyles-container__uploader__imageviewer-3 MuiGrid-container MuiGrid-direction-xs-column MuiGrid-align-items-xs-center MuiGrid-justify-xs-center"
+      >
+        <div
+          class="MuiGrid-root makeStyles-item__uploader-4 MuiGrid-item"
+        >
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-item__uploader__button-5 MuiButton-containedSizeSmall MuiButton-sizeSmall"
+            data-testid="file-selectbutton"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              file select
+              <input
+                accept="image/*"
+                class="makeStyles-item__uploader__input-6"
+                data-testid="file-input"
+                type="file"
+              />
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+          <p
+            class="MuiTypography-root makeStyles-item__uploader__filename-7 MuiTypography-body2"
+          >
+            No file selected
+          </p>
+        </div>
+        <div
+          class="MuiGrid-root makeStyles-item__imageviewer-8 MuiGrid-item"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body2"
+          >
+            image
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<File /> should upload file and show file name correctly 1`] = `
+<div>
+  <div
+    class="MuiBox-root MuiBox-root-11 makeStyles-root-1"
+  >
+    <div
+      class="MuiBox-root MuiBox-root-12 makeStyles-container-2"
+    >
+      <div
+        class="MuiGrid-root makeStyles-container__uploader__imageviewer-3 MuiGrid-container MuiGrid-direction-xs-column MuiGrid-align-items-xs-center MuiGrid-justify-xs-center"
+      >
+        <div
+          class="MuiGrid-root makeStyles-item__uploader-4 MuiGrid-item"
+        >
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-item__uploader__button-5 MuiButton-containedSizeSmall MuiButton-sizeSmall"
+            data-testid="file-selectbutton"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              file select
+              <input
+                accept="image/*"
+                class="makeStyles-item__uploader__input-6"
+                data-testid="file-input"
+                type="file"
+              />
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+          <p
+            class="MuiTypography-root makeStyles-item__uploader__filename-7 MuiTypography-body2"
+          >
+            mockimage.jpg
+          </p>
+        </div>
+        <div
+          class="MuiGrid-root makeStyles-item__imageviewer-8 MuiGrid-item"
+        >
+          <img
+            alt="mockimage.jpg"
+            class="makeStyles-item__imageviewer__image-9"
+            src=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
