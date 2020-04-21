@@ -1,22 +1,24 @@
-import { act, waitFor } from '@testing-library/react'
+import React from 'react'
 
+import { act, waitFor } from '@testing-library/react'
 import waait from 'waait'
 
+import { MessageList } from '@views/Main/components'
+
 import {
-	mockMessage,
 	openModifyDialog,
 	openDeleteDialog,
 	modifyMessage,
-	findDOMNodeOfMessageList,
 	closeDialog,
-} from './utils'
+} from '@tests/shares/utils'
+import { mockMessage, findDOMNodeOfMessageList } from './utils'
 
 describe('<MessageList />', () => {
 	let rendered
 
 	beforeEach(() => {
 		act(async () => {
-			rendered = findDOMNodeOfMessageList()
+			rendered = findDOMNodeOfMessageList(<MessageList />)
 		})
 	})
 	it('should match snapshot', async () => {

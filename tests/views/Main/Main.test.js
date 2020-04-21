@@ -1,3 +1,7 @@
+import React from 'react'
+
+import Main from '@views/Main'
+
 import wait from 'waait'
 
 import { act } from '@testing-library/react'
@@ -13,7 +17,7 @@ describe('<Main />', () => {
 		let rendered
 
 		await act(async () => {
-			rendered = findDOMNodeOfMain()
+			rendered = findDOMNodeOfMain(<Main />)
 		})
 		await wait(10)
 

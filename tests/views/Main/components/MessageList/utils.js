@@ -1,16 +1,7 @@
-import React from 'react'
-import { findDOMNode } from 'react-dom'
-
-import { act, fireEvent } from '@testing-library/react'
-import { MockedProvider } from '@apollo/react-testing'
-
-import { MessageList } from '@views/Main/components'
-
 import {
 	mockUserList,
 	mockMessageList,
-	renderDOMNode,
-	getMarkup,
+	findDOMNodeOfComponent,
 } from '@tests/shares/utils'
 import { FETCH_USER_LIST } from '@views/User/gql/query'
 import { MESSAGE_LIST } from '@views/Message/gql/query'
@@ -89,82 +80,8 @@ const resolvers = {
 	},
 }
 
-const openModifyDialog = async rendered => {
-	const row = rendered.querySelectorAll(
-		`[data-testid=row-${mockMessageList[0].id}]`
-	)[0]
-
-	await act(async () => {
-		fireEvent.click(row)
-	})
-
-	const modifyDialogTitle = document.querySelectorAll(
-		`[data-testid=modifydialog-title]`
-	)[0]
-
-	expect(modifyDialogTitle).toBeTruthy()
+const findDOMNodeOfMessageList = component => {
+	return findDOMNodeOfComponent({ mocks, resolvers, component })
 }
 
-const openDeleteDialog = async rendered => {
-	const closeIcon = rendered.querySelectorAll(
-		`[data-testid=row-closeicon-${mockMessageList[0].id}]`
-	)[0]
-
-	await act(async () => {
-		fireEvent.click(closeIcon)
-	})
-
-	const deleteDialogTitle = document.querySelectorAll(
-		`[data-testid=deletedialog-title]`
-	)[0]
-
-	expect(deleteDialogTitle).toBeTruthy()
-}
-
-const modifyMessage = async message => {
-	const input = document.querySelectorAll(`[placeholder=placeholder]`)[0]
-	const agreeButton = document.querySelectorAll(
-		'[data-testid=modifydialog-agreebutton]'
-	)[0]
-
-	await act(async () => {
-		fireEvent.change(input, { target: { value: message } })
-	})
-
-	expect(input.value).toBe(message)
-
-	await act(async () => {
-		fireEvent.click(agreeButton)
-	})
-}
-
-const findDOMNodeOfMessageList = () => {
-	return findDOMNode(
-		renderDOMNode(
-			getMarkup(
-				<MockedProvider mocks={mocks} addTypename={false} resolvers={resolvers}>
-					<MessageList />
-				</MockedProvider>
-			)
-		)
-	)
-}
-
-const closeDialog = async () => {
-	const MuiBackdrop = document.querySelectorAll(`.MuiBackdrop-root`)[0]
-
-	await act(async () => {
-		MuiBackdrop.click()
-	})
-}
-
-export {
-	mockMessage,
-	mocks,
-	resolvers,
-	openModifyDialog,
-	openDeleteDialog,
-	modifyMessage,
-	closeDialog,
-	findDOMNodeOfMessageList,
-}
+export { mockMessage, findDOMNodeOfMessageList }

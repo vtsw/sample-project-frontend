@@ -1,15 +1,7 @@
-import React from 'react'
-import { findDOMNode } from 'react-dom'
-
-import { MockedProvider } from '@apollo/react-testing'
-
-import Main from '@views/Main'
-
 import {
 	mockUserList,
 	mockMessageList,
-	renderDOMNode,
-	getMarkup,
+	findDOMNodeOfComponent,
 } from '@tests/shares/utils'
 import { FETCH_USER_LIST } from '@views/User/gql/query'
 import { MESSAGE_LIST } from '@views/Message/gql/query'
@@ -62,16 +54,8 @@ const resolvers = {
 	},
 }
 
-const findDOMNodeOfMain = () => {
-	return findDOMNode(
-		renderDOMNode(
-			getMarkup(
-				<MockedProvider mocks={mocks} addTypename={false} resolvers={resolvers}>
-					<Main />
-				</MockedProvider>
-			)
-		)
-	)
+const findDOMNodeOfMain = component => {
+	return findDOMNodeOfComponent({ mocks, resolvers, component })
 }
 
 export { findDOMNodeOfMain }

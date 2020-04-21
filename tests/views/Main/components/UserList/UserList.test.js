@@ -1,6 +1,9 @@
-import { act, fireEvent } from '@testing-library/react'
+import React from 'react'
 
+import { act, fireEvent } from '@testing-library/react'
 import waait from 'waait'
+
+import { UserList } from '@views/Main/components'
 
 import { mockSearchText, findDOMNodeOfUserList } from './utils'
 
@@ -9,7 +12,7 @@ describe('<UserList />', async () => {
 
 	beforeEach(() => {
 		jest.setTimeout(10000)
-		rendered = findDOMNodeOfUserList()
+		rendered = findDOMNodeOfUserList(<UserList />)
 	})
 
 	it('should match snapshot', async () => {
@@ -21,18 +24,20 @@ describe('<UserList />', async () => {
 	})
 
 	it('should fetch successfully new user list with a new search text value', async () => {
-		const input = rendered.querySelectorAll('[placeholder="search..."]')[0]
+		const searchInput = rendered.querySelectorAll(
+			'[placeholder="search..."]'
+		)[0]
 		const searchButton = rendered.querySelectorAll(
 			'[data-testid=actioninputbox-button]'
 		)[0]
 
-		expect(input.value).toBe('')
+		expect(searchInput.value).toBe('')
 
 		await act(async () => {
-			fireEvent.change(input, { target: { value: mockSearchText } })
+			fireEvent.change(searchInput, { target: { value: mockSearchText } })
 		})
 
-		expect(input.value).toBe(mockSearchText)
+		expect(searchInput.value).toBe(mockSearchText)
 
 		await act(async () => {
 			await searchButton.click()
