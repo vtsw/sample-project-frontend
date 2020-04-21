@@ -1,14 +1,24 @@
 import React from 'react'
 
-import { act, cleanup, fireEvent, render } from '@testing-library/react'
+import {
+	act,
+	cleanup,
+	fireEvent,
+	render,
+	waitFor,
+} from '@testing-library/react'
 
 import { FormEditor } from '@views_components'
 
-import { mockUser } from '@tests/shares/utils'
+import { mockUser, mockUserList } from '@tests/shares/utils'
 
-describe('FormEditor', () => {
+describe('<FormEditor />', () => {
 	const mockProps = {
-		selectedUser: {},
+		selectedUser: {
+			id: '',
+			email: '',
+			name: '',
+		},
 		onSubmit: jest.fn(),
 		onCancel: jest.fn(),
 		onDelete: jest.fn(),
@@ -24,18 +34,6 @@ describe('FormEditor', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should render all elements without crashing', () => {
-		const { getByTestId } = render(<FormEditor {...mockProps} />)
-
-		expect(getByTestId('formeditor-title')).toBeTruthy()
-		expect(getByTestId('formeditor-email-input')).toBeTruthy()
-		expect(getByTestId('formeditor-name-input')).toBeTruthy()
-		expect(getByTestId('formeditor-password-input')).toBeTruthy()
-		expect(getByTestId('formeditor-password-confirm-input')).toBeTruthy()
-		expect(getByTestId('formeditor-submit-button')).toBeTruthy()
-		expect(getByTestId('formeditor-cancel-button')).toBeTruthy()
-	})
-
 	it('should enable to focus Email input', () => {
 		const { getByPlaceholderText } = render(<FormEditor {...mockProps} />)
 		const emailInput = getByPlaceholderText('Email')
@@ -44,18 +42,20 @@ describe('FormEditor', () => {
 			emailInput.focus()
 		})
 
-		expect(emailInput).toBe(document.activeElement)
+		expect(emailInput.value).toBe('')
+
+		fireEvent.change(emailInput, {
+			target: { value: mockUser.email.toLowerCase() },
+		})
+
+		expect(emailInput.value).toBe(mockUser.email)
 	})
 
 	it('should enable to change Email input value', () => {
 		const { getByPlaceholderText } = render(<FormEditor {...mockProps} />)
 		const emailInput = getByPlaceholderText('Email')
 
-		expect(emailInput.value).toBe('')
-
-		fireEvent.change(emailInput, {
-			target: { value: mockUser.email.toLowerCase() },
-		})
+		fireEvent.change(emailInput, { target: { value: mockUser.email } })
 
 		expect(emailInput.value).toBe(mockUser.email)
 	})
@@ -74,8 +74,6 @@ describe('FormEditor', () => {
 	it('should enable to change Name input value', () => {
 		const { getByPlaceholderText } = render(<FormEditor {...mockProps} />)
 		const nameInput = getByPlaceholderText('Name')
-
-		expect(nameInput.value).toBe('')
 
 		fireEvent.change(nameInput, { target: { value: mockUser.name } })
 
@@ -151,24 +149,97 @@ describe('FormEditor', () => {
 		expect(mockProps.onSubmit).toHaveBeenCalledTimes(1)
 	})
 
-	it('should not call onSubmit with invalid form when click Register button', () => {
-		const { getByTestId } = render(<FormEditor {...mockProps} />)
-
+	it('should not call onSubmit with invalid email when click Register button', () => {
+		const { getByTestId, getByPlaceholderText } = render(
+			<FormEditor {...mockProps} />
+		)
+		const emailInput = getByPlaceholderText('Email')
 		const submitButton = getByTestId('formeditor-submit-button')
+		const invalidEmail = 'abc@example.com'
 
 		jest.spyOn(window, 'alert').mockImplementation(() => 'Form is not valid!!!')
+
+		fireEvent.change(emailInput, {
+			target: { value: invalidEmail },
+		})
 		fireEvent.click(submitButton)
 
 		expect(mockProps.onSubmit).toHaveBeenCalledTimes(0)
 		expect(window.alert).toHaveBeenCalled()
 	})
 
-	it('should call onCancel when click Cancel button', () => {
-		const { getByTestId } = render(<FormEditor {...mockProps} />)
+	it('should not call onSubmit with invalid name when click Register button', () => {
+		const { getByTestId, getByPlaceholderText } = render(
+			<FormEditor {...mockProps} />
+		)
+		const nameInput = getByPlaceholderText('Name')
+		const submitButton = getByTestId('formeditor-submit-button')
+		const invalidName = 'ab'
 
+		jest.spyOn(window, 'alert').mockImplementation(() => 'Form is not valid!!!')
+
+		fireEvent.change(nameInput, { target: { value: invalidName } })
+		fireEvent.click(submitButton)
+
+		expect(mockProps.onSubmit).toHaveBeenCalledTimes(0)
+		expect(window.alert).toHaveBeenCalled()
+	})
+
+	it('should not call onSubmit with invalid password when click Register button', () => {
+		const { getByTestId, getByPlaceholderText } = render(
+			<FormEditor {...mockProps} />
+		)
+		const passwordInput = getByPlaceholderText('Password')
+		const submitButton = getByTestId('formeditor-submit-button')
+		const invalidPassword = 'ab'
+
+		jest.spyOn(window, 'alert').mockImplementation(() => 'Form is not valid!!!')
+
+		fireEvent.change(passwordInput, { target: { value: invalidPassword } })
+		fireEvent.click(submitButton)
+
+		expect(mockProps.onSubmit).toHaveBeenCalledTimes(0)
+		expect(window.alert).toHaveBeenCalled()
+	})
+
+	it('should not call onSubmit with invalid  password confirm when click Register button', () => {
+		const { getByTestId, getByPlaceholderText } = render(
+			<FormEditor {...mockProps} />
+		)
+		const passwordInput = getByPlaceholderText('Password')
+		const confirmPasswordInput = getByPlaceholderText('Password Confirm')
+		const submitButton = getByTestId('formeditor-submit-button')
+		const invalidPassword = 'ab'
+
+		jest.spyOn(window, 'alert').mockImplementation(() => 'Form is not valid!!!')
+
+		fireEvent.change(passwordInput, {
+			target: { value: invalidPassword },
+		})
+		fireEvent.change(confirmPasswordInput, {
+			target: { value: invalidPassword + 'c' },
+		})
+		fireEvent.click(submitButton)
+
+		expect(mockProps.onSubmit).toHaveBeenCalledTimes(0)
+		expect(window.alert).toHaveBeenCalled()
+	})
+
+	it('should call onCancel when click Cancel button and form is reset', () => {
+		const props = { ...mockProps, selectedUser: mockUserList[0] }
+		const { getByTestId, getByPlaceholderText } = render(
+			<FormEditor {...props} />
+		)
 		const cancelButton = getByTestId('formeditor-cancel-button')
 
 		fireEvent.click(cancelButton)
+
+		waitFor(() => {
+			expect(getByPlaceholderText('Email').value).toBe('')
+			expect(getByPlaceholderText('Name').value).toBe('')
+			expect(getByPlaceholderText('Password').value).toBe('')
+			expect(getByPlaceholderText('Password Confirm').value).toBe('')
+		})
 
 		expect(mockProps.onCancel).toHaveBeenCalled()
 	})

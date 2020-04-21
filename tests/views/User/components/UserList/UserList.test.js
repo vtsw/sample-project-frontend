@@ -77,6 +77,7 @@ describe('UserList', () => {
 	let rendered
 
 	beforeEach(() => {
+		jest.setTimeout(10000)
 		rendered = findDOMNode(
 			renderDOMNode(
 				getMarkup(

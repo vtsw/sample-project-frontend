@@ -5,6 +5,10 @@ import { act } from '@testing-library/react'
 import { findDOMNodeOfMain } from './utils'
 
 describe('<Main />', () => {
+	beforeEach(() => {
+		jest.setTimeout(10000)
+	})
+
 	it('should match snapshot', async () => {
 		let rendered
 

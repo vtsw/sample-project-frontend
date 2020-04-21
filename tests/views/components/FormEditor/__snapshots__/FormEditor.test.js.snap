@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FormEditor should match snapshot 1`] = `
+exports[`<FormEditor /> should match snapshot 1`] = `
 <div>
   <div
     class="MuiBox-root MuiBox-root-8 makeStyles-root-1"

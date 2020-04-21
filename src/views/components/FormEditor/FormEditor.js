@@ -58,7 +58,12 @@ const FormEditor = props => {
 		setName(selectedUser.name)
 	}, [selectedUser])
 
-	const validateForm = (email, name, password, confirmPassword) => {
+	const validateForm = (
+		email = '',
+		name = '',
+		password = '',
+		confirmPassword = ''
+	) => {
 		const emailRegex = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/gm
 		const isValidEmail = email.match(emailRegex)
 

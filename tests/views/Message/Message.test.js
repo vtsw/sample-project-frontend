@@ -18,6 +18,7 @@ describe('<Message />', () => {
 	let rendered
 
 	beforeEach(async () => {
+		jest.setTimeout(10000)
 		await act(async () => {
 			rendered = findDOMNodeOfMessage(<Message />)
 		})

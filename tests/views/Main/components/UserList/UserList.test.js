@@ -8,6 +8,7 @@ describe('<UserList />', async () => {
 	let rendered
 
 	beforeEach(() => {
+		jest.setTimeout(10000)
 		rendered = findDOMNodeOfUserList()
 	})
 

@@ -38,7 +38,7 @@ exports[`<File /> should match snapshot 1`] = `
           <p
             class="MuiTypography-root makeStyles-item__uploader__filename-7 MuiTypography-body2"
           >
-            No file selected
+            mockimage.jpg
           </p>
         </div>
         <div
