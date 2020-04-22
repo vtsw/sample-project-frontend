@@ -1,5 +1,495 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<User /> should match snapshot 1`] = `
+<div
+  style="width: 300px; height: 700px;"
+>
+  <div
+    class="MuiBox-root MuiBox-root-5 makeStyles-root-1"
+  >
+    <div
+      class="MuiGrid-root makeStyles-container-2 MuiGrid-container"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-4"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-109 makeStyles-item__signup-3"
+        >
+          <div
+            class="MuiBox-root MuiBox-root-113 makeStyles-root-110"
+          >
+            <div
+              class="MuiBox-root MuiBox-root-114"
+            >
+              <h6
+                class="MuiTypography-root makeStyles-welcometext-111 MuiTypography-subtitle1"
+              >
+                Welcome to Vatech !!!
+              </h6>
+              <button
+                class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-112 MuiButton-fullWidth"
+                data-testid="create-user-button"
+                tabindex="0"
+                type="button"
+              >
+                <span
+                  class="MuiButton-label"
+                >
+                  Create user
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            class="MuiBox-root MuiBox-root-183 makeStyles-root-177"
+          >
+            <h5
+              class="MuiTypography-root makeStyles-formtitle-178 MuiTypography-h5"
+              data-testid="formeditor-title"
+            >
+              Modify
+            </h5>
+            <div
+              class="makeStyles-formcontent-180"
+            >
+              <div
+                class="MuiFormControl-root MuiTextField-root makeStyles-forminput-179"
+                data-testid="formeditor-email-input"
+              >
+                <label
+                  class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-filled"
+                  data-shrink="true"
+                >
+                  EMAIL
+                </label>
+                <div
+                  class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+                >
+                  <input
+                    aria-invalid="false"
+                    class="MuiInputBase-input MuiOutlinedInput-input"
+                    placeholder="Email"
+                    type="email"
+                    value="steve@example.com"
+                  />
+                  <fieldset
+                    aria-hidden="true"
+                    class="PrivateNotchedOutline-root-242 MuiOutlinedInput-notchedOutline"
+                  >
+                    <legend
+                      class="PrivateNotchedOutline-legendLabelled-244 PrivateNotchedOutline-legendNotched-245"
+                    >
+                      <span>
+                        EMAIL
+                      </span>
+                    </legend>
+                  </fieldset>
+                </div>
+              </div>
+              <div
+                class="MuiFormControl-root MuiTextField-root makeStyles-forminput-179"
+                data-testid="formeditor-name-input"
+              >
+                <label
+                  class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-filled"
+                  data-shrink="true"
+                >
+                  NAME
+                </label>
+                <div
+                  class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+                >
+                  <input
+                    aria-invalid="false"
+                    autocomplete="true"
+                    class="MuiInputBase-input MuiOutlinedInput-input"
+                    placeholder="Name"
+                    type="text"
+                    value="90412"
+                  />
+                  <fieldset
+                    aria-hidden="true"
+                    class="PrivateNotchedOutline-root-242 MuiOutlinedInput-notchedOutline"
+                  >
+                    <legend
+                      class="PrivateNotchedOutline-legendLabelled-244 PrivateNotchedOutline-legendNotched-245"
+                    >
+                      <span>
+                        NAME
+                      </span>
+                    </legend>
+                  </fieldset>
+                </div>
+              </div>
+              <div
+                class="MuiFormControl-root MuiTextField-root makeStyles-forminput-179"
+                data-testid="formeditor-password-input"
+              >
+                <label
+                  class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-outlined"
+                  data-shrink="false"
+                >
+                  PASSWORD
+                </label>
+                <div
+                  class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+                >
+                  <input
+                    aria-invalid="false"
+                    autocomplete="true"
+                    class="MuiInputBase-input MuiOutlinedInput-input"
+                    placeholder="Password"
+                    type="password"
+                    value=""
+                  />
+                  <fieldset
+                    aria-hidden="true"
+                    class="PrivateNotchedOutline-root-242 MuiOutlinedInput-notchedOutline"
+                  >
+                    <legend
+                      class="PrivateNotchedOutline-legendLabelled-244"
+                    >
+                      <span>
+                        PASSWORD
+                      </span>
+                    </legend>
+                  </fieldset>
+                </div>
+              </div>
+              <div
+                class="MuiFormControl-root MuiTextField-root makeStyles-forminput-179"
+                data-testid="formeditor-password-confirm-input"
+              >
+                <label
+                  class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-outlined"
+                  data-shrink="false"
+                >
+                  PASSWORD CONFIRM
+                </label>
+                <div
+                  class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+                >
+                  <input
+                    aria-invalid="false"
+                    autocomplete="true"
+                    class="MuiInputBase-input MuiOutlinedInput-input"
+                    placeholder="Password Confirm"
+                    type="password"
+                    value=""
+                  />
+                  <fieldset
+                    aria-hidden="true"
+                    class="PrivateNotchedOutline-root-242 MuiOutlinedInput-notchedOutline"
+                  >
+                    <legend
+                      class="PrivateNotchedOutline-legendLabelled-244"
+                    >
+                      <span>
+                        PASSWORD CONFIRM
+                      </span>
+                    </legend>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+            <div
+              class="makeStyles-formbuttons-181"
+            >
+              <button
+                class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-formbutton-182 MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge MuiButton-fullWidth"
+                data-testid="formeditor-submit-button"
+                tabindex="0"
+                type="button"
+              >
+                <span
+                  class="MuiButton-label"
+                >
+                  Save
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+              <button
+                class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-formbutton-182 MuiButton-containedSizeLarge MuiButton-sizeLarge MuiButton-fullWidth"
+                data-testid="formeditor-delete-button"
+                tabindex="0"
+                type="button"
+              >
+                <span
+                  class="MuiButton-label"
+                >
+                  Delete
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+              <button
+                class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-formbutton-182 MuiButton-containedSizeLarge MuiButton-sizeLarge MuiButton-fullWidth"
+                data-testid="formeditor-cancel-button"
+                tabindex="0"
+                type="button"
+              >
+                <span
+                  class="MuiButton-label"
+                >
+                  Cancel
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-270 makeStyles-root-265"
+        >
+          <div
+            class="MuiBox-root MuiBox-root-271 makeStyles-userlist__container-266"
+          >
+            <div
+              class="MuiBox-root MuiBox-root-272 makeStyles-searchbox-268"
+            >
+              <h5
+                class="MuiTypography-root makeStyles-searchbox__title-269 MuiTypography-h5"
+                data-testid="userlist-title"
+              >
+                User List
+              </h5>
+              <div
+                class="MuiBox-root MuiBox-root-278 makeStyles-root-273"
+              >
+                <div
+                  class="MuiFormControl-root MuiTextField-root makeStyles-input-274 makeStyles-input-277"
+                >
+                  <div
+                    class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+                  >
+                    <input
+                      aria-invalid="false"
+                      class="MuiInputBase-input MuiOutlinedInput-input"
+                      placeholder="search..."
+                      type="text"
+                      value=""
+                    />
+                    <fieldset
+                      aria-hidden="true"
+                      class="PrivateNotchedOutline-root-242 MuiOutlinedInput-notchedOutline"
+                      style="padding-left: 8px;"
+                    >
+                      <legend
+                        class="PrivateNotchedOutline-legend-243"
+                        style="width: 0.01px;"
+                      >
+                        <span>
+                          ​
+                        </span>
+                      </legend>
+                    </fieldset>
+                  </div>
+                </div>
+                <button
+                  class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-275 MuiButton-containedSizeLarge MuiButton-sizeLarge"
+                  data-testid="actioninputbox-button"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="MuiButton-label"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root makeStyles-icon-276"
+                      data-testid="search-icon"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                      />
+                    </svg>
+                  </span>
+                  <span
+                    class="MuiTouchRipple-root"
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              class="MuiBox-root MuiBox-root-288 makeStyles-userlist__table-267"
+            >
+              <div
+                class="MuiBox-root MuiBox-root-303 makeStyles-root-300"
+                data-testid="infinitetable"
+              >
+                <div
+                  class="MuiGrid-root makeStyles-container__header-301 MuiGrid-container"
+                >
+                  <div
+                    class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+                  >
+                    <p
+                      class="MuiTypography-root makeStyles-item__header-302 MuiTypography-body2"
+                      data-testid="tableheader-email"
+                    >
+                      EMAIL
+                    </p>
+                  </div>
+                  <div
+                    class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+                  >
+                    <p
+                      class="MuiTypography-root makeStyles-item__header-302 MuiTypography-body2"
+                      data-testid="tableheader-name"
+                    >
+                      NAME
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="MuiBox-root MuiBox-root-304 makeStyles-root-300"
+                >
+                  <div
+                    style="overflow: visible; height: 0px; width: 0px;"
+                  >
+                    <div
+                      class="makeStyles-overflow-305"
+                      style="height: 700px; width: 200px; overflow: auto; position: relative; will-change: transform;"
+                    >
+                      <div
+                        style="height: 11900px; width: 100%;"
+                      >
+                        <div
+                          class="MuiGrid-root makeStyles-root-306 makeStyles-root-311 makeStyles-item__active-307 MuiGrid-container"
+                          data-testid="row-5e68995fb6d0bc05829b6e79"
+                        >
+                          <div
+                            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+                          >
+                            <div
+                              class="MuiBox-root MuiBox-root-312 makeStyles-columns__item-309"
+                            >
+                              <p
+                                class="MuiTypography-root makeStyles-columns__item__typo-310 MuiTypography-body2"
+                              >
+                                steve@example.com
+                              </p>
+                            </div>
+                          </div>
+                          <div
+                            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+                          >
+                            <div
+                              class="MuiBox-root MuiBox-root-313 makeStyles-columns__item-309"
+                            >
+                              <p
+                                class="MuiTypography-root makeStyles-columns__item__typo-310 MuiTypography-body2"
+                              >
+                                90412
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="MuiGrid-root makeStyles-root-306 makeStyles-root-314 MuiGrid-container"
+                          data-testid="row-5e68b5c3dd814dd832cda79d"
+                        >
+                          <div
+                            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+                          >
+                            <div
+                              class="MuiBox-root MuiBox-root-315 makeStyles-columns__item-309"
+                            >
+                              <p
+                                class="MuiTypography-root makeStyles-columns__item__typo-310 MuiTypography-body2"
+                              >
+                                nvdai2355@gmail.com
+                              </p>
+                            </div>
+                          </div>
+                          <div
+                            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+                          >
+                            <div
+                              class="MuiBox-root MuiBox-root-316 makeStyles-columns__item-309"
+                            >
+                              <p
+                                class="MuiTypography-root makeStyles-columns__item__typo-310 MuiTypography-body2"
+                              >
+                                asdasdasd
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="MuiGrid-root makeStyles-root-306 makeStyles-root-317 MuiGrid-container"
+                          data-testid="row-5e68b792dd814d8efacda7ad"
+                        >
+                          <div
+                            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+                          >
+                            <div
+                              class="MuiBox-root MuiBox-root-318 makeStyles-columns__item-309"
+                            >
+                              <p
+                                class="MuiTypography-root makeStyles-columns__item__typo-310 MuiTypography-body2"
+                              >
+                                nvdai235556@gmail.com
+                              </p>
+                            </div>
+                          </div>
+                          <div
+                            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+                          >
+                            <div
+                              class="MuiBox-root MuiBox-root-319 makeStyles-columns__item-309"
+                            >
+                              <p
+                                class="MuiTypography-root makeStyles-columns__item__typo-310 MuiTypography-body2"
+                              >
+                                nvdai235556
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="resize-triggers"
+                  >
+                    <div
+                      class="expand-trigger"
+                    >
+                      <div
+                        style="width: 201px; height: 701px;"
+                      />
+                    </div>
+                    <div
+                      class="contract-trigger"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`User should match snapshot 1`] = `
 <div
   style="width: 300px; height: 700px;"

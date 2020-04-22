@@ -8,7 +8,7 @@ import { UserList } from '@views/User/components'
 import { mockSearchedUser } from '@tests/shares/utils'
 import { findDOMNodeOfUserList } from './helpers'
 
-describe('UserList', () => {
+describe('<UserList />', () => {
 	let rendered
 
 	beforeEach(() => {

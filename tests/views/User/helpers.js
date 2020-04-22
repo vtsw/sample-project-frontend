@@ -30,16 +30,6 @@ const resolvers = {
 			return mockUserList[0]
 		},
 	},
-	Mutation: {
-		setUserSearchValue: (_, { searchValue }, { cache }) => {
-			cache.writeData({
-				data: {
-					userSearchValue: searchValue,
-				},
-			})
-			return searchValue
-		},
-	},
 }
 
 const findDOMNodeOfUser = component => {

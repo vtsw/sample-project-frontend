@@ -7,7 +7,7 @@ import User from '@views/User'
 
 import { findDOMNodeOfUser } from './helpers'
 
-describe('User', () => {
+describe('<User />', () => {
 	it('should match snapshot', async () => {
 		let rendered
 		await act(async () => {
