@@ -1,8 +1,10 @@
-import { mockUserList, findDOMNodeOfComponent } from '@tests/shares/utils'
+import {
+	mockUserList,
+	mockSearchedUser,
+	findDOMNodeOfComponent,
+} from '@tests/shares/utils'
 import { FETCH_USER_LIST } from '@views/User/gql/query'
 import { PAGE_LIMIT } from '@src/configs.local'
-
-const mockSearchText = 'nvdai'
 
 const mocks = [
 	{
@@ -25,13 +27,13 @@ const mocks = [
 		request: {
 			query: FETCH_USER_LIST,
 			variables: {
-				query: { searchText: mockSearchText, limit: PAGE_LIMIT },
+				query: { searchText: mockSearchedUser.email, limit: PAGE_LIMIT },
 			},
 		},
 		result: {
 			data: {
 				userList: {
-					items: mockUserList,
+					items: [mockSearchedUser, ...mockUserList],
 					hasNext: true,
 				},
 			},
@@ -64,4 +66,4 @@ const findDOMNodeOfUserList = component => {
 	return findDOMNodeOfComponent({ mocks, resolvers, component })
 }
 
-export { mockSearchText, findDOMNodeOfUserList }
+export { findDOMNodeOfUserList }

@@ -1,7 +1,7 @@
 import {
 	mockUserList,
-	findDOMNodeOfComponent,
 	mockSearchedUser,
+	findDOMNodeOfComponent,
 } from '@tests/shares/utils'
 import { FETCH_USER_LIST } from '@views/User/gql/query'
 import { PAGE_LIMIT } from '@src/configs.local'

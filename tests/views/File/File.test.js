@@ -16,6 +16,7 @@ describe('<File />', () => {
 
 	it('should upload file and show file name correctly', async () => {
 		await waait(10)
+		global.URL.createObjectURL = jest.fn()
 		let component
 		await act(async () => {
 			component = findDOMNodeOfFile()
@@ -23,8 +24,10 @@ describe('<File />', () => {
 
 		const inputElement = component.getByTestId('file-input')
 
-		fireEvent.change(inputElement, { target: { files: [mockFile] } })
-		fireEvent.input(inputElement)
+		await act(async () => {
+			fireEvent.change(inputElement, { target: { files: [mockFile] } })
+			fireEvent.input(inputElement)
+		})
 
 		expect(component.queryByText(fileName)).toBeTruthy()
 	})

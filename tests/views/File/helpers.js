@@ -7,6 +7,7 @@ import File from '@views/File'
 
 import { GET_USER_INFO } from '@views/File/gql/query'
 import { UPLOAD_FILE } from '@views/File/gql/mutation'
+import { mockServer } from '@tests/shares/utils'
 
 const fileName = 'mockimage.jpg'
 
@@ -23,7 +24,7 @@ const mocks = [
 				me: {
 					image: {
 						filename: fileName,
-						link: 'http://localhost:3000/images',
+						link: mockServer + '/image',
 					},
 				},
 			},
@@ -40,7 +41,7 @@ const mocks = [
 			data: {
 				uploadImage: {
 					filename: fileName,
-					link: 'http://localhost:3000/images',
+					link: mockServer + '/image',
 				},
 			},
 		},

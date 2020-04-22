@@ -80,8 +80,6 @@ const File = () => {
 	const _ = useQuery(GET_USER_INFO, {
 		onCompleted: data => {
 			if (data?.me?.image && !fileData?.file.filename) {
-				// when reload page
-				// prevent GET_USER_INFO query use its latest cache when user log out
 				setUploadedFile({ variables: { file: data.me.image } })
 			}
 		},

@@ -1,9 +1,12 @@
-import { mockMessageList, findDOMNodeOfComponent } from '@tests/shares/utils'
+import {
+	mockSearchedMessage,
+	mockMessageList,
+	findDOMNodeOfComponent,
+} from '@tests/shares/utils'
 import { MESSAGE_LIST } from '@views/Message/gql/query'
 import { CREATE_MESSAGE, UPDATE_MESSAGE } from '@views/Message/gql/mutation'
 import { PAGE_LIMIT } from '@src/configs.local'
 
-const mockSearchText = 'abc'
 const mockMessage = 'mock message'
 
 const mocks = [
@@ -32,15 +35,15 @@ const mocks = [
 			variables: {
 				query: {
 					limit: PAGE_LIMIT,
-					skip: 1,
-					searchText: mockSearchText,
+					skip: PAGE_LIMIT,
+					searchText: mockSearchedMessage.content,
 				},
 			},
 		},
 		result: {
 			data: {
 				messageList: {
-					items: mockMessageList,
+					items: [mockSearchedMessage, ...mockMessageList],
 					hasNext: true,
 					total: mockMessageList.length,
 				},
@@ -52,21 +55,15 @@ const mocks = [
 		request: {
 			query: MESSAGE_LIST,
 			variables: {
-				query: { searchText: mockSearchText, limit: 30 },
+				query: { searchText: mockSearchedMessage.content, limit: PAGE_LIMIT },
 			},
 		},
 		result: {
 			data: {
 				messageList: {
-					items: [
-						{
-							id: '5e6b34a80f14940526bb0ghy0',
-							content: mockSearchText,
-							lastModified: '2020-04-10T08:10:47+00:00',
-						},
-					],
+					items: [mockSearchedMessage, ...mockMessageList],
 					hasNext: true,
-					total: 1,
+					total: PAGE_LIMIT,
 				},
 			},
 		},
@@ -129,4 +126,4 @@ const findDOMNodeOfMessage = component => {
 	return findDOMNodeOfComponent({ mocks, resolvers, component })
 }
 
-export { mockSearchText, mockMessage, findDOMNodeOfMessage }
+export { mockMessage, findDOMNodeOfMessage }

@@ -8,6 +8,9 @@ import User from '@views/User'
 import { findDOMNodeOfUser } from './helpers'
 
 describe('<User />', () => {
+	beforeEach(() => {
+		jest.setTimeout(30000)
+	})
 	it('should match snapshot', async () => {
 		let rendered
 		await act(async () => {

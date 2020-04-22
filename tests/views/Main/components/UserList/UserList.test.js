@@ -5,7 +5,8 @@ import waait from 'waait'
 
 import { UserList } from '@views/Main/components'
 
-import { mockSearchText, findDOMNodeOfUserList } from './helpers'
+import { mockSearchedUser } from '@tests/shares/utils'
+import { findDOMNodeOfUserList } from './helpers'
 
 describe('<UserList />', async () => {
 	let rendered
@@ -34,15 +35,17 @@ describe('<UserList />', async () => {
 		expect(searchInput.value).toBe('')
 
 		await act(async () => {
-			fireEvent.change(searchInput, { target: { value: mockSearchText } })
+			fireEvent.change(searchInput, {
+				target: { value: mockSearchedUser.email },
+			})
 		})
 
-		expect(searchInput.value).toBe(mockSearchText)
+		expect(searchInput.value).toBe(mockSearchedUser.email)
 
 		await act(async () => {
 			await searchButton.click()
 		})
 
-		expect(rendered.textContent).toContain(mockSearchText)
+		expect(rendered.textContent).toContain(mockSearchedUser.email)
 	})
 })

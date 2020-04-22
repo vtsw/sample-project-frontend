@@ -7,12 +7,13 @@ import { act, fireEvent, waitFor } from '@testing-library/react'
 import Message from '@views/Message'
 
 import {
+	mockSearchedMessage,
 	openModifyDialog,
 	openDeleteDialog,
 	modifyMessage,
 	closeDialog,
 } from '@tests/shares/utils'
-import { findDOMNodeOfMessage, mockSearchText, mockMessage } from './helpers'
+import { findDOMNodeOfMessage, mockMessage } from './helpers'
 
 describe('<Message />', () => {
 	let rendered
@@ -39,16 +40,18 @@ describe('<Message />', () => {
 		expect(input.value).toBe('')
 
 		await act(async () => {
-			fireEvent.change(input, { target: { value: mockSearchText } })
+			fireEvent.change(input, {
+				target: { value: mockSearchedMessage.content },
+			})
 		})
 
-		expect(input.value).toBe(mockSearchText)
+		expect(input.value).toBe(mockSearchedMessage.content)
 
 		await act(async () => {
 			fireEvent.click(searchButton)
 		})
 
-		expect(rendered.textContent).toContain(mockSearchText)
+		expect(rendered.textContent).toContain(mockSearchedMessage.content)
 	})
 
 	it('should allow creating a valid message', async () => {

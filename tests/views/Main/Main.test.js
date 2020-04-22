@@ -10,7 +10,7 @@ import { findDOMNodeOfMain } from './helpers'
 
 describe('<Main />', () => {
 	beforeEach(() => {
-		jest.setTimeout(10000)
+		jest.setTimeout(30000)
 	})
 
 	it('should match snapshot', async () => {
