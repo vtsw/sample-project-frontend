@@ -64,7 +64,7 @@ const SignInForm = props => {
 			onSubmit(email, password)
 			return
 		} else {
-			alert('Invalid email and password')
+			alert('Invalid email or password')
 		}
 	}
 

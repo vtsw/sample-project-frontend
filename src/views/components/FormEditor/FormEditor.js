@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
+import { validateEmail, validatePassword } from '@src/shares/utils'
+
 const useStyles = makeStyles(theme => ({
 	root: {
 		width: 381,
@@ -64,10 +66,15 @@ const FormEditor = props => {
 		password = '',
 		confirmPassword = ''
 	) => {
-		const emailRegex = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/gm
-		const isValidEmail = email.match(emailRegex)
+		const isValidEmail = validateEmail(email)
+		const isValidPassword = validatePassword(password)
 
-		if (isValidEmail === null || password !== confirmPassword || !name) {
+		if (
+			!isValidEmail ||
+			!isValidPassword ||
+			password !== confirmPassword ||
+			!name
+		) {
 			return false
 		}
 		return true
