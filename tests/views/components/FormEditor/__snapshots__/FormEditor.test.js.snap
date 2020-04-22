@@ -29,6 +29,7 @@ exports[`<FormEditor /> should match snapshot 1`] = `
         >
           <input
             aria-invalid="false"
+            autocomplete="true"
             class="MuiInputBase-input MuiOutlinedInput-input"
             placeholder="Email"
             type="email"

@@ -42,7 +42,7 @@ describe('<FormEditor />', () => {
 			emailInput.focus()
 		})
 
-		expect(emailInput.value).toBe(mockUser.email)
+		expect(emailInput).toBe(document.activeElement)
 	})
 
 	it('should enable to change Email input value', () => {

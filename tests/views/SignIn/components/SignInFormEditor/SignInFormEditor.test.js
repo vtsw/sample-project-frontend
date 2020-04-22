@@ -12,12 +12,10 @@ describe('<SignInFormEditor />', () => {
 		onSubmit: jest.fn(),
 		history: { push: jest.fn() },
 	}
-
 	let rendered
-	beforeEach(async () => {
-		await act(async () => {
-			rendered = findDOMNodeOfSignIn(<SignInFormEditor {...mockProps} />)
-		})
+
+	beforeEach(() => {
+		rendered = findDOMNodeOfSignIn(<SignInFormEditor {...mockProps} />)
 	})
 
 	it('should match snapshot', async () => {

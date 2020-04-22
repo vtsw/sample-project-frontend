@@ -12,7 +12,7 @@ describe('<UserList />', () => {
 	let rendered
 
 	beforeEach(() => {
-		jest.setTimeout(10000)
+		jest.setTimeout(30000)
 		rendered = findDOMNodeOfUserList(<UserList />)
 	})
 	it('should match snapshot', async () => {

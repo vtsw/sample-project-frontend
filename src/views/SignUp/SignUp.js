@@ -35,10 +35,7 @@ const SignUp = props => {
 
 	return (
 		<Box className={classes.root}>
-			<FormEditor
-				onSubmit={createUser}
-				onCancel={() => history.push('/sign-in')}
-			/>
+			<FormEditor onSubmit={createUser} onCancel={navigateToSignInPage} />
 		</Box>
 	)
 }
