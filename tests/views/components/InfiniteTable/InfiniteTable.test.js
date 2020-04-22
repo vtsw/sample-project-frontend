@@ -10,7 +10,7 @@ import {
 	getMarkup,
 } from '@tests/shares/utils'
 
-describe('InfiniteTable', () => {
+describe('<InfiniteTable />', () => {
 	const mockProps = {
 		items: mockUserList,
 		columns: mockUserTableHeader,

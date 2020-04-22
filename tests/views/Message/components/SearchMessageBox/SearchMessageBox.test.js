@@ -3,7 +3,7 @@ import { act, cleanup, fireEvent, render } from '@testing-library/react'
 
 import { SearchMessageBox } from '@views/Message/components'
 
-describe('SearchMessageBox', () => {
+describe('<SearchMessageBox />', () => {
 	const mockProps = {
 		placeholder: 'search...',
 		defaultValue: '',

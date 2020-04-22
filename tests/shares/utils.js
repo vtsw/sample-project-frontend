@@ -1,13 +1,10 @@
 import React from 'react'
 import * as ReactDOM from 'react-dom'
-
-import { render } from '@testing-library/react'
-import { ApolloProvider } from '@apollo/react-hooks'
-import { act, fireEvent } from '@testing-library/react'
-import { MockedProvider } from '@apollo/react-testing'
-
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
+
+import { act, fireEvent, render } from '@testing-library/react'
+import { MockedProvider } from '@apollo/react-testing'
 
 const mockUser = {
 	email: 'stevevo@gmail.com',
@@ -346,12 +343,6 @@ const mockMessageTableHeader = [
 	{ headerLabel: 'CONTENT', xs: 7, headerVariable: 'content' },
 ]
 
-const renderWithApolloClient = (component, mockClient) => {
-	return render(
-		<ApolloProvider client={mockClient}>{component}</ApolloProvider>
-	)
-}
-
 const renderWithRouter = (
 	ui,
 	{
@@ -495,7 +486,6 @@ export {
 	mockServer,
 	mockUserTableHeader,
 	mockMessageTableHeader,
-	renderWithApolloClient,
 	renderWithRouter,
 	renderDOMNode,
 	getMarkup,

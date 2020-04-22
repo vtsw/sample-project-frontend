@@ -3,7 +3,7 @@ import { cleanup, fireEvent, render } from '@testing-library/react'
 
 import { DeleteDialog } from '@views_components'
 
-describe('DeleteDialog', () => {
+describe('<DeleteDialog />', () => {
 	const mockProps = {
 		open: true,
 		onClose: jest.fn(),

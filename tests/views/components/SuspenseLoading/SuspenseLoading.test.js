@@ -4,7 +4,7 @@ import { cleanup, render } from '@testing-library/react'
 
 import { SuspenseLoading } from '@views_components'
 
-describe('SuspenseLoading', () => {
+describe('<SuspenseLoading />', () => {
 	afterEach(() => {
 		cleanup()
 	})

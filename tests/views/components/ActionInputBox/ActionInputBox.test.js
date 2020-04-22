@@ -3,7 +3,7 @@ import { act, cleanup, fireEvent, render } from '@testing-library/react'
 
 import { ActionInputBox } from '@views_components'
 
-describe('ActionInputBox', () => {
+describe('<ActionInputBox />', () => {
 	const mockProps = {
 		type: 'search',
 		placeholder: 'search...',

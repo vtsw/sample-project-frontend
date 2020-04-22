@@ -3,7 +3,7 @@ import { cleanup, fireEvent, render } from '@testing-library/react'
 
 import { NavBarContainer } from '@views_components/NavBar/components'
 
-describe('NavBarContainer', () => {
+describe('<NavBarContainer />', () => {
 	const mockProps = {
 		location: { pathname: '/' },
 		history: { push: jest.fn() },
@@ -16,8 +16,6 @@ describe('NavBarContainer', () => {
 		handleOnLogOut: jest.fn(),
 	}
 
-	const navBarItems = [...mockProps.items.map(item => item.page), 'logout']
-
 	afterEach(() => {
 		cleanup()
 	})
@@ -28,31 +26,21 @@ describe('NavBarContainer', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it.each(navBarItems)('should render %s item of NavBar correctly', item => {
+	it('should call history.push correctly when click Main item', () => {
 		const { getByTestId } = render(<NavBarContainer {...mockProps} />)
-		const navBarItem = `navbaritem-${item}`
+		const mainItem = `navbaritem-main`
 
-		expect(getByTestId(navBarItem)).toBeTruthy()
-	})
-
-	it('should allow click Main item of NavBar', () => {
-		const { getByTestId } = render(<NavBarContainer {...mockProps} />)
-		const navBarItem = `navbaritem-main`
-
-		fireEvent.click(getByTestId(navBarItem))
+		fireEvent.click(getByTestId(mainItem))
 
 		expect(mockProps.history.push).toHaveBeenCalled()
 	})
 
-	it.each(navBarItems)('should allow click %s item of NavBar', item => {
+	it('should call handleOnLogOut correctly when click Log Out item', () => {
 		const { getByTestId } = render(<NavBarContainer {...mockProps} />)
-		const navBarItem = `navbaritem-${item}`
+		const logOutItem = 'navbaritem-logout'
 
-		const calledFunction =
-			item === 'logout' ? mockProps.handleOnLogOut : mockProps.history.push
+		fireEvent.click(getByTestId(logOutItem))
 
-		fireEvent.click(getByTestId(navBarItem))
-
-		expect(calledFunction).toHaveBeenCalled()
+		expect(mockProps.handleOnLogOut).toHaveBeenCalled()
 	})
 })

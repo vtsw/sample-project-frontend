@@ -10,7 +10,7 @@ import {
 	getMarkup,
 } from '@tests/shares/utils'
 
-describe('InfiniteScroll', () => {
+describe('<InfiniteScroll />', () => {
 	const mockProps = {
 		itemCounter: 10,
 		hasNextPage: true,

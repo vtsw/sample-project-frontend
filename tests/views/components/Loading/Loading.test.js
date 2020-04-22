@@ -4,7 +4,7 @@ import { cleanup, render } from '@testing-library/react'
 
 import { Loading } from '@views_components'
 
-describe('Loading', () => {
+describe('<Loading />', () => {
 	const mockProps = {
 		open: true,
 		msg: 'Loading...',

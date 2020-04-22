@@ -3,7 +3,7 @@ import { cleanup, render } from '@testing-library/react'
 
 import { SearchUserBox } from '@views/User/components'
 
-describe('SearchUserBox', () => {
+describe('<SearchUserBox />', () => {
 	const mockProps = {
 		type: 'search',
 		placeholder: 'search...',

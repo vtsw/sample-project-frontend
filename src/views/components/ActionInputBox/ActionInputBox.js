@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 const ActionInputBox = props => {
 	const { type, placeholder, defaultValue, width, onSubmit, onChange } = props
-	const [value, setValue] = useState(defaultValue)
+	const [value, setValue] = useState(defaultValue || '')
 
 	const handleOnInputChange = e => {
 		setValue(e.target.value)

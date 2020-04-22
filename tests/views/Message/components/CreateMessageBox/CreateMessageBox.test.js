@@ -1,15 +1,12 @@
 import React from 'react'
-import { act, cleanup, fireEvent } from '@testing-library/react'
 
-import { createMockClient } from 'mock-apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import { act, cleanup, fireEvent } from '@testing-library/react'
 
 import { CreateMessageBox } from '@views/Message/components'
 
-import { initialState, resolvers } from '@src/client'
-import { renderWithApolloClient } from '@tests/shares/utils'
+import { findDOMNodeOfCreateMessageBox } from './helpers'
 
-describe('CreateMessageBox', () => {
+describe('<CreateMessageBox />', () => {
 	const mockProps = {
 		placeholder: 'text...',
 		defaultValue: '',
@@ -17,41 +14,35 @@ describe('CreateMessageBox', () => {
 		onSubmit: jest.fn(),
 		onChange: jest.fn(),
 	}
+	let rendered
 
-	const cache = new InMemoryCache()
-	cache.writeData({
-		data: { ...initialState, messageCreateValueOfMessage: '' },
+	beforeEach(async () => {
+		await act(async () => {
+			rendered = findDOMNodeOfCreateMessageBox(
+				<CreateMessageBox {...mockProps} />
+			)
+		})
 	})
-	const mockClient = createMockClient({ cache, resolvers })
 
 	afterEach(() => {
 		cleanup()
 	})
 
 	it('should match snapshot', () => {
-		const { container } = renderWithApolloClient(
-			<CreateMessageBox {...mockProps} />,
-			mockClient
-		)
+		const { container } = rendered
 
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render a input with "text..." placeholder and a button with "Save" title', () => {
-		const { getByPlaceholderText, getByText } = renderWithApolloClient(
-			<CreateMessageBox {...mockProps} />,
-			mockClient
-		)
+		const { getByPlaceholderText, getByText } = rendered
 
 		expect(getByPlaceholderText(mockProps.placeholder)).toBeTruthy()
 		expect(getByText('Save')).toBeTruthy()
 	})
 
 	it('should call correctly onSubmit function when click "Save" button', () => {
-		const { getByText } = renderWithApolloClient(
-			<CreateMessageBox {...mockProps} />,
-			mockClient
-		)
+		const { getByText } = rendered
 
 		fireEvent.click(getByText('Save'))
 
@@ -59,10 +50,7 @@ describe('CreateMessageBox', () => {
 	})
 
 	it('should change value of input', async () => {
-		const { getByPlaceholderText } = renderWithApolloClient(
-			<CreateMessageBox {...mockProps} />,
-			mockClient
-		)
+		const { getByPlaceholderText } = rendered
 		const input = getByPlaceholderText(mockProps.placeholder)
 
 		expect(input.value).toBe('')
@@ -77,10 +65,7 @@ describe('CreateMessageBox', () => {
 	})
 
 	it('should enable input when focus on input', async () => {
-		const { getByPlaceholderText } = renderWithApolloClient(
-			<CreateMessageBox {...mockProps} />,
-			mockClient
-		)
+		const { getByPlaceholderText } = rendered
 		const input = getByPlaceholderText(mockProps.placeholder)
 
 		act(() => {

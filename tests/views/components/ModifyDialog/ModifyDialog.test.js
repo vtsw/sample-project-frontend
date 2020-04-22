@@ -3,7 +3,7 @@ import { act, cleanup, fireEvent, render } from '@testing-library/react'
 
 import { ModifyDialog } from '@views_components'
 
-describe('ModifyDialog', () => {
+describe('<ModifyDialog />', () => {
 	const mockProps = {
 		open: true,
 		valueDefault: '',

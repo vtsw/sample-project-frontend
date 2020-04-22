@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CreateMessageBox should match snapshot 1`] = `
+exports[`<CreateMessageBox /> should match snapshot 1`] = `
 <div>
   <div
     class="MuiBox-root MuiBox-root-7 makeStyles-root-1"
