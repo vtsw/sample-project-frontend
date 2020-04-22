@@ -5,7 +5,7 @@ import wait from 'waait'
 
 import User from '@views/User'
 
-import { findDOMNodeOfUser } from './utils'
+import { findDOMNodeOfUser } from './helpers'
 
 describe('User', () => {
 	it('should match snapshot', async () => {

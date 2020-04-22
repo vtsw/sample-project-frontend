@@ -123,7 +123,7 @@ exports[`UserList should match snapshot 1`] = `
                   style="height: 11900px; width: 100%;"
                 >
                   <div
-                    class="MuiGrid-root makeStyles-root-250 makeStyles-root-255 MuiGrid-container"
+                    class="MuiGrid-root makeStyles-root-250 makeStyles-root-255 makeStyles-item__active-251 MuiGrid-container"
                     data-testid="row-5e68995fb6d0bc05829b6e79"
                   >
                     <div

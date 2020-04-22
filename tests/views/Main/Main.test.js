@@ -6,7 +6,7 @@ import wait from 'waait'
 
 import { act } from '@testing-library/react'
 
-import { findDOMNodeOfMain } from './utils'
+import { findDOMNodeOfMain } from './helpers'
 
 describe('<Main />', () => {
 	beforeEach(() => {

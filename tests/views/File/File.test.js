@@ -2,7 +2,7 @@ import waait from 'waait'
 
 import { act, fireEvent } from '@testing-library/react'
 
-import { findDOMNodeOfFile, fileName, mockFile } from './utils'
+import { findDOMNodeOfFile, fileName, mockFile } from './helpers'
 
 describe('<File />', () => {
 	it('should match snapshot', async () => {

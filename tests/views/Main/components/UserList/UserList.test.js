@@ -5,7 +5,7 @@ import waait from 'waait'
 
 import { UserList } from '@views/Main/components'
 
-import { mockSearchText, findDOMNodeOfUserList } from './utils'
+import { mockSearchText, findDOMNodeOfUserList } from './helpers'
 
 describe('<UserList />', async () => {
 	let rendered

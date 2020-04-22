@@ -12,7 +12,7 @@ import {
 	modifyMessage,
 	closeDialog,
 } from '@tests/shares/utils'
-import { findDOMNodeOfMessage, mockSearchText, mockMessage } from './utils'
+import { findDOMNodeOfMessage, mockSearchText, mockMessage } from './helpers'
 
 describe('<Message />', () => {
 	let rendered

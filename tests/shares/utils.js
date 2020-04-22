@@ -322,6 +322,18 @@ const mockMessageList = [
 	},
 ]
 
+const mockSearchedUser = {
+	id: '5e68995fb6d0bc058sew6e79',
+	email: 'mocksearcheduser@gmail.com',
+	name: 'mock searched user',
+}
+
+const mockSearchedMessage = {
+	id: '5e902a09035ac411c123422b',
+	content: 'mock search message',
+	lastModified: '2020-04-10T08:10:49+00:00',
+}
+
 const mockUserTableHeader = [
 	{ headerLabel: 'EMAIL', xs: 5, headerVariable: 'email' },
 	{ headerLabel: 'NAME', xs: 7, headerVariable: 'name' },
@@ -475,6 +487,8 @@ export {
 	mockUser,
 	mockUserList,
 	mockMessageList,
+	mockSearchedUser,
+	mockSearchedMessage,
 	mockUserTableHeader,
 	mockMessageTableHeader,
 	renderWithApolloClient,

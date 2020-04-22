@@ -11,7 +11,7 @@ import {
 	modifyMessage,
 	closeDialog,
 } from '@tests/shares/utils'
-import { mockMessage, findDOMNodeOfMessageList } from './utils'
+import { mockMessage, findDOMNodeOfMessageList } from './helpers'
 
 describe('<MessageList />', () => {
 	let rendered
