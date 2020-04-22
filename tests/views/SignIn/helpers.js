@@ -1,11 +1,9 @@
 import React from 'react'
-import { render } from '@testing-library/react'
 
 import { MockedProvider } from '@apollo/react-testing'
 
-import { GET_USER_INFO } from '@views/File/gql/query'
-import { UPLOAD_FILE } from '@views/File/gql/mutation'
-import { mockServer } from '@tests/shares/utils'
+import { SIGN_IN } from '@views/SignIn/gql/mutation'
+import { mockUser, mockServer, renderWithRouter } from '@tests/shares/utils'
 
 const fileName = 'mockimage.jpg'
 
@@ -15,31 +13,23 @@ mockFile.src = fileName
 const mocks = [
 	{
 		request: {
-			query: GET_USER_INFO,
-		},
-		result: {
-			data: {
-				me: {
-					image: {
-						filename: fileName,
-						link: mockServer + '/image',
-					},
-				},
-			},
-		},
-	},
-	{
-		request: {
-			query: UPLOAD_FILE,
+			query: SIGN_IN,
 			variables: {
-				file: mockFile,
+				user: { email: mockUser.email, password: mockUser.password },
 			},
 		},
 		result: {
 			data: {
-				uploadImage: {
-					filename: fileName,
-					link: mockServer + '/image',
+				login: {
+					token: mockUser.token,
+					user: {
+						name: mockUser.name,
+						email: mockUser.email,
+						image: {
+							filename: fileName,
+							link: mockServer + '/image',
+						},
+					},
 				},
 			},
 		},
@@ -69,12 +59,12 @@ const resolvers = {
 	},
 }
 
-const findDOMNodeOfFile = component => {
-	return render(
+const findDOMNodeOfSignIn = component => {
+	return renderWithRouter(
 		<MockedProvider mocks={mocks} addTypename={false} resolvers={resolvers}>
 			{component}
 		</MockedProvider>
 	)
 }
 
-export { fileName, mockFile, findDOMNodeOfFile }
+export { mockFile, findDOMNodeOfSignIn }

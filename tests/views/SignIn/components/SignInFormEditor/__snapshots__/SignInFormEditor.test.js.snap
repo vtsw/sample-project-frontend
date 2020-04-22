@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SignInFormEditor /> should match snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root MuiBox-root-10 makeStyles-root-1"
+  >
+    <div
+      class="MuiBox-root MuiBox-root-11 makeStyles-container-2"
+    >
+      <h5
+        class="MuiTypography-root makeStyles-title-3 MuiTypography-h5"
+      >
+        Sign in
+      </h5>
+      <div>
+        <div
+          class="MuiFormControl-root MuiTextField-root makeStyles-input-4"
+        >
+          <label
+            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-outlined"
+            data-shrink="false"
+          >
+            EMAIL
+          </label>
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+          >
+            <input
+              aria-invalid="false"
+              autocomplete="true"
+              class="MuiInputBase-input MuiOutlinedInput-input"
+              placeholder="Email"
+              type="email"
+              value=""
+            />
+            <fieldset
+              aria-hidden="true"
+              class="PrivateNotchedOutline-root-100 MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="PrivateNotchedOutline-legendLabelled-102"
+              >
+                <span>
+                  EMAIL
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+        </div>
+        <div
+          class="MuiFormControl-root MuiTextField-root makeStyles-input-4"
+        >
+          <label
+            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-outlined"
+            data-shrink="false"
+          >
+            PASSWORD
+          </label>
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+          >
+            <input
+              aria-invalid="false"
+              autocomplete="true"
+              class="MuiInputBase-input MuiOutlinedInput-input"
+              placeholder="Password"
+              type="password"
+              value=""
+            />
+            <fieldset
+              aria-hidden="true"
+              class="PrivateNotchedOutline-root-100 MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="PrivateNotchedOutline-legendLabelled-102"
+              >
+                <span>
+                  PASSWORD
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+      <div
+        class="makeStyles-actions-6"
+      >
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-7 MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge MuiButton-fullWidth"
+          data-testid="signin-button"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Sign in
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+        <p
+          class="MuiTypography-root makeStyles-signuptext-8 MuiTypography-body2"
+          data-testid="signup-text"
+        >
+          sign up
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -42,12 +42,6 @@ describe('<FormEditor />', () => {
 			emailInput.focus()
 		})
 
-		expect(emailInput.value).toBe('')
-
-		fireEvent.change(emailInput, {
-			target: { value: mockUser.email.toLowerCase() },
-		})
-
 		expect(emailInput.value).toBe(mockUser.email)
 	})
 

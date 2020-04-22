@@ -14,6 +14,7 @@ const mockUser = {
 	name: 'stevevo',
 	password: '111',
 	confirmPassword: '111',
+	token: 'mock_token',
 }
 
 const mockUserList = [
@@ -334,6 +335,8 @@ const mockSearchedMessage = {
 	lastModified: '2020-04-10T08:10:49+00:00',
 }
 
+const mockServer = 'http://mockserver.com'
+
 const mockUserTableHeader = [
 	{ headerLabel: 'EMAIL', xs: 5, headerVariable: 'email' },
 	{ headerLabel: 'NAME', xs: 7, headerVariable: 'name' },
@@ -489,6 +492,7 @@ export {
 	mockMessageList,
 	mockSearchedUser,
 	mockSearchedMessage,
+	mockServer,
 	mockUserTableHeader,
 	mockMessageTableHeader,
 	renderWithApolloClient,
