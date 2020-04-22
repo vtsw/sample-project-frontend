@@ -28,8 +28,10 @@ const SignUp = props => {
 	const createUser = ({ email, name, password }) => {
 		createNewUser({
 			variables: { user: { email, name, password } },
-		}).then(() => history.push('/sign-in'))
+		}).then(navigateToSignInPage)
 	}
+
+	const navigateToSignInPage = () => history.push('/sign-in')
 
 	return (
 		<Box className={classes.root}>

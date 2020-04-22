@@ -47,7 +47,16 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const FormEditor = props => {
-	const { selectedUser = {}, onSubmit, onCancel, onDelete } = props
+	const {
+		selectedUser = {
+			id: '',
+			email: '',
+			name: '',
+		},
+		onSubmit,
+		onCancel,
+		onDelete,
+	} = props
 	const classes = useStyles()
 
 	const [email, setEmail] = useState('')
@@ -122,6 +131,7 @@ const FormEditor = props => {
 					placeholder='Email'
 					variant='outlined'
 					type='email'
+					autoComplete='true'
 					className={classes.forminput}
 					onChange={e => setEmail(e.target.value.toLowerCase())}
 				/>
