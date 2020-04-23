@@ -128,6 +128,8 @@ describe('Sign up', () => {
 	})
 
 	it('should allow deleting an user', () => {
+		// change rowIndex of clickRow after each test
+		// Because cy can not find this row when it's deleted
 		clickRow(mockUserList, 10)
 		cy.findByPlaceholderText('Email')
 			.invoke('val')
