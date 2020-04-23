@@ -10,7 +10,7 @@ const unregisteredUser = {
 const baseUrl = window.location.origin
 let registeredUser = {}
 
-function randomizeUserInfo() {
+const randomizeUserInfo = () => {
 	const randomUserName = `stevevo${generateRandomNumber(100, 1000000000000)}`
 	const userInfo = {
 		email: `${randomUserName}@gmail.com`,

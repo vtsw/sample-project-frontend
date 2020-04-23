@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
-import { generateRandomNumber, existingUser } from '../utils'
+import { generateRandomNumber } from '../utils'
 import { Navigation } from './common'
+import { mockUser } from '../../tests/shares/utils'
+
 const SignUpNav = Navigation.SignUp
 let userInfo = {}
 
@@ -37,14 +39,14 @@ describe('Sign up', () => {
 
 	it('should not allow an existing user to register in sign up page', () => {
 		SignUpNav.navigateFromSignInPageToSignUpPage()
-		const tmpUser = { ...userInfo, email: existingUser.email }
+		const tmpUser = { ...userInfo, email: mockUser.email }
 		cy.registerUser(tmpUser)
 		cy.url().should('equal', `${baseUrl}/sign-up`)
 		cy.get('[data-testid=formeditor-submit-button]').should('exist')
 	})
 
 	it('should allow users to register in user page', () => {
-		cy.signIn(existingUser.email, existingUser.password)
+		cy.signIn(mockUser.email, mockUser.password)
 		SignUpNav.navigateFromMainPageToFormEditorOfUserPage()
 		cy.registerUser(userInfo)
 		cy.findAllByText(userInfo.email).should('exist')
@@ -52,9 +54,9 @@ describe('Sign up', () => {
 	})
 
 	it('should not allow users to register in user page', () => {
-		cy.signIn(existingUser.email, existingUser.password)
+		cy.signIn(mockUser.email, mockUser.password)
 		SignUpNav.navigateFromMainPageToFormEditorOfUserPage()
-		const tmpUser = { ...userInfo, email: existingUser.email }
+		const tmpUser = { ...userInfo, email: mockUser.email }
 		cy.registerUser(tmpUser)
 		cy.on('window:alert', error => {
 			expect(error.message).to.equal('GraphQL error: The email already exists.')

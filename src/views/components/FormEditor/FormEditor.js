@@ -3,7 +3,11 @@ import React, { useState, useEffect } from 'react'
 import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { validateEmail, validatePassword } from '@src/shares/utils'
+import {
+	validateEmail,
+	validateName,
+	validatePassword,
+} from '@src/shares/utils'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -76,17 +80,14 @@ const FormEditor = props => {
 		confirmPassword = ''
 	) => {
 		const isValidEmail = validateEmail(email)
+		const isValidName = validateName(name)
 		const isValidPassword = validatePassword(password)
 
-		if (selectedUser.id && (!isValidEmail || !name)) {
+		if (!isValidEmail || !isValidName || password !== confirmPassword) {
 			return false
-		} else if (
-			!selectedUser.id &&
-			(!isValidEmail ||
-				!name ||
-				!isValidPassword ||
-				password !== confirmPassword)
-		) {
+		} else if (selectedUser.id && password && !isValidPassword) {
+			return false
+		} else if (!selectedUser.id && !isValidPassword) {
 			return false
 		}
 

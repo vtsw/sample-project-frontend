@@ -7,33 +7,23 @@ import { act, fireEvent, render } from '@testing-library/react'
 import { MockedProvider } from '@apollo/react-testing'
 
 const mockUser = {
-	email: 'stevevo@gmail.com',
-	name: 'stevevo',
-	password: '111',
-	confirmPassword: '111',
+	email: 'steve@example.com',
+	name: 'steve',
+	password: '1234',
+	confirmPassword: '1234',
 	token: 'mock_token',
 }
 
 const mockUserList = [
 	{
 		id: '5e68995fb6d0bc05829b6e79',
-		name: '90412',
+		name: 'steve',
 		email: 'steve@example.com',
 	},
 	{
 		id: '5e68b5c3dd814dd832cda79d',
-		name: 'asdasdasd',
-		email: 'nvdai2355@gmail.com',
-	},
-	{
-		id: '5e68b792dd814d8efacda7ad',
-		name: 'nvdai235556',
-		email: 'nvdai235556@gmail.com',
-	},
-	{
-		id: '5e68b7addd814d76adcda7ae',
-		name: 'nvdai1235',
-		email: 'nvdai1235@gmail.com',
+		name: 'asd',
+		email: 'nvdai2355s56se@gmail.com',
 	},
 	{
 		id: '5e68b9e6dd814db72fcda7af',
@@ -44,16 +34,6 @@ const mockUserList = [
 		id: '5e68ba40dd814d21bacda7b0',
 		name: 'shit',
 		email: 'holyshit@gmail.com',
-	},
-	{
-		id: '5e68bb09dd814dfd87cda7b2',
-		name: 'boysexytapthehinh',
-		email: 'boysexytapthehinh@phonggym.com',
-	},
-	{
-		id: '5e68bb45dd814d3710cda7b3',
-		name: 'michaelsexytapthehinh',
-		email: 'michaelsexytapthehinh@phonggym.com',
 	},
 	{
 		id: '5e69c898da2ad4daa7d8cc96',
@@ -67,13 +47,13 @@ const mockUserList = [
 	},
 	{
 		id: '5e69c9a5da2ad469eed8cc9a',
-		name: 'qqqqqqqqqqqqqqq',
-		email: 'qqqqqqqqqqqqqqq@gmail.com',
+		name: 'cycycycycycycyqqqqqqqqqqqqqqq',
+		email: 'cycycycycycycycycyqqqqqqqqqqqqqqq@gmail.com',
 	},
 	{
 		id: '5e69ce2eda2ad42283d8cca5',
-		name: 'daikkkkkk1234',
-		email: 'daikkkkkk12345@gmail.com',
+		name: 'cydaikkkkkk1234',
+		email: 'cydaikkkkkk12345@gmail.com',
 	},
 	{
 		id: '5e69cf90da2ad424b3d8cca6',
@@ -164,6 +144,26 @@ const mockUserList = [
 		id: '5e69dd2dda2ad4d983d8ccb8',
 		name: 'adadadada',
 		email: 'adadadada@gmail.com',
+	},
+	{
+		id: '5e69dee8da2ad42744d8ccc7',
+		name: 'samdad',
+		email: 'samdad@gmail.com',
+	},
+	{
+		id: '5e69df0ada2ad45bacd8cccc',
+		name: 'samdad',
+		email: 'samdad1@gmail.com',
+	},
+	{
+		id: '5e69df83da2ad4ac61d8ccd7',
+		name: 'samdad123',
+		email: 'samdad123@gmail.com',
+	},
+	{
+		id: '5e69dfb5da2ad47687d8cce0',
+		name: 'samdad12345',
+		email: 'samdad12345@gmail.com',
 	},
 ]
 
