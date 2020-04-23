@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 		fontWeight: theme.typography.fontWeightMedium,
 		color: theme.palette.common.white,
 		cursor: 'pointer',
-		padding: `${theme.spacing(3)}px ${theme.spacing(1.5)}px`,
+		padding: theme.spacing(3, 1.5),
 		textAlign: 'center',
 		transition: `all ${theme.transitions.duration.shorter}ms ${theme.transitions.easing.easeInOut}`,
 		'&:last-child': {
@@ -42,6 +42,7 @@ const navbarItems = [
 	{ page: 'user', pathname: '/user' },
 	{ page: 'message', pathname: '/message' },
 	{ page: 'file', pathname: '/file' },
+	{ page: 'chat', pathname: '/chat' },
 ]
 
 const NavBar = props => {
