@@ -4,4 +4,9 @@ const generateRandomNumber = (min, max) => {
 	return Math.floor(Math.random() * (max - min)) + min
 }
 
-export { generateRandomNumber }
+const existingUser = {
+	email: 'steve1@gmail.com',
+	password: '123',
+}
+
+export { generateRandomNumber, existingUser }

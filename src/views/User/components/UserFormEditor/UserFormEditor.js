@@ -73,12 +73,26 @@ const UserFormEditor = () => {
 
 	const updateUserInfo = ({ id, email, name, password }) => {
 		let userInfo = { id, email, name }
-		if (password) userInfo = { ...userInfo, password }
-		updateUser({
-			variables: { user: userInfo },
-		}).then(() => {
-			resetSelectedUser()
-		})
+		if (password) {
+			updateUser({
+				variables: { user: { ...userInfo, password } },
+			}).then(() => {
+				resetSelectedUser()
+			})
+		} else {
+			if (
+				email === selectedUserData.selectedUser.email &&
+				name === selectedUserData.selectedUser.name
+			) {
+				resetSelectedUser()
+			} else {
+				updateUser({
+					variables: { user: userInfo },
+				}).then(() => {
+					resetSelectedUser()
+				})
+			}
+		}
 	}
 
 	const createUser = ({ email, name, password }) => {

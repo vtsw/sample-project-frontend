@@ -20,14 +20,18 @@ const navigateFromSignInPageToSignUpPage = () =>
 		.should('exist')
 		.click()
 
-const navigateFromMainPageToFormEditorOfUserPage = () =>
+const navigateFromMainPageTofUserPage = () =>
 	cy
 		.get('[data-testid=navbaritem-user]')
 		.should('exist')
 		.click()
-		.get('[data-testid=create-user-button')
+
+const navigateFromMainPageToFormEditorOfUserPage = () => {
+	navigateFromMainPageTofUserPage()
+	cy.get('[data-testid=create-user-button')
 		.should('exist')
 		.click()
+}
 
 export default {
 	withNavigation,
@@ -36,5 +40,8 @@ export default {
 	SignUp: {
 		navigateFromSignInPageToSignUpPage,
 		navigateFromMainPageToFormEditorOfUserPage,
+	},
+	User: {
+		navigateFromMainPageTofUserPage: navigateFromMainPageTofUserPage,
 	},
 }

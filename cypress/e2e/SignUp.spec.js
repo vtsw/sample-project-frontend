@@ -1,12 +1,8 @@
 /* eslint-disable no-undef */
-import { generateRandomNumber } from '../utils'
+import { generateRandomNumber, existingUser } from '../utils'
 import { Navigation } from './common'
 const SignUpNav = Navigation.SignUp
 let userInfo = {}
-const existingUser = {
-	email: 'steve1@gmail.com',
-	password: '123',
-}
 
 const baseUrl = window.location.origin
 

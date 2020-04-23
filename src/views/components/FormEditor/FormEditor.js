@@ -65,11 +65,9 @@ const FormEditor = props => {
 	const [confirmPassword, setConfirmPassword] = useState('')
 
 	useEffect(() => {
-		if (selectedUser.email && selectedUser.name) {
-			setEmail(selectedUser.email)
-			setName(selectedUser.name)
-		}
-	}, [selectedUser])
+		setEmail(selectedUser.email)
+		setName(selectedUser.name)
+	}, [selectedUser.email, selectedUser.name])
 
 	const validateForm = (
 		email = '',
@@ -80,22 +78,24 @@ const FormEditor = props => {
 		const isValidEmail = validateEmail(email)
 		const isValidPassword = validatePassword(password)
 
-		if (
-			!isValidEmail ||
-			!isValidPassword ||
-			password !== confirmPassword ||
-			!name
+		if (selectedUser.id && (!isValidEmail || !name)) {
+			return false
+		} else if (
+			!selectedUser.id &&
+			(!isValidEmail ||
+				!name ||
+				!isValidPassword ||
+				password !== confirmPassword)
 		) {
 			return false
 		}
+
 		return true
 	}
 
 	const resetForm = () => {
-		if (!selectedUser.id) {
-			setEmail('')
-			setName('')
-		}
+		setEmail('')
+		setName('')
 		setPassword('')
 		setConfirmPassword('')
 	}
