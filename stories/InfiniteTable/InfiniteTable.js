@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { action } from '@storybook/addon-actions'
 import { DeleteDialog, ModifyDialog } from '@views_components'
 import { boolean, object } from '@storybook/addon-knobs'
-import LargeTable from '../../src/views/components/LargeTable/LargeTable'
+import InfiniteTable from '../../src/views/components/InfiniteTable/InfiniteTable'
 import data from './generatorData'
 import PropTypes from 'prop-types'
 
-const Largetable = () => {
+const SInfiniteTable = () => {
 	const [message, setMessage] = useState(data(50))
 	const [deleteDialogVisible, setDeleteDialogVisible] = useState(false)
 	const [modifyDialogVisible, setModifyDialogVisible] = useState(false)
@@ -34,7 +34,7 @@ const Largetable = () => {
 				padding: '20px',
 			}}
 		>
-			<LargeTable
+			<InfiniteTable
 				items={message}
 				onClickRow={dataRow => {
 					setSelectedMessage(dataRow)
@@ -76,7 +76,7 @@ const Largetable = () => {
 				onClose={() => {
 					setModifyDialogVisible(false)
 				}}
-				valueDefault={selectedMessage && selectedMessage.name}
+				valueDefault={selectedMessage ? selectedMessage.name : ''}
 				onAgree={value => {
 					setModifyDialogVisible(false)
 					setMessage(
@@ -95,9 +95,9 @@ const Largetable = () => {
 	)
 }
 
-export default Largetable
+export default SInfiniteTable
 
-Largetable.propTypes = {
+SInfiniteTable.propTypes = {
 	items: PropTypes.array.isRequired,
 	onClickRow: PropTypes.func.isRequired,
 	selectedRow: PropTypes.object,
@@ -108,9 +108,9 @@ Largetable.propTypes = {
 	hasNextPage: PropTypes.bool,
 	loadingMore: PropTypes.bool,
 }
-Largetable.defaultProps = {
+SInfiniteTable.defaultProps = {
 	items: [],
-	// onClickRow: '_',
+	onClickRow: () => {},
 	selectedRow: {},
 	columns: [],
 	isIconClose: false,

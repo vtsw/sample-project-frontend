@@ -1,9 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import { deleteToken } from '@src/shares/utils'
-// import NavBarItem from '../../src/views/components/NavBar/NavBarItem'
-import { action } from '@storybook/addon-actions'
 import NavBar from '../../src/views/components/NavBar'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -13,7 +10,7 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.primary.main,
 		display: 'flex',
 		flexDirection: 'column',
-		height: '100vh',
+		height: '80vh',
 		width: '100px',
 	},
 	tab: {

@@ -1,5 +1,5 @@
 import React from 'react'
-import Largetable from './Largetable'
+import SInfiniteTable from './InfiniteTable'
 import muiTheme from '../../src/theme/muiTheme'
 import { ThemeProvider } from '@material-ui/core'
 
@@ -11,7 +11,7 @@ export default {
 export const basic = () => {
 	return (
 		<ThemeProvider theme={muiTheme}>
-			<Largetable />
+			<SInfiniteTable />
 		</ThemeProvider>
 	)
 }

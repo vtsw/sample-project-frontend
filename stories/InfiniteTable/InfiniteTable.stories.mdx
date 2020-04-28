@@ -1,11 +1,11 @@
 import { Meta, Story, Preview,Props } from '@storybook/addon-docs/blocks';
-import Largetable from './Largetable'
+import InfiniteTable from './InfiniteTable'
 
-import * as stories from './LargeTable.stories.js';
+import * as stories from './InfiniteTable.stories.js';
 
-<Meta title="Component Api|Largetable" />
+<Meta title="Component Api|InfiniteTable" />
 
-# Largetable
+# InfiniteTable
 With `MDX` we can define a story for `Large Table` right in the middle of our
 markdown documentation.
 
@@ -18,7 +18,7 @@ markdown documentation.
 
 
 ```jsx 
-	<LargeTable
+	<InfiniteTable
     items={message}
     onClickRow={dataRow => {
       setSelectedMessage(dataRow)
@@ -43,5 +43,5 @@ markdown documentation.
 
 # PropTypes
 
-<Props of={Largetable}/>
+<Props of={InfiniteTable}/>
 

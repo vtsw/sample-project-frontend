@@ -20,8 +20,8 @@
     "test:all": "set CI=true && yarn test && yarn lint",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "start:storybook": "start-storybook -p 6006",
+    "build:storybook": "build-storybook"
   },
   "husky": {
     "hooks": {

@@ -41,4 +41,5 @@ BoxCreate.propTypes = {
 }
 BoxCreate.defaultProps = {
 	defaultValue: '',
+	handleCreate: () => {},
 }
