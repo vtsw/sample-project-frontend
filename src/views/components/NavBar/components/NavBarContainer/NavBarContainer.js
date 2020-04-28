@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 
+import { Grid, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import clsx from 'clsx'
 
 import NavBarItem from '../NavBarItem'
 
@@ -8,26 +10,32 @@ const useStyles = makeStyles(theme => ({
 	root: {
 		position: 'relative',
 		backgroundColor: theme.palette.primary.main,
-		display: 'flex',
-		flexDirection: 'column',
 		height: '100vh',
+		width: 80,
 	},
 	tab: {
-		fontSize: theme.typography.htmlFontSize,
-		fontWeight: theme.typography.fontWeightMedium,
 		color: theme.palette.common.white,
+		width: '100%',
 		cursor: 'pointer',
 		padding: `${theme.spacing(3)}px ${theme.spacing(1.5)}px`,
-		textAlign: 'center',
-		transition: `all ${theme.transitions.duration.shorter}ms ${theme.transitions.easing.easeInOut}`,
+		textTransform: 'lowercase',
+		borderRadius: 0,
 		'&:last-child': {
 			position: 'absolute',
 			bottom: 0,
+			left: 0,
+			textTransform: 'capitalize',
+		},
+		'&>span': {
+			fontWeight: theme.typography.fontWeightBold,
 		},
 	},
 	active: {
 		backgroundColor: theme.palette.common.white,
 		color: theme.palette.text.primary,
+		'&:hover': {
+			backgroundColor: theme.palette.common.white,
+		},
 	},
 }))
 
@@ -47,23 +55,24 @@ const NavBarContainer = props => {
 	}
 
 	return (
-		<ul className={classes.root}>
+		<Grid className={classes.root}>
 			{items.map((item, index) => (
 				<NavBarItem
 					key={index}
 					handleOnChangePage={handleOnChangePage}
-					styles={`${classes.tab} ${setActiveTab(item.pathname)}`}
+					styles={clsx(classes.tab, setActiveTab(item.pathname))}
 					{...item}
 				/>
 			))}
-			<li
+			<Button
 				data-testid='navbaritem-logout'
+				color='primary'
 				className={classes.tab}
 				onClick={handleOnLogOut}
 			>
 				Logout
-			</li>
-		</ul>
+			</Button>
+		</Grid>
 	)
 }
 

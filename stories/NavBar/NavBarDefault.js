@@ -10,8 +10,8 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.primary.main,
 		display: 'flex',
 		flexDirection: 'column',
-		height: '80vh',
-		width: '100px',
+		height: '100vh',
+		width: 80,
 	},
 	tab: {
 		fontSize: theme.typography.htmlFontSize,
