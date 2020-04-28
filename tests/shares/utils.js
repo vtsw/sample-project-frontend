@@ -320,6 +320,173 @@ const mockMessageList = [
 	},
 ]
 
+const mockMessageListOfUser = [
+	{
+		id: '5e6b34a80f14940526bb077d',
+		content: 'Voluptas eveniet molestias sint adipisci libero cum veniam.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb077e',
+		content:
+			'Illo harum fugiat asperiores eveniet nisi nobis eos dolore dolorem.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0781',
+		content:
+			'Id voluptate soluta sit sit et.\nDistinctio nisi maxime alias.\nPossimus aliquid commodi.\nUt amet illum.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0782',
+		content: 'Ut quia qui dolorem molestiae quos ducimus dolorem sit.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0783',
+		content:
+			'Velit tenetur ipsa atque itaque ipsum aspernatur.\nNemo aliquid et error officia facilis reiciendis fugiat.\nSed et temporibus quae.\nVoluptates ratione dolorem et.\nMaiores commodi doloremque magnam cum accusantium maxime.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0784',
+		content:
+			'Est aut aut rerum neque sint eos quia animi. A non magnam. Qui alias delectus. Possimus consectetur assumenda vel et modi. Quia rerum non illum ex et maxime itaque eos. Ullam molestiae nostrum voluptatibus velit quisquam ab enim est.\n \rMinima consequatur assumenda ut sit est eum repudiandae sed ut. Officia veritatis sit quo delectus placeat minus similique. Ab optio sunt laborum rem velit sequi. Architecto cumque quia et minus facere vitae.\n \rCupiditate ex quia. Omnis quo sed sit qui et itaque est nulla. Doloribus officia voluptatem aut placeat commodi unde asperiores soluta ducimus.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0785',
+		content: 'commodi minima enim',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0786',
+		content: 'Cupiditate corporis aliquam delectus.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0787',
+		content: 'ut',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0788',
+		content:
+			'Est eum necessitatibus repellendus deserunt ducimus ipsam molestiae quibusdam. Aliquid delectus qui dolorem aut voluptatum. Id ratione aperiam mollitia possimus et. Libero repudiandae voluptatem molestias et rerum.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0789',
+		content:
+			'Quisquam ut qui dolor iure ut quia recusandae est. Inventore vel magnam. Ullam provident reiciendis culpa voluptatem consequatur iusto quis.\n \rQuos quasi soluta quis dolorem est id consequatur quis quasi. Pariatur accusantium dolorum eaque deserunt soluta voluptatem non. Et nostrum numquam quibusdam nihil assumenda et. Sit optio natus quia cupiditate dolor sunt repudiandae. Enim officiis omnis reprehenderit quo repellat eum.\n \rUllam autem quidem aut earum animi error. Consectetur et qui. Delectus temporibus sit non saepe excepturi. Molestiae omnis inventore beatae adipisci. Sunt in a consequatur harum error qui. Aut mollitia sunt labore unde iste.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb078a',
+		content:
+			'Labore nisi dolor dolore deserunt voluptatem. Dolore ut adipisci neque voluptates impedit maiores.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb078b',
+		content: 'Vel ut aliquam.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb078c',
+		content:
+			'Natus excepturi molestiae pariatur ullam et. Consequatur corrupti ullam quae perspiciatis minus. Quo et asperiores rem molestias. Quibusdam quos eum delectus sit corrupti impedit. Id et qui ipsam eveniet quae provident et.\n \rAutem soluta blanditiis numquam est non eligendi. Illum nisi tempora est nemo in aliquam non. Aliquam ex eos alias quae voluptatem modi ipsa. Sunt ut ut quaerat provident.\n \rUt quia pariatur. Occaecati voluptatibus consequuntur voluptatem. Mollitia fugiat quidem magni atque dolor est nobis sit dolorem. Voluptatem voluptate sed ut autem sit dolorem vero possimus odio. Praesentium ratione autem aut non et doloribus et. Quas aut repellendus.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb078d',
+		content: 'Minus corporis eum adipisci veniam.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb078e',
+		content: 'omnis',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb078f',
+		content: 'aliquam',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0790',
+		content:
+			'Quis dignissimos distinctio possimus non quos quidem.\nEt quis illum reiciendis nihil rerum accusantium.\nQuis sit et sed illum.\nVoluptatum qui voluptatem neque odio modi quidem perferendis dolorem.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0791',
+		content: 'soluta nemo et',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0792',
+		content: 'consequatur',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0793',
+		content: 'Sunt molestiae suscipit est a et laborum.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0794',
+		content:
+			'Ea deserunt vitae omnis eligendi. Quia provident totam quo eveniet id. Veniam molestiae officiis debitis et autem facilis.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0795',
+		content:
+			'Qui et et assumenda. Eligendi corporis ad ipsum ut et et cumque unde. Ut velit commodi est ipsum. Alias quis sed. Quidem aut deserunt iusto reprehenderit doloribus. Laborum atque fuga autem laboriosam quasi tempore.\n \rDignissimos reiciendis aliquam quia iste. Minus sed voluptates corporis optio maiores et ea totam saepe. Praesentium quod eos. Tempora commodi aut et quia nulla.\n \rRepellat possimus qui impedit a qui blanditiis nostrum consequatur. A est dolores qui omnis. Facilis est dolor ab molestias quibusdam rerum. Quasi culpa dolores fugit tempora. Aut sint quidem ea repudiandae accusamus quia praesentium excepturi et.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0796',
+		content:
+			'Veritatis ipsum pariatur et recusandae voluptatum. Qui dolorum qui. Modi sed dolores a possimus maxime architecto.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0797',
+		content: 'Pariatur nam voluptatum id esse enim doloribus amet iure.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0798',
+		content: 'maxime',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb0799',
+		content: 'quidem maiores ut',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb079a',
+		content:
+			'Dignissimos dicta eos. Cumque ipsa saepe placeat ut et similique voluptatem debitis. Velit quo nihil ex.\n \rPraesentium eligendi non. Illum quisquam aut recusandae consequuntur distinctio. Nihil ut adipisci. Quia suscipit expedita odio. Saepe earum vel et.\n \rEnim voluptas sint officiis sed et. Delectus sed velit neque reiciendis dicta. Et expedita quia aut corrupti laudantium nesciunt aut deserunt nulla. Suscipit eum distinctio porro qui.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb079b',
+		content: 'et',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+	{
+		id: '5e6b34a80f14940526bb079c',
+		content:
+			'Deserunt aspernatur consectetur. Velit omnis sunt enim et odio ut ipsum. Dolore vel odio inventore neque aut. Maiores consequatur aut reprehenderit quia numquam illum in. At voluptatem rem eum eos maiores.',
+		lastModified: '2020-03-13T07:22:16+00:00',
+	},
+]
+
 const mockSearchedUser = {
 	id: '5e68995fb6d0bc058sew6e79',
 	email: 'mocksearcheduser@gmail.com',
@@ -481,6 +648,7 @@ export {
 	mockUser,
 	mockUserList,
 	mockMessageList,
+	mockMessageListOfUser,
 	mockSearchedUser,
 	mockSearchedMessage,
 	mockServer,
