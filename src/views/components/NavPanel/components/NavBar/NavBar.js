@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Grid, Button } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 
@@ -17,15 +17,9 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.common.white,
 		width: '100%',
 		cursor: 'pointer',
-		padding: `${theme.spacing(3)}px ${theme.spacing(1.5)}px`,
+		padding: `28px 12px`,
 		textTransform: 'lowercase',
 		borderRadius: 0,
-		'&:last-child': {
-			position: 'absolute',
-			bottom: 0,
-			left: 0,
-			textTransform: 'capitalize',
-		},
 		'&>span': {
 			fontWeight: theme.typography.fontWeightBold,
 		},
@@ -39,8 +33,8 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const NavBarContainer = props => {
-	const { location = { pathname: '' }, history, items, handleOnLogOut } = props
+const NavBar = props => {
+	const { location = { pathname: '' }, history, items } = props
 	const classes = useStyles()
 
 	const [currentPage, setCurrentPage] = useState(location.pathname || {})
@@ -64,16 +58,8 @@ const NavBarContainer = props => {
 					{...item}
 				/>
 			))}
-			<Button
-				data-testid='navbaritem-logout'
-				color='primary'
-				className={classes.tab}
-				onClick={handleOnLogOut}
-			>
-				Logout
-			</Button>
 		</Grid>
 	)
 }
 
-export default NavBarContainer
+export default NavBar

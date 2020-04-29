@@ -37,7 +37,7 @@ describe('<NavBarContainer />', () => {
 
 	it('should call handleOnLogOut correctly when click Log Out item', () => {
 		const { getByTestId } = render(<NavBarContainer {...mockProps} />)
-		const logOutItem = 'navbaritem-logout'
+		const logOutItem = 'logoutbutton'
 
 		fireEvent.click(getByTestId(logOutItem))
 

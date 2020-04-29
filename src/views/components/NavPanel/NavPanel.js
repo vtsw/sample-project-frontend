@@ -4,7 +4,8 @@ import { withRouter } from 'react-router-dom'
 import { useMutation } from '@apollo/react-hooks'
 import { RESET_CACHE } from './gql/mutation'
 
-import { NavBarContainer } from './components'
+import { NavBar } from './components'
+import { LogOutButton } from '@views_components'
 
 import { deleteToken } from '@src/shares/utils'
 import { initialState } from '@src/client'
@@ -16,7 +17,7 @@ const navbarItems = [
 	{ page: 'file', pathname: '/file' },
 ]
 
-const NavBar = props => {
+const NavPanel = props => {
 	const { history } = props
 
 	const [resetCache, { client }] = useMutation(RESET_CACHE, {
@@ -34,14 +35,11 @@ const NavBar = props => {
 	}
 
 	return (
-		<NavBarContainer
-			items={navbarItems}
-			handleOnLogOut={handleOnLogOut}
-			{...props}
-		/>
+		<React.Fragment>
+			<NavBar items={navbarItems} {...props} />
+			<LogOutButton handleOnLogOut={handleOnLogOut} />
+		</React.Fragment>
 	)
 }
 
-export default withRouter(NavBar)
-
-export { NavBar }
+export default withRouter(NavPanel)

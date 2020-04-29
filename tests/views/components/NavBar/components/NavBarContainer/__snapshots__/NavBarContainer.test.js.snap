@@ -31,7 +31,7 @@ exports[`<NavBarContainer /> should match snapshot 1`] = `
     </li>
     <li
       class="makeStyles-tab-2"
-      data-testid="navbaritem-logout"
+      data-testid="logoutbutton"
     >
       Logout
     </li>
