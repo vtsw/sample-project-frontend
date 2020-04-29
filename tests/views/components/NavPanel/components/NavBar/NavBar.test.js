@@ -1,9 +1,9 @@
 import React from 'react'
 import { cleanup, fireEvent, render } from '@testing-library/react'
 
-import { NavBarContainer } from '@views_components/NavBar/components'
+import { NavBar } from '@views_components/NavPanel/components'
 
-describe('<NavBarContainer />', () => {
+describe('<NavBar />', () => {
 	const mockProps = {
 		location: { pathname: '/' },
 		history: { push: jest.fn() },
@@ -21,13 +21,13 @@ describe('<NavBarContainer />', () => {
 	})
 
 	it('should match snapshot', () => {
-		const { container } = render(<NavBarContainer {...mockProps} />)
+		const { container } = render(<NavBar {...mockProps} />)
 
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should call history.push correctly when click Main item', () => {
-		const { getByTestId } = render(<NavBarContainer {...mockProps} />)
+		const { getByTestId } = render(<NavBar {...mockProps} />)
 		const mainItem = `navbaritem-main`
 
 		fireEvent.click(getByTestId(mainItem))
@@ -36,7 +36,7 @@ describe('<NavBarContainer />', () => {
 	})
 
 	it('should call handleOnLogOut correctly when click Log Out item', () => {
-		const { getByTestId } = render(<NavBarContainer {...mockProps} />)
+		const { getByTestId } = render(<NavBar {...mockProps} />)
 		const logOutItem = 'logoutbutton'
 
 		fireEvent.click(getByTestId(logOutItem))

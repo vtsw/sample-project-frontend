@@ -15,7 +15,7 @@ const resolvers = {
 	},
 }
 
-const findDOMNodeOfNavBar = component => {
+const findDOMNodeOfNavPanel = component => {
 	return renderWithRouter(
 		<MockedProvider addTypename={false} resolvers={resolvers}>
 			{component}
@@ -23,4 +23,4 @@ const findDOMNodeOfNavBar = component => {
 	)
 }
 
-export { findDOMNodeOfNavBar }
+export { findDOMNodeOfNavPanel }

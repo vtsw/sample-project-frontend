@@ -2,17 +2,17 @@ import React from 'react'
 
 import { cleanup } from '@testing-library/react'
 
-import { NavBar } from '@views_components'
+import { NavPanel } from '@views_components'
 
-import { findDOMNodeOfNavBar } from './helpers'
+import { findDOMNodeOfNavPanel } from './helpers'
 
-describe('<NavBar />', () => {
+describe('<NavPanel />', () => {
 	afterEach(() => {
 		cleanup()
 	})
 
 	it('should match snapshot', () => {
-		const { container } = findDOMNodeOfNavBar(<NavBar />)
+		const { container } = findDOMNodeOfNavPanel(<NavPanel />)
 
 		expect(container).toMatchSnapshot()
 	})

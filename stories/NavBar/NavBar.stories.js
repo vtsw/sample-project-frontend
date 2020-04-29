@@ -6,7 +6,7 @@ import './navbar.scss'
 // import apolloStorybookDecorator from 'apollo-storybook-react'
 import { initialState } from '../../src/client'
 import { addDecorator } from '@storybook/react'
-import { RESET_CACHE } from '../../src/views/components/NavBar/gql/mutation'
+import { RESET_CACHE } from '../../src/views/components/NavPanel/gql/mutation'
 
 import gql from 'graphql-tag'
 import { withApolloProvider } from '../withApolloProvider'
