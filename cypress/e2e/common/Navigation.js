@@ -26,6 +26,12 @@ const navigateFromMainPageTofUserPage = () =>
 		.should('exist')
 		.click()
 
+const navigateFromMainPageTofMessagePage = () =>
+	cy
+		.get('[data-testid=navbaritem-message]')
+		.should('exist')
+		.click()
+
 const navigateFromMainPageToFormEditorOfUserPage = () => {
 	navigateFromMainPageTofUserPage()
 	cy.get('[data-testid=create-user-button')
@@ -42,6 +48,9 @@ export default {
 		navigateFromMainPageToFormEditorOfUserPage,
 	},
 	User: {
-		navigateFromMainPageTofUserPage: navigateFromMainPageTofUserPage,
+		navigateFromMainPageTofUserPage,
+	},
+	Message: {
+		navigateFromMainPageTofMessagePage,
 	},
 }

@@ -5,10 +5,12 @@ const generateRandomNumber = (min, max) => {
 	return Math.floor(Math.random() * (max - min)) + min
 }
 
-const clickRow = (listItem, rowIndex) =>
+const clickItemByTestId = testId =>
 	cy
-		.get(`[data-testid=row-${listItem[rowIndex].id}]`)
+		.findByTestId(testId)
 		.should('exist')
 		.click()
 
-export { generateRandomNumber, clickRow }
+const mockMessage = 'mockmessage'
+
+export { generateRandomNumber, clickItemByTestId, mockMessage }

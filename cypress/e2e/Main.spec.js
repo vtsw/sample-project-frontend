@@ -1,19 +1,10 @@
 /* eslint-disable no-undef */
-
 import { mockUser, mockMessageListOfUser } from '../../tests/shares/utils'
-import { clickRow } from '../utils'
-
-const mockMessage = 'mockmessage'
+import { clickItemByTestId, mockMessage } from '../utils'
 
 const selectUser = () =>
 	cy
 		.findAllByText(mockUser.email)
-		.should('exist')
-		.click()
-
-const clickItemByTestId = testId =>
-	cy
-		.findByTestId(testId)
 		.should('exist')
 		.click()
 
@@ -31,8 +22,10 @@ describe('Sign up', () => {
 	})
 
 	it('should allow modifying a message', () => {
+		const testId = `row-${mockMessageListOfUser[0].id}`
+
 		selectUser()
-		clickRow(mockMessageListOfUser, 1)
+		clickItemByTestId(testId)
 		cy.findByPlaceholderText('placeholder')
 			.focus()
 			.clear()
@@ -40,6 +33,14 @@ describe('Sign up', () => {
 		clickItemByTestId('modifydialog-agreebutton')
 
 		cy.findAllByText(mockMessage).should('exist')
+	})
+
+	it('should allow searching an existing user correctly', () => {
+		cy.findByPlaceholderText('search...').type(mockUser.email)
+
+		clickItemByTestId('search-icon')
+
+		cy.findAllByText(mockUser.email).should('exist')
 	})
 
 	it('should allow deleting a message', () => {
@@ -50,13 +51,5 @@ describe('Sign up', () => {
 		clickItemByTestId('deletedialog-agreebutton')
 
 		cy.findByTestId(messageTestId).should('not.exist')
-	})
-
-	it('should allow searching an existing user correctly', () => {
-		cy.findByPlaceholderText('search...').type(mockUser.email)
-
-		clickItemByTestId('search-icon')
-
-		cy.findAllByText(mockUser.email).should('exist')
 	})
 })

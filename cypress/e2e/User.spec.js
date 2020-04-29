@@ -1,12 +1,13 @@
 /* eslint-disable no-undef */
 import { Navigation } from './common'
 import { mockUserList, mockUser } from '../../tests/shares/utils'
-import { clickRow } from '../utils'
+import { clickItemByTestId } from '../utils'
 
 const UserNav = Navigation.User
 
 describe('Sign up', () => {
 	let alertMessage = ''
+	const testId = `row-${mockUserList[11].id}`
 
 	beforeEach(() => {
 		cy.on('window:alert', msg => {
@@ -22,7 +23,7 @@ describe('Sign up', () => {
 	})
 
 	it('should allow updating users email', () => {
-		clickRow(mockUserList, 11)
+		clickItemByTestId(testId)
 		cy.findByPlaceholderText('Email')
 			.invoke('val')
 			.then(value => {
@@ -39,7 +40,7 @@ describe('Sign up', () => {
 	it('should not allow updating users email with invalid email', () => {
 		const invalidEmail = 'ste@example.com'
 
-		clickRow(mockUserList, 10)
+		clickItemByTestId(testId)
 		cy.findByPlaceholderText('Email')
 			.focus()
 			.clear()
@@ -52,7 +53,7 @@ describe('Sign up', () => {
 	})
 
 	it('should allow updating users name', () => {
-		clickRow(mockUserList, 11)
+		clickItemByTestId(testId)
 		cy.findByPlaceholderText('Name')
 			.invoke('val')
 			.then(value => {
@@ -69,7 +70,7 @@ describe('Sign up', () => {
 	it('should not allow updating users name with invalid name', () => {
 		const invalidName = ' '
 
-		clickRow(mockUserList, 10)
+		clickItemByTestId(testId)
 		cy.findByPlaceholderText('Name')
 			.focus()
 			.clear()
@@ -82,7 +83,7 @@ describe('Sign up', () => {
 	})
 
 	it('should allow updating users password', () => {
-		clickRow(mockUserList, 13)
+		clickItemByTestId(testId)
 		cy.findByPlaceholderText('Password').type(mockUser.password)
 		cy.findByPlaceholderText('Password Confirm').type(mockUser.password)
 		cy.findByTestId('formeditor-submit-button')
@@ -95,7 +96,7 @@ describe('Sign up', () => {
 
 	it('should not allow updating users password with invalid password', () => {
 		const invalidPassword = '11'
-		clickRow(mockUserList, 10)
+		clickItemByTestId(testId)
 		cy.findByPlaceholderText('Password').type(invalidPassword)
 		cy.findByPlaceholderText('Password Confirm').type(invalidPassword)
 		cy.findByTestId('formeditor-submit-button')
@@ -108,7 +109,7 @@ describe('Sign up', () => {
 	it('should not allow updating users password with different passwords', () => {
 		const invalidPassword = '111'
 
-		clickRow(mockUserList, 10)
+		clickItemByTestId(testId)
 		cy.findByPlaceholderText('Password').type(invalidPassword)
 		cy.findByPlaceholderText('Password Confirm').type(invalidPassword + '1')
 		cy.findByTestId('formeditor-submit-button')
@@ -128,9 +129,11 @@ describe('Sign up', () => {
 	})
 
 	it('should allow deleting an user', () => {
-		// change rowIndex of clickRow after each test
+		// change rowIndex of clickItemByTestId after each test
 		// Because cy can not find this row when it's deleted
-		clickRow(mockUserList, 10)
+		const testId = `row-${mockUserList[13].id}`
+
+		clickRow(testId)
 		cy.findByPlaceholderText('Email')
 			.invoke('val')
 			.then(email => {
