@@ -73,6 +73,7 @@ const resolvers = {
 					userSearchValue: searchValue,
 				},
 			})
+
 			return searchValue
 		},
 	},

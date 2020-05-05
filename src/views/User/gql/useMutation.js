@@ -14,6 +14,7 @@ const useCreateUser = (createUserMutation, fetchUserListQuery, vars) => {
 			update(cache, { data: { createUser } }) {
 				const options = genQueryOptions(fetchUserListQuery, vars)
 				const { userList } = cache.readQuery(options)
+
 				cache.writeQuery({
 					...options,
 					data: {
@@ -32,6 +33,7 @@ const useDeleteUser = (deleteUserMutation, fetchUserListQuery, vars) => {
 			const options = genQueryOptions(fetchUserListQuery, vars)
 			const { userList } = cache.readQuery(options)
 			const items = userList.items.filter(item => item.id !== deleteUser.id)
+
 			cache.writeQuery({
 				...options,
 				data: {

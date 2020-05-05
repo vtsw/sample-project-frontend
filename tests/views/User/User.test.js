@@ -13,6 +13,7 @@ describe('<User />', () => {
 	})
 	it('should match snapshot', async () => {
 		let rendered
+
 		await act(async () => {
 			rendered = findDOMNodeOfUser(<User />)
 		})

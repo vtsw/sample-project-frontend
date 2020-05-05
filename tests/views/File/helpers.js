@@ -10,6 +10,7 @@ import { mockServer } from '@tests/shares/utils'
 const fileName = 'mockimage.jpg'
 
 const mockFile = new Image(100, 200)
+
 mockFile.src = fileName
 
 const mocks = [
@@ -64,6 +65,7 @@ const resolvers = {
 					},
 				})
 			}
+
 			return file
 		},
 	},

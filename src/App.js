@@ -3,9 +3,9 @@ import { Route, Switch, withRouter } from 'react-router-dom'
 
 import { Grid } from '@material-ui/core'
 
-import { getToken } from '@src/shares/utils'
-
 import { NavPanel, SuspenseLoading, Loading } from '@views_components'
+
+import { getToken } from '@src/shares/utils'
 
 const Main = lazy(() => import('@views/Main'))
 const Message = lazy(() => import('@views/Message'))
@@ -26,11 +26,13 @@ const App = props => {
 
 		if (!authToken && location.pathname !== '/sign-in') {
 			history.push('/sign-in')
+
 			return
 		}
 
 		if (authToken && location.pathname === '/sign-in') {
 			history.push('/')
+
 			return
 		}
 	})

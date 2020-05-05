@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
-import { Navigation } from './common'
 import { mockUserList, mockUser } from '../../tests/shares/utils'
 import { clickItemByTestId } from '../utils'
+import { Navigation } from './common'
 
 const UserNav = Navigation.User
 
@@ -28,6 +28,7 @@ describe('Sign up', () => {
 			.invoke('val')
 			.then(value => {
 				const newEmail = 'cy' + value
+
 				cy.findByPlaceholderText('Email')
 					.focus()
 					.clear()
@@ -58,6 +59,7 @@ describe('Sign up', () => {
 			.invoke('val')
 			.then(value => {
 				const newName = 'cy' + value
+
 				cy.findByPlaceholderText('Name')
 					.focus()
 					.clear()
@@ -90,12 +92,14 @@ describe('Sign up', () => {
 			.click()
 			.then(() => {
 				expect(alertMessage).not.to.match(/Form is not valid!!!/)
+
 				return
 			})
 	})
 
 	it('should not allow updating users password with invalid password', () => {
 		const invalidPassword = '11'
+
 		clickItemByTestId(testId)
 		cy.findByPlaceholderText('Password').type(invalidPassword)
 		cy.findByPlaceholderText('Password Confirm').type(invalidPassword)

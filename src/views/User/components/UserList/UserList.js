@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import { InfiniteTable, Loading } from '@views_components'
 import SearchUserBox from '../SearchUserBox'
 
+import { PAGE_LIMIT, NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
+
 import {
 	FETCH_USER_LIST,
 	GET_USER_SEARCH_TEXT,
@@ -16,8 +18,6 @@ import {
 	SET_USER_SEARCH_TEXT,
 	SET_SELECTED_USER,
 } from '@views/User/gql/mutation'
-
-import { PAGE_LIMIT, NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {

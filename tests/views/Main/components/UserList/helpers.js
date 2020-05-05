@@ -57,6 +57,7 @@ const resolvers = {
 					userSearchValueOfMain: searchValue,
 				},
 			})
+
 			return searchValue
 		},
 	},

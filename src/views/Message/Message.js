@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
 import { Box, Grid, makeStyles } from '@material-ui/core'
@@ -12,6 +11,8 @@ import {
 } from '@views_components'
 import { CreateMessageBox, SearchMessageBox } from './components'
 
+import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
+
 import {
 	MESSAGE_LIST,
 	GET_MESSAGE_SEARCH_TEXT,
@@ -20,8 +21,6 @@ import {
 } from './gql/query'
 import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './gql/mutation'
 import { useCreateMessage, useDeleteMessage } from './gql/useMutation'
-
-import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
 const useStyle = makeStyles(theme => ({
 	root: {

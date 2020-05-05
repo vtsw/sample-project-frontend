@@ -1,10 +1,9 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import { useMutation } from '@apollo/react-hooks'
 
 import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-
-import { useMutation } from '@apollo/react-hooks'
 
 import { FormEditor } from '@views_components'
 

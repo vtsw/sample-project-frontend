@@ -117,6 +117,7 @@ const resolvers = {
 					messageSearchValueOfMessage: searchValue,
 				},
 			})
+
 			return searchValue
 		},
 	},

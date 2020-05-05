@@ -9,6 +9,7 @@ import { findDOMNodeOfFile, fileName, mockFile } from './helpers'
 
 describe('<File />', () => {
 	let component
+
 	beforeEach(async () => {
 		await act(async () => {
 			component = findDOMNodeOfFile(<File />)

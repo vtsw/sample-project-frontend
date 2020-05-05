@@ -48,10 +48,12 @@ const InfiniteScroll = props => {
 		>
 			{props => {
 				const { onItemsRendered, ref } = props
+
 				return (
 					<AutoSizer>
 						{props => {
 							const { height, width } = props
+
 							return (
 								<List
 									height={height}

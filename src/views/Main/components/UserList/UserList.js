@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box } from '@material-ui/core'
@@ -7,6 +6,8 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { Loading, InfiniteTable } from '@views_components'
 import { SearchUserBox } from '@views/User/components'
+
+import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
 import { FETCH_USER_LIST } from '@views/User/gql/query'
 import {
@@ -17,8 +18,6 @@ import {
 	SET_USER_SEARCH_TEXT,
 	SET_SELECTED_USER_OF_MAIN,
 } from '@views/Main/gql/mutation'
-
-import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -141,6 +140,7 @@ const UserList = () => {
 					let cacheUserList = prev.userList
 					const items = [...cacheUserList.items, ...fetchedUserList.items]
 					const hasNext = fetchedUserList.hasNext
+
 					return {
 						userList: {
 							...cacheUserList,

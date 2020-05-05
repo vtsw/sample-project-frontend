@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
-import { Navigation } from './common'
 import {
 	mockUser,
 	mockMessageListOfUser,
 	mockMessageList,
 } from '../../tests/shares/utils'
+import { Navigation } from './common'
 import { clickItemByTestId, mockMessage } from '../utils'
 
 const MessageNav = Navigation.Message

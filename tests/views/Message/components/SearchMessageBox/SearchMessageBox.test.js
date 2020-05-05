@@ -17,6 +17,7 @@ describe('<SearchMessageBox />', () => {
 
 	it('should match snapshot', () => {
 		const { container } = render(<SearchMessageBox {...mockProps} />)
+
 		expect(container).toMatchSnapshot()
 	})
 

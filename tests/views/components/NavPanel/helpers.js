@@ -10,6 +10,7 @@ const resolvers = {
 			cache.writeData({
 				data,
 			})
+
 			return data
 		},
 	},

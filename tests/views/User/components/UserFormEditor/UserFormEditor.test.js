@@ -17,6 +17,7 @@ describe('<UserFormEditor />', () => {
 
 	it('should match snapshot', async () => {
 		let component
+
 		await act(async () => {
 			component = findDOMNodeOfUserFormEditor(<UserFormEditor {...mockProps} />)
 		})
@@ -30,6 +31,7 @@ describe('<UserFormEditor />', () => {
 			<UserFormEditor {...mockProps} />
 		)
 		const agreeButton = getByTestId('deletedialog-agreebutton')
+
 		await act(async () => {
 			fireEvent.click(agreeButton)
 		})
@@ -42,6 +44,7 @@ describe('<UserFormEditor />', () => {
 			<UserFormEditor {...mockProps} />
 		)
 		const disagreeButton = getByTestId('deletedialog-disagreebutton')
+
 		await act(async () => {
 			fireEvent.click(disagreeButton)
 		})

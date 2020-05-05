@@ -3,8 +3,8 @@ import { createUploadLink } from 'apollo-upload-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
 
-import { getToken } from './shares/utils'
 import { APOLLO_SERVER } from './configs.local'
+import { getToken } from './shares/utils'
 
 const typeDefs = {}
 
@@ -16,6 +16,7 @@ const resolvers = {
 					userSearchValue: searchValue,
 				},
 			})
+
 			return searchValue
 		},
 		setSelectedUser: (_, { selectedUser }, { cache }) => {
@@ -24,6 +25,7 @@ const resolvers = {
 					selectedUser,
 				},
 			})
+
 			return selectedUser
 		},
 		setUploadedFile: (_, { file }, { cache }) => {
@@ -34,6 +36,7 @@ const resolvers = {
 					},
 				})
 			}
+
 			return file
 		},
 		setUserSearchValueOfMain: (_, { searchValue }, { cache }) => {
@@ -42,6 +45,7 @@ const resolvers = {
 					userSearchValueOfMain: searchValue,
 				},
 			})
+
 			return searchValue
 		},
 		setSelectedUserOfMain: (_, { selectedUser }, { cache }) => {
@@ -50,6 +54,7 @@ const resolvers = {
 					selectedUserOfMain: selectedUser,
 				},
 			})
+
 			return selectedUser
 		},
 
@@ -59,6 +64,7 @@ const resolvers = {
 					messageSearchValueOfMessage: searchValue,
 				},
 			})
+
 			return searchValue
 		},
 		setMessageCreateValueOfMain: (_, { createValue }, { cache }) => {
@@ -67,12 +73,14 @@ const resolvers = {
 					messageCreateValueOfMessage: createValue,
 				},
 			})
+
 			return createValue
 		},
 		resetCache: (_, { data }, { cache }) => {
 			cache.writeData({
 				data,
 			})
+
 			return data
 		},
 	},
@@ -85,6 +93,7 @@ const httpLink = createUploadLink({
 
 const authLink = setContext((_, { headers }) => {
 	const token = getToken()
+
 	return {
 		headers: {
 			...headers,

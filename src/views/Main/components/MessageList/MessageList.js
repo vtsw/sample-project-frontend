@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
 import { Box, Typography, makeStyles } from '@material-ui/core'
@@ -11,12 +10,12 @@ import {
 	Loading,
 } from '@views_components'
 
+import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
+
 import { GET_SELECTED_USER_OF_MAIN } from '@views/Main/gql/query'
 import { MESSAGE_LIST } from '@views/Message/gql/query'
 import { DELETE_MESSAGE, UPDATE_MESSAGE } from '@views/Message/gql/mutation'
 import { useDeleteMessage } from '@views/Message/gql/useMutation'
-
-import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {

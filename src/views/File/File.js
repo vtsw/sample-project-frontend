@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
-
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box, Button, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
+import { getToken } from '@src/shares/utils'
+
 import { GET_USER_INFO, GET_FILE } from './gql/query'
 import { UPLOAD_FILE, SET_UPLOADED_FILE } from './gql/mutation'
-
-import { getToken } from '@src/shares/utils'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -90,6 +89,7 @@ const File = () => {
 		onCompleted: async ({ uploadImage }) => {
 			setUploadedFile({ variables: { file: uploadImage } })
 			const imageUrl = await fetchAuthImage(uploadImage.link)
+
 			setImageUrl(imageUrl)
 		},
 		onError: err => alert(err),
@@ -110,6 +110,7 @@ const File = () => {
 		})
 		const blob = await res.blob()
 		const url = URL.createObjectURL(blob)
+
 		return url
 	}
 

@@ -2,7 +2,7 @@ import React from 'react'
 import clsx from 'clsx'
 
 import { Grid, Box, Typography, makeStyles } from '@material-ui/core'
-import CloseIcon from '@material-ui/icons/Close'
+import { Close } from '@material-ui/icons'
 
 const useStyles = makeStyles(theme => ({
 	root: ({ style, index }) => ({
@@ -57,6 +57,7 @@ const Row = props => {
 
 	const classes = useStyles({ style, index })
 	let item
+
 	if (!isItemLoaded(index)) {
 		return 'Loading...'
 	} else {
@@ -75,7 +76,7 @@ const Row = props => {
 			onClick={() => onClickRow(item)}
 		>
 			{isIconClose && (
-				<CloseIcon
+				<Close
 					data-testid={`row-closeicon-${item.id}`}
 					className={classes.item__closeicon}
 					onClick={e => {

@@ -65,6 +65,7 @@ const openDeleteDialog = async component => {
 			},
 		},
 	}
+
 	await act(async () => {
 		rendered = findDOMNodeOfUserFormEditor(component, userResolvers)
 	})
@@ -74,6 +75,7 @@ const openDeleteDialog = async component => {
 	fireEvent.click(deleteButton)
 	expect(deleteButton).toBeTruthy()
 	expect(getByTestId('deletedialog-title')).toBeTruthy()
+
 	return { getByTestId, queryByTestId }
 }
 

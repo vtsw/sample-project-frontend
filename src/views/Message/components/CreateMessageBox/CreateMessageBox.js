@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
 import { ActionInputBox } from '@views_components'
@@ -17,6 +16,7 @@ const CreateMessageBox = props => {
 	const handleOnInputChange = value => {
 		setMessageCreateValueOfMain({ variables: { createValue: value } })
 	}
+
 	return (
 		<ActionInputBox
 			width={width}

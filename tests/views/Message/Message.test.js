@@ -171,11 +171,11 @@ describe('<Message />', () => {
 				agreeButton.click()
 			})
 
-			waitFor(() => {
-				expect(
-					document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
-				).toBeFalsy()
+			const deleteDialog = await waitFor(() => {
+				return document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
 			})
+
+			expect(deleteDialog).toBeTruthy()
 		})
 
 		it('should allow to click No button', async () => {
@@ -190,11 +190,11 @@ describe('<Message />', () => {
 				disagreeButton.click()
 			})
 
-			waitFor(() => {
-				expect(
-					document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
-				).toBeFalsy()
+			const deleteDialog = await waitFor(() => {
+				return document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
 			})
+
+			expect(deleteDialog).toBeTruthy()
 		})
 
 		it('should allow to click MuiBackdrop-root to close DeleteDialog', async () => {
@@ -202,11 +202,11 @@ describe('<Message />', () => {
 			await openDeleteDialog(rendered)
 			await closeDialog()
 
-			waitFor(() => {
-				expect(
-					document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
-				).toBeFalsy()
+			const deleteDialog = await waitFor(() => {
+				return document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
 			})
+
+			expect(deleteDialog).toBeTruthy()
 		})
 	})
 })

@@ -507,6 +507,7 @@ const renderWithRouter = (
 	const Wrapper = ({ children }) => (
 		<Router history={history}>{children}</Router>
 	)
+
 	return {
 		...render(ui, { wrapper: Wrapper }),
 		history,

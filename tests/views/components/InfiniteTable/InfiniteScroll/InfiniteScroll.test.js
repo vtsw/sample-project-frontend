@@ -28,6 +28,7 @@ describe('<InfiniteScroll />', () => {
 		const rendered = findDOMNode(
 			renderDOMNode(getMarkup(<InfiniteScroll {...mockProps} />))
 		)
+
 		expect(rendered).toMatchSnapshot()
 	})
 

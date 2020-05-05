@@ -18,6 +18,7 @@ const randomizeUserInfo = () => {
 		password: '111',
 		confirmPassword: '111',
 	}
+
 	return userInfo
 }
 
@@ -29,6 +30,7 @@ describe('Sign in', () => {
 	it('should allow users to register in sign up page', () => {
 		Navigation.navigateToSignUpPage()
 		const randomUserInfo = randomizeUserInfo()
+
 		cy.registerUser(randomUserInfo)
 		registeredUser = randomUserInfo
 		cy.url().should('equal', `${baseUrl}/sign-in`)

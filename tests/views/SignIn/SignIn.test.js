@@ -7,6 +7,7 @@ import { findDOMNodeOfSignIn } from './helpers'
 describe('<SignIn />', () => {
 	it('should match snapshot', async () => {
 		const { container } = findDOMNodeOfSignIn(<SignIn />)
+
 		expect(container).toMatchSnapshot()
 	})
 })

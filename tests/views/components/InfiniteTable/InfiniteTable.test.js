@@ -22,6 +22,7 @@ describe('<InfiniteTable />', () => {
 		const rendered = findDOMNode(
 			renderDOMNode(getMarkup(<InfiniteTable {...mockProps} />))
 		)
+
 		expect(rendered).toMatchSnapshot()
 	})
 

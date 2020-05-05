@@ -1,7 +1,7 @@
 import React from 'react'
+import waait from 'waait'
 
 import { act, waitFor } from '@testing-library/react'
-import waait from 'waait'
 
 import { MessageList } from '@views/Main/components'
 
@@ -39,11 +39,11 @@ describe('<MessageList />', () => {
 				await disagreeButton.click()
 			})
 
-			waitFor(() => {
-				expect(
-					document.querySelectorAll(`[data-testid=modifydialog-title]`)[0]
-				).toBeFalsy()
+			const modifyDialog = await waitFor(() => {
+				return document.querySelectorAll(`[data-testid=modifydialog-title]`)[0]
 			})
+
+			expect(modifyDialog).toBeTruthy()
 		})
 
 		it('should allow to modify message', async () => {
@@ -51,11 +51,11 @@ describe('<MessageList />', () => {
 			await openModifyDialog(rendered)
 			await modifyMessage(mockMessage)
 
-			waitFor(() => {
-				expect(
-					document.querySelectorAll(`[data-testid=modifydialog-title]`)[0]
-				).toBeFalsy()
+			const modifyDialog = await waitFor(() => {
+				return document.querySelectorAll(`[data-testid=modifydialog-title]`)[0]
 			})
+
+			expect(modifyDialog).toBeTruthy()
 		})
 
 		it('should not allow to submit a empty message', async () => {
@@ -71,11 +71,11 @@ describe('<MessageList />', () => {
 
 			expect(window.alert).toHaveBeenCalled()
 
-			waitFor(() => {
-				expect(
-					document.querySelectorAll(`[data-testid=modifydialog-title]`)[0]
-				).toBeFalsy()
+			const modifyDialog = await waitFor(() => {
+				return document.querySelectorAll(`[data-testid=modifydialog-title]`)[0]
 			})
+
+			expect(modifyDialog).toBeTruthy()
 		})
 
 		it('should allow to click MuiBackdrop-root to close ModifyDialog', async () => {
@@ -83,11 +83,11 @@ describe('<MessageList />', () => {
 			await openModifyDialog(rendered)
 			await closeDialog()
 
-			waitFor(() => {
-				expect(
-					document.querySelectorAll(`[data-testid=modifydialog-title]`)[0]
-				).toBeFalsy()
+			const modifyDialog = await waitFor(() => {
+				return document.querySelectorAll(`[data-testid=modifydialog-title]`)[0]
 			})
+
+			expect(modifyDialog).toBeTruthy()
 		})
 	})
 
@@ -109,6 +109,11 @@ describe('<MessageList />', () => {
 					document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
 				).toBeFalsy()
 			})
+			const deleteDialog = await waitFor(() => {
+				return document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
+			})
+
+			expect(deleteDialog).toBeTruthy()
 		})
 
 		it('should allow to click No button', async () => {
@@ -123,11 +128,11 @@ describe('<MessageList />', () => {
 				disagreeButton.click()
 			})
 
-			waitFor(() => {
-				expect(
-					document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
-				).toBeFalsy()
+			const deleteDialog = await waitFor(() => {
+				return document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
 			})
+
+			expect(deleteDialog).toBeTruthy()
 		})
 
 		it('should allow to click MuiBackdrop-root to close DeleteDialog', async () => {
@@ -135,11 +140,11 @@ describe('<MessageList />', () => {
 			await openDeleteDialog(rendered)
 			await closeDialog()
 
-			waitFor(() => {
-				expect(
-					document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
-				).toBeFalsy()
+			const deleteDialog = await waitFor(() => {
+				return document.querySelectorAll(`[data-testid=deletedialog-title]`)[0]
 			})
+
+			expect(deleteDialog).toBeTruthy()
 		})
 	})
 })

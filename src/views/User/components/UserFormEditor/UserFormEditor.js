@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { DeleteDialog, FormEditor } from '@views_components'
+
+import { PAGE_LIMIT } from '@src/configs.local'
 
 import {
 	FETCH_USER_LIST,
@@ -16,8 +17,6 @@ import {
 	SET_SELECTED_USER,
 } from '@views/User/gql/mutation'
 import { useCreateUser, useDeleteUser } from '@views/User/gql/useMutation'
-
-import { PAGE_LIMIT } from '@src/configs.local'
 
 const UserFormEditor = () => {
 	const { data: userSearchTextData } = useQuery(GET_USER_SEARCH_TEXT)
@@ -73,6 +72,7 @@ const UserFormEditor = () => {
 
 	const updateUserInfo = ({ id, email, name, password }) => {
 		let userInfo = { id, email, name }
+
 		if (password) {
 			updateUser({
 				variables: { user: { ...userInfo, password } },

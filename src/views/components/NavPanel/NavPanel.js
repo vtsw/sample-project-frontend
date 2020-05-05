@@ -1,14 +1,13 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-
 import { useMutation } from '@apollo/react-hooks'
-import { RESET_CACHE } from './gql/mutation'
 
-import { NavBar } from './components'
 import { LogOutButton } from '@views_components'
+import { NavBar } from './components'
 
 import { deleteToken } from '@src/shares/utils'
 import { initialState } from '@src/client'
+import { RESET_CACHE } from './gql/mutation'
 
 const navbarItems = [
 	{ page: 'main', pathname: '/' },
