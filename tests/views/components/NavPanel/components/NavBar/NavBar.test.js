@@ -34,13 +34,4 @@ describe('<NavBar />', () => {
 
 		expect(mockProps.history.push).toHaveBeenCalled()
 	})
-
-	it('should call handleOnLogOut correctly when click Log Out item', () => {
-		const { getByTestId } = render(<NavBar {...mockProps} />)
-		const logOutItem = 'logoutbutton'
-
-		fireEvent.click(getByTestId(logOutItem))
-
-		expect(mockProps.handleOnLogOut).toHaveBeenCalled()
-	})
 })

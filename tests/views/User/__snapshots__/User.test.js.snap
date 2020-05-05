@@ -110,7 +110,7 @@ exports[`<User /> should match snapshot 1`] = `
                     class="MuiInputBase-input MuiOutlinedInput-input"
                     placeholder="Name"
                     type="text"
-                    value="90412"
+                    value="steve"
                   />
                   <fieldset
                     aria-hidden="true"
@@ -396,7 +396,7 @@ exports[`<User /> should match snapshot 1`] = `
                               <p
                                 class="MuiTypography-root makeStyles-columns__item__typo-310 MuiTypography-body2"
                               >
-                                90412
+                                steve
                               </p>
                             </div>
                           </div>
@@ -414,7 +414,7 @@ exports[`<User /> should match snapshot 1`] = `
                               <p
                                 class="MuiTypography-root makeStyles-columns__item__typo-310 MuiTypography-body2"
                               >
-                                nvdai2355@gmail.com
+                                nvdai2355s56se@gmail.com
                               </p>
                             </div>
                           </div>
@@ -427,14 +427,14 @@ exports[`<User /> should match snapshot 1`] = `
                               <p
                                 class="MuiTypography-root makeStyles-columns__item__typo-310 MuiTypography-body2"
                               >
-                                asdasdasd
+                                asd
                               </p>
                             </div>
                           </div>
                         </div>
                         <div
                           class="MuiGrid-root makeStyles-root-306 makeStyles-root-317 MuiGrid-container"
-                          data-testid="row-5e68b792dd814d8efacda7ad"
+                          data-testid="row-5e68b9e6dd814db72fcda7af"
                         >
                           <div
                             class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
@@ -445,7 +445,7 @@ exports[`<User /> should match snapshot 1`] = `
                               <p
                                 class="MuiTypography-root makeStyles-columns__item__typo-310 MuiTypography-body2"
                               >
-                                nvdai235556@gmail.com
+                                ncdai24055@gmail.com
                               </p>
                             </div>
                           </div>
@@ -458,7 +458,7 @@ exports[`<User /> should match snapshot 1`] = `
                               <p
                                 class="MuiTypography-root makeStyles-columns__item__typo-310 MuiTypography-body2"
                               >
-                                nvdai235556
+                                ncdai24055
                               </p>
                             </div>
                           </div>
