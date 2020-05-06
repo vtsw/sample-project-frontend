@@ -21,6 +21,7 @@ describe('<MessageList />', () => {
 			rendered = findDOMNodeOfMessageList(<MessageList />)
 		})
 	})
+
 	it('should match snapshot', async () => {
 		await waait(10)
 
