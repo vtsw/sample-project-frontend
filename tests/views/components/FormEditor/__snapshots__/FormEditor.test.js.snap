@@ -1,0 +1,194 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FormEditor /> should match snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root MuiBox-root-8 makeStyles-root-1"
+  >
+    <h5
+      class="MuiTypography-root makeStyles-formtitle-2 MuiTypography-h5"
+      data-testid="formeditor-title"
+    >
+      Sign up
+    </h5>
+    <div
+      class="makeStyles-formcontent-4"
+    >
+      <div
+        class="MuiFormControl-root MuiTextField-root makeStyles-forminput-3"
+        data-testid="formeditor-email-input"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-outlined"
+          data-shrink="false"
+        >
+          EMAIL
+        </label>
+        <div
+          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+        >
+          <input
+            aria-invalid="false"
+            autocomplete="true"
+            class="MuiInputBase-input MuiOutlinedInput-input"
+            placeholder="Email"
+            type="email"
+            value=""
+          />
+          <fieldset
+            aria-hidden="true"
+            class="PrivateNotchedOutline-root-97 MuiOutlinedInput-notchedOutline"
+          >
+            <legend
+              class="PrivateNotchedOutline-legendLabelled-99"
+            >
+              <span>
+                EMAIL
+              </span>
+            </legend>
+          </fieldset>
+        </div>
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root makeStyles-forminput-3"
+        data-testid="formeditor-name-input"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-outlined"
+          data-shrink="false"
+        >
+          NAME
+        </label>
+        <div
+          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+        >
+          <input
+            aria-invalid="false"
+            autocomplete="true"
+            class="MuiInputBase-input MuiOutlinedInput-input"
+            placeholder="Name"
+            type="text"
+            value=""
+          />
+          <fieldset
+            aria-hidden="true"
+            class="PrivateNotchedOutline-root-97 MuiOutlinedInput-notchedOutline"
+          >
+            <legend
+              class="PrivateNotchedOutline-legendLabelled-99"
+            >
+              <span>
+                NAME
+              </span>
+            </legend>
+          </fieldset>
+        </div>
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root makeStyles-forminput-3"
+        data-testid="formeditor-password-input"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-outlined"
+          data-shrink="false"
+        >
+          PASSWORD
+        </label>
+        <div
+          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+        >
+          <input
+            aria-invalid="false"
+            autocomplete="true"
+            class="MuiInputBase-input MuiOutlinedInput-input"
+            placeholder="Password"
+            type="password"
+            value=""
+          />
+          <fieldset
+            aria-hidden="true"
+            class="PrivateNotchedOutline-root-97 MuiOutlinedInput-notchedOutline"
+          >
+            <legend
+              class="PrivateNotchedOutline-legendLabelled-99"
+            >
+              <span>
+                PASSWORD
+              </span>
+            </legend>
+          </fieldset>
+        </div>
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root makeStyles-forminput-3"
+        data-testid="formeditor-password-confirm-input"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-outlined"
+          data-shrink="false"
+        >
+          PASSWORD CONFIRM
+        </label>
+        <div
+          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+        >
+          <input
+            aria-invalid="false"
+            autocomplete="true"
+            class="MuiInputBase-input MuiOutlinedInput-input"
+            placeholder="Password Confirm"
+            type="password"
+            value=""
+          />
+          <fieldset
+            aria-hidden="true"
+            class="PrivateNotchedOutline-root-97 MuiOutlinedInput-notchedOutline"
+          >
+            <legend
+              class="PrivateNotchedOutline-legendLabelled-99"
+            >
+              <span>
+                PASSWORD CONFIRM
+              </span>
+            </legend>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <div
+      class="makeStyles-formbuttons-5"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-formbutton-6 MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge MuiButton-fullWidth"
+        data-testid="formeditor-submit-button"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          Register
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-formbutton-6 MuiButton-containedSizeLarge MuiButton-sizeLarge MuiButton-fullWidth"
+        data-testid="formeditor-cancel-button"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          Cancel
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;

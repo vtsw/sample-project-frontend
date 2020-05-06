@@ -74,7 +74,7 @@ const SignIn = () => {
 		}
 
 		if (mail === email && pass === password) alert('Logged in')
-		else alert('Wrong pass or email')
+		else alert('Invalid email or password')
 	}
 
 	return (

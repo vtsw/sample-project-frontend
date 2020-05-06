@@ -18,6 +18,7 @@ module.exports = {
 			'@src': resolve(__dirname, 'src'),
 			'@views': resolve(__dirname, 'src/views'),
 			'@views_components': resolve(__dirname, 'src/views/components'),
+			'@tests': resolve(__dirname, 'tests'),
 		},
 		modules: ['node_modules', resolve(__dirname, 'src')],
 		extensions: ['.js', '.jsx'],

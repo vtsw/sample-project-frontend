@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<InfiniteScroll /> should match snapshot 1`] = `
+<div
+  style="width: 300px; height: 700px;"
+>
+  <div
+    style="overflow: visible; height: 0px; width: 0px;"
+  >
+    <div
+      class="makeStyles-overflow-1"
+      style="height: 700px; width: 200px; overflow: auto; position: relative; will-change: transform;"
+    >
+      <div
+        style="height: 11900px; width: 100%;"
+      >
+        <div
+          class="MuiGrid-root makeStyles-root-2 makeStyles-root-7 MuiGrid-container"
+          data-testid="row-5e68995fb6d0bc05829b6e79"
+        >
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+          >
+            <div
+              class="MuiBox-root MuiBox-root-112 makeStyles-columns__item-5"
+            >
+              <p
+                class="MuiTypography-root makeStyles-columns__item__typo-6 MuiTypography-body2"
+              >
+                steve@example.com
+              </p>
+            </div>
+          </div>
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+          >
+            <div
+              class="MuiBox-root MuiBox-root-143 makeStyles-columns__item-5"
+            >
+              <p
+                class="MuiTypography-root makeStyles-columns__item__typo-6 MuiTypography-body2"
+              >
+                steve
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root makeStyles-root-2 makeStyles-root-144 MuiGrid-container"
+          data-testid="row-5e68b5c3dd814dd832cda79d"
+        >
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+          >
+            <div
+              class="MuiBox-root MuiBox-root-145 makeStyles-columns__item-5"
+            >
+              <p
+                class="MuiTypography-root makeStyles-columns__item__typo-6 MuiTypography-body2"
+              >
+                nvdai2355s56se@gmail.com
+              </p>
+            </div>
+          </div>
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+          >
+            <div
+              class="MuiBox-root MuiBox-root-146 makeStyles-columns__item-5"
+            >
+              <p
+                class="MuiTypography-root makeStyles-columns__item__typo-6 MuiTypography-body2"
+              >
+                asd
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root makeStyles-root-2 makeStyles-root-147 MuiGrid-container"
+          data-testid="row-5e68b9e6dd814db72fcda7af"
+        >
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5"
+          >
+            <div
+              class="MuiBox-root MuiBox-root-148 makeStyles-columns__item-5"
+            >
+              <p
+                class="MuiTypography-root makeStyles-columns__item__typo-6 MuiTypography-body2"
+              >
+                ncdai24055@gmail.com
+              </p>
+            </div>
+          </div>
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-7"
+          >
+            <div
+              class="MuiBox-root MuiBox-root-149 makeStyles-columns__item-5"
+            >
+              <p
+                class="MuiTypography-root makeStyles-columns__item__typo-6 MuiTypography-body2"
+              >
+                ncdai24055
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="resize-triggers"
+  >
+    <div
+      class="expand-trigger"
+    >
+      <div
+        style="width: 201px; height: 701px;"
+      />
+    </div>
+    <div
+      class="contract-trigger"
+    />
+  </div>
+</div>
+`;

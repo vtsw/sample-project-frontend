@@ -12,16 +12,20 @@ module.exports = {
 	moduleFileExtensions: ['js', 'json', 'jsx'],
 
 	// The paths to modules that run some code to configure or set up the testing environment before each test
-	setupFiles: ['<rootDir>/enzyme.config.js'],
+	setupFiles: ['<rootDir>/enzyme.config.js', '<rootDir>/setupJest.js'],
 
 	// The test environment that will be used for testing
 	testEnvironment: 'jsdom',
 
 	// The glob patterns Jest uses to detect test files
-	testMatch: ['**/__tests__/**/*.js?(x)', '**/?(*.)+(spec|test).js?(x)'],
+	testMatch: ['**/tests/**/*.test.js?(x)'],
 
 	// An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-	testPathIgnorePatterns: ['\\\\node_modules\\\\', '/public/'],
+	testPathIgnorePatterns: [
+		'\\\\node_modules\\\\',
+		'/public/',
+		'/tests/shares/',
+	],
 
 	// This option sets the URL for the jsdom environment. It is reflected in properties such as location.href
 	testURL: 'http://localhost',
@@ -33,7 +37,8 @@ module.exports = {
 	verbose: true,
 	moduleNameMapper: {
 		'^@src(.*)$': '<rootDir>/src$1',
-		'^@components(.*)$': '<rootDir>/src/components$1',
-		'^@pages(.*)$': '<rootDir>/src/pages$1',
+		'^@views_components(.*)$': '<rootDir>/src/views/components$1',
+		'^@views(.*)$': '<rootDir>/src/views$1',
+		'^@tests(.*)$': '<rootDir>/tests$1',
 	},
 }

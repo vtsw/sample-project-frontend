@@ -1,14 +1,13 @@
 import React from 'react'
+import { Route } from 'react-router-dom'
 
-import { shallow } from 'enzyme'
-import toJson from 'enzyme-to-json'
+import { App } from '../src/App'
 
-import App from '../src/App'
+import { findDOMNodeOfApp } from './helpers'
 
 describe('<App/>', () => {
-	it('should render without crashing', () => {
-		const wrapper = shallow(<App />)
-
-		expect(toJson(wrapper)).toMatchSnapshot()
+	it('should match snapshot', () => {
+		const { container } = findDOMNodeOfApp(<Route component={App} />)
+		expect(container).toMatchSnapshot()
 	})
 })

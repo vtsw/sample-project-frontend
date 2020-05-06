@@ -16,25 +16,41 @@ const navigateToSignInPage = () => {
 
 const navigateFromSignInPageToSignUpPage = () =>
 	cy
-		.get('[data-cy=signup-text]')
+		.get('[data-testid=signup-text]')
 		.should('exist')
 		.click()
 
-const navigateFromMainPageToFormEditorOfUserPage = () =>
+const navigateFromMainPageTofUserPage = () =>
 	cy
-		.get('[data-cy=user-page]')
+		.get('[data-testid=navbaritem-user]')
 		.should('exist')
 		.click()
-		.get('[data-cy=create-user-button')
+
+const navigateFromMainPageTofMessagePage = () =>
+	cy
+		.get('[data-testid=navbaritem-message]')
 		.should('exist')
 		.click()
+
+const navigateFromMainPageToFormEditorOfUserPage = () => {
+	navigateFromMainPageTofUserPage()
+	cy.get('[data-testid=create-user-button')
+		.should('exist')
+		.click()
+}
 
 export default {
-	withNavigation: withNavigation,
-	navigateToSignInPage: navigateToSignInPage,
-	navigateToSignUpPage: navigateToSignUpPage,
+	withNavigation,
+	navigateToSignInPage,
+	navigateToSignUpPage,
 	SignUp: {
-		navigateFromSignInPageToSignUpPage: navigateFromSignInPageToSignUpPage,
-		navigateFromMainPageToFormEditorOfUserPage: navigateFromMainPageToFormEditorOfUserPage,
+		navigateFromSignInPageToSignUpPage,
+		navigateFromMainPageToFormEditorOfUserPage,
+	},
+	User: {
+		navigateFromMainPageTofUserPage,
+	},
+	Message: {
+		navigateFromMainPageTofMessagePage,
 	},
 }
