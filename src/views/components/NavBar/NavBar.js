@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks'
 import { RESET_CACHE } from './gql/mutation'
 
 import NavBarItem from './NavBarItem'
 
 import { deleteToken } from '@src/shares/utils'
 import { initialState } from '@src/client'
+import { ON_ZALO_MESSAGE_RECEIVED } from '../../Chat/gql/subscription'
+import { GET_NEW_NOTI_MESSAGE_LIST } from '../../Chat/gql/query'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -19,6 +21,7 @@ const useStyles = makeStyles(theme => ({
 		height: '100vh',
 	},
 	tab: {
+		position: 'relative',
 		fontSize: theme.typography.htmlFontSize,
 		fontWeight: theme.typography.fontWeightMedium,
 		color: theme.palette.common.white,
@@ -30,10 +33,6 @@ const useStyles = makeStyles(theme => ({
 			position: 'absolute',
 			bottom: 0,
 		},
-	},
-	active: {
-		backgroundColor: theme.palette.common.white,
-		color: theme.palette.text.primary,
 	},
 }))
 
@@ -50,6 +49,72 @@ const NavBar = props => {
 	const classes = useStyles()
 
 	const [currentPage, setCurrentPage] = useState(location.pathname)
+
+	const { data } = useSubscription(ON_ZALO_MESSAGE_RECEIVED, {
+		onSubscriptionData: ({
+			subscriptionData: {
+				data: { onZaloMessageReceived },
+			},
+			client,
+		}) => {
+			if (!onZaloMessageReceived) return
+
+			const { newNotiMessageList } = client.readQuery({
+				query: GET_NEW_NOTI_MESSAGE_LIST,
+			})
+
+			const findConversation = newNotiMessageList.items.find(
+				noti => noti.fromInterestedId === onZaloMessageReceived.from.id
+			)
+
+			let updateNewNotiMessageList = {
+				...newNotiMessageList,
+				items: findConversation
+					? newNotiMessageList.items.map(noti => {
+							if (noti.fromInterestedId === onZaloMessageReceived.from.id)
+								return {
+									...noti,
+									lastMessage: onZaloMessageReceived.content,
+									numberNoti: noti.numberNoti + 1,
+								}
+							return noti
+					  })
+					: [
+							...newNotiMessageList.items,
+							{
+								fromInterestedId: onZaloMessageReceived.from.id,
+								lastMessage: onZaloMessageReceived.content,
+								numberNoti: 1,
+								__typename: 'newNotiMessage',
+							},
+					  ],
+			}
+
+			const sumNewMessage = updateNewNotiMessageList.items.reduce(
+				(acc, cur) => {
+					return cur.numberNoti + acc
+				},
+				0
+			)
+
+			document.title = `(${sumNewMessage}) CleVer Dashboard`
+
+			client.writeData({
+				data: { newNotiMessageList: updateNewNotiMessageList },
+			})
+		},
+	})
+
+	const {
+		data: {
+			newNotiMessageList: { items },
+		},
+	} = useQuery(GET_NEW_NOTI_MESSAGE_LIST)
+
+	const sumNewNotiMessageNumber = items.reduce((acc, cur) => {
+		return cur.numberNoti + acc
+	}, 0)
+
 	const [resetCache, { client }] = useMutation(RESET_CACHE, {
 		onCompleted: async () => {
 			deleteToken()
@@ -65,10 +130,6 @@ const NavBar = props => {
 		history.push(page)
 	}
 
-	const setActiveTab = pathname => {
-		return currentPage === pathname ? classes.active : ''
-	}
-
 	const handleOnLogOut = () => {
 		resetCache({ variables: { data: initialState } })
 	}
@@ -79,7 +140,8 @@ const NavBar = props => {
 				<NavBarItem
 					key={index}
 					handleOnChangePage={handleOnChangePage}
-					styles={`${classes.tab} ${setActiveTab(item.pathname)}`}
+					numberNoti={sumNewNotiMessageNumber}
+					currentPage={currentPage}
 					{...item}
 				/>
 			))}

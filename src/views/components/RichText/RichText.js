@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback, useRef, useEffect, useState } from 'react'
-import { Editor, Transforms, Range, createEditor } from 'slate'
+import { Editor, Transforms, Range, createEditor, Node } from 'slate'
 import { withHistory } from 'slate-history'
 import {
 	Slate,
@@ -10,9 +10,12 @@ import {
 	useFocused,
 } from 'slate-react'
 import Portal from '../Portal'
-import { makeStyles, Box } from '@material-ui/core'
+import { makeStyles, Box, Typography } from '@material-ui/core'
 import PickerEmoji from '../../Chat/components/ChatView/components/PickerEmoji/PickerEmoji'
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail'
+import { useMutation } from '@apollo/react-hooks'
+import { SET_DRAFT_LIST } from '../../Chat/gql/mutation'
+import _ from 'lodash'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -26,15 +29,25 @@ const useStyles = makeStyles(theme => ({
 		overflow: 'scroll',
 		padding: theme.spacing(2),
 		width: '100%',
+		wordBreak: 'break-word',
 	},
 	root__areainput__icon: {
 		fontSize: 20,
 		margin: theme.spacing(0, 1, 0, 2),
 		cursor: 'pointer',
 	},
+	root__areainput__send: {
+		margin: theme.spacing(0, 2, 0, 1),
+		cursor: 'pointer',
+		color: '#00897b',
+	},
 }))
 
-const RichText = () => {
+const serialize = nodes => {
+	return nodes.map(n => Node.string(n)).join('\n')
+}
+
+const RichText = ({ valueDefault, idUser, handleComfirm }) => {
 	const classes = useStyles()
 	const ref = useRef()
 	const [value, setValue] = useState(initialValue)
@@ -46,6 +59,52 @@ const RichText = () => {
 		() => withMentions(withReact(withHistory(createEditor()))),
 		[]
 	)
+
+	const [setDraftList] = useMutation(SET_DRAFT_LIST)
+
+	const sendMessage = () => {
+		handleComfirm(serialize(value))
+		setDraftList({
+			variables: {
+				draft: {
+					toInterestId: idUser,
+					message: '[{"children":[{"text":""}]}]',
+					__typename: 'draftListNode',
+				},
+			},
+		})
+	}
+
+	const hanldeDebounceSetDraftText = useCallback(
+		_.debounce((idDebounce, valueDebounce) => {
+			setDraftList({
+				variables: {
+					draft: {
+						toInterestId: idDebounce,
+						message: JSON.stringify(valueDebounce),
+						__typename: 'draftListNode',
+					},
+				},
+			})
+		}, 200),
+		[]
+	)
+
+	useEffect(() => {
+		if (valueDefault) {
+			setValue(valueDefault)
+		} else {
+			setValue([
+				{
+					children: [
+						{
+							text: '',
+						},
+					],
+				},
+			])
+		}
+	}, [valueDefault])
 
 	const handleAddEmojiToValueInput = ({ native: addIcon }) => {
 		const { selection } = editor
@@ -67,31 +126,24 @@ const RichText = () => {
 	}
 
 	const handleAddMentionToValueInput = () => {
-		if (value[0].children[0].text) {
-			setValue([
-				...value,
-				{
-					children: [
-						{
-							text: '@',
-						},
-					],
-				},
-			])
-			document.getElementById('editor').focus()
+		const { selection } = editor
+		if (selection) {
+			insertEmoji(editor, '@')
 		} else {
-			setValue([
-				{
-					children: [
-						{
-							text: '@',
-						},
-					],
-				},
-			])
-			// moveCursorToEnd('editor')
-			document.getElementById('editor').focus()
+			const emoij = value.map((item, index) => {
+				if (index === value.length - 1) {
+					return {
+						...item,
+						children: [...item.children, { text: '@' }],
+					}
+				}
+
+				return item
+			})
+			setValue(emoij)
 		}
+
+		document.getElementById('editorRichText').focus()
 	}
 
 	const chars = CHARACTERS.filter(c =>
@@ -114,13 +166,15 @@ const RichText = () => {
 						setIndex(nextIndex)
 						break
 					}
-					case 'Tab':
-					case 'Enter':
-						event.preventDefault()
-						Transforms.select(editor, target)
-						insertMention(editor, chars[index])
-						setTarget(null)
-						break
+					// case 'Tab':
+					// case 'Enter':
+					// 	event.preventDefault()
+					// 	Transforms.select(editor, target)
+					// 	insertMention(editor, chars[index])
+
+					// 	setTarget(null)
+
+					// 	break
 					case 'Escape':
 						event.preventDefault()
 						setTarget(null)
@@ -133,17 +187,17 @@ const RichText = () => {
 		[index, search, target]
 	)
 
-	useEffect(() => {
-		if (target && chars.length > 0) {
-			const el = ref.current
-			const domRange = ReactEditor.toDOMRange(editor, target)
-			const rect = domRange.getBoundingClientRect()
+	// useEffect(() => {
+	// 	if (target && chars.length > 0) {
+	// 		const el = ref.current
+	// 		const domRange = ReactEditor.toDOMRange(editor, target)
+	// 		const rect = domRange.getBoundingClientRect()
 
-			// el.style.top = `${rect.top + window.pageYOffset - 24 * chars.length}px`
-			el.style.top = `${rect.top + window.pageYOffset - 24 * chars.length}px`
-			el.style.left = `${rect.left + window.pageXOffset}px`
-		}
-	}, [chars.length, editor, index, search, target])
+	// 		// el.style.top = `${rect.top + window.pageYOffset - 24 * chars.length}px`
+	// 		el.style.top = `${rect.top + window.pageYOffset - 24 * chars.length}px`
+	// 		el.style.left = `${rect.left + window.pageXOffset}px`
+	// 	}
+	// }, [chars.length, editor, index, search, target])
 
 	return (
 		<Box className={classes.root}>
@@ -152,6 +206,8 @@ const RichText = () => {
 				value={value}
 				onChange={value => {
 					setValue(value)
+
+					hanldeDebounceSetDraftText(idUser, value)
 					const { selection } = editor
 
 					if (selection && Range.isCollapsed(selection)) {
@@ -182,7 +238,7 @@ const RichText = () => {
 					onKeyDown={onKeyDown}
 					placeholder='Nhập @, tin nhắn tới Nguyễn Văn Đại'
 					className={classes.editable}
-					id='editor'
+					id='editorRichText'
 				/>
 				{target && chars.length > 0 && (
 					<Portal>
@@ -222,12 +278,20 @@ const RichText = () => {
 				)}
 			</Slate>
 
-			<PickerEmoji handleAddEmoji={handleAddEmojiToValueInput} />
+			<>
+				<PickerEmoji handleAddEmoji={handleAddEmojiToValueInput} />
 
-			<AlternateEmailIcon
-				className={classes.root__areainput__icon}
-				onClick={handleAddMentionToValueInput}
-			/>
+				{/* <AlternateEmailIcon
+					className={classes.root__areainput__icon}
+					onClick={handleAddMentionToValueInput}
+				/> */}
+				<Typography
+					className={classes.root__areainput__send}
+					onClick={sendMessage}
+				>
+					Gửi
+				</Typography>
+			</>
 		</Box>
 	)
 }
@@ -260,8 +324,8 @@ const insertEmoji = (editor, character) => {
 const Element = props => {
 	const { attributes, children, element } = props
 	switch (element.type) {
-		case 'mention':
-			return <MentionElement {...props} />
+		// case 'mention':
+		// 	return <MentionElement {...props} />
 		default:
 			return <p {...attributes}>{children}</p>
 	}
@@ -295,10 +359,7 @@ const initialValue = [
 	{
 		children: [
 			{
-				text: 'frist',
-			},
-			{
-				text: ' second 😘😘😘😘😘😘😘😘😘 🐬🐬🐬🐬🐬🐬',
+				text: '',
 			},
 		],
 	},

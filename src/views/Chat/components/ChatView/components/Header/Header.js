@@ -10,6 +10,8 @@ const useStyles = makeStyles(() => ({
 		flexDirection: 'row',
 		width: '100%',
 		height: 82,
+		alignItems: 'center',
+		justifyContent: 'center',
 		borderBottom: '1px solid #e5e5e9',
 	},
 	root__infor__name: {
@@ -26,26 +28,22 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-export default function Header() {
+export default function Header(props) {
 	const classes = useStyles()
+	const {
+		selectedUserOfChat: { displayName, id, avatar },
+	} = props
+
 	return (
 		<Box className={classes.root}>
-			<Grid items xs={8} className={classes.root__infor}>
-				<Grid item className={classes.root__infor__avatar}>
-					<Avatar
-						size={50}
-						imgUrl='http://s120-ava-talk.zadn.vn/3/e/5/2/2/120/c181045e8a31aa07c65e25d88bd249e6.jpg'
-						status='online'
-						showStatus={true}
-					/>
-				</Grid>
-				<Grid item xs={9}>
-					<Typography className={classes.root__infor__name}>
-						Nguyễn Văn Đại
-					</Typography>
-				</Grid>
+			<Grid item xs={1} className={classes.root__infor__avatar}>
+				<Avatar size={50} avatar={avatar} status='online' showStatus={true} />
 			</Grid>
-			<Grid items xs={4} />
+			<Grid item xs={11}>
+				<Typography className={classes.root__infor__name}>
+					{displayName}
+				</Typography>
+			</Grid>
 		</Box>
 	)
 }

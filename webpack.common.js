@@ -17,6 +17,7 @@ module.exports = {
 			'@material-ui/core': '@material-ui/core/es',
 			'@src': resolve(__dirname, 'src'),
 			'@views': resolve(__dirname, 'src/views'),
+			'@share_customHook': resolve(__dirname, 'src/shares/customHook'),
 			'@views_components': resolve(__dirname, 'src/views/components'),
 		},
 		modules: ['node_modules', resolve(__dirname, 'src')],

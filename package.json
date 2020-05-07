@@ -45,6 +45,7 @@
     "apollo-boost": "^0.4.7",
     "apollo-client": "^2.6.8",
     "apollo-link-schema": "^1.2.4",
+    "apollo-link-ws": "^1.0.20",
     "apollo-upload-client": "^13.0.0",
     "clsx": "^1.1.0",
     "core-js": "2",
@@ -52,6 +53,7 @@
     "emoji-mart": "^3.0.0",
     "faker": "^4.1.0",
     "graphql-tag": "^2.10.3",
+    "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.0",
@@ -62,7 +64,8 @@
     "react-window-infinite-loader": "^1.0.5",
     "slate": "^0.57.1",
     "slate-history": "^0.57.1",
-    "slate-react": "^0.57.1"
+    "slate-react": "^0.57.1",
+    "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

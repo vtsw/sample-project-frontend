@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import { makeStyles, Box } from '@material-ui/core'
 
 const useStyles = makeStyles(() => ({
-	root: ({ size, imgUrl }) => ({
+	root: ({ size, avatar }) => ({
 		width: size,
 		height: size,
 		borderRadius: '50%',
 		backgroundColor: '#c5c5c5',
 		border: '1px solid white',
 		position: 'relative',
-		backgroundImage: imgUrl && `url(${imgUrl})`,
+		backgroundImage: avatar && `url(${avatar})`,
 		backgroundPosition: 'center',
 		backgroundSize: 'cover',
 	}),
@@ -32,9 +32,9 @@ const useStyles = makeStyles(() => ({
 }))
 
 export default function Avatar(props) {
-	const { size, imgUrl, status, showStatus } = props
+	const { size, avatar, status, showStatus } = props
 
-	const classes = useStyles({ size, status, imgUrl })
+	const classes = useStyles({ size, status, avatar })
 	return (
 		<Box className={classes.root}>
 			{showStatus && <Box className={classes.root__status} />}
@@ -43,15 +43,14 @@ export default function Avatar(props) {
 }
 
 Avatar.propTypes = {
-	imgUrl: PropTypes.string.isRequired,
+	avatar: PropTypes.string.isRequired,
 	status: PropTypes.string,
 	showStatus: PropTypes.bool,
 	size: PropTypes.number,
 }
 
 Avatar.defaultProps = {
-	imgUrl:
-		'http://s120-ava-talk.zadn.vn/3/e/5/2/2/120/c181045e8a31aa07c65e25d88bd249e6.jpg',
+	avatar: '',
 	status: '',
 	showStatus: false,
 	size: 20,
