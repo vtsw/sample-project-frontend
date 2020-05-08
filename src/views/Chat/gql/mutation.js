@@ -52,10 +52,31 @@ const CREATE_ZALO_MESSAGE = gql`
 	}
 `
 
+const CREATE_ZALO_IMAGE_MESSAGE = gql`
+	mutation CreateZaloMessage($message: CreateZaloMessageInput!) {
+		createZaloMessage(message: $message) {
+			from {
+				displayName
+				id
+				avatar
+			}
+			to {
+				displayName
+				id
+				avatar
+			}
+			content
+			timestamp
+			id
+		}
+	}
+`
+
 export {
 	SET_SELECTED_USER_OF_CHAT,
 	SET_DRAFT_LIST,
 	SET_STATUS_READED_MESSAGE,
 	SET_USER_SEARCH_TEXT,
 	CREATE_ZALO_MESSAGE,
+	CREATE_ZALO_IMAGE_MESSAGE,
 }

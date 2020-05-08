@@ -69,8 +69,17 @@ export default function ChatView({ selectedUserOfChat }) {
 					childRef.current.handleShowButtonScrollNewMessage()
 				}
 
-				const newMessage = subscriptionData.data.onZaloMessageCreated
+				let newMessage = subscriptionData.data.onZaloMessageCreated
+				const messageIndex = prev.zaloMessageList.items.findIndex(
+					item => item.id === newMessage.id
+				)
 
+				if (messageIndex > -1) {
+					newMessage = {
+						...newMessage,
+						...prev.zaloMessageList.items[messageIndex],
+					}
+				}
 				return Object.assign({}, prev, {
 					zaloMessageList: {
 						...prev.zaloMessageList,

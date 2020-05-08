@@ -5,9 +5,12 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Image } from '@material-ui/icons'
 
 import { RichText } from '@views_components'
-import { GET_DRAFT_LIST } from '../../../../gql/query'
+import { GET_DRAFT_LIST, GET_ZALO_MESSAGE_LIST } from '../../../../gql/query'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import { CREATE_ZALO_MESSAGE } from '../../../../gql/mutation'
+import {
+	CREATE_ZALO_MESSAGE,
+	CREATE_ZALO_IMAGE_MESSAGE,
+} from '../../../../gql/mutation'
 
 EditorChat.propTypes = {}
 
@@ -50,6 +53,36 @@ export default function EditorChat({ idUser }) {
 		JSON.parse(items.find(item => item.toInterestId === idUser).message)
 
 	const [createZaloMessage] = useMutation(CREATE_ZALO_MESSAGE)
+	const [createZaloImageMessage] = useMutation(CREATE_ZALO_IMAGE_MESSAGE, {
+		update(cache, { data: { createZaloImageMessage } }) {
+			const { ZaloMessageList } = cache.readQuery({
+				query: GET_ZALO_MESSAGE_LIST,
+				variables: {
+					query: {
+						limit: 15,
+						interestedUserId: idUser,
+					},
+				},
+			})
+
+			cache.writeQuery({
+				query: GET_ZALO_MESSAGE_LIST,
+				variables: {
+					query: {
+						limit: 15,
+						interestedUserId: idUser,
+					},
+				},
+				data: {
+					zaloMessageList: {
+						...ZaloMessageList,
+						items: [createZaloImageMessage, ...ZaloMessageList.items],
+					},
+				},
+			})
+		},
+		onError: err => alert(err),
+	})
 
 	const handleSendZaloMessage = content => {
 		createZaloMessage({
@@ -57,6 +90,17 @@ export default function EditorChat({ idUser }) {
 				message: {
 					to: idUser,
 					content,
+				},
+			},
+		})
+	}
+
+	const handleSendZaloImageMessage = attachment => {
+		createZaloImageMessage({
+			variables: {
+				message: {
+					to: idUser,
+					attachment,
 				},
 			},
 		})
@@ -74,7 +118,7 @@ export default function EditorChat({ idUser }) {
 		return url
 	}
 
-	const onUploadImage = async ({ target }) => {
+	const onUploadImage = ({ target }) => {
 		const file = target.files[0]
 
 		const fileReader = new FileReader()
@@ -82,6 +126,7 @@ export default function EditorChat({ idUser }) {
 		fileReader.onload = e => {
 			const url = createBlobUrl(e.target.result)
 			setImage(url)
+			handleSendZaloImageMessage(file)
 		}
 	}
 

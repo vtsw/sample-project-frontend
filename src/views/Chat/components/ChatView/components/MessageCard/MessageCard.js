@@ -1,6 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Box, makeStyles, Typography, Grid } from '@material-ui/core'
+import {
+	Box,
+	makeStyles,
+	Typography,
+	Grid,
+	Card,
+	CardMedia,
+} from '@material-ui/core'
 import { ShowRichText } from '@views_components'
 import moment from 'moment'
 
@@ -9,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		flexDirection: leftOrRight % 2 !== 0 ? 'row-reverse' : 'row',
 	}),
-	root__message: () => ({
+	root__message: {
 		marginBottom: 4,
 		marginLeft: 8,
 		marginRight: 8,
@@ -20,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 		whiteSpace: 'pre-line',
 		padding: 12,
 		wordBreak: 'break-word',
-	}),
+	},
 	root__timestamp: {
 		marginRight: theme.spacing(2),
 		fontSize: '12px',
@@ -36,12 +43,27 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function MessageCard(props) {
-	const { content, from, meId, endOfList, timestamp, refFristMessage } = props
+	const {
+		content,
+		attachment = '',
+		from,
+		meId,
+		endOfList,
+		timestamp,
+		refFristMessage,
+	} = props
 	const classes = useStyles({ leftOrRight: meId === from.id })
 	return (
 		<div className={classes.root}>
 			<Box className={classes.root__message}>
-				{content}
+				{attachment ? (
+					<Card>
+						<CardMedia component='img' image={attachment} />
+					</Card>
+				) : (
+					content
+				)}
+
 				{/* <textarea value={content} readOnly /> */}
 				{/* <ShowRichText valueDefault={JSON.parse(`${content}`)} /> */}
 				{endOfList && (
