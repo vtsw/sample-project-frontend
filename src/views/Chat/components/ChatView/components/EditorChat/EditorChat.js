@@ -1,5 +1,9 @@
 import React from 'react'
-import { Box, makeStyles, Typography } from '@material-ui/core'
+
+import { Box, IconButton } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { Image } from '@material-ui/icons'
+
 import { RichText } from '@views_components'
 import { GET_DRAFT_LIST } from '../../../../gql/query'
 import { useQuery, useMutation } from '@apollo/react-hooks'
@@ -7,7 +11,7 @@ import { CREATE_ZALO_MESSAGE } from '../../../../gql/mutation'
 
 EditorChat.propTypes = {}
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	root: {
 		display: 'flex',
 		flexDirection: 'column',
@@ -16,24 +20,24 @@ const useStyles = makeStyles(theme => ({
 		background: '#f9f9fd',
 	},
 
-	root__tool: {
+	tool: {
 		height: 40,
+		display: 'flex',
+		alignItems: 'center',
 		width: '100%',
 		borderBottom: '1px solid #e5e5e9',
 	},
-	root__areainput: {
+	tool__uploadinput: {
+		display: 'none',
+	},
+	areainput: {
 		display: 'flex',
 		alignItems: 'center',
-	},
-
-	root__areainput__send: {
-		margin: theme.spacing(0, 2, 0, 1),
-		cursor: 'pointer',
-		color: '#00897b',
 	},
 }))
 export default function EditorChat({ idUser }) {
 	const classes = useStyles()
+	const [image, setImage] = React.useState(null)
 
 	const {
 		data: {
@@ -58,10 +62,51 @@ export default function EditorChat({ idUser }) {
 		})
 	}
 
+	const createBlobUrl = file => {
+		const length = file.length
+		let arr = new Uint8Array(length)
+
+		for (let i = 0; i < length; i++) {
+			arr[i] = file.charCodeAt(i)
+		}
+		const blob = new Blob([arr], { type: 'image/png' })
+		const url = URL.createObjectURL(blob)
+		return url
+	}
+
+	const onUploadImage = async ({ target }) => {
+		const file = target.files[0]
+
+		const fileReader = new FileReader()
+		fileReader.readAsBinaryString(file)
+		fileReader.onload = e => {
+			const url = createBlobUrl(e.target.result)
+			setImage(url)
+		}
+	}
+
 	return (
 		<Box className={classes.root}>
-			<Box className={classes.root__tool}></Box>
-			<Box className={classes.root__areainput}>
+			<Box>
+				<img src={image} alt='imasdfge wer' />
+			</Box>
+			<Box className={classes.tool}>
+				<Box>
+					<input
+						accept='image/*'
+						className={classes.tool__uploadinput}
+						id='editorchat-uploadinput'
+						type='file'
+						onChange={onUploadImage}
+					/>
+					<label htmlFor='editorchat-uploadinput'>
+						<IconButton aria-label='upload image' component='span'>
+							<Image />
+						</IconButton>
+					</label>
+				</Box>
+			</Box>
+			<Box className={classes.areainput}>
 				<RichText
 					valueDefault={valueDefault}
 					idUser={idUser}
