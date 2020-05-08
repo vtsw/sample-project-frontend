@@ -47,7 +47,7 @@ const serialize = nodes => {
 	return nodes.map(n => Node.string(n)).join('\n')
 }
 
-const RichText = ({ valueDefault, idUser, handleComfirm }) => {
+const RichText = ({ idUser, handleComfirm }) => {
 	const classes = useStyles()
 	const ref = useRef()
 	const [value, setValue] = useState(initialValue)
@@ -63,20 +63,38 @@ const RichText = ({ valueDefault, idUser, handleComfirm }) => {
 	const [setDraftList] = useMutation(SET_DRAFT_LIST)
 
 	const sendMessage = () => {
-		handleComfirm(serialize(value))
-		setDraftList({
-			variables: {
-				draft: {
-					toInterestId: idUser,
-					message: '[{"children":[{"text":""}]}]',
-					__typename: 'draftListNode',
+		const valueComfirm = serialize(value)
+		if (valueComfirm) {
+			// handleComfirm(valueComfirm)
+			// hanldeDebounceSetDraftText(idUser, [
+			// 	{
+			// 		children: [
+			// 			{
+			// 				text: '',
+			// 			},
+			// 		],
+			// 	},
+			// ])
+
+			setValue([
+				{
+					children: [
+						{
+							text: '',
+						},
+					],
 				},
-			},
-		})
+			])
+		}
 	}
 
 	const hanldeDebounceSetDraftText = useCallback(
 		_.debounce((idDebounce, valueDebounce) => {
+			console.log(
+				'JSON.stringify(valueDebounce)',
+				JSON.stringify(valueDebounce)
+			)
+
 			setDraftList({
 				variables: {
 					draft: {
@@ -90,21 +108,12 @@ const RichText = ({ valueDefault, idUser, handleComfirm }) => {
 		[]
 	)
 
-	useEffect(() => {
-		if (valueDefault) {
-			setValue(valueDefault)
-		} else {
-			setValue([
-				{
-					children: [
-						{
-							text: '',
-						},
-					],
-				},
-			])
-		}
-	}, [valueDefault])
+	// useEffect(() => {
+	// 	console.log('useEffect', valueDefault)
+	// 	if (valueDefault) {
+	// 		setValue(valueDefault)
+	// 	}
+	// }, [valueDefault])
 
 	const handleAddEmojiToValueInput = ({ native: addIcon }) => {
 		const { selection } = editor
@@ -143,7 +152,7 @@ const RichText = ({ valueDefault, idUser, handleComfirm }) => {
 			setValue(emoij)
 		}
 
-		document.getElementById('editorRichText').focus()
+		// document.getElementById('editorRichText').focus()
 	}
 
 	const chars = CHARACTERS.filter(c =>
@@ -204,33 +213,37 @@ const RichText = ({ valueDefault, idUser, handleComfirm }) => {
 			<Slate
 				editor={editor}
 				value={value}
-				onChange={value => {
-					setValue(value)
+				onChange={val => {
+					setValue(val)
+					console.log('val', val)
 
-					hanldeDebounceSetDraftText(idUser, value)
 					const { selection } = editor
 
-					if (selection && Range.isCollapsed(selection)) {
-						const [start] = Range.edges(selection)
-						const wordBefore = Editor.before(editor, start, { unit: 'word' })
-						const before = wordBefore && Editor.before(editor, wordBefore)
-						const beforeRange = before && Editor.range(editor, before, start)
-						const beforeText = beforeRange && Editor.string(editor, beforeRange)
-						const beforeMatch = beforeText && beforeText.match(/^@(\w+)$/)
-						const after = Editor.after(editor, start)
-						const afterRange = Editor.range(editor, start, after)
-						const afterText = Editor.string(editor, afterRange)
-						const afterMatch = afterText.match(/^(\s|$)/)
+					// if (selection) {
+					// 	hanldeDebounceSetDraftText(idUser, val)
+					// }
 
-						if (beforeMatch && afterMatch) {
-							setTarget(beforeRange)
-							setSearch(beforeMatch[1])
-							setIndex(0)
-							return
-						}
-					}
+					// if (selection && Range.isCollapsed(selection)) {
+					// 	const [start] = Range.edges(selection)
+					// 	const wordBefore = Editor.before(editor, start, { unit: 'word' })
+					// 	const before = wordBefore && Editor.before(editor, wordBefore)
+					// 	const beforeRange = before && Editor.range(editor, before, start)
+					// 	const beforeText = beforeRange && Editor.string(editor, beforeRange)
+					// 	const beforeMatch = beforeText && beforeText.match(/^@(\w+)$/)
+					// 	const after = Editor.after(editor, start)
+					// 	const afterRange = Editor.range(editor, start, after)
+					// 	const afterText = Editor.string(editor, afterRange)
+					// 	const afterMatch = afterText.match(/^(\s|$)/)
 
-					setTarget(null)
+					// 	if (beforeMatch && afterMatch) {
+					// 		setTarget(beforeRange)
+					// 		setSearch(beforeMatch[1])
+					// 		setIndex(0)
+					// 		return
+					// 	}
+					// }
+
+					// setTarget(null)
 				}}
 			>
 				<Editable
@@ -238,7 +251,7 @@ const RichText = ({ valueDefault, idUser, handleComfirm }) => {
 					onKeyDown={onKeyDown}
 					placeholder='Nhập @, tin nhắn tới Nguyễn Văn Đại'
 					className={classes.editable}
-					id='editorRichText'
+					// id='editorRichText'
 				/>
 				{target && chars.length > 0 && (
 					<Portal>

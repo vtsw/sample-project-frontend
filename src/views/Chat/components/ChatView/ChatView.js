@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles, Box } from '@material-ui/core'
 import Header from './components/Header'
 import ViewMessage from './components/ViewMessage'
 import EditorChat from './components/EditorChat/EditorChat'
-import { useQuery, useSubscription } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/react-hooks'
 import { GET_ZALO_MESSAGE_LIST } from '../../gql/query'
 import { ON_ZALO_MESSAGE_CREATED } from '../../gql/subscription'
 
@@ -37,7 +37,6 @@ const GET_USER_INFO = gql`
 `
 
 export default function ChatView({ selectedUserOfChat }) {
-	const childRef = useRef()
 	const classes = useStyles()
 	const { data, loading, subscribeToMore, fetchMore, networkStatus } = useQuery(
 		GET_ZALO_MESSAGE_LIST,
@@ -62,12 +61,6 @@ export default function ChatView({ selectedUserOfChat }) {
 			variables: { filter: { interestedUserId: selectedUserOfChat.id } },
 			updateQuery: (prev, { subscriptionData }) => {
 				if (!subscriptionData.data) return prev
-
-				if (me.id === subscriptionData.data.onZaloMessageCreated.from.id) {
-					childRef.current.handleEndOfTable()
-				} else {
-					childRef.current.handleShowButtonScrollNewMessage()
-				}
 
 				const newMessage = subscriptionData.data.onZaloMessageCreated
 
@@ -115,7 +108,6 @@ export default function ChatView({ selectedUserOfChat }) {
 			) : data && data.zaloMessageList.items.length > 0 ? (
 				<ViewMessage
 					me={me}
-					ref={childRef}
 					selectedUserOfChatId={selectedUserOfChat.id}
 					items={data.zaloMessageList.items}
 					hasNext={data.zaloMessageList.hasNext}
