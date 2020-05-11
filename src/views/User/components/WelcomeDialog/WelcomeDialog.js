@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
 import { Box, Button, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -30,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const WelcomeDialog = props => {
-	const { onCreateUser } = props
+	const { setDialogVisible } = props
 	const classes = useStyles()
 
 	return (
@@ -40,11 +41,11 @@ const WelcomeDialog = props => {
 					Welcome to Vatech !!!
 				</Typography>
 				<Button
-					data-cy='create-user-button'
+					data-testid='create-user-button'
 					variant='contained'
 					fullWidth
 					className={classes.button}
-					onClick={onCreateUser}
+					onClick={setDialogVisible}
 				>
 					Create user
 				</Button>
@@ -53,9 +54,10 @@ const WelcomeDialog = props => {
 	)
 }
 
-export default WelcomeDialog
-
 WelcomeDialog.propTypes = {
 	setDialogVisible: PropTypes.func.isRequired,
 }
+
 WelcomeDialog.defaultProps = {}
+
+export default WelcomeDialog

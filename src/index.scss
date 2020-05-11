@@ -29,18 +29,9 @@ li {
 ::-webkit-scrollbar {
   width: 20px;
 }
-
-/* Track */
-::-webkit-scrollbar-track {
-}
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #d8d8d8;
   border: solid 1px #979797;
 }
-
-/* Handle on hover */
-// ::-webkit-scrollbar-thumb:hover {
-//   background: #b30000; 
-// }

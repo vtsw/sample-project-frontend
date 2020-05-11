@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NavPanel /> should match snapshot 1`] = `
+<div>
+  <div
+    class="MuiGrid-root makeStyles-root-1"
+  >
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text makeStyles-tab-2 makeStyles-active-3 MuiButton-textPrimary"
+      data-testid="navbaritem-main"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        main
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text makeStyles-tab-2 MuiButton-textPrimary"
+      data-testid="navbaritem-user"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        user
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text makeStyles-tab-2 MuiButton-textPrimary"
+      data-testid="navbaritem-message"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        message
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text makeStyles-tab-2 MuiButton-textPrimary"
+      data-testid="navbaritem-file"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        file
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>
+  </div>
+  <button
+    class="MuiButtonBase-root MuiButton-root MuiButton-text makeStyles-root-139 MuiButton-textPrimary"
+    data-testid="logoutbutton"
+    tabindex="0"
+    type="button"
+  >
+    <span
+      class="MuiButton-label"
+    >
+      Logout
+    </span>
+    <span
+      class="MuiTouchRipple-root"
+    />
+  </button>
+</div>
+`;

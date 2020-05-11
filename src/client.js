@@ -244,4 +244,4 @@ cache.writeData({
 	data: initialState,
 })
 
-export { client, initialState }
+export { client, initialState, resolvers }

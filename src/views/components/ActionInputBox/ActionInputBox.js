@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 const ActionInputBox = props => {
 	const { type, placeholder, defaultValue, width, onSubmit, onChange } = props
-	const [value, setValue] = useState(defaultValue)
+	const [value, setValue] = useState(defaultValue || '')
 
 	const handleOnInputChange = e => {
 		setValue(e.target.value)
@@ -61,13 +61,18 @@ const ActionInputBox = props => {
 				onKeyDown={handleOnKeyDown}
 			/>
 			<Button
+				data-testid='actioninputbox-button'
 				color={`${type === 'search' ? 'default' : 'primary'}`}
 				variant='contained'
 				size='large'
 				className={classes.button}
 				onClick={handleOnSubmit}
 			>
-				{type === 'search' ? <Search className={classes.icon} /> : 'Save'}
+				{type === 'search' ? (
+					<Search data-testid='search-icon' className={classes.icon} />
+				) : (
+					'Save'
+				)}
 			</Button>
 		</Box>
 	)

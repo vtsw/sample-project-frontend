@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box, Button, Grid, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
-
-import { FetchImage } from './components'
+import { makeStyles } from '@material-ui/core/styles'
 
 import { GET_USER_INFO, GET_FILE } from './gql/query'
 import { UPLOAD_FILE, SET_UPLOADED_FILE } from './gql/mutation'
+
+import { getToken } from '@src/shares/utils'
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -70,18 +70,16 @@ const useStyle = makeStyles(theme => ({
 
 const File = () => {
 	const classes = useStyle()
-	const {
-		data: { file },
-	} = useQuery(GET_FILE)
+	const [imageUrl, setImageUrl] = useState('')
+	const { data: fileData } = useQuery(GET_FILE)
 	const [setUploadedFile] = useMutation(SET_UPLOADED_FILE, {
 		onError: err => alert(err),
 	})
 
-	const { data } = useQuery(GET_USER_INFO, {
+	// eslint-disable-next-line no-unused-vars
+	const _ = useQuery(GET_USER_INFO, {
 		onCompleted: data => {
-			if (data && data.me && data.me.image && !file.filename) {
-				// when reload page
-				// prevent GET_USER_INFO query use its latest cache when user log out
+			if (data?.me?.image && !fileData?.file.filename) {
 				setUploadedFile({ variables: { file: data.me.image } })
 			}
 		},
@@ -89,8 +87,10 @@ const File = () => {
 	})
 
 	const [uploadFile] = useMutation(UPLOAD_FILE, {
-		onCompleted: ({ uploadImage }) => {
+		onCompleted: async ({ uploadImage }) => {
 			setUploadedFile({ variables: { file: uploadImage } })
+			const imageUrl = await fetchAuthImage(uploadImage.link)
+			setImageUrl(imageUrl)
 		},
 		onError: err => alert(err),
 	})
@@ -99,6 +99,18 @@ const File = () => {
 		const file = target.files[0]
 
 		uploadFile({ variables: { file } })
+	}
+
+	const fetchAuthImage = async imageUrl => {
+		const token = getToken()
+		const res = await fetch(imageUrl, {
+			headers: {
+				authorization: token ? `Bearer ${token}` : '',
+			},
+		})
+		const blob = await res.blob()
+		const url = URL.createObjectURL(blob)
+		return url
 	}
 
 	return (
@@ -113,12 +125,14 @@ const File = () => {
 				>
 					<Grid item className={classes.item__uploader}>
 						<Button
+							data-testid='file-selectbutton'
 							variant='contained'
 							size='small'
 							className={classes.item__uploader__button}
 						>
 							file select
 							<input
+								data-testid='file-input'
 								accept='image/*'
 								className={classes.item__uploader__input}
 								onChange={onUploadFile}
@@ -129,15 +143,17 @@ const File = () => {
 							variant='body2'
 							className={classes.item__uploader__filename}
 						>
-							{file.filename ? file.filename : 'No file selected'}
+							{fileData?.file.filename
+								? fileData?.file.filename
+								: 'No file selected'}
 						</Typography>
 					</Grid>
 					<Grid item className={classes.item__imageviewer}>
-						{file.link ? (
-							<FetchImage
-								fileName={file.filename}
-								fileLink={file.link}
-								styles={classes.item__imageviewer__image}
+						{imageUrl ? (
+							<img
+								src={imageUrl}
+								alt={fileData?.file.filename}
+								className={classes.item__imageviewer__image}
 							/>
 						) : (
 							<Typography variant='body2'>image</Typography>

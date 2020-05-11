@@ -1,10 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import { deleteToken } from '@src/shares/utils'
-// import NavBarItem from '../../src/views/components/NavBar/NavBarItem'
-import { action } from '@storybook/addon-actions'
-import NavBar from '../../src/views/components/NavBar'
+import { NavBar } from '../../src/views/components/NavPanel/components'
 import { BrowserRouter } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
@@ -14,7 +11,7 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		flexDirection: 'column',
 		height: '100vh',
-		width: '100px',
+		width: 80,
 	},
 	tab: {
 		fontSize: theme.typography.htmlFontSize,
@@ -35,12 +32,19 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+const navbarItems = [
+	{ page: 'main', pathname: '/' },
+	{ page: 'user', pathname: '/user' },
+	{ page: 'message', pathname: '/message' },
+	{ page: 'file', pathname: '/file' },
+]
+
 const NavBarDefault = () => {
 	const classes = useStyles()
 	return (
 		<BrowserRouter>
 			<div className={classes.root}>
-				<NavBar />
+				<NavBar items={navbarItems} />
 			</div>
 		</BrowserRouter>
 	)
@@ -49,6 +53,7 @@ const NavBarDefault = () => {
 export default NavBarDefault
 
 NavBarDefault.propTypes = {
+	items: PropTypes.array.isRequired,
 	location: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 }

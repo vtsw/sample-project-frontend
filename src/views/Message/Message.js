@@ -6,7 +6,7 @@ import { Box, Grid, makeStyles } from '@material-ui/core'
 
 import {
 	Loading,
-	LargeTable,
+	InfiniteTable,
 	DeleteDialog,
 	ModifyDialog,
 } from '@views_components'
@@ -19,7 +19,7 @@ import {
 	SET_MESSAGE_CREATE_TEXT,
 } from './gql/query'
 import { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } from './gql/mutation'
-import { useCreateMessage, useDeleteMessage } from './gql/useMutations'
+import { useCreateMessage, useDeleteMessage } from './gql/useMutation'
 
 import { NETWORK_STATUS_FETCH_MORE, PAGE_LIMIT } from '@src/configs.local'
 
@@ -55,9 +55,7 @@ const Message = () => {
 
 	const [selectedMessage, setSelectedMessage] = useState(false)
 
-	const {
-		data: { messageSearchValueOfMessage },
-	} = useQuery(GET_MESSAGE_SEARCH_TEXT)
+	const { data: messageSearchTextData } = useQuery(GET_MESSAGE_SEARCH_TEXT)
 
 	const { loading, error, data, fetchMore, networkStatus } = useQuery(
 		MESSAGE_LIST,
@@ -93,7 +91,7 @@ const Message = () => {
 
 	const handleSearch = value => {
 		setMessageSearchValueOfMain({ variables: { searchValue: value } })
-		if (value === messageSearchValueOfMessage) {
+		if (value === messageSearchTextData?.messageSearchValueOfMessage) {
 			return false
 		} else {
 			try {
@@ -132,7 +130,7 @@ const Message = () => {
 					query: {
 						limit: PAGE_LIMIT,
 						skip: data.messageList.items.length,
-						searchText: messageSearchValueOfMessage,
+						searchText: messageSearchTextData?.messageSearchValueOfMessage,
 					},
 				},
 				updateQuery: (prev, { fetchMoreResult }) => {
@@ -176,6 +174,7 @@ const Message = () => {
 		updateMessage({
 			variables: { message: { id: selectedMessage.id, content: message } },
 		})
+		setConfirmDialogVisible(false)
 	}
 
 	if (error) return <p>Error :(</p>
@@ -196,7 +195,7 @@ const Message = () => {
 						width={328}
 						placeholder='search...'
 						type='search'
-						defaultValue={messageSearchValueOfMessage}
+						defaultValue={messageSearchTextData?.messageSearchValueOfMessage}
 						onSubmit={handleSearch}
 					/>
 				</Grid>
@@ -204,7 +203,7 @@ const Message = () => {
 				{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
 					<Loading open={true} msg={'Loading...'} />
 				) : (
-					<LargeTable
+					<InfiniteTable
 						items={data.messageList.items}
 						onClickRow={handleOnSelectMessage}
 						handleDeleteRow={handleOnDeleteMessage}

@@ -64,6 +64,11 @@ export default function ChatView({ selectedUserOfChat }) {
 
 				const newMessage = subscriptionData.data.onZaloMessageCreated
 
+				if (
+					selectedUserOfChat.id !== newMessage.from.id ||
+					selectedUserOfChat.id !== newMessage.to.id
+				)
+					return
 				return Object.assign({}, prev, {
 					zaloMessageList: {
 						...prev.zaloMessageList,

@@ -1,8 +1,14 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import { withRouter } from 'react-router-dom'
 
 import { Box } from '@material-ui/core'
-import FormEditor from '@views_components/FormEditor'
+import { makeStyles } from '@material-ui/core/styles'
+
+import { useMutation } from '@apollo/react-hooks'
+
+import { FormEditor } from '@views_components'
+
+import { CREATE_USER } from '@views/User/gql/mutation'
 
 const useStyles = makeStyles({
 	root: {
@@ -13,14 +19,25 @@ const useStyles = makeStyles({
 	},
 })
 
-const SignUp = () => {
+const SignUp = props => {
+	const { history } = props
 	const classes = useStyles()
+
+	const [createNewUser] = useMutation(CREATE_USER)
+
+	const createUser = ({ email, name, password }) => {
+		createNewUser({
+			variables: { user: { email, name, password } },
+		}).then(navigateToSignInPage)
+	}
+
+	const navigateToSignInPage = () => history.push('/sign-in')
 
 	return (
 		<Box className={classes.root}>
-			<FormEditor />
+			<FormEditor onSubmit={createUser} onCancel={navigateToSignInPage} />
 		</Box>
 	)
 }
 
-export default SignUp
+export default withRouter(SignUp)

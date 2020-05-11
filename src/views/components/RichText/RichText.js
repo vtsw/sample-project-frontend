@@ -40,6 +40,7 @@ const useStyles = makeStyles(theme => ({
 		margin: theme.spacing(0, 2, 0, 1),
 		cursor: 'pointer',
 		color: '#00897b',
+		userSelect: 'none',
 	},
 }))
 
@@ -47,7 +48,7 @@ const serialize = nodes => {
 	return nodes.map(n => Node.string(n)).join('\n')
 }
 
-const RichText = ({ idUser, handleComfirm }) => {
+const RichText = ({ idUser, valueDefault, handleComfirm }) => {
 	const classes = useStyles()
 	const ref = useRef()
 	const [value, setValue] = useState(initialValue)
@@ -65,16 +66,16 @@ const RichText = ({ idUser, handleComfirm }) => {
 	const sendMessage = () => {
 		const valueComfirm = serialize(value)
 		if (valueComfirm) {
-			// handleComfirm(valueComfirm)
-			// hanldeDebounceSetDraftText(idUser, [
-			// 	{
-			// 		children: [
-			// 			{
-			// 				text: '',
-			// 			},
-			// 		],
-			// 	},
-			// ])
+			handleComfirm(valueComfirm)
+			hanldeDebounceSetDraftText(idUser, [
+				{
+					children: [
+						{
+							text: '',
+						},
+					],
+				},
+			])
 
 			setValue([
 				{
@@ -90,11 +91,6 @@ const RichText = ({ idUser, handleComfirm }) => {
 
 	const hanldeDebounceSetDraftText = useCallback(
 		_.debounce((idDebounce, valueDebounce) => {
-			console.log(
-				'JSON.stringify(valueDebounce)',
-				JSON.stringify(valueDebounce)
-			)
-
 			setDraftList({
 				variables: {
 					draft: {
@@ -108,12 +104,11 @@ const RichText = ({ idUser, handleComfirm }) => {
 		[]
 	)
 
-	// useEffect(() => {
-	// 	console.log('useEffect', valueDefault)
-	// 	if (valueDefault) {
-	// 		setValue(valueDefault)
-	// 	}
-	// }, [valueDefault])
+	useEffect(() => {
+		if (valueDefault) {
+			setValue(valueDefault)
+		}
+	}, [valueDefault])
 
 	const handleAddEmojiToValueInput = ({ native: addIcon }) => {
 		const { selection } = editor
@@ -215,13 +210,11 @@ const RichText = ({ idUser, handleComfirm }) => {
 				value={value}
 				onChange={val => {
 					setValue(val)
-					console.log('val', val)
-
 					const { selection } = editor
 
-					// if (selection) {
-					// 	hanldeDebounceSetDraftText(idUser, val)
-					// }
+					if (selection) {
+						hanldeDebounceSetDraftText(idUser, val)
+					}
 
 					// if (selection && Range.isCollapsed(selection)) {
 					// 	const [start] = Range.edges(selection)
@@ -301,6 +294,7 @@ const RichText = ({ idUser, handleComfirm }) => {
 				<Typography
 					className={classes.root__areainput__send}
 					onClick={sendMessage}
+					contentEditable={false}
 				>
 					Gửi
 				</Typography>
