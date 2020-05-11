@@ -68,7 +68,7 @@ export default function EditorChat({ idUser }) {
 			variables: {
 				message: {
 					to: idUser,
-					content,
+					content: content.trim(),
 				},
 			},
 		})

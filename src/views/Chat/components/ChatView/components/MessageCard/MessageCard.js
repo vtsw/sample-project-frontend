@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		flexDirection: leftOrRight % 2 !== 0 ? 'row-reverse' : 'row',
 	}),
-	root__message: {
+	message: {
 		marginBottom: 4,
 		marginLeft: 8,
 		marginRight: 8,
@@ -28,21 +28,25 @@ const useStyles = makeStyles(theme => ({
 		padding: 12,
 		wordBreak: 'break-word',
 	},
-	root__timestamp: {
+	message__image: {
+		maxHeight: 'calc(100vh - 400px)',
+		width: 'auto',
+	},
+	boxsendtime: {
+		marginTop: theme.spacing(1),
+	},
+	boxsendtime__sendtime: {
 		marginRight: theme.spacing(2),
 		fontSize: '12px',
 		color: '#7a869a',
 	},
-	root__sent: {
+	boxsendtime__status: {
 		fontSize: '12px',
 		color: '#7a869a',
 	},
-	root__box: {
-		marginTop: theme.spacing(1),
-	},
 }))
 
-export default function MessageCard(props) {
+const MessageCard = props => {
 	const {
 		content,
 		attachments = {},
@@ -55,28 +59,35 @@ export default function MessageCard(props) {
 	const classes = useStyles({ leftOrRight: meId === from.id })
 	// console.log(attachments)
 	return (
-		<div className={classes.root}>
-			<Box className={classes.root__message}>
+		<Box className={classes.root}>
+			<Box className={classes.message}>
 				{attachments && attachments[0]?.payload?.url ? (
 					<Card>
-						<CardMedia component='img' image={attachments[0].payload.url} />
+						<CardMedia
+							component='img'
+							image={attachments[0].payload.url}
+							className={classes.message__image}
+						/>
 					</Card>
 				) : (
-					content
+					<span>{content}</span>
 				)}
 
 				{/* <textarea value={content} readOnly /> */}
 				{/* <ShowRichText valueDefault={JSON.parse(`${content}`)} /> */}
 				{endOfList && (
-					<Grid container className={classes.root__box}>
-						<Typography className={classes.root__timestamp}>
+					<Grid container className={classes.boxsendtime}>
+						<Typography className={classes.boxsendtime__sendtime}>
 							{moment(parseInt(timestamp, 10)).format('HH:mm')}
 						</Typography>
-						<Typography className={classes.root__sent}> Đã gửi</Typography>
+						<Typography className={classes.boxsendtime__status}>
+							{' '}
+							Đã gửi
+						</Typography>
 					</Grid>
 				)}
 			</Box>
-		</div>
+		</Box>
 	)
 }
 
@@ -87,3 +98,5 @@ MessageCard.propTypes = {
 MessageCard.defaultProps = {
 	content: '',
 }
+
+export default MessageCard
