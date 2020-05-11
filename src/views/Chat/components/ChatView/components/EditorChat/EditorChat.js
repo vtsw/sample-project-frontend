@@ -5,11 +5,12 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Image } from '@material-ui/icons'
 
 import { RichText } from '@views_components'
-import { GET_DRAFT_LIST, GET_ZALO_MESSAGE_LIST } from '../../../../gql/query'
+import { GET_DRAFT_LIST } from '../../../../gql/query'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import {
 	CREATE_ZALO_MESSAGE,
-	CREATE_ZALO_IMAGE_MESSAGE,
+	CREATE_ZALO_MESSAGE_ATTACHMENT,
+	SET_CREATE_ZALO_MESSAGE_ATTACHMENT,
 } from '../../../../gql/mutation'
 
 EditorChat.propTypes = {}
@@ -40,49 +41,27 @@ const useStyles = makeStyles(() => ({
 }))
 export default function EditorChat({ idUser }) {
 	const classes = useStyles()
-	const [image, setImage] = React.useState(null)
 
 	const {
 		data: {
 			draftList: { items },
 		},
 	} = useQuery(GET_DRAFT_LIST)
+	const [setCreateZaloMessageAttachment] = useMutation(
+		SET_CREATE_ZALO_MESSAGE_ATTACHMENT
+	)
 
 	const valueDefault =
 		items.find(item => item.toInterestId === idUser) &&
 		JSON.parse(items.find(item => item.toInterestId === idUser).message)
 
 	const [createZaloMessage] = useMutation(CREATE_ZALO_MESSAGE)
-	const [createZaloImageMessage] = useMutation(CREATE_ZALO_IMAGE_MESSAGE, {
-		update(cache, { data: { createZaloImageMessage } }) {
-			const { ZaloMessageList } = cache.readQuery({
-				query: GET_ZALO_MESSAGE_LIST,
-				variables: {
-					query: {
-						limit: 15,
-						interestedUserId: idUser,
-					},
-				},
-			})
-
-			cache.writeQuery({
-				query: GET_ZALO_MESSAGE_LIST,
-				variables: {
-					query: {
-						limit: 15,
-						interestedUserId: idUser,
-					},
-				},
-				data: {
-					zaloMessageList: {
-						...ZaloMessageList,
-						items: [createZaloImageMessage, ...ZaloMessageList.items],
-					},
-				},
-			})
-		},
-		onError: err => alert(err),
-	})
+	const [createZaloMessageAttachment] = useMutation(
+		CREATE_ZALO_MESSAGE_ATTACHMENT,
+		{
+			onError: err => alert(err),
+		}
+	)
 
 	const handleSendZaloMessage = content => {
 		createZaloMessage({
@@ -95,15 +74,32 @@ export default function EditorChat({ idUser }) {
 		})
 	}
 
-	const handleSendZaloImageMessage = attachment => {
-		createZaloImageMessage({
+	const handleSendZaloImageMessage = (attachmentFile, url) => {
+		createZaloMessageAttachment({
 			variables: {
-				message: {
+				file: {
 					to: idUser,
-					attachment,
+					content: '',
+					attachmentFile,
 				},
 			},
-		})
+		}).then(
+			({
+				data: {
+					createZaloMessageAttachment: { id },
+				},
+			}) => {
+				setCreateZaloMessageAttachment({
+					variables: {
+						message: {
+							id,
+							url,
+							__typename: 'MessageAttachment',
+						},
+					},
+				})
+			}
+		)
 	}
 
 	const createBlobUrl = file => {
@@ -120,28 +116,24 @@ export default function EditorChat({ idUser }) {
 
 	const onUploadImage = ({ target }) => {
 		const file = target.files[0]
-
 		const fileReader = new FileReader()
+
 		fileReader.readAsBinaryString(file)
 		fileReader.onload = e => {
 			const url = createBlobUrl(e.target.result)
-			setImage(url)
-			handleSendZaloImageMessage(file)
+			handleSendZaloImageMessage(file, url)
 		}
 	}
 
 	return (
 		<Box className={classes.root}>
-			<Box>
-				<img src={image} alt='imasdfge wer' />
-			</Box>
 			<Box className={classes.tool}>
 				<Box>
 					<input
-						accept='image/*'
-						className={classes.tool__uploadinput}
 						id='editorchat-uploadinput'
 						type='file'
+						accept='image/*'
+						className={classes.tool__uploadinput}
 						onChange={onUploadImage}
 					/>
 					<label htmlFor='editorchat-uploadinput'>

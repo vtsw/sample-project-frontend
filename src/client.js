@@ -8,6 +8,7 @@ import { APOLLO_SERVER, APOLLO_SOCKET } from './configs.local'
 import {
 	GET_DRAFT_LIST,
 	GET_NEW_NOTI_MESSAGE_LIST,
+	GET_MAP_ZALO_MESSAGE_ATTACHMENT,
 } from './views/Chat/gql/query'
 
 import { split } from 'apollo-link'
@@ -137,6 +138,22 @@ const resolvers = {
 				})
 			}
 		},
+		setCreateZaloMessageAttachment: (_, { message }, { cache }) => {
+			const { zaloMessageAttachmentList } = cache.readQuery({
+				query: GET_MAP_ZALO_MESSAGE_ATTACHMENT,
+			})
+			const items = [...zaloMessageAttachmentList.items, message]
+
+			cache.writeData({
+				data: {
+					zaloMessageAttachmentList: {
+						...zaloMessageAttachmentList,
+						items,
+					},
+				},
+			})
+			return message
+		},
 
 		resetCache: (_, { data }, { cache }) => {
 			cache.writeData({
@@ -236,6 +253,10 @@ const initialState = {
 	newNotiMessageList: {
 		items: [],
 		__typename: 'newMessageNotiList',
+	},
+	zaloMessageAttachmentList: {
+		items: [],
+		__typename: 'ZaloMessageAttachmentList',
 	},
 	__typename: 'Data',
 }

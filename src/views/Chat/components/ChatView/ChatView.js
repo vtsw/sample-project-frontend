@@ -1,10 +1,13 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { makeStyles, Box } from '@material-ui/core'
 import Header from './components/Header'
 import ViewMessage from './components/ViewMessage'
 import EditorChat from './components/EditorChat/EditorChat'
-import { useQuery, useSubscription } from '@apollo/react-hooks'
-import { GET_ZALO_MESSAGE_LIST } from '../../gql/query'
+import { useQuery } from '@apollo/react-hooks'
+import {
+	GET_ZALO_MESSAGE_LIST,
+	GET_MAP_ZALO_MESSAGE_ATTACHMENT,
+} from '../../gql/query'
 import { ON_ZALO_MESSAGE_CREATED } from '../../gql/subscription'
 
 import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
@@ -39,6 +42,9 @@ const GET_USER_INFO = gql`
 export default function ChatView({ selectedUserOfChat }) {
 	const childRef = useRef()
 	const classes = useStyles()
+	const { data: zaloAttachmentMessageData } = useQuery(
+		GET_MAP_ZALO_MESSAGE_ATTACHMENT
+	)
 	const { data, loading, subscribeToMore, fetchMore, networkStatus } = useQuery(
 		GET_ZALO_MESSAGE_LIST,
 		{
@@ -61,6 +67,8 @@ export default function ChatView({ selectedUserOfChat }) {
 			document: ON_ZALO_MESSAGE_CREATED,
 			variables: { filter: { interestedUserId: selectedUserOfChat.id } },
 			updateQuery: (prev, { subscriptionData }) => {
+				let newMessage = subscriptionData.data.onZaloMessageCreated
+
 				if (!subscriptionData.data) return prev
 
 				if (me.id === subscriptionData.data.onZaloMessageCreated.from.id) {
@@ -69,17 +77,31 @@ export default function ChatView({ selectedUserOfChat }) {
 					childRef.current.handleShowButtonScrollNewMessage()
 				}
 
-				let newMessage = subscriptionData.data.onZaloMessageCreated
-				const messageIndex = prev.zaloMessageList.items.findIndex(
-					item => item.id === newMessage.id
-				)
+				// send image message
+				if (newMessage.attachments && newMessage.attachments.length) {
+					const zaloAttachmentMessages =
+						zaloAttachmentMessageData.zaloMessageAttachmentList.items
+					const messageIndex = zaloAttachmentMessages.findIndex(
+						item => item.id === newMessage.id
+					)
 
-				if (messageIndex > -1) {
-					newMessage = {
-						...newMessage,
-						...prev.zaloMessageList.items[messageIndex],
+					if (messageIndex === -1) return
+					else {
+						newMessage = {
+							...newMessage,
+							attachments: [
+								{
+									...newMessage.attachments[0],
+									payload: {
+										...newMessage.attachments[0].payload,
+										url: zaloAttachmentMessages[messageIndex].url,
+									},
+								},
+							],
+						}
 					}
 				}
+
 				return Object.assign({}, prev, {
 					zaloMessageList: {
 						...prev.zaloMessageList,
@@ -88,7 +110,7 @@ export default function ChatView({ selectedUserOfChat }) {
 				})
 			},
 		})
-	}, [subscribeToMore, selectedUserOfChat])
+	}, [subscribeToMore, selectedUserOfChat, zaloAttachmentMessageData])
 
 	if (loadingMe) return 'loading'
 	const handleFetchMore = () => {

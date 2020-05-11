@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 export default function MessageCard(props) {
 	const {
 		content,
-		attachment = '',
+		attachments = {},
 		from,
 		meId,
 		endOfList,
@@ -53,12 +53,13 @@ export default function MessageCard(props) {
 		refFristMessage,
 	} = props
 	const classes = useStyles({ leftOrRight: meId === from.id })
+	// console.log(attachments)
 	return (
 		<div className={classes.root}>
 			<Box className={classes.root__message}>
-				{attachment ? (
+				{attachments && attachments[0]?.payload?.url ? (
 					<Card>
-						<CardMedia component='img' image={attachment} />
+						<CardMedia component='img' image={attachments[0].payload.url} />
 					</Card>
 				) : (
 					content

@@ -52,9 +52,11 @@ const CREATE_ZALO_MESSAGE = gql`
 	}
 `
 
-const CREATE_ZALO_IMAGE_MESSAGE = gql`
-	mutation CreateZaloMessage($message: CreateZaloMessageInput!) {
-		createZaloMessage(message: $message) {
+const CREATE_ZALO_MESSAGE_ATTACHMENT = gql`
+	mutation CreateZaloMessageAttachment(
+		$file: CreateZaloMessageAttachmentInput!
+	) {
+		createZaloMessageAttachment(message: $file) {
 			from {
 				displayName
 				id
@@ -68,7 +70,21 @@ const CREATE_ZALO_IMAGE_MESSAGE = gql`
 			content
 			timestamp
 			id
+			attachments {
+				type
+				payload {
+					thumbnail
+					description
+					url
+				}
+			}
 		}
+	}
+`
+
+const SET_CREATE_ZALO_MESSAGE_ATTACHMENT = gql`
+	mutation SetCreateZaloMessageAttachment($message: AttachmentMessage!) {
+		setCreateZaloMessageAttachment(message: $message) @client
 	}
 `
 
@@ -78,5 +94,6 @@ export {
 	SET_STATUS_READED_MESSAGE,
 	SET_USER_SEARCH_TEXT,
 	CREATE_ZALO_MESSAGE,
-	CREATE_ZALO_IMAGE_MESSAGE,
+	CREATE_ZALO_MESSAGE_ATTACHMENT,
+	SET_CREATE_ZALO_MESSAGE_ATTACHMENT,
 }

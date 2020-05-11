@@ -64,6 +64,14 @@ const GET_ZALO_MESSAGE_LIST = gql`
 					id
 					avatar
 				}
+				attachments {
+					type
+					payload {
+						thumbnail
+						description
+						url
+					}
+				}
 				to {
 					displayName
 					id
@@ -71,6 +79,7 @@ const GET_ZALO_MESSAGE_LIST = gql`
 				}
 				timestamp
 			}
+
 			hasNext
 			total
 		}
@@ -83,6 +92,17 @@ const GET_USER_SEARCH_TEXT = gql`
 	}
 `
 
+const GET_MAP_ZALO_MESSAGE_ATTACHMENT = gql`
+	query {
+		zaloMessageAttachmentList @client {
+			items {
+				id
+				url
+			}
+		}
+	}
+`
+
 export {
 	GET_SELECTED_USER_OF_CHAT,
 	GET_DRAFT_LIST,
@@ -90,4 +110,5 @@ export {
 	GET_USER_SEARCH_TEXT,
 	GET_NEW_NOTI_MESSAGE_LIST,
 	GET_USER_INFO,
+	GET_MAP_ZALO_MESSAGE_ATTACHMENT,
 }
