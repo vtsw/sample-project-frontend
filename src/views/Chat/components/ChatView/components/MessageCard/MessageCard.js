@@ -58,7 +58,7 @@ const MessageCard = props => {
 		refFristMessage,
 	} = props
 	const classes = useStyles({ leftOrRight: meId === from.id })
-	// console.log(attachments)
+
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.message}>
