@@ -1,17 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { makeStyles, Box } from '@material-ui/core'
-import Header from './components/Header'
-import ViewMessage from './components/ViewMessage'
-import EditorChat from './components/EditorChat/EditorChat'
+import React, { useEffect, useRef } from 'react'
+
+import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
+
+import { Box } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
+import { Header, ViewMessage, EditorChat } from './components'
+
 import {
+	GET_USER_INFO,
 	GET_ZALO_MESSAGE_LIST,
 	GET_MAP_ZALO_MESSAGE_ATTACHMENT,
-} from '../../gql/query'
-import { ON_ZALO_MESSAGE_CREATED } from '../../gql/subscription'
+} from '@views/Chat/gql/query'
+import { ON_ZALO_MESSAGE_CREATED } from '@views/Chat/gql/subscription'
 
 import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
-import gql from 'graphql-tag'
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -31,15 +35,8 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-const GET_USER_INFO = gql`
-	query {
-		me {
-			id
-		}
-	}
-`
-
-export default function ChatView({ selectedUserOfChat }) {
+const ChatView = props => {
+	const { selectedUserOfChat } = props
 	const childRef = useRef()
 	const classes = useStyles()
 	const { data: zaloAttachmentMessageData } = useQuery(
@@ -161,3 +158,5 @@ export default function ChatView({ selectedUserOfChat }) {
 		</Box>
 	)
 }
+
+export default ChatView
