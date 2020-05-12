@@ -66,17 +66,6 @@ const RichText = ({ idUser, valueDefault, handleComfirm }) => {
 	const sendMessage = () => {
 		const valueComfirm = serialize(value)
 		if (valueComfirm) {
-			handleComfirm(valueComfirm)
-			hanldeDebounceSetDraftText(idUser, [
-				{
-					children: [
-						{
-							text: '',
-						},
-					],
-				},
-			])
-
 			setValue([
 				{
 					children: [
@@ -86,6 +75,19 @@ const RichText = ({ idUser, valueDefault, handleComfirm }) => {
 					],
 				},
 			])
+			handleComfirm(valueComfirm)
+			hanldeDebounceSetDraftText.cancel()
+			if (valueDefault) {
+				hanldeDebounceSetDraftText(idUser, [
+					{
+						children: [
+							{
+								text: '',
+							},
+						],
+					},
+				])
+			}
 		}
 	}
 
@@ -100,13 +102,23 @@ const RichText = ({ idUser, valueDefault, handleComfirm }) => {
 					},
 				},
 			})
-		}, 200),
+		}, 500),
 		[]
 	)
 
 	useEffect(() => {
 		if (valueDefault) {
 			setValue(valueDefault)
+		} else {
+			setValue([
+				{
+					children: [
+						{
+							text: '',
+						},
+					],
+				},
+			])
 		}
 	}, [valueDefault])
 

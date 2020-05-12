@@ -3,7 +3,7 @@ import { makeStyles, Box } from '@material-ui/core'
 import Header from './components/Header'
 import ViewMessage from './components/ViewMessage'
 import EditorChat from './components/EditorChat/EditorChat'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, useSubscription } from '@apollo/react-hooks'
 import { GET_ZALO_MESSAGE_LIST } from '../../gql/query'
 import { ON_ZALO_MESSAGE_CREATED } from '../../gql/subscription'
 
@@ -59,16 +59,12 @@ export default function ChatView({ selectedUserOfChat }) {
 		subscribeToMore({
 			document: ON_ZALO_MESSAGE_CREATED,
 			variables: { filter: { interestedUserId: selectedUserOfChat.id } },
+			shouldResubscribe: true,
 			updateQuery: (prev, { subscriptionData }) => {
 				if (!subscriptionData.data) return prev
 
 				const newMessage = subscriptionData.data.onZaloMessageCreated
 
-				if (
-					selectedUserOfChat.id !== newMessage.from.id ||
-					selectedUserOfChat.id !== newMessage.to.id
-				)
-					return
 				return Object.assign({}, prev, {
 					zaloMessageList: {
 						...prev.zaloMessageList,
