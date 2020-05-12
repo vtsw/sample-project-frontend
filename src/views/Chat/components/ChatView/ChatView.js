@@ -74,7 +74,6 @@ const ChatView = props => {
 					childRef.current.handleShowButtonScrollNewMessage()
 				}
 
-				// send image message
 				if (newMessage.attachments && newMessage.attachments.length) {
 					const zaloAttachmentMessages =
 						zaloAttachmentMessageData.zaloMessageAttachmentList.items
@@ -84,18 +83,8 @@ const ChatView = props => {
 
 					if (messageIndex === -1) return
 					else {
-						newMessage = {
-							...newMessage,
-							attachments: [
-								{
-									...newMessage.attachments[0],
-									payload: {
-										...newMessage.attachments[0].payload,
-										url: zaloAttachmentMessages[messageIndex].url,
-									},
-								},
-							],
-						}
+						newMessage.attachments[0].payload.url =
+							zaloAttachmentMessages[messageIndex].url
 					}
 				}
 
