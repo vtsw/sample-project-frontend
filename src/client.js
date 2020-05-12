@@ -152,7 +152,6 @@ const resolvers = {
 					},
 				},
 			})
-			return message
 		},
 
 		resetCache: (_, { data }, { cache }) => {
