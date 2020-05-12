@@ -10,7 +10,7 @@ import GroupMessage from '../GroupMessage/GroupMessage'
 import Fab from '@material-ui/core/Fab'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
 		flex: 1,
@@ -19,6 +19,7 @@ const useStyles = makeStyles(() => ({
 		width: '100%',
 		position: 'relative',
 		overflow: 'hidden',
+		backgroundColor: theme.palette.common.light,
 	},
 	root__table: {
 		display: 'flex',

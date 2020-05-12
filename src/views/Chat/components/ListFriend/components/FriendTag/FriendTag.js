@@ -21,9 +21,9 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: 'center',
 		alignItems: 'center',
 		cursor: 'pointer',
-		backgroundColor: isUserSelected && '#00897b80',
+		backgroundColor: isUserSelected && 'rgba(0, 137, 123, 0.4)',
 		'&:hover': {
-			backgroundColor: '#00897b80',
+			backgroundColor: 'rgba(0, 137, 123, 0.2)',
 		},
 	}),
 

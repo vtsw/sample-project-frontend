@@ -16,20 +16,21 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		flexDirection: leftOrRight % 2 !== 0 ? 'row-reverse' : 'row',
 	}),
-	message: {
+	message: ({ leftOrRight }) => ({
 		marginBottom: 4,
 		marginLeft: 8,
 		marginRight: 8,
 		borderRadius: 8,
 		minWidth: '32px',
 		maxWidth: 'calc(100% - 150px)',
-		backgroundColor: '#DAE9FF',
+		backgroundColor:
+			leftOrRight % 2 !== 0 ? '#DAE9FF' : theme.palette.common.white,
 		whiteSpace: 'pre-line',
 		padding: 12,
 		wordBreak: 'break-word',
-	},
+	}),
 	message__image: {
-		maxHeight: 'calc(100vh - 400px)',
+		maxHeight: 'calc(100vh - 500px)',
 		width: 'auto',
 	},
 	boxsendtime: {
