@@ -1,14 +1,19 @@
 import React, { useEffect } from 'react'
-import { makeStyles, Box } from '@material-ui/core'
-import Header from './components/Header'
-import ViewMessage from './components/ViewMessage'
-import EditorChat from './components/EditorChat/EditorChat'
 import { useQuery } from '@apollo/react-hooks'
-import { GET_ZALO_MESSAGE_LIST } from '../../gql/query'
-import { ON_ZALO_MESSAGE_CREATED } from '../../gql/subscription'
+
+import { Box } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
+import { Header, ViewMessage, EditorChat } from './components'
+
+import {
+	GET_USER_INFO,
+	GET_ZALO_MESSAGE_LIST,
+	GET_MAP_ZALO_MESSAGE_ATTACHMENT,
+} from '@views/Chat/gql/query'
+import { ON_ZALO_MESSAGE_CREATED } from '@views/Chat/gql/subscription'
 
 import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
-import gql from 'graphql-tag'
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -28,16 +33,12 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-const GET_USER_INFO = gql`
-	query {
-		me {
-			id
-		}
-	}
-`
-
-const ChatView = ({ selectedUserOfChat }) => {
+const ChatView = props => {
+	const { selectedUserOfChat } = props
 	const classes = useStyles()
+	const { data: zaloAttachmentMessageData } = useQuery(
+		GET_MAP_ZALO_MESSAGE_ATTACHMENT
+	)
 	const { data, loading, subscribeToMore, fetchMore, networkStatus } = useQuery(
 		GET_ZALO_MESSAGE_LIST,
 		{
@@ -61,9 +62,23 @@ const ChatView = ({ selectedUserOfChat }) => {
 			variables: { filter: { interestedUserId: selectedUserOfChat.id } },
 			shouldResubscribe: true,
 			updateQuery: (prev, { subscriptionData }) => {
+				let newMessage = subscriptionData.data.onZaloMessageCreated
+
 				if (!subscriptionData.data) return prev
 
-				const newMessage = subscriptionData.data.onZaloMessageCreated
+				if (newMessage.attachments && newMessage.attachments.length) {
+					const zaloAttachmentMessages =
+						zaloAttachmentMessageData.zaloMessageAttachmentList.items
+					const messageIndex = zaloAttachmentMessages.findIndex(
+						item => item.id === newMessage.id
+					)
+
+					if (messageIndex === -1) return
+					else {
+						newMessage.attachments[0].payload.url =
+							zaloAttachmentMessages[messageIndex].url
+					}
+				}
 
 				return Object.assign({}, prev, {
 					zaloMessageList: {
@@ -73,7 +88,7 @@ const ChatView = ({ selectedUserOfChat }) => {
 				})
 			},
 		})
-	}, [subscribeToMore, selectedUserOfChat])
+	}, [subscribeToMore, selectedUserOfChat, zaloAttachmentMessageData])
 
 	if (loadingMe) return 'loading'
 	const handleFetchMore = () => {

@@ -52,10 +52,48 @@ const CREATE_ZALO_MESSAGE = gql`
 	}
 `
 
+const CREATE_ZALO_MESSAGE_ATTACHMENT = gql`
+	mutation CreateZaloMessageAttachment(
+		$file: CreateZaloMessageAttachmentInput!
+	) {
+		createZaloMessageAttachment(message: $file) {
+			from {
+				displayName
+				id
+				avatar
+			}
+			to {
+				displayName
+				id
+				avatar
+			}
+			content
+			timestamp
+			id
+			attachments {
+				type
+				payload {
+					thumbnail
+					description
+					url
+				}
+			}
+		}
+	}
+`
+
+const SET_CREATE_ZALO_MESSAGE_ATTACHMENT = gql`
+	mutation SetCreateZaloMessageAttachment($message: AttachmentMessage!) {
+		setCreateZaloMessageAttachment(message: $message) @client
+	}
+`
+
 export {
 	SET_SELECTED_USER_OF_CHAT,
 	SET_DRAFT_LIST,
 	SET_STATUS_READED_MESSAGE,
 	SET_USER_SEARCH_TEXT,
 	CREATE_ZALO_MESSAGE,
+	CREATE_ZALO_MESSAGE_ATTACHMENT,
+	SET_CREATE_ZALO_MESSAGE_ATTACHMENT,
 }

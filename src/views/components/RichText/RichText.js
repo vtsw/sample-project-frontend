@@ -14,7 +14,7 @@ import { makeStyles, Box, Typography } from '@material-ui/core'
 import PickerEmoji from '../../Chat/components/ChatView/components/PickerEmoji/PickerEmoji'
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail'
 import { useMutation } from '@apollo/react-hooks'
-import { SET_DRAFT_LIST } from '../../Chat/gql/mutation'
+import { SET_DRAFT_LIST } from '@views/Chat/gql/mutation'
 import _ from 'lodash'
 
 const useStyles = makeStyles(theme => ({

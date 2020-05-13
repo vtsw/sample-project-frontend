@@ -5,9 +5,9 @@ import GroupMessage from '../GroupMessage/GroupMessage'
 import Fab from '@material-ui/core/Fab'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import { useMutation } from '@apollo/react-hooks'
-import { SET_STATUS_READED_MESSAGE } from '../../../../gql/mutation'
+import { SET_STATUS_READED_MESSAGE } from '@views/Chat/gql/mutation'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
 		flex: 1,
@@ -16,6 +16,7 @@ const useStyles = makeStyles(() => ({
 		width: '100%',
 		position: 'relative',
 		overflow: 'hidden',
+		backgroundColor: theme.palette.common.light,
 	},
 	root__table: {
 		display: 'flex',

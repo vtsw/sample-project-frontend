@@ -6,11 +6,11 @@ import { useMutation, useQuery } from '@apollo/react-hooks'
 import {
 	SET_SELECTED_USER_OF_CHAT,
 	SET_STATUS_READED_MESSAGE,
-} from '../../../../gql/mutation'
+} from '@views/Chat/gql/mutation'
 import {
 	GET_SELECTED_USER_OF_CHAT,
 	GET_DRAFT_LIST,
-} from '../../../../gql/query'
+} from '@views/Chat/gql/query'
 import { MessageNoti, ShowRichText } from '@views_components'
 
 const useStyles = makeStyles(theme => ({
@@ -21,9 +21,9 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: 'center',
 		alignItems: 'center',
 		cursor: 'pointer',
-		backgroundColor: isUserSelected && '#00897b80',
+		backgroundColor: isUserSelected && 'rgba(0, 137, 123, 0.4)',
 		'&:hover': {
-			backgroundColor: '#00897b80',
+			backgroundColor: 'rgba(0, 137, 123, 0.2)',
 		},
 	}),
 

@@ -9,8 +9,8 @@ import NavBarItem from './NavBarItem'
 
 import { deleteToken } from '@src/shares/utils'
 import { initialState } from '@src/client'
-import { ON_ZALO_MESSAGE_RECEIVED } from '../../Chat/gql/subscription'
-import { GET_NEW_NOTI_MESSAGE_LIST } from '../../Chat/gql/query'
+import { ON_ZALO_MESSAGE_RECEIVED } from '@views/Chat/gql/subscription'
+import { GET_NEW_NOTI_MESSAGE_LIST } from '@views/Chat/gql/query'
 
 const useStyles = makeStyles(theme => ({
 	root: {

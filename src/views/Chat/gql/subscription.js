@@ -35,6 +35,14 @@ const ON_ZALO_MESSAGE_CREATED = gql`
 			}
 			timestamp
 			content
+			attachments {
+				payload {
+					thumbnail
+					url
+					description
+				}
+				type
+			}
 		}
 	}
 `
@@ -57,6 +65,7 @@ const ON_ZALO_MESSAGE_RECEIVED_FROM_USER = gql`
 		}
 	}
 `
+
 const ON_ZALO_MESSAGE_CREATED_TO_USER = gql`
 	subscription onZaloMessageCreated($filter: OnZaloMessageCreatedInput) {
 		onZaloMessageCreated(filter: $filter) {
