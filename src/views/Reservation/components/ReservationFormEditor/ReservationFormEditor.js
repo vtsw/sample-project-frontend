@@ -1,20 +1,18 @@
 import 'date-fns'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import DateFnsUtils from '@date-io/date-fns'
 
 import {
 	Box,
+	Grid,
 	Button,
-	TextField,
 	Typography,
 	FormControl,
 	MenuItem,
 	Select,
 	InputLabel,
 	Checkbox,
-	FormLabel,
 	FormControlLabel,
-	Radio,
 	RadioGroup,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -27,38 +25,38 @@ import {
 
 const useStyles = makeStyles(theme => ({
 	root: {
-		width: 381,
+		width: '90%',
 		margin: '20px auto',
-		padding: theme.spacing(2),
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
+		borderBottom: `1px solid ${theme.palette.common.border}`,
 	},
 	formtitle: {
 		color: theme.palette.primary.main,
 		fontWeight: 600,
 	},
-	forminput: {
-		width: '100%',
-		marginTop: 18,
-	},
-	formcontent: {
-		padding: 0,
-		width: '100%',
-	},
-	formbuttons: {
+	container__doctor__patient: {
 		display: 'flex',
-		padding: 0,
-		width: '100%',
-		'&>button': {
-			marginTop: theme.spacing(2),
-			marginLeft: 0,
-			'&:not(:first-child)': {
-				marginLeft: 8,
-			},
-		},
+		justifyContent: 'space-between',
+		marginTop: theme.spacing(1),
 	},
-	formbutton: {
+	container__reservationtype: {
+		flexDirection: 'row',
+		marginTop: theme.spacing(2),
+	},
+	formitem: {
+		width: '48%',
+	},
+	container__buttons: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		width: '100%',
+		marginBottom: theme.spacing(3),
+	},
+	item__button: {
+		width: '48%',
+		marginTop: theme.spacing(2),
 		color: theme.palette.common.white,
 		fontWeight: 600,
 		textTransform: 'capitalize',
@@ -67,16 +65,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ReservationFormEditor = props => {
-	const {
-		selectedUser = {
-			id: '',
-			email: '',
-			name: '',
-		},
-		onSubmit,
-		onCancel,
-		onDelete,
-	} = props
 	const classes = useStyles()
 
 	const [age, setAge] = React.useState('')
@@ -104,105 +92,101 @@ const ReservationFormEditor = props => {
 
 	return (
 		<Box className={classes.root}>
-			<Typography
-				data-testid='formeditor-title'
-				variant='h5'
-				className={classes.formtitle}
-			>
+			<Typography variant='h5' className={classes.formtitle}>
 				Reservation
 			</Typography>
-			<div className={classes.formcontent}>
-				<FormControl variant='outlined' className={classes.forminput}>
-					<InputLabel id='demo-simple-select-outlined-label'>Doctor</InputLabel>
-					<Select
-						labelId='demo-simple-select-outlined-label'
-						id='demo-simple-select-outlined'
-						value={age}
-						onChange={handleChange}
-						label='Doctor'
-					>
-						<MenuItem value=''>
-							<em>None</em>
-						</MenuItem>
-						<MenuItem value={10}>Ten</MenuItem>
-						<MenuItem value={20}>Twenty</MenuItem>
-						<MenuItem value={30}>Thirty</MenuItem>
-					</Select>
-				</FormControl>
-				<FormControl variant='outlined' className={classes.forminput}>
-					<InputLabel id='demo-simple-select-outlined-label'>
-						Patient
-					</InputLabel>
-					<Select
-						labelId='demo-simple-select-outlined-label'
-						id='demo-simple-select-outlined'
-						value={age}
-						onChange={handleChange}
-						label='Patient'
-					>
-						<MenuItem value=''>
-							<em>None</em>
-						</MenuItem>
-						<MenuItem value={10}>Ten</MenuItem>
-						<MenuItem value={20}>Twenty</MenuItem>
-						<MenuItem value={30}>Thirty</MenuItem>
-					</Select>
-				</FormControl>
-				<MuiPickersUtilsProvider utils={DateFnsUtils}>
-					<KeyboardDatePicker
-						disableToolbar
-						variant='inline'
-						format='dd/MM/yyyy'
-						margin='normal'
-						id='date-picker-inline'
-						label='Date picker inline'
-						value={selectedDate}
-						onChange={handleDateChange}
-						KeyboardButtonProps={{
-							'aria-label': 'change date',
-						}}
-						className={classes.forminput}
-					/>
-					<KeyboardTimePicker
-						margin='normal'
-						id='time-picker'
-						label='Time picker'
-						value={selectedDate}
-						onChange={handleDateChange}
-						KeyboardButtonProps={{
-							'aria-label': 'change time',
-						}}
-						className={classes.forminput}
-					/>
-				</MuiPickersUtilsProvider>
-				<FormControl component='fieldset' className={classes.formControl}>
+			<Grid container direction='column'>
+				<FormControl component='fieldset'>
 					<RadioGroup
-						aria-label='quiz'
-						name='quiz'
+						aria-label='reservation-type'
+						name='reservation type'
 						value={reservationType}
+						className={classes.container__reservationtype}
 						onChange={handleRadioChange}
 					>
 						<FormControlLabel
 							value='examination'
-							control={<Radio color='primary' />}
+							control={<Checkbox color='primary' />}
 							label='Examination'
 						/>
 						<FormControlLabel
 							value='treatment'
-							control={<Radio color='primary' />}
+							control={<Checkbox color='primary' />}
 							label='Treatment'
 						/>
 					</RadioGroup>
 				</FormControl>
-			</div>
-			<div className={classes.formbuttons}>
+				<Grid className={classes.container__doctor__patient}>
+					<FormControl variant='outlined' className={classes.formitem}>
+						<InputLabel id='doctor-input-label'>Doctor</InputLabel>
+						<Select
+							labelId='doctor-input-label'
+							value={age}
+							onChange={handleChange}
+							label='Doctor'
+						>
+							<MenuItem value=''>
+								<em>None</em>
+							</MenuItem>
+							<MenuItem value={10}>Ten</MenuItem>
+							<MenuItem value={20}>Twenty</MenuItem>
+							<MenuItem value={30}>Thirty</MenuItem>
+						</Select>
+					</FormControl>
+					<FormControl variant='outlined' className={classes.formitem}>
+						<InputLabel id='patient-input-label'>Patient</InputLabel>
+						<Select
+							labelId='patient-input-label'
+							value={age}
+							onChange={handleChange}
+							label='Patient'
+						>
+							<MenuItem value=''>
+								<em>None</em>
+							</MenuItem>
+							<MenuItem value={10}>Ten</MenuItem>
+							<MenuItem value={20}>Twenty</MenuItem>
+							<MenuItem value={30}>Thirty</MenuItem>
+						</Select>
+					</FormControl>
+				</Grid>
+				<Grid className={classes.container__doctor__patient}>
+					<MuiPickersUtilsProvider utils={DateFnsUtils}>
+						<KeyboardDatePicker
+							disableToolbar
+							variant='inline'
+							format='dd/MM/yyyy'
+							margin='normal'
+							label='Reservation date'
+							value={selectedDate}
+							onChange={handleDateChange}
+							KeyboardButtonProps={{
+								'aria-label': 'change date',
+							}}
+							className={classes.formitem}
+						/>
+						<KeyboardTimePicker
+							margin='normal'
+							id='time-picker'
+							label='Reservation time'
+							value={selectedDate}
+							onChange={handleDateChange}
+							KeyboardButtonProps={{
+								'aria-label': 'change time',
+							}}
+							className={classes.formitem}
+						/>
+					</MuiPickersUtilsProvider>
+				</Grid>
+			</Grid>
+			<Box className={classes.container__buttons}>
 				<Button
 					data-testid='formeditor-submit-button'
 					color='primary'
 					variant='contained'
 					size='small'
 					fullWidth
-					className={classes.formbutton}
+					className={classes.item__button}
 					onClick={handleOnSubmit}
 				>
 					Submit
@@ -212,12 +196,12 @@ const ReservationFormEditor = props => {
 					variant='contained'
 					size='small'
 					fullWidth
-					className={classes.formbutton}
+					className={classes.item__button}
 					onClick={handleOnCancel}
 				>
 					Cancel
 				</Button>
-			</div>
+			</Box>
 		</Box>
 	)
 }

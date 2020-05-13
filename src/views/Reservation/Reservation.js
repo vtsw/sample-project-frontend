@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	item__signup: {
 		display: 'flex',
-		alignItems: 'center',
+		alignItems: 'flex-start',
 		height: '100%',
 		border: `1px solid ${theme.palette.common.border}`,
 		marginRight: theme.spacing(1.5),
