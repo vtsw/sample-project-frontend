@@ -30,7 +30,6 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
-		borderBottom: `1px solid ${theme.palette.common.border}`,
 	},
 	formtitle: {
 		color: theme.palette.primary.main,
@@ -52,7 +51,6 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		width: '100%',
-		marginBottom: theme.spacing(3),
 	},
 	item__button: {
 		width: '48%',
