@@ -1,5 +1,5 @@
 import 'date-fns'
-import React, { useState } from 'react'
+import React, { useReducer } from 'react'
 import DateFnsUtils from '@date-io/date-fns'
 
 import {
@@ -11,7 +11,7 @@ import {
 	MenuItem,
 	Select,
 	InputLabel,
-	Checkbox,
+	Radio,
 	FormControlLabel,
 	RadioGroup,
 } from '@material-ui/core'
@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.primary.main,
 		fontWeight: 600,
 	},
-	container__doctor__patient: {
+	container__patient__doctor: {
 		display: 'flex',
 		justifyContent: 'space-between',
 		marginTop: theme.spacing(1),
@@ -62,31 +62,34 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+const initialState = {
+	type: 'examination',
+	patient: '',
+	doctor: '',
+	time: new Date('2020-01-01T00:00:00'),
+}
+
+const reducer = (state = initialState, action) => {
+	switch (action.type) {
+		case 'SET_TYPE':
+			return { ...state, type: action.payload }
+		case 'SET_PATIENT':
+			return { ...state, patient: action.payload }
+		case 'SET_DOCTOR':
+			return { ...state, doctor: action.payload }
+		case 'SET_DATE_TIME':
+			return { ...state, time: action.payload }
+		case 'RESET_STATE':
+			return initialState
+		default:
+			return state
+	}
+}
+
 const ReservationFormEditor = props => {
 	const classes = useStyles()
-
-	const [age, setAge] = React.useState('')
-	const [reservationType, setReservationType] = useState('')
-
-	const handleChange = event => {
-		setAge(event.target.value)
-	}
-
-	const handleOnSubmit = () => {}
-
-	const handleOnCancel = () => {}
-
-	const [selectedDate, setSelectedDate] = React.useState(
-		new Date('2014-08-18T21:11:54')
-	)
-
-	const handleDateChange = date => {
-		setSelectedDate(date)
-	}
-
-	const handleRadioChange = e => {
-		setReservationType(e.target.value)
-	}
+	const { patients, doctors, handleOnCreateReservation } = props
+	const [state, dispatch] = useReducer(reducer, initialState)
 
 	return (
 		<Box className={classes.root}>
@@ -98,57 +101,61 @@ const ReservationFormEditor = props => {
 					<RadioGroup
 						aria-label='reservation-type'
 						name='reservation type'
-						value={reservationType}
+						value={state.type}
 						className={classes.container__reservationtype}
-						onChange={handleRadioChange}
+						onChange={e =>
+							dispatch({ type: 'SET_TYPE', payload: e.target.value })
+						}
 					>
 						<FormControlLabel
 							value='examination'
-							control={<Checkbox color='primary' />}
+							control={<Radio color='primary' />}
 							label='Examination'
 						/>
 						<FormControlLabel
 							value='treatment'
-							control={<Checkbox color='primary' />}
+							control={<Radio color='primary' />}
 							label='Treatment'
 						/>
 					</RadioGroup>
 				</FormControl>
-				<Grid className={classes.container__doctor__patient}>
-					<FormControl variant='outlined' className={classes.formitem}>
-						<InputLabel id='doctor-input-label'>Doctor</InputLabel>
-						<Select
-							labelId='doctor-input-label'
-							value={age}
-							onChange={handleChange}
-							label='Doctor'
-						>
-							<MenuItem value=''>
-								<em>None</em>
-							</MenuItem>
-							<MenuItem value={10}>Ten</MenuItem>
-							<MenuItem value={20}>Twenty</MenuItem>
-							<MenuItem value={30}>Thirty</MenuItem>
-						</Select>
-					</FormControl>
+				<Grid className={classes.container__patient__doctor}>
 					<FormControl variant='outlined' className={classes.formitem}>
 						<InputLabel id='patient-input-label'>Patient</InputLabel>
 						<Select
-							labelId='patient-input-label'
-							value={age}
-							onChange={handleChange}
 							label='Patient'
+							labelId='patient-input-label'
+							value={state.patient}
+							onChange={e =>
+								dispatch({ type: 'SET_PATIENT', payload: e.target.value })
+							}
 						>
-							<MenuItem value=''>
-								<em>None</em>
-							</MenuItem>
-							<MenuItem value={10}>Ten</MenuItem>
-							<MenuItem value={20}>Twenty</MenuItem>
-							<MenuItem value={30}>Thirty</MenuItem>
+							{patients.map(({ id, value, label }) => (
+								<MenuItem key={id} value={value}>
+									{label}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+					<FormControl variant='outlined' className={classes.formitem}>
+						<InputLabel id='doctor-input-label'>Doctor</InputLabel>
+						<Select
+							label='Doctor'
+							labelId='doctor-input-label'
+							value={state.doctor}
+							onChange={e =>
+								dispatch({ type: 'SET_DOCTOR', payload: e.target.value })
+							}
+						>
+							{doctors.map(({ id, value, label }) => (
+								<MenuItem key={id} value={value}>
+									{label}
+								</MenuItem>
+							))}
 						</Select>
 					</FormControl>
 				</Grid>
-				<Grid className={classes.container__doctor__patient}>
+				<Grid className={classes.container__patient__doctor}>
 					<MuiPickersUtilsProvider utils={DateFnsUtils}>
 						<KeyboardDatePicker
 							disableToolbar
@@ -156,8 +163,10 @@ const ReservationFormEditor = props => {
 							format='dd/MM/yyyy'
 							margin='normal'
 							label='Reservation date'
-							value={selectedDate}
-							onChange={handleDateChange}
+							value={state.time}
+							onChange={date =>
+								dispatch({ type: 'SET_DATE_TIME', payload: date })
+							}
 							KeyboardButtonProps={{
 								'aria-label': 'change date',
 							}}
@@ -167,8 +176,10 @@ const ReservationFormEditor = props => {
 							margin='normal'
 							id='time-picker'
 							label='Reservation time'
-							value={selectedDate}
-							onChange={handleDateChange}
+							value={state.time}
+							onChange={time =>
+								dispatch({ type: 'SET_DATE_TIME', payload: time })
+							}
 							KeyboardButtonProps={{
 								'aria-label': 'change time',
 							}}
@@ -179,23 +190,19 @@ const ReservationFormEditor = props => {
 			</Grid>
 			<Box className={classes.container__buttons}>
 				<Button
-					data-testid='formeditor-submit-button'
 					color='primary'
 					variant='contained'
-					size='small'
 					fullWidth
 					className={classes.item__button}
-					onClick={handleOnSubmit}
+					onClick={() => handleOnCreateReservation(state)}
 				>
-					Submit
+					Create
 				</Button>
 				<Button
-					data-testid='formeditor-cancel-button'
 					variant='contained'
-					size='small'
 					fullWidth
 					className={classes.item__button}
-					onClick={handleOnCancel}
+					onClick={() => dispatch({ type: 'RESET_STATE' })}
 				>
 					Cancel
 				</Button>

@@ -6,6 +6,8 @@ import { setContext } from 'apollo-link-context'
 import { getToken } from './shares/utils'
 import { APOLLO_SERVER } from './configs.local'
 
+import { GET_RESERVATION_QUEUE } from '@views/Reservation/gql/query'
+
 const typeDefs = {}
 
 const resolvers = {
@@ -69,6 +71,35 @@ const resolvers = {
 			})
 			return createValue
 		},
+		createReservation: (_, { reservation }, { cache }) => {
+			const { reservationQueue } = cache.readQuery({
+				query: GET_RESERVATION_QUEUE,
+			})
+			const items = [...reservationQueue.items, reservation]
+
+			cache.writeData({
+				data: {
+					reservationQueue: {
+						...reservationQueue,
+						items,
+					},
+				},
+			})
+		},
+		resetReservationQueue: (_, _args, { cache }) => {
+			const { reservationQueue } = cache.readQuery({
+				query: GET_RESERVATION_QUEUE,
+			})
+
+			cache.writeData({
+				data: {
+					reservationQueue: {
+						...reservationQueue,
+						items: [],
+					},
+				},
+			})
+		},
 		resetCache: (_, { data }, { cache }) => {
 			cache.writeData({
 				data,
@@ -123,6 +154,10 @@ const initialState = {
 		name: '',
 		email: '',
 		__typename: 'UserOfMain',
+	},
+	reservationQueue: {
+		items: [],
+		__typename: 'ReservationQueue',
 	},
 	__typename: 'Data',
 }
