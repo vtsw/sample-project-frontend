@@ -2,8 +2,6 @@ import React from 'react'
 import { makeStyles, Box, Grid, Typography } from '@material-ui/core'
 import { Avatar } from '@views_components'
 
-Header.propTypes = {}
-
 const useStyles = makeStyles(() => ({
 	root: {
 		display: 'flex',
@@ -28,7 +26,7 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-export default function Header(props) {
+const Header = props => {
 	const classes = useStyles()
 	const {
 		selectedUserOfChat: { displayName, id, avatar },
@@ -47,3 +45,4 @@ export default function Header(props) {
 		</Box>
 	)
 }
+export default Header

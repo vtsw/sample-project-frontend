@@ -5,8 +5,6 @@ import { GET_DRAFT_LIST } from '../../../../gql/query'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { CREATE_ZALO_MESSAGE } from '../../../../gql/mutation'
 
-EditorChat.propTypes = {}
-
 const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
@@ -32,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 		color: '#00897b',
 	},
 }))
-export default function EditorChat({ idUser }) {
+const EditorChat = ({ idUser }) => {
 	const classes = useStyles()
 
 	const {
@@ -76,3 +74,5 @@ export default function EditorChat({ idUser }) {
 		</Box>
 	)
 }
+
+export default EditorChat

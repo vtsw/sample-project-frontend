@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-export default function ListFriendTag() {
+const ListFriendTag = () => {
 	const classes = useStyles()
 
 	const { data } = useQuery(GET_USER_INFO)
@@ -54,3 +54,5 @@ export default function ListFriendTag() {
 		</Box>
 	)
 }
+
+export default ListFriendTag

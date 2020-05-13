@@ -5,8 +5,6 @@ import { Picker } from 'emoji-mart'
 import 'emoji-mart/css/emoji-mart.css'
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon'
 
-PickerEmoji.propTypes = {}
-
 const useStyles = makeStyles(theme => ({
 	root: {
 		position: 'relative',
@@ -20,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const stylePicker = { position: 'absolute', bottom: '30px', right: '10px' }
-export default function PickerEmoji({ handleAddEmoji }) {
+const PickerEmoji = ({ handleAddEmoji }) => {
 	const classes = useStyles()
 	const [open, setOpen] = useState(false)
 
@@ -52,6 +50,9 @@ export default function PickerEmoji({ handleAddEmoji }) {
 		</ClickAwayListener>
 	)
 }
+
+export default PickerEmoji
+
 PickerEmoji.propTypes = {
 	handleAddEmoji: PropTypes.func,
 }

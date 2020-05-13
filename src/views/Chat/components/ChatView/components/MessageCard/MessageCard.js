@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function MessageCard(props) {
+const MessageCard = props => {
 	const { content, from, meId, endOfList, timestamp, refFristMessage } = props
 	const classes = useStyles({ leftOrRight: meId === from.id })
 	return (
@@ -56,6 +56,8 @@ export default function MessageCard(props) {
 		</div>
 	)
 }
+
+export default MessageCard
 
 MessageCard.propTypes = {
 	content: PropTypes.string,

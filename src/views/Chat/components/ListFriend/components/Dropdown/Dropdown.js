@@ -4,8 +4,6 @@ import { makeStyles } from '@material-ui/core'
 import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded'
 import ArrowDropUpRoundedIcon from '@material-ui/icons/ArrowDropUpRounded'
 
-Dropdown.propTypes = {}
-
 const items = [
 	{ value: 'Tất cả tin nhắn' },
 	{ value: 'Tin nhắn chưa đọc' },
@@ -46,7 +44,7 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-export default function Dropdown() {
+const Dropdown = () => {
 	const classes = useStyles()
 	return (
 		<Downshift itemToString={item => (item ? item.value : '')}>
@@ -89,3 +87,5 @@ export default function Dropdown() {
 		</Downshift>
 	)
 }
+
+export default Dropdown

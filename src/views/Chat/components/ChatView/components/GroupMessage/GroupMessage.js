@@ -4,8 +4,6 @@ import { Box, makeStyles, Typography } from '@material-ui/core'
 import { Avatar } from '@views_components'
 import moment from 'moment'
 
-GroupMessage.propTypes = {}
-
 const useStyles = makeStyles(theme => ({
 	root: {
 		width: '100%',
@@ -47,14 +45,14 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function GroupMessage({
+const GroupMessage = ({
 	items,
 	listPureMessage,
 	type,
 	timestamp,
 	meId,
 	endOfGroup,
-}) {
+}) => {
 	const classes = useStyles({ reverseRow: items && meId === items[0].from.id })
 
 	return (
@@ -93,3 +91,4 @@ export default function GroupMessage({
 		</Box>
 	)
 }
+export default GroupMessage

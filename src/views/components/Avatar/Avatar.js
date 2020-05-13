@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-export default function Avatar(props) {
+const Avatar = props => {
 	const { size, avatar, status, showStatus } = props
 
 	const classes = useStyles({ size, status, avatar })
@@ -41,6 +41,7 @@ export default function Avatar(props) {
 		</Box>
 	)
 }
+export default Avatar
 
 Avatar.propTypes = {
 	avatar: PropTypes.string.isRequired,

@@ -9,4 +9,3 @@ const Portal = ({ id = 'portal', children }) => {
 
 export default Portal
 
-Portal.propTypes = {}

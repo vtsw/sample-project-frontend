@@ -13,7 +13,7 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-export default function ListFriend() {
+const ListFriend = () => {
 	const classes = useStyles()
 	return (
 		<Box className={classes.root}>
@@ -23,4 +23,4 @@ export default function ListFriend() {
 	)
 }
 
-ListFriend.propTypes = {}
+export default ListFriend

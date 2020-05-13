@@ -2,6 +2,9 @@ import { ApolloClient } from 'apollo-client'
 import { createUploadLink } from 'apollo-upload-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
+import { split } from 'apollo-link'
+import { WebSocketLink } from 'apollo-link-ws'
+import { getMainDefinition } from 'apollo-utilities'
 
 import { getToken } from './shares/utils'
 import { APOLLO_SERVER, APOLLO_SOCKET } from './configs.local'
@@ -9,10 +12,6 @@ import {
 	GET_DRAFT_LIST,
 	GET_NEW_NOTI_MESSAGE_LIST,
 } from './views/Chat/gql/query'
-
-import { split } from 'apollo-link'
-import { WebSocketLink } from 'apollo-link-ws'
-import { getMainDefinition } from 'apollo-utilities'
 
 const typeDefs = {}
 
@@ -230,12 +229,12 @@ const initialState = {
 
 	draftList: {
 		items: [],
-		__typename: 'draftList',
+		__typename: 'DraftList',
 	},
 
 	newNotiMessageList: {
 		items: [],
-		__typename: 'newMessageNotiList',
+		__typename: 'NewMessageNotiList',
 	},
 	__typename: 'Data',
 }

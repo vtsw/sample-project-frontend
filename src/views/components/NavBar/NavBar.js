@@ -85,7 +85,7 @@ const NavBar = props => {
 								fromInterestedId: onZaloMessageReceived.from.id,
 								lastMessage: onZaloMessageReceived.content,
 								numberNoti: 1,
-								__typename: 'newNotiMessage',
+								__typename: 'NewNotiMessage',
 							},
 					  ],
 			}

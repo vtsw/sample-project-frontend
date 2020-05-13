@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function FriendTag(props) {
+const FriendTag = props => {
 	const { displayName, avatar, lastNewMessage, time, id, numberNoti } = props
 
 	const {
@@ -169,6 +169,8 @@ export default function FriendTag(props) {
 		</Box>
 	)
 }
+
+export default FriendTag
 
 FriendTag.propTypes = {
 	displayName: PropTypes.string.isRequired,

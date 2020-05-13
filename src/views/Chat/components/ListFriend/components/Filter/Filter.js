@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-export default function Filter() {
+const Filter = () => {
 	const classes = useStyles()
 	return (
 		<Box className={classes.root}>
@@ -31,4 +31,4 @@ export default function Filter() {
 	)
 }
 
-Filter.propTypes = {}
+export default Filter

@@ -98,7 +98,7 @@ const RichText = ({ idUser, valueDefault, handleComfirm }) => {
 					draft: {
 						toInterestId: idDebounce,
 						message: JSON.stringify(valueDebounce),
-						__typename: 'draftListNode',
+						__typename: 'DraftListNode',
 					},
 				},
 			})

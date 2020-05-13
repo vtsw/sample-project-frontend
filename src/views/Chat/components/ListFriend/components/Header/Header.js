@@ -3,7 +3,6 @@ import { makeStyles, Box, Typography } from '@material-ui/core'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import GroupAddIcon from '@material-ui/icons/GroupAdd'
 
-Header.propTypes = {}
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -42,7 +41,7 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-export default function Header() {
+const Header = () => {
 	const classes = useStyles()
 	return (
 		<Box className={classes.root}>
@@ -60,3 +59,4 @@ export default function Header() {
 		</Box>
 	)
 }
+export default Header

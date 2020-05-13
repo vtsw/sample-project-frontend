@@ -3,7 +3,7 @@ import { makeStyles, Box } from '@material-ui/core'
 import Header from './components/Header'
 import ViewMessage from './components/ViewMessage'
 import EditorChat from './components/EditorChat/EditorChat'
-import { useQuery, useSubscription } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/react-hooks'
 import { GET_ZALO_MESSAGE_LIST } from '../../gql/query'
 import { ON_ZALO_MESSAGE_CREATED } from '../../gql/subscription'
 
@@ -36,7 +36,7 @@ const GET_USER_INFO = gql`
 	}
 `
 
-export default function ChatView({ selectedUserOfChat }) {
+const ChatView = ({ selectedUserOfChat }) => {
 	const classes = useStyles()
 	const { data, loading, subscribeToMore, fetchMore, networkStatus } = useQuery(
 		GET_ZALO_MESSAGE_LIST,
@@ -123,3 +123,5 @@ export default function ChatView({ selectedUserOfChat }) {
 		</Box>
 	)
 }
+
+export default ChatView

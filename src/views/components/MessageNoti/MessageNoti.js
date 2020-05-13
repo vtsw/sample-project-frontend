@@ -2,8 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles, Box } from '@material-ui/core'
 
-MessageNoti.propTypes = {}
-
 const useStyles = makeStyles(theme => ({
 	root__infor__boxname__numbermessage: {
 		margin: '0 8px',
@@ -19,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function MessageNoti({ numberNoti, maximumValueNoti = 5 }) {
+const MessageNoti = ({ numberNoti, maximumValueNoti = 5 }) => {
 	const classes = useStyles()
 	return (
 		<Box className={classes.root__infor__boxname__numbermessage}>
@@ -27,3 +25,4 @@ export default function MessageNoti({ numberNoti, maximumValueNoti = 5 }) {
 		</Box>
 	)
 }
+export default MessageNoti
