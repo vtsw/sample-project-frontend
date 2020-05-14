@@ -3,11 +3,13 @@ import PropTypes from 'prop-types'
 import {
 	Box,
 	makeStyles,
+	IconButton,
 	Typography,
 	Grid,
 	Card,
 	CardMedia,
 } from '@material-ui/core'
+import { GetApp, InsertDriveFile } from '@material-ui/icons'
 import { ShowRichText } from '@views_components'
 import moment from 'moment'
 
@@ -45,16 +47,21 @@ const useStyles = makeStyles(theme => ({
 		fontSize: '12px',
 		color: '#7a869a',
 	},
+	filecontainer: {
+		width: 400,
+		height: 120,
+	},
 }))
 
 const MessageCard = props => {
 	const { content, attachments = {}, from, meId, endOfList, timestamp } = props
 	const classes = useStyles({ leftOrRight: meId === from.id })
-
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.message}>
-				{attachments && attachments[0]?.payload?.url ? (
+				{attachments &&
+				attachments[0]?.payload?.url &&
+				attachments[0]?.type === 'image' ? (
 					<Card>
 						<CardMedia
 							component='img'
@@ -65,6 +72,20 @@ const MessageCard = props => {
 				) : (
 					<span>{content}</span>
 				)}
+
+				<Grid container direction='column' className={classes.filecontainer}>
+					<Grid item>
+						<InsertDriveFile color='primary' fontSize='large' />
+						<Typography component='h5' className={classes.boxsendtime__status}>
+							{attachments[0].payload.name}
+						</Typography>
+					</Grid>
+					<Grid item>
+						<IconButton aria-label='upload image' component='span'>
+							<GetApp />
+						</IconButton>
+					</Grid>
+				</Grid>
 
 				{/* <textarea value={content} readOnly /> */}
 				{/* <ShowRichText valueDefault={JSON.parse(`${content}`)} /> */}

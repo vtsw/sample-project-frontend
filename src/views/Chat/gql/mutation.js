@@ -76,6 +76,7 @@ const CREATE_ZALO_MESSAGE_ATTACHMENT = gql`
 					thumbnail
 					description
 					url
+					name
 				}
 			}
 		}

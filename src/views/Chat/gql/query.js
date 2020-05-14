@@ -70,6 +70,7 @@ const GET_ZALO_MESSAGE_LIST = gql`
 						thumbnail
 						description
 						url
+						name
 					}
 				}
 				to {

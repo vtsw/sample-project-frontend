@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Box, IconButton } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { Image } from '@material-ui/icons'
+import { Image, AttachFile } from '@material-ui/icons'
 
 import { RichText } from '@views_components'
 import { GET_DRAFT_LIST } from '@views/Chat/gql/query'
@@ -74,13 +74,18 @@ const EditorChat = props => {
 		})
 	}
 
-	const handleSendZaloImageMessage = (attachmentFile, url) => {
+	const handleSendZaloImageMessage = ({
+		attachmentFile,
+		url = '',
+		fileType,
+	}) => {
 		createZaloMessageAttachment({
 			variables: {
 				file: {
 					to: idUser,
 					content: '',
 					attachmentFile,
+					fileType,
 				},
 			},
 		}).then(({ data }) => {
@@ -112,13 +117,24 @@ const EditorChat = props => {
 
 	const onUploadImage = ({ target }) => {
 		const file = target.files[0]
+		let fileType = 'Image'
 		const fileReader = new FileReader()
+
+		if (file.type === 'image/gif') {
+			fileType = 'Gif'
+		}
 
 		fileReader.readAsBinaryString(file)
 		fileReader.onload = e => {
 			const url = createBlobUrl(e.target.result)
-			handleSendZaloImageMessage(file, url)
+			handleSendZaloImageMessage({ attachmentFile: file, url, fileType })
 		}
+	}
+
+	const onUploadFile = ({ target }) => {
+		const file = target.files[0]
+
+		handleSendZaloImageMessage({ attachmentFile: file, fileType: 'File' })
 	}
 
 	const richTextValueDefault =
@@ -139,6 +155,20 @@ const EditorChat = props => {
 					<label htmlFor='editorchat-uploadinput'>
 						<IconButton aria-label='upload image' component='span'>
 							<Image />
+						</IconButton>
+					</label>
+				</Box>
+				<Box>
+					<input
+						id='editorchat-uploadfile'
+						type='file'
+						accept='application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf'
+						className={classes.toolbar__uploadinput}
+						onChange={onUploadFile}
+					/>
+					<label htmlFor='editorchat-uploadfile'>
+						<IconButton aria-label='upload image' component='span'>
+							<AttachFile />
 						</IconButton>
 					</label>
 				</Box>
