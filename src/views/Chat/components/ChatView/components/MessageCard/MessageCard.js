@@ -13,6 +13,8 @@ import { GetApp, InsertDriveFile } from '@material-ui/icons'
 import { ShowRichText } from '@views_components'
 import moment from 'moment'
 
+import { FileMessage } from './components'
+
 const useStyles = makeStyles(theme => ({
 	root: ({ leftOrRight }) => ({
 		display: 'flex',
@@ -47,15 +49,14 @@ const useStyles = makeStyles(theme => ({
 		fontSize: '12px',
 		color: '#7a869a',
 	},
-	filecontainer: {
-		width: 400,
-		height: 120,
-	},
+	filecontainer: {},
 }))
 
 const MessageCard = props => {
 	const { content, attachments = {}, from, meId, endOfList, timestamp } = props
 	const classes = useStyles({ leftOrRight: meId === from.id })
+
+	// console.log(attachments && attachments[0]?.payload.name)
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.message}>
@@ -72,20 +73,12 @@ const MessageCard = props => {
 				) : (
 					<span>{content}</span>
 				)}
-
-				<Grid container direction='column' className={classes.filecontainer}>
-					<Grid item>
-						<InsertDriveFile color='primary' fontSize='large' />
-						<Typography component='h5' className={classes.boxsendtime__status}>
-							{attachments[0].payload.name}
-						</Typography>
-					</Grid>
-					<Grid item>
-						<IconButton aria-label='upload image' component='span'>
-							<GetApp />
-						</IconButton>
-					</Grid>
-				</Grid>
+				{attachments && attachments[0]?.payload?.name && (
+					<FileMessage
+						fileName={attachments[0].payload.name}
+						fileUrl={attachments[0].payload.url}
+					/>
+				)}
 
 				{/* <textarea value={content} readOnly /> */}
 				{/* <ShowRichText valueDefault={JSON.parse(`${content}`)} /> */}

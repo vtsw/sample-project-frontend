@@ -65,7 +65,6 @@ const ChatView = props => {
 				const zaloAttachmentMessages =
 					zaloAttachmentMessageData.zaloMessageAttachmentList.items
 				let newMessage = subscriptionData.data.onZaloMessageCreated
-
 				if (!subscriptionData.data) return prev
 
 				if (newMessage.attachments && newMessage.attachments.length) {

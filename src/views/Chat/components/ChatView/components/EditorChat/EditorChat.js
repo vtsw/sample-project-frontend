@@ -103,18 +103,6 @@ const EditorChat = props => {
 		})
 	}
 
-	const createBlobUrl = file => {
-		const length = file.length
-		let arr = new Uint8Array(length)
-
-		for (let i = 0; i < length; i++) {
-			arr[i] = file.charCodeAt(i)
-		}
-		const blob = new Blob([arr], { type: 'image/png' })
-		const url = URL.createObjectURL(blob)
-		return url
-	}
-
 	const onUploadImage = ({ target }) => {
 		const file = target.files[0]
 		let fileType = 'Image'
@@ -126,7 +114,16 @@ const EditorChat = props => {
 
 		fileReader.readAsBinaryString(file)
 		fileReader.onload = e => {
-			const url = createBlobUrl(e.target.result)
+			const result = e.target.result
+			const length = result.length
+			let arr = new Uint8Array(length)
+
+			for (let i = 0; i < length; i++) {
+				arr[i] = result.charCodeAt(i)
+			}
+			const blob = new Blob([arr], { type: 'image/png' })
+			const url = URL.createObjectURL(blob)
+
 			handleSendZaloImageMessage({ attachmentFile: file, url, fileType })
 		}
 	}

@@ -40,6 +40,7 @@ const ON_ZALO_MESSAGE_CREATED = gql`
 					thumbnail
 					url
 					description
+					name
 				}
 				type
 			}
