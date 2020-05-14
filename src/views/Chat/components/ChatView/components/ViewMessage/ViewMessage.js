@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Box, makeStyles } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import GroupMessage from '../GroupMessage/GroupMessage'
 import Fab from '@material-ui/core/Fab'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import { useMutation } from '@apollo/react-hooks'
+
 import { SET_STATUS_READED_MESSAGE } from '@views/Chat/gql/mutation'
+
+import GroupMessage from '../GroupMessage/GroupMessage'
+import { convertData } from './helperViewMessage'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -54,87 +57,18 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const convertBreakingLine = (arr, limitTime) => {
-	return arr.reduce((acc, cur, index) => {
-		if (index === 0) {
-			acc.push({
-				type: 'line',
-				timestamp: arr[index].timestamp,
-				id: arr[index].timestamp + 'id',
-				content: arr[index].content,
-				first: 'first',
-			})
-		}
-		acc.push(cur)
-
-		if (
-			index !== arr.length - 1 &&
-			Math.abs(cur.timestamp - arr[index + 1].timestamp) > limitTime
-		) {
-			acc.push({
-				type: 'line',
-				timestamp: arr[index + 1].timestamp,
-				id: arr[index + 1].timestamp + 'id',
-				content: arr[index + 1].content,
-			})
-		}
-		return acc
-	}, [])
-}
-
-const convertData = (arr, key) => {
-	let tempIU = []
-	let tempOA = []
-
-	return arr.reduce((acc, cur, index) => {
-		if (cur.type === 'line') {
-			if (tempIU.length > 0) {
-				acc.push({ items: tempIU, id: tempIU[0].timestamp })
-
-				tempIU = []
-			}
-			if (tempOA.length > 0) {
-				acc.push({ items: tempOA, id: tempOA[0].timestamp })
-
-				tempOA = []
-			}
-			acc.push(cur)
-		} else if (cur.from.id === key) {
-			tempIU.push(cur)
-			if (tempOA.length > 0) {
-				acc.push({ items: tempOA, id: tempOA[0].timestamp })
-				tempOA = []
-			}
-			if (index === arr.length - 1) {
-				acc.push({ items: tempIU, id: tempIU[0].timestamp })
-			}
-		} else {
-			tempOA.push(cur)
-			if (tempIU.length) {
-				acc.push({ items: tempIU, id: tempIU[0].timestamp })
-				tempIU = []
-			}
-			if (index === arr.length - 1) {
-				acc.push({ items: tempOA, id: tempOA[0].timestamp })
-			}
-		}
-
-		return acc
-	}, [])
-}
-
-let oldScrollHeight = 0
-let lastScrollTop = 0
-
-const ViewMessage = ({
-	items,
-	hasNext,
-	selectedUserOfChatId,
-	handleFetchMore,
-	loadMore,
-	me,
-}) => {
+const ViewMessage = props => {
+	const {
+		items,
+		hasNext,
+		selectedUserOfChatId,
+		handleFetchMore,
+		loadMore,
+		me,
+	} = props
 	const [haveNewMessage, setHaveNewMessage] = useState(0)
+	const [oldScrollHeight, setOldScrollHeight] = useState(0)
+	const [lastScrollTop, setLastScrollTop] = useState(0)
 	const classes = useStyles()
 
 	const refTable = useRef()
@@ -167,15 +101,12 @@ const ViewMessage = ({
 			}
 		}
 
-		oldScrollHeight = scrollTable.scrollHeight
+		setOldScrollHeight(scrollTable.scrollHeight)
 	}, [items])
 
 	const [setStatusReadedMessage] = useMutation(SET_STATUS_READED_MESSAGE)
 
-	const dataAfterConvert = convertData(
-		convertBreakingLine([].concat(items).reverse(), 6000000),
-		me.id
-	)
+	const dataAfterConvert = convertData(items, me.id)
 
 	const handleScrollNewMessage = () => {
 		setHaveNewMessage(0)
@@ -183,31 +114,33 @@ const ViewMessage = ({
 		scrollTable.scrollTop = scrollTable.scrollHeight
 	}
 
+	const handleOnScroll = e => {
+		let st = e.target.scrollTop
+		if (e.target.scrollTop < 20 && !loadMore && hasNext) {
+			handleFetchMore()
+		}
+		if (
+			e.target.offsetHeight + e.target.scrollTop + 100 >=
+			e.target.scrollHeight
+		) {
+			setHaveNewMessage(0)
+			setStatusReadedMessage({
+				variables: {
+					readedMessage: {
+						fromInterestedId: items[0].from.id,
+					},
+				},
+			})
+		}
+		setLastScrollTop(st)
+	}
+
 	return (
 		<Box className={classes.root}>
 			<div
 				className={classes.root__table}
 				id='scroll-reverse'
-				onScroll={e => {
-					let st = e.target.scrollTop
-					if (e.target.scrollTop < 20 && !loadMore && hasNext) {
-						handleFetchMore()
-					}
-					if (
-						e.target.offsetHeight + e.target.scrollTop + 100 >=
-						e.target.scrollHeight
-					) {
-						setHaveNewMessage(0)
-						setStatusReadedMessage({
-							variables: {
-								readedMessage: {
-									fromInterestedId: items[0].from.id,
-								},
-							},
-						})
-					}
-					lastScrollTop = st
-				}}
+				onScroll={handleOnScroll}
 				ref={refTable}
 			>
 				{loadMore && (
