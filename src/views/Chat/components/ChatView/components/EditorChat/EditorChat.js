@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { useMutation, useQuery } from '@apollo/react-hooks'
+
 import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -7,8 +9,6 @@ import { UploadImageButton, UploadFileButton } from '@views_components'
 import { RichText } from '@views_components'
 
 import { GET_DRAFT_LIST } from '@views/Chat/gql/query'
-import { useMutation, useQuery } from '@apollo/react-hooks'
-
 import {
 	CREATE_ZALO_MESSAGE,
 	CREATE_ZALO_MESSAGE_ATTACHMENT,
@@ -122,6 +122,7 @@ const EditorChat = props => {
 			for (let i = 0; i < length; i++) {
 				arr[i] = result.charCodeAt(i)
 			}
+
 			const blob = new Blob([arr], { type: 'image/png' })
 			const url = URL.createObjectURL(blob)
 

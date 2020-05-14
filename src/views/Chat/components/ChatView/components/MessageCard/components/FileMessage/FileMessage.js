@@ -1,15 +1,8 @@
 import React from 'react'
 
-import {
-	Box,
-	makeStyles,
-	IconButton,
-	Typography,
-	Grid,
-	Card,
-	CardMedia,
-} from '@material-ui/core'
+import { Box, IconButton, Typography } from '@material-ui/core'
 import { GetApp, InsertDriveFile } from '@material-ui/icons'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -38,6 +31,7 @@ const useStyles = makeStyles(theme => ({
 const FileMessage = props => {
 	const { fileName, fileUrl } = props
 	const classes = useStyles()
+
 	return (
 		<Box className={classes.root}>
 			<InsertDriveFile
