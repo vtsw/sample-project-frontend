@@ -14,6 +14,7 @@ const navbarItems = [
 	{ page: 'main', pathname: '/' },
 	{ page: 'user', pathname: '/user' },
 	{ page: 'message', pathname: '/message' },
+	{ page: 'chat', pathname: '/chat' },
 	{ page: 'file', pathname: '/file' },
 ]
 
