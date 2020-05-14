@@ -40,7 +40,7 @@ const GroupedMessages = props => {
 						{items.map((item, index) => (
 							<MessageCard
 								{...item}
-								key={item.id}
+								key={index}
 								meId={meId}
 								endOfList={endOfGroup && index === items.length - 1}
 								fromMe={meId === items[0].from.id}

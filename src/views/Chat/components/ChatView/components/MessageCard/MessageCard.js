@@ -41,9 +41,9 @@ const MessageCard = props => {
 		return (
 			<Box className={classes.root}>
 				<Box className={classes.message}>
-					{attachments.map(attachment =>
+					{attachments.map((attachment, index) =>
 						attachment?.payload?.url ? (
-							<ImageMessage url={attachment?.payload?.url} />
+							<ImageMessage url={attachment?.payload?.url} key={index} />
 						) : (
 							''
 						)
