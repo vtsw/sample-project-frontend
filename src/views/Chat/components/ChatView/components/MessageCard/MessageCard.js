@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
-import { Box, Typography, Grid, Card, CardMedia } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { ShowRichText } from '@views_components'
+import { Box, makeStyles, Typography, Grid } from '@material-ui/core'
+
+import LastCardIndicator from './LastCardIndicator'
+import ImageMessage from './ImageMessage'
 
 const useStyles = makeStyles(theme => ({
 	root: ({ leftOrRight }) => ({
@@ -23,62 +23,51 @@ const useStyles = makeStyles(theme => ({
 		padding: 12,
 		wordBreak: 'break-word',
 	}),
-	message__image: {
-		maxHeight: 'calc(100vh - 500px)',
-		width: 'auto',
-	},
-	boxsendtime: {
-		marginTop: theme.spacing(1),
-	},
-	boxsendtime__sendtime: {
-		marginRight: theme.spacing(2),
-		fontSize: '12px',
-		color: '#7a869a',
-	},
-	boxsendtime__status: {
-		fontSize: '12px',
-		color: '#7a869a',
-	},
 }))
 
 const MessageCard = props => {
-	const { content, attachments = {}, from, meId, endOfList, timestamp } = props
-	const classes = useStyles({ leftOrRight: meId === from.id })
+	const {
+		content,
+		attachments = {},
+		from,
+		meId,
+		endOfList,
+		timestamp,
+		fromMe,
+	} = props
+	const classes = useStyles({ leftOrRight: fromMe })
 
-	return (
-		<Box className={classes.root}>
-			<Box className={classes.message}>
-				{attachments && attachments[0]?.payload?.url ? (
-					<Card>
-						<CardMedia
-							component='img'
-							image={attachments[0].payload.url}
-							className={classes.message__image}
-						/>
-					</Card>
-				) : (
-					<span>{content}</span>
-				)}
-
-				{/* <textarea value={content} readOnly /> */}
-				{/* <ShowRichText valueDefault={JSON.parse(`${content}`)} /> */}
-				{endOfList && (
-					<Grid container className={classes.boxsendtime}>
-						<Typography className={classes.boxsendtime__sendtime}>
-							{moment(parseInt(timestamp, 10)).format('HH:mm')}
-						</Typography>
-						<Typography className={classes.boxsendtime__status}>
-							{' '}
-							Đã gửi
-						</Typography>
-					</Grid>
-				)}
+	if (attachments && attachments[0]?.payload?.url) {
+		return (
+			<Box className={classes.root}>
+				<Box className={classes.message}>
+					{attachments.map((attachment, index) =>
+						attachment?.payload?.url ? (
+							<ImageMessage url={attachment?.payload?.url} key={index} />
+						) : (
+							''
+						)
+					)}
+					{content && <span>{content}</span>}
+					{endOfList && (
+						<LastCardIndicator timestamp={timestamp} fromMe={fromMe} />
+					)}
+				</Box>
 			</Box>
-		</Box>
-	)
+		)
+	} else {
+		return (
+			<Box className={classes.root}>
+				<Box className={classes.message}>
+					{content && <span>{content}</span>}
+					{endOfList && (
+						<LastCardIndicator timestamp={timestamp} fromMe={fromMe} />
+					)}
+				</Box>
+			</Box>
+		)
+	}
 }
-
-export default MessageCard
 
 MessageCard.propTypes = {
 	content: PropTypes.string,
@@ -87,3 +76,5 @@ MessageCard.propTypes = {
 MessageCard.defaultProps = {
 	content: '',
 }
+
+export default MessageCard
