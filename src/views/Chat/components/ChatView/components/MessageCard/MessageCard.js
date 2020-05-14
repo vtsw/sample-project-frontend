@@ -1,15 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-	Box,
-	makeStyles,
-	Typography,
-	Grid,
-	Card,
-	CardMedia,
-} from '@material-ui/core'
-import { ShowRichText } from '@views_components'
 import moment from 'moment'
+import { Box, Typography, Grid, Card, CardMedia } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { ShowRichText } from '@views_components'
 
 const useStyles = makeStyles(theme => ({
 	root: ({ leftOrRight }) => ({

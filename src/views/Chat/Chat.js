@@ -11,14 +11,14 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: 'row',
 		width: '100%',
 	},
-	root__listfriend: {
+	listfriend: {
 		width: 332,
 	},
-	root__chatview: {
+	chatview: {
 		display: 'flex',
 		flex: 1,
 	},
-	root__chatview__welcome: {
+	chatview__welcome: {
 		textAlign: 'center',
 		margin: 'auto',
 		width: 500,
@@ -41,14 +41,14 @@ const Chat = () => {
 	} = useQuery(GET_SELECTED_USER_OF_CHAT)
 	return (
 		<Box className={classes.root}>
-			<Box className={classes.root__listfriend}>
+			<Box className={classes.listfriend}>
 				<ListFriend />
 			</Box>
-			<Box className={classes.root__chatview}>
+			<Box className={classes.chatview}>
 				{selectedUserOfChat.id ? (
 					<ChatView selectedUserOfChat={selectedUserOfChat} />
 				) : (
-					<Box className={classes.root__chatview__welcome}>
+					<Box className={classes.chatview__welcome}>
 						<Typography className={classes.textwelcome}>
 							Chào mừng đến với Clever
 						</Typography>
