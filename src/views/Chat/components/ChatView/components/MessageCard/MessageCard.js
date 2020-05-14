@@ -59,12 +59,10 @@ const MessageCard = props => {
 						renderMessage({ ...attachment.payload, type: attachment.type })
 					)
 				) : (
-					<React.Fragment>
-						{content && <span>{content}</span>}
-						{endOfList && (
-							<LastCardIndicator timestamp={timestamp} fromMe={fromMe} />
-						)}
-					</React.Fragment>
+					<React.Fragment>{content && <span>{content}</span>}</React.Fragment>
+				)}
+				{endOfList && (
+					<LastCardIndicator timestamp={timestamp} fromMe={fromMe} />
 				)}
 			</Box>
 		</Box>

@@ -1,12 +1,14 @@
 import React from 'react'
 
-import { Box, IconButton } from '@material-ui/core'
+import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { Image, AttachFile } from '@material-ui/icons'
 
+import { UploadImageButton, UploadFileButton } from '@views_components'
 import { RichText } from '@views_components'
+
 import { GET_DRAFT_LIST } from '@views/Chat/gql/query'
 import { useMutation, useQuery } from '@apollo/react-hooks'
+
 import {
 	CREATE_ZALO_MESSAGE,
 	CREATE_ZALO_MESSAGE_ATTACHMENT,
@@ -54,9 +56,14 @@ const EditorChat = props => {
 	} = useQuery(GET_DRAFT_LIST)
 
 	const [setCreateZaloMessageAttachment] = useMutation(
-		SET_CREATE_ZALO_MESSAGE_ATTACHMENT
+		SET_CREATE_ZALO_MESSAGE_ATTACHMENT,
+		{
+			onError: err => alert(err),
+		}
 	)
-	const [createZaloMessage] = useMutation(CREATE_ZALO_MESSAGE)
+	const [createZaloMessage] = useMutation(CREATE_ZALO_MESSAGE, {
+		onError: err => alert(err),
+	})
 	const [createZaloMessageAttachment] = useMutation(
 		CREATE_ZALO_MESSAGE_ATTACHMENT,
 		{
@@ -142,34 +149,8 @@ const EditorChat = props => {
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.toolbar}>
-				<Box>
-					<input
-						id='editorchat-uploadinput'
-						type='file'
-						accept='image/*'
-						className={classes.toolbar__uploadinput}
-						onChange={handleUploadImage}
-					/>
-					<label htmlFor='editorchat-uploadinput'>
-						<IconButton aria-label='upload image' component='span'>
-							<Image />
-						</IconButton>
-					</label>
-				</Box>
-				<Box>
-					<input
-						id='editorchat-uploadfile'
-						type='file'
-						accept='application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf'
-						className={classes.toolbar__uploadinput}
-						onChange={handleOnUploadFile}
-					/>
-					<label htmlFor='editorchat-uploadfile'>
-						<IconButton aria-label='upload image' component='span'>
-							<AttachFile />
-						</IconButton>
-					</label>
-				</Box>
+				<UploadImageButton onChange={handleUploadImage} />
+				<UploadFileButton onChange={handleOnUploadFile} />
 			</Box>
 			<Box className={classes.areainput}>
 				<RichText

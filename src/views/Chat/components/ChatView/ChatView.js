@@ -13,7 +13,10 @@ import {
 } from '@views/Chat/gql/query'
 import { ON_ZALO_MESSAGE_CREATED } from '@views/Chat/gql/subscription'
 
-import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
+import {
+	NETWORK_STATUS_FETCH_MORE,
+	ZALO_MESSAGE_LIMIT,
+} from '@src/configs.local'
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -45,7 +48,7 @@ const ChatView = props => {
 			notifyOnNetworkStatusChange: true,
 			variables: {
 				query: {
-					limit: 15,
+					limit: ZALO_MESSAGE_LIMIT,
 					interestedUserId: selectedUserOfChat.id,
 				},
 			},
@@ -94,7 +97,7 @@ const ChatView = props => {
 		fetchMore({
 			variables: {
 				query: {
-					limit: 10,
+					limit: ZALO_MESSAGE_LIMIT,
 					interestedUserId: selectedUserOfChat.id,
 					skip: data.zaloMessageList.items.length,
 				},
