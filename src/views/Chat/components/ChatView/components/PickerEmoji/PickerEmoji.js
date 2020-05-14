@@ -18,17 +18,19 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const stylePicker = { position: 'absolute', bottom: '30px', right: '10px' }
+
 const PickerEmoji = ({ handleAddEmoji }) => {
 	const classes = useStyles()
 	const [open, setOpen] = useState(false)
 
-	const _onSelect = value => {
+	const handleSelect = value => {
 		handleAddEmoji(value)
 	}
 
 	const handleClickAway = () => {
 		setOpen(false)
 	}
+
 	return (
 		<ClickAwayListener onClickAway={handleClickAway}>
 			<Box className={classes.root}>
@@ -40,7 +42,7 @@ const PickerEmoji = ({ handleAddEmoji }) => {
 					<Picker
 						set='facebook'
 						style={stylePicker}
-						onSelect={_onSelect}
+						onSelect={handleSelect}
 						title='Pick your emoji…'
 						emoji='point_up'
 						emojiSize={24}
