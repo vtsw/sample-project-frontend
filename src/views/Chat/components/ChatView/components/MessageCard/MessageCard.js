@@ -37,7 +37,7 @@ const MessageCard = props => {
 	} = props
 	const classes = useStyles({ leftOrRight: fromMe })
 
-	if (attachments[0]?.payload?.url) {
+	if (attachments && attachments[0]?.payload?.url) {
 		return (
 			<Box className={classes.root}>
 				<Box className={classes.message}>
