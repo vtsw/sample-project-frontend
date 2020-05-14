@@ -18,7 +18,6 @@ const useStyles = makeStyles(theme => ({
 		alignItems: 'flex-start',
 		height: '100%',
 		border: `1px solid ${theme.palette.common.border}`,
-		marginRight: theme.spacing(1.5),
 		position: 'relative',
 	},
 }))

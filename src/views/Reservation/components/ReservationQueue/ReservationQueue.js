@@ -74,7 +74,9 @@ const ReservationQueue = () => {
 		}
 	}
 
-	const handleOnCancel = () => {}
+	const handleOnCancel = () => {
+		resetReservationQueue()
+	}
 
 	return (
 		<Box className={classes.root}>
