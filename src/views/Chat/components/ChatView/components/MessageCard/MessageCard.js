@@ -1,19 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-	Box,
-	makeStyles,
-	IconButton,
-	Typography,
-	Grid,
-	Card,
-	CardMedia,
-} from '@material-ui/core'
-import { GetApp, InsertDriveFile } from '@material-ui/icons'
-import { ShowRichText } from '@views_components'
-import moment from 'moment'
 
-import { FileMessage } from './components'
+import { Box } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
+import { FileMessage, ImageMessage, LastCardIndicator } from './components'
 
 const useStyles = makeStyles(theme => ({
 	root: ({ leftOrRight }) => ({
@@ -33,72 +24,52 @@ const useStyles = makeStyles(theme => ({
 		padding: 12,
 		wordBreak: 'break-word',
 	}),
-	message__image: {
-		maxHeight: 'calc(100vh - 500px)',
-		width: 'auto',
-	},
-	boxsendtime: {
-		marginTop: theme.spacing(1),
-	},
-	boxsendtime__sendtime: {
-		marginRight: theme.spacing(2),
-		fontSize: '12px',
-		color: '#7a869a',
-	},
-	boxsendtime__status: {
-		fontSize: '12px',
-		color: '#7a869a',
-	},
-	filecontainer: {},
 }))
 
 const MessageCard = props => {
-	const { content, attachments = {}, from, meId, endOfList, timestamp } = props
-	const classes = useStyles({ leftOrRight: meId === from.id })
+	const {
+		content,
+		attachments = [],
+		from,
+		meId,
+		endOfList,
+		timestamp,
+		fromMe,
+	} = props
+	const classes = useStyles({ leftOrRight: fromMe })
 
-	// console.log(attachments && attachments[0]?.payload.name)
+	const renderMessage = ({ type, name, url, thumbnail }) => {
+		switch (type) {
+			case 'image':
+				return <ImageMessage url={url} key={url} />
+			case 'gif':
+				return <ImageMessage url={thumbnail} key={thumbnail} />
+			case 'file':
+				return <FileMessage key={url} fileName={name} fileUrl={url} />
+			default:
+				return null
+		}
+	}
+
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.message}>
-				{attachments &&
-				attachments[0]?.payload?.url &&
-				attachments[0]?.type === 'image' ? (
-					<Card>
-						<CardMedia
-							component='img'
-							image={attachments[0].payload.url}
-							className={classes.message__image}
-						/>
-					</Card>
+				{attachments?.length ? (
+					attachments.map(attachment =>
+						renderMessage({ ...attachment.payload, type: attachment.type })
+					)
 				) : (
-					<span>{content}</span>
-				)}
-				{attachments && attachments[0]?.payload?.name && (
-					<FileMessage
-						fileName={attachments[0].payload.name}
-						fileUrl={attachments[0].payload.url}
-					/>
-				)}
-
-				{/* <textarea value={content} readOnly /> */}
-				{/* <ShowRichText valueDefault={JSON.parse(`${content}`)} /> */}
-				{endOfList && (
-					<Grid container className={classes.boxsendtime}>
-						<Typography className={classes.boxsendtime__sendtime}>
-							{moment(parseInt(timestamp, 10)).format('HH:mm')}
-						</Typography>
-						<Typography className={classes.boxsendtime__status}>
-							{' '}
-							Đã gửi
-						</Typography>
-					</Grid>
+					<React.Fragment>
+						{content && <span>{content}</span>}
+						{endOfList && (
+							<LastCardIndicator timestamp={timestamp} fromMe={fromMe} />
+						)}
+					</React.Fragment>
 				)}
 			</Box>
 		</Box>
 	)
 }
-
-export default MessageCard
 
 MessageCard.propTypes = {
 	content: PropTypes.string,
@@ -107,3 +78,5 @@ MessageCard.propTypes = {
 MessageCard.defaultProps = {
 	content: '',
 }
+
+export default MessageCard

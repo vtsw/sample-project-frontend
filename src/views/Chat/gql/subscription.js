@@ -4,6 +4,7 @@ const ON_ZALO_MESSAGE_RECEIVED = gql`
 	subscription {
 		onZaloMessageReceived {
 			id
+			type
 			from {
 				displayName
 				id
@@ -28,6 +29,7 @@ const ON_ZALO_MESSAGE_CREATED = gql`
 				id
 				avatar
 			}
+			type
 			to {
 				displayName
 				id
@@ -76,6 +78,7 @@ const ON_ZALO_MESSAGE_CREATED_TO_USER = gql`
 				id
 				avatar
 			}
+			type
 			to {
 				displayName
 				id

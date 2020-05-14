@@ -58,6 +58,7 @@ const GET_ZALO_MESSAGE_LIST = gql`
 		zaloMessageList(query: $query) {
 			items {
 				id
+				type
 				content
 				from {
 					displayName

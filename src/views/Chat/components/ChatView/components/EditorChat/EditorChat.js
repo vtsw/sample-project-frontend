@@ -6,7 +6,7 @@ import { Image, AttachFile } from '@material-ui/icons'
 
 import { RichText } from '@views_components'
 import { GET_DRAFT_LIST } from '@views/Chat/gql/query'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import {
 	CREATE_ZALO_MESSAGE,
 	CREATE_ZALO_MESSAGE_ATTACHMENT,
@@ -52,6 +52,7 @@ const EditorChat = props => {
 			draftList: { items },
 		},
 	} = useQuery(GET_DRAFT_LIST)
+
 	const [setCreateZaloMessageAttachment] = useMutation(
 		SET_CREATE_ZALO_MESSAGE_ATTACHMENT
 	)
@@ -63,16 +64,9 @@ const EditorChat = props => {
 		}
 	)
 
-	const handleSendZaloMessage = content => {
-		createZaloMessage({
-			variables: {
-				message: {
-					to: idUser,
-					content: content.trim(),
-				},
-			},
-		})
-	}
+	const richTextValueDefault =
+		items.find(item => item.toInterestId === idUser) &&
+		JSON.parse(items.find(item => item.toInterestId === idUser).message)
 
 	const handleSendZaloImageMessage = ({
 		attachmentFile,
@@ -103,7 +97,7 @@ const EditorChat = props => {
 		})
 	}
 
-	const onUploadImage = ({ target }) => {
+	const handleUploadImage = ({ target }) => {
 		const file = target.files[0]
 		let fileType = 'Image'
 		const fileReader = new FileReader()
@@ -128,15 +122,22 @@ const EditorChat = props => {
 		}
 	}
 
-	const onUploadFile = ({ target }) => {
+	const handleOnUploadFile = ({ target }) => {
 		const file = target.files[0]
 
 		handleSendZaloImageMessage({ attachmentFile: file, fileType: 'File' })
 	}
 
-	const richTextValueDefault =
-		items.find(item => item.toInterestId === idUser) &&
-		JSON.parse(items.find(item => item.toInterestId === idUser).message)
+	const handleSendZaloMessage = content => {
+		createZaloMessage({
+			variables: {
+				message: {
+					to: idUser,
+					content: content,
+				},
+			},
+		})
+	}
 
 	return (
 		<Box className={classes.root}>
@@ -147,7 +148,7 @@ const EditorChat = props => {
 						type='file'
 						accept='image/*'
 						className={classes.toolbar__uploadinput}
-						onChange={onUploadImage}
+						onChange={handleUploadImage}
 					/>
 					<label htmlFor='editorchat-uploadinput'>
 						<IconButton aria-label='upload image' component='span'>
@@ -161,7 +162,7 @@ const EditorChat = props => {
 						type='file'
 						accept='application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf'
 						className={classes.toolbar__uploadinput}
-						onChange={onUploadFile}
+						onChange={handleOnUploadFile}
 					/>
 					<label htmlFor='editorchat-uploadfile'>
 						<IconButton aria-label='upload image' component='span'>

@@ -65,6 +65,7 @@ const ChatView = props => {
 				const zaloAttachmentMessages =
 					zaloAttachmentMessageData.zaloMessageAttachmentList.items
 				let newMessage = subscriptionData.data.onZaloMessageCreated
+
 				if (!subscriptionData.data) return prev
 
 				if (newMessage.attachments && newMessage.attachments.length) {
@@ -73,10 +74,7 @@ const ChatView = props => {
 					)
 
 					if (messageIndex === -1) return
-					if (
-						newMessage.attachments[0].type === 'image' ||
-						newMessage.attachments[0].type === 'gif'
-					) {
+					if (newMessage.attachments[0].type === 'image') {
 						newMessage.attachments[0].payload.url =
 							zaloAttachmentMessages[messageIndex].url
 					}
@@ -92,7 +90,6 @@ const ChatView = props => {
 		})
 	}, [subscribeToMore, selectedUserOfChat, zaloAttachmentMessageData])
 
-	if (loadingMe) return 'loading'
 	const handleFetchMore = () => {
 		fetchMore({
 			variables: {
@@ -118,27 +115,30 @@ const ChatView = props => {
 			},
 		})
 	}
-	return (
-		<Box className={classes.root}>
-			<Header selectedUserOfChat={selectedUserOfChat} />
-			{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
-				<Box className={classes.root__nodata}>Loading</Box>
-			) : data && data.zaloMessageList.items.length > 0 ? (
-				<ViewMessage
-					me={me}
-					selectedUserOfChatId={selectedUserOfChat.id}
-					items={data.zaloMessageList.items}
-					hasNext={data.zaloMessageList.hasNext}
-					handleFetchMore={handleFetchMore}
-					loadMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
-				/>
-			) : (
-				<Box className={classes.root__nodata}>Chưa có cuộc hội thoại nào</Box>
-			)}
 
-			<EditorChat idUser={selectedUserOfChat.id} />
-		</Box>
-	)
+	if (loadingMe) return 'loading'
+	else
+		return (
+			<Box className={classes.root}>
+				<Header selectedUserOfChat={selectedUserOfChat} />
+				{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
+					<Box className={classes.root__nodata}>Loading</Box>
+				) : data && data.zaloMessageList.items.length > 0 ? (
+					<ViewMessage
+						me={me}
+						selectedUserOfChatId={selectedUserOfChat.id}
+						items={data.zaloMessageList.items}
+						hasNext={data.zaloMessageList.hasNext}
+						handleFetchMore={handleFetchMore}
+						loadMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
+					/>
+				) : (
+					<Box className={classes.root__nodata}>Chưa có cuộc hội thoại nào</Box>
+				)}
+
+				<EditorChat idUser={selectedUserOfChat.id} />
+			</Box>
+		)
 }
 
 export default ChatView
