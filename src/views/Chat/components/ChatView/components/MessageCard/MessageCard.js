@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
 import { Box, makeStyles, Typography, Grid } from '@material-ui/core'
 
 import LastCardIndicator from './LastCardIndicator'

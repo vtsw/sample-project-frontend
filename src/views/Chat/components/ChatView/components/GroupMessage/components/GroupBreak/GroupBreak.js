@@ -6,14 +6,14 @@ const useStyles = makeStyles(theme => ({
 	root: {
 		width: '100%',
 	},
-	root__timestamp: {
+	timestamp: {
 		background: '#00000033',
 		borderRadius: '8px',
 		padding: '3px 12px',
 		fontSize: '14px',
 		color: 'white',
 	},
-	root__line: {
+	line: {
 		display: 'flex',
 		justifyContent: 'center',
 		margin: theme.spacing(2, 0),
@@ -36,9 +36,9 @@ const GroupBreak = props => {
 
 	return (
 		<Box className={classes.root}>
-			<Box className={classes.root__line}>
+			<Box className={classes.line}>
 				<div className={classes.root_line1} />
-				<Typography className={classes.root__timestamp}>
+				<Typography className={classes.timestamp}>
 					{moment(parseInt(timestamp, 10)).format('hh:mm DD/MM/YYYY')}
 				</Typography>
 				<div className={classes.root_line1} />

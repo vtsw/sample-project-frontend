@@ -31,12 +31,12 @@ const useStyles = makeStyles(theme => ({
 		width: '100%',
 		wordBreak: 'break-word',
 	},
-	root__areainput__icon: {
+	areainput__icon: {
 		fontSize: 20,
 		margin: theme.spacing(0, 1, 0, 2),
 		cursor: 'pointer',
 	},
-	root__areainput__send: {
+	areainput__send: {
 		margin: theme.spacing(0, 2, 0, 1),
 		cursor: 'pointer',
 		color: '#00897b',
@@ -300,11 +300,11 @@ const RichText = ({ idUser, valueDefault, handleComfirm }) => {
 				<PickerEmoji handleAddEmoji={handleAddEmojiToValueInput} />
 
 				{/* <AlternateEmailIcon
-					className={classes.root__areainput__icon}
+					className={classes.areainput__icon}
 					onClick={handleAddMentionToValueInput}
 				/> */}
 				<Typography
-					className={classes.root__areainput__send}
+					className={classes.areainput__send}
 					onClick={sendMessage}
 					contentEditable={false}
 				>
