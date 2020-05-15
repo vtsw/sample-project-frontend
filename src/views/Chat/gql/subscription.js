@@ -40,6 +40,7 @@ const ON_ZALO_MESSAGE_CREATED = gql`
 			attachments {
 				payload {
 					thumbnail
+					title
 					url
 					description
 				}

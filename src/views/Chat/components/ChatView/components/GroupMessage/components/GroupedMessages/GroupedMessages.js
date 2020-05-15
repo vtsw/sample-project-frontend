@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 const renderMessage = item => {
 	switch (item.type) {
-		case 'reservation':
+		case 'Reservation':
 			return <MessageReservation {...item} />
 
 		default:

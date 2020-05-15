@@ -78,10 +78,13 @@ const ChatView = props => {
 						item => item.id === newMessage.id
 					)
 
+					console.log('messageIndex', messageIndex)
 					if (messageIndex === -1) return
 					else {
 						newMessage.attachments[0].payload.url =
 							zaloAttachmentMessages[messageIndex].url
+
+						console.log('go here', newMessage)
 					}
 				}
 

@@ -12,9 +12,9 @@ const useStyles = makeStyles(theme => ({
 	}),
 	message: ({ leftOrRight }) => ({
 		marginBottom: 4,
-		marginLeft: 8,
-		marginRight: 8,
-		borderRadius: 8,
+		marginLeft: theme.spacing(1),
+		marginRight: theme.spacing(1),
+		borderRadius: theme.spacing(1),
 		minWidth: '32px',
 		maxWidth: 'calc(100% - 150px)',
 		backgroundColor:
@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 		width: 'auto',
 	},
 	boxsendtime: {
-		marginTop: theme.spacing(1),
+		margin: theme.spacing(1),
 	},
 	boxsendtime__sendtime: {
 		marginRight: theme.spacing(2),
@@ -39,19 +39,16 @@ const useStyles = makeStyles(theme => ({
 		color: '#7a869a',
 	},
 
-	messsage__image: {
-		backgroundImage:
-			'url(https://vn112.com/wp-content/uploads/2019/03/dentist-1552158168plc84.jpg)',
-		backgroundPosition: 'center center',
-		borderBottomLeftRadius: '0px',
-		borderBottomRightRadius: '0px',
-		width: 360,
+	messsage__thumnailoption1: {
+		width: '100%',
 		height: 232,
 		objectFit: 'cover',
-		backgroundColor: '#f2f5fa',
-		backgroundRepeat: 'no-repeat',
-		backgroundSize: 'cover',
-		borderRadius: '8px',
+		borderRadius: '8px 8px 0 0',
+	},
+	messsage__thumnailoption2: {
+		width: 60,
+		height: 60,
+		marginRight: 12,
 	},
 
 	messsage__comfirm: {
@@ -82,7 +79,7 @@ const useStyles = makeStyles(theme => ({
 const MessageReservation = props => {
 	const {
 		content,
-		attachments = {},
+		attachments = [],
 		from = { id: '' },
 		meId = '',
 		endOfList,
@@ -93,27 +90,43 @@ const MessageReservation = props => {
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.message}>
-				<div className={classes.messsage__image}></div>
-				<Typography className={classes.messsage__comfirm}>
-					Xác nhận lịch đi khám vào ngày: 2020-05-13
-				</Typography>
-				<Typography className={classes.message__comfirmdate}>
-					Xin vui lòng xác nhận lịch đi khám
-				</Typography>
-
-				<Box className={classes.message__option}>
-					<AlarmIcon className={classes.message__iconalarm} />
+				{attachments && attachments[0] && (
 					<Box>
-						<Typography>Khám bác sỹ A vào lúc 16:03</Typography>
+						<img
+							src={attachments[0].payload.thumbnail}
+							className={classes.messsage__thumnailoption1}
+						/>
+						<Typography className={classes.messsage__comfirm}>
+							{attachments[0].payload.title}
+						</Typography>
+						<Typography className={classes.message__comfirmdate}>
+							{attachments[0].payload.description}
+						</Typography>
 					</Box>
-				</Box>
-				<Box className={classes.message__option}>
-					<AlarmIcon className={classes.message__iconalarm} />
-					<Box>
-						<Typography>Khám bác sỹ A vào lúc 16:03</Typography>
-					</Box>
-				</Box>
+				)}
 
+				{attachments && attachments[1] && (
+					<Box className={classes.message__option}>
+						<img
+							src={attachments[1].payload.thumbnail}
+							className={classes.messsage__thumnailoption2}
+						/>
+						<Box>
+							<Typography> {attachments[1].payload.title}</Typography>
+						</Box>
+					</Box>
+				)}
+				{attachments && attachments[2] && (
+					<Box className={classes.message__option}>
+						<img
+							src={attachments[2].payload.thumbnail}
+							className={classes.messsage__thumnailoption2}
+						/>
+						<Box>
+							<Typography> {attachments[2].payload.title}</Typography>
+						</Box>
+					</Box>
+				)}
 				{endOfList && (
 					<Grid container className={classes.boxsendtime}>
 						<Typography className={classes.boxsendtime__sendtime}>
