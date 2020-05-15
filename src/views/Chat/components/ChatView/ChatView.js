@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
 		borderRight: '1px solid #e5e5e9',
 		height: '100vh',
 	},
-	root__nodata: {
+	nodata: {
 		display: 'flex',
 		flex: 1,
 		width: '100%',
@@ -125,7 +125,7 @@ const ChatView = props => {
 			<Box className={classes.root}>
 				<Header selectedUserOfChat={selectedUserOfChat} />
 				{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
-					<Box className={classes.root__nodata}>Loading</Box>
+					<Box className={classes.nodata}>Loading</Box>
 				) : data && data.zaloMessageList.items.length > 0 ? (
 					<ViewMessage
 						me={me}
@@ -136,7 +136,7 @@ const ChatView = props => {
 						loadMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 					/>
 				) : (
-					<Box className={classes.root__nodata}>Chưa có cuộc hội thoại nào</Box>
+					<Box className={classes.nodata}>Chưa có cuộc hội thoại nào</Box>
 				)}
 
 				<EditorChat idUser={selectedUserOfChat.id} />

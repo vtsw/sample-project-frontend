@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
 		position: 'relative',
 		display: 'flex',
 	},
-	root__areainput__icon: {
+	areainput__icon: {
 		fontSize: 20,
 		margin: theme.spacing(0, 1, 0, 2),
 		cursor: 'pointer',
@@ -35,7 +35,7 @@ const PickerEmoji = ({ handleAddEmoji }) => {
 		<ClickAwayListener onClickAway={handleClickAway}>
 			<Box className={classes.root}>
 				<InsertEmoticonIcon
-					className={classes.root__areainput__icon}
+					className={classes.areainput__icon}
 					onClick={() => setOpen(!open)}
 				/>
 				{open && (

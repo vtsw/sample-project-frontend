@@ -1,7 +1,5 @@
 import React from 'react'
-
-import GroupBreak from './GroupBreak'
-import GroupedMessages from './GroupedMessages'
+import { GroupedMessages, GroupBreak } from './components'
 
 const GroupMessage = props => {
 	const { items, listPureMessage, type, timestamp, meId, endOfGroup } = props

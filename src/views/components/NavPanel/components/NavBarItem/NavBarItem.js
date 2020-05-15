@@ -3,7 +3,7 @@ import { MessageNoti } from '@views_components'
 import { Box, makeStyles, Button } from '@material-ui/core'
 
 const useStyles = makeStyles(() => ({
-	root__boxmesssage: { position: 'absolute', top: 10, right: 0 },
+	boxmesssage: { position: 'absolute', top: 10, right: 0 },
 }))
 
 const NavBarItem = props => {
@@ -18,7 +18,7 @@ const NavBarItem = props => {
 		>
 			{page}
 			{!!numberNoti && page === 'chat' && (
-				<Box className={classes.root__boxmesssage}>
+				<Box className={classes.boxmesssage}>
 					<MessageNoti numberNoti={numberNoti} />
 				</Box>
 			)}
