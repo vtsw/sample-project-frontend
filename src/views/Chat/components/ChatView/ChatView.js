@@ -65,19 +65,20 @@ const ChatView = props => {
 			variables: { filter: { interestedUserId: selectedUserOfChat.id } },
 			shouldResubscribe: true,
 			updateQuery: (prev, { subscriptionData }) => {
+				let newMessage = subscriptionData.data.onZaloMessageCreated
 				const zaloAttachmentMessages =
 					zaloAttachmentMessageData.zaloMessageAttachmentList.items
-				let newMessage = subscriptionData.data.onZaloMessageCreated
+				const messageIndex = zaloAttachmentMessages.findIndex(
+					item => item.id === newMessage.id
+				)
 
 				if (!subscriptionData.data) return prev
 
-				if (newMessage.attachments && newMessage.attachments.length) {
-					const messageIndex = zaloAttachmentMessages.findIndex(
-						item => item.id === newMessage.id
-					)
+				if (messageIndex !== -1 && newMessage.type === 'Text') return
 
+				if (newMessage.attachments && newMessage.attachments.length) {
 					if (messageIndex === -1) return
-					if (newMessage.attachments[0].type === 'image') {
+					if (newMessage.type === 'Image') {
 						newMessage.attachments[0].payload.url =
 							zaloAttachmentMessages[messageIndex].url
 					}

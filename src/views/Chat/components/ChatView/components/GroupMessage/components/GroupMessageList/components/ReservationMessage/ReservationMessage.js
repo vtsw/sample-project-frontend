@@ -79,10 +79,10 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const MessageReservation = props => {
+const ReservationMessage = props => {
 	const {
 		content,
-		attachments = {},
+		attachments = [],
 		from = { id: '' },
 		meId = '',
 		endOfList,
@@ -130,12 +130,12 @@ const MessageReservation = props => {
 	)
 }
 
-export default MessageReservation
-
-MessageReservation.propTypes = {
+ReservationMessage.propTypes = {
 	content: PropTypes.string,
 }
 
-MessageReservation.defaultProps = {
+ReservationMessage.defaultProps = {
 	content: '',
 }
+
+export default ReservationMessage

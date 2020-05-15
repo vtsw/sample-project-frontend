@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { ZALO_MESSAGE } from './fragment'
 
 const GET_SELECTED_USER_OF_CHAT = gql`
 	query {
@@ -57,14 +58,6 @@ const GET_ZALO_MESSAGE_LIST = gql`
 	query ZaloMessageList($query: ZaloMessageListInput) {
 		zaloMessageList(query: $query) {
 			items {
-				id
-				type
-				content
-				from {
-					displayName
-					id
-					avatar
-				}
 				attachments {
 					type
 					payload {
@@ -74,18 +67,13 @@ const GET_ZALO_MESSAGE_LIST = gql`
 						name
 					}
 				}
-				to {
-					displayName
-					id
-					avatar
-				}
-				timestamp
+				...ZaloMessage
 			}
-
 			hasNext
 			total
 		}
 	}
+	${ZALO_MESSAGE}
 `
 
 const GET_USER_SEARCH_TEXT = gql`

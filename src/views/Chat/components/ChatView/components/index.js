@@ -1,7 +1,5 @@
 export { default as EditorChat } from './EditorChat'
 export { default as GroupMessage } from './GroupMessage'
 export { default as Header } from './Header'
-export { default as MessageCard } from './MessageCard'
 export { default as PickerEmoji } from './PickerEmoji'
 export { default as ViewMessage } from './ViewMessage'
-export { default as MessageReservation } from './MessageReservation'

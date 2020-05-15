@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { ZALO_MESSAGE } from './fragment'
 
 const SET_SELECTED_USER_OF_CHAT = gql`
 	mutation SetSelectedUserOfChat($selectedUser: User!) {
@@ -35,21 +36,10 @@ const SET_USER_SEARCH_TEXT = gql`
 const CREATE_ZALO_MESSAGE = gql`
 	mutation CreateZaloMessage($message: CreateZaloMessageInput!) {
 		createZaloMessage(message: $message) {
-			from {
-				displayName
-				id
-				avatar
-			}
-			to {
-				displayName
-				id
-				avatar
-			}
-			content
-			timestamp
-			id
+			...ZaloMessage
 		}
 	}
+	${ZALO_MESSAGE}
 `
 
 const CREATE_ZALO_MESSAGE_ATTACHMENT = gql`
@@ -57,19 +47,6 @@ const CREATE_ZALO_MESSAGE_ATTACHMENT = gql`
 		$file: CreateZaloMessageAttachmentInput!
 	) {
 		createZaloMessageAttachment(message: $file) {
-			from {
-				displayName
-				id
-				avatar
-			}
-			to {
-				displayName
-				id
-				avatar
-			}
-			content
-			timestamp
-			id
 			attachments {
 				type
 				payload {
@@ -79,8 +56,10 @@ const CREATE_ZALO_MESSAGE_ATTACHMENT = gql`
 					name
 				}
 			}
+			...ZaloMessage
 		}
 	}
+	${ZALO_MESSAGE}
 `
 
 const SET_CREATE_ZALO_MESSAGE_ATTACHMENT = gql`
