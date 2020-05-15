@@ -3,7 +3,6 @@ import { makeStyles, Box, Typography } from '@material-ui/core'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import GroupAddIcon from '@material-ui/icons/GroupAdd'
 
-
 const useStyles = makeStyles(() => ({
 	root: {
 		display: 'flex',

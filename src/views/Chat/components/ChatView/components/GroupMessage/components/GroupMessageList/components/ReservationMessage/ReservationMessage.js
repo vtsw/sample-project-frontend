@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: leftOrRight % 2 !== 0 ? 'row-reverse' : 'row',
 	}),
 	message: ({ leftOrRight }) => ({
+		width: 360,
 		marginBottom: 4,
 		marginLeft: theme.spacing(1),
 		marginRight: theme.spacing(1),
@@ -45,7 +46,7 @@ const useStyles = makeStyles(theme => ({
 		objectFit: 'cover',
 		borderRadius: '8px 8px 0 0',
 	},
-	messsage__thumnailoption2: {
+	d: {
 		width: 60,
 		height: 60,
 		marginRight: 12,
@@ -70,13 +71,9 @@ const useStyles = makeStyles(theme => ({
 		borderTop: '1px solid rgb(185, 185, 185)',
 		alignItems: 'center',
 	},
-	message__iconalarm: {
-		fontSize: 48,
-		marginRight: 12,
-	},
 }))
 
-const MessageReservation = props => {
+const ReservationMessage = props => {
 	const {
 		content,
 		attachments = [],
@@ -93,6 +90,7 @@ const MessageReservation = props => {
 				{attachments && attachments[0] && (
 					<Box>
 						<img
+							alt='thumbnail'
 							src={attachments[0].payload.thumbnail}
 							className={classes.messsage__thumnailoption1}
 						/>
@@ -108,8 +106,9 @@ const MessageReservation = props => {
 				{attachments && attachments[1] && (
 					<Box className={classes.message__option}>
 						<img
+							alt='thumbnail'
 							src={attachments[1].payload.thumbnail}
-							className={classes.messsage__thumnailoption2}
+							className={classes.d}
 						/>
 						<Box>
 							<Typography> {attachments[1].payload.title}</Typography>
@@ -119,8 +118,9 @@ const MessageReservation = props => {
 				{attachments && attachments[2] && (
 					<Box className={classes.message__option}>
 						<img
+							alt='thumbnail'
 							src={attachments[2].payload.thumbnail}
-							className={classes.messsage__thumnailoption2}
+							className={classes.d}
 						/>
 						<Box>
 							<Typography> {attachments[2].payload.title}</Typography>
@@ -133,7 +133,6 @@ const MessageReservation = props => {
 							{moment(parseInt(timestamp, 10)).format('HH:mm')}
 						</Typography>
 						<Typography className={classes.boxsendtime__status}>
-							{' '}
 							Đã gửi
 						</Typography>
 					</Grid>
@@ -143,12 +142,12 @@ const MessageReservation = props => {
 	)
 }
 
-export default MessageReservation
-
-MessageReservation.propTypes = {
+ReservationMessage.propTypes = {
 	content: PropTypes.string,
 }
 
-MessageReservation.defaultProps = {
+ReservationMessage.defaultProps = {
 	content: '',
 }
+
+export default ReservationMessage

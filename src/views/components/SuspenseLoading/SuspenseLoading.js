@@ -8,7 +8,7 @@ import { Loading } from '@views_components'
 const useStyles = makeStyles(() => ({
 	root: {
 		position: 'absolute',
-		left: 87,
+		left: 80,
 		top: 0,
 		right: 0,
 		bottom: 0,

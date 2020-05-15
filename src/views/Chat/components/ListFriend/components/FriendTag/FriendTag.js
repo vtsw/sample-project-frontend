@@ -143,9 +143,7 @@ const FriendTag = props => {
 						</Box>
 					) : valueDefault && selectedUserOfChat.id !== id ? (
 						<Box className={classes.infor__boxmesssage}>
-							<Typography
-								className={classes.infor__boxmesssage__messagedraf}
-							>
+							<Typography className={classes.infor__boxmesssage__messagedraf}>
 								[Nháp]:
 							</Typography>
 

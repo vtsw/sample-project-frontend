@@ -13,7 +13,10 @@ import {
 } from '@views/Chat/gql/query'
 import { ON_ZALO_MESSAGE_CREATED } from '@views/Chat/gql/subscription'
 
-import { NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
+import {
+	NETWORK_STATUS_FETCH_MORE,
+	ZALO_MESSAGE_LIMIT,
+} from '@src/configs.local'
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -45,7 +48,7 @@ const ChatView = props => {
 			notifyOnNetworkStatusChange: true,
 			variables: {
 				query: {
-					limit: 15,
+					limit: ZALO_MESSAGE_LIMIT,
 					interestedUserId: selectedUserOfChat.id,
 				},
 			},
@@ -63,24 +66,19 @@ const ChatView = props => {
 			shouldResubscribe: true,
 			updateQuery: (prev, { subscriptionData }) => {
 				let newMessage = subscriptionData.data.onZaloMessageCreated
-
-				console.log(
-					'subscriptionData.data.onZaloMessageCreated',
-					subscriptionData.data.onZaloMessageCreated
+				const zaloAttachmentMessages =
+					zaloAttachmentMessageData.zaloMessageAttachmentList.items
+				const messageIndex = zaloAttachmentMessages.findIndex(
+					item => item.id === newMessage.id
 				)
 
 				if (!subscriptionData.data) return prev
 
-				if (newMessage.attachments && newMessage.attachments.length) {
-					const zaloAttachmentMessages =
-						zaloAttachmentMessageData.zaloMessageAttachmentList.items
-					const messageIndex = zaloAttachmentMessages.findIndex(
-						item => item.id === newMessage.id
-					)
+				if (messageIndex !== -1 && newMessage.type === 'Text') return
 
-					console.log('messageIndex', messageIndex)
-					if (messageIndex === -1) return
-					else {
+				if (newMessage.attachments && newMessage.attachments.length) {
+					if (newMessage.type === 'Image') {
+						if (messageIndex === -1) return
 						newMessage.attachments[0].payload.url =
 							zaloAttachmentMessages[messageIndex].url
 
@@ -102,7 +100,7 @@ const ChatView = props => {
 		fetchMore({
 			variables: {
 				query: {
-					limit: 10,
+					limit: ZALO_MESSAGE_LIMIT,
 					interestedUserId: selectedUserOfChat.id,
 					skip: data.zaloMessageList.items.length,
 				},
