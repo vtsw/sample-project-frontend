@@ -1,9 +1,15 @@
 import React from 'react'
+import { format } from 'date-fns/esm'
+
+import { useQuery } from '@apollo/react-hooks'
 
 import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { InfiniteTable } from '@views_components'
+import { InfiniteTable, Loading } from '@views_components'
+
+import { GET_RESERVATION_LIST } from '@views/Reservation/gql/query'
+import { PAGE_LIMIT, NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -27,122 +33,88 @@ const tableHeaders = [
 	{ headerLabel: 'TIME', xs: 4, headerVariable: 'time' },
 ]
 
-const items = [
-	{
-		id: '123',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '1234',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '123',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '1234',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '123edasd',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '123asd4',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '1asdasd23',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '12asd34',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '12asdas3',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '123asd4',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '1edfsadf234',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '12sdf3edasd',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '123assdfd4',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '1asdassdfd23',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '12asdfsd34',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '12assdfdas3',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-	{
-		id: '123assdfd4',
-		patient: 'asd',
-		doctor: 'DoctorA, Doctor B',
-		time: '2014-08-18T21:11:54',
-	},
-]
-
 const ReservationList = () => {
 	const classes = useStyles()
 
+	const { loading, error, data, fetchMore, networkStatus } = useQuery(
+		GET_RESERVATION_LIST,
+		{
+			variables: {
+				query: {
+					limit: PAGE_LIMIT,
+				},
+			},
+			notifyOnNetworkStatusChange: true,
+			onError: err => {
+				alert(err)
+			},
+		}
+	)
+
+	if (error) return <div>Error :(</div>
+
+	const convertReservationList = reservationList => {
+		return reservationList.map(({ id, content }) => ({
+			id,
+			patient: content.zaloPatientId,
+			doctor: content.zaloDoctorId,
+			time: format(
+				new Date(parseInt(content.reservationTime)),
+				'HH:mm - dd/MM/yyyy'
+			),
+		}))
+	}
+
+	const loadNextReservationPage = () => {
+		try {
+			fetchMore({
+				variables: {
+					query: { skip: data.reservationList.items.length },
+				},
+				updateQuery: (prev, { fetchMoreResult }) => {
+					if (!fetchMoreResult) return prev
+					const fetchedReservationList = fetchMoreResult.reservationList
+					let cacheReservationList = prev.reservationList
+					const items = [
+						...cacheReservationList.items,
+						...fetchedReservationList.items,
+					]
+					const hasNext = fetchedReservationList.hasNext
+
+					return {
+						userList: {
+							...cacheReservationList,
+							items,
+							hasNext,
+						},
+					}
+				},
+			})
+		} catch (error) {
+			alert(error.message)
+		}
+	}
+
 	return (
 		<Box className={classes.root}>
-			<Typography variant='h5' className={classes.listtitle}>
-				Total {items.length}
-			</Typography>
-			<Box className={classes.reservationqueue__table}>
-				<InfiniteTable items={items} columns={tableHeaders} />
-			</Box>
+			{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
+				<Loading open={true} msg={'Loading...'} />
+			) : (
+				<>
+					<Typography variant='h5' className={classes.listtitle}>
+						Total {data.reservationList.items.length}
+					</Typography>
+					<Box className={classes.reservationqueue__table}>
+						<InfiniteTable
+							items={convertReservationList(data.reservationList.items)}
+							columns={tableHeaders}
+							loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
+							loadNextPage={loadNextReservationPage}
+							hasNextPage={data.reservationList.hasNext}
+						/>
+					</Box>
+				</>
+			)}
 		</Box>
 	)
 }
