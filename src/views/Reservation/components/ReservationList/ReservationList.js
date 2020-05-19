@@ -51,8 +51,6 @@ const ReservationList = () => {
 		}
 	)
 
-	if (error) return <div>Error :(</div>
-
 	const convertReservationList = reservationList => {
 		return reservationList.map(({ id, content }) => ({
 			id,
@@ -69,23 +67,26 @@ const ReservationList = () => {
 		try {
 			fetchMore({
 				variables: {
-					query: { skip: data.reservationList.items.length },
+					query: { limit: PAGE_LIMIT, skip: data.reservationList.items.length },
 				},
 				updateQuery: (prev, { fetchMoreResult }) => {
 					if (!fetchMoreResult) return prev
 					const fetchedReservationList = fetchMoreResult.reservationList
 					let cacheReservationList = prev.reservationList
+
 					const items = [
 						...cacheReservationList.items,
 						...fetchedReservationList.items,
 					]
 					const hasNext = fetchedReservationList.hasNext
-
+					const total =
+						cacheReservationList.total + fetchedReservationList.total
 					return {
-						userList: {
+						reservationList: {
 							...cacheReservationList,
 							items,
 							hasNext,
+							total,
 						},
 					}
 				},
@@ -95,6 +96,8 @@ const ReservationList = () => {
 		}
 	}
 
+	if (error) return <div>Error :(</div>
+
 	return (
 		<Box className={classes.root}>
 			{loading && networkStatus !== NETWORK_STATUS_FETCH_MORE ? (
@@ -102,7 +105,7 @@ const ReservationList = () => {
 			) : (
 				<>
 					<Typography variant='h5' className={classes.listtitle}>
-						Total {data.reservationList.items.length}
+						Total {data.reservationList.total}
 					</Typography>
 					<Box className={classes.reservationqueue__table}>
 						<InfiniteTable
