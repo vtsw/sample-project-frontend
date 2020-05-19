@@ -11,10 +11,10 @@ const useStyles = makeStyles(() => ({
 		flexDirection: 'column',
 		width: '100%',
 	},
-	root__listfriend: {
+	listfriend: {
 		width: '332px',
 	},
-	root__chatview: {
+	chatview: {
 		display: 'flex',
 		flex: 1,
 	},

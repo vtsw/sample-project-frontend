@@ -1,11 +1,22 @@
 import gql from 'graphql-tag'
 
-const USER = gql`
-	fragment UserOfMain on UserOfMain {
+const ZALO_MESSAGE = gql`
+	fragment ZaloMessage on ZaloMessage {
 		id
-		name
-		email
+		content
+		from {
+			displayName
+			id
+			avatar
+		}
+		timestamp
+		to {
+			displayName
+			id
+			avatar
+		}
+		type
 	}
 `
 
-export { USER }
+export { ZALO_MESSAGE }

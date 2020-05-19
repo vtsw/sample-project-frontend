@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
 		backgroundPosition: 'center',
 		backgroundSize: 'cover',
 	}),
-	root__status: ({ status, size }) => ({
+	status: ({ status, size }) => ({
 		width: size / 5,
 		height: size / 5,
 		borderRadius: '50%',
@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
 		bottom: 1,
 		right: 1,
 	}),
-	root__infor: {
+	infor: {
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -37,7 +37,7 @@ const Avatar = props => {
 	const classes = useStyles({ size, status, avatar })
 	return (
 		<Box className={classes.root}>
-			{showStatus && <Box className={classes.root__status} />}
+			{showStatus && <Box className={classes.status} />}
 		</Box>
 	)
 }
