@@ -1,46 +1,54 @@
-import React, { useState } from 'react'
-
-import { Grid } from '@material-ui/core'
+import React, { useState, useEffect } from 'react'
+import { withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
-import clsx from 'clsx'
+
+import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks'
+import { RESET_CACHE } from './gql/mutation'
+
+import NavBarItem from './NavBarItem'
+
+import { deleteToken } from '@src/shares/utils'
+import { initialState } from '@src/client'
 import { ON_ZALO_MESSAGE_RECEIVED } from '@views/Chat/gql/subscription'
 import { GET_NEW_NOTI_MESSAGE_LIST } from '@views/Chat/gql/query'
-import NavBarItem from '../NavBarItem'
-import { useSubscription, useQuery } from '@apollo/react-hooks'
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		position: 'relative',
 		backgroundColor: theme.palette.primary.main,
+		display: 'flex',
+		flexDirection: 'column',
 		height: '100vh',
-		width: 80,
 	},
 	tab: {
 		position: 'relative',
+		fontSize: theme.typography.htmlFontSize,
+		fontWeight: theme.typography.fontWeightMedium,
 		color: theme.palette.common.white,
-		width: '100%',
 		cursor: 'pointer',
-		padding: `28px 12px`,
-		textTransform: 'lowercase',
-		borderRadius: 0,
-		'&>span': {
-			fontWeight: theme.typography.fontWeightBold,
-		},
-	},
-	active: {
-		backgroundColor: theme.palette.common.white,
-		color: theme.palette.text.primary,
-		'&:hover': {
-			backgroundColor: theme.palette.common.white,
+		padding: theme.spacing(3, 1.5),
+		textAlign: 'center',
+		transition: `all ${theme.transitions.duration.shorter}ms ${theme.transitions.easing.easeInOut}`,
+		'&:last-child': {
+			position: 'absolute',
+			bottom: 0,
 		},
 	},
 }))
 
+const navbarItems = [
+	{ page: 'main', pathname: '/' },
+	{ page: 'user', pathname: '/user' },
+	{ page: 'message', pathname: '/message' },
+	{ page: 'file', pathname: '/file' },
+	{ page: 'chat', pathname: '/chat' },
+]
+
 const NavBar = props => {
-	const { location = { pathname: '' }, history, items } = props
+	const { location = { pathname: '' }, history } = props
 	const classes = useStyles()
 
-	const [currentPage, setCurrentPage] = useState(location.pathname || {})
+	const [currentPage, setCurrentPage] = useState(location.pathname)
 
 	const { data } = useSubscription(ON_ZALO_MESSAGE_RECEIVED, {
 		onSubscriptionData: ({
@@ -99,36 +107,51 @@ const NavBar = props => {
 
 	const {
 		data: {
-			newNotiMessageList: { items: notiItems },
+			newNotiMessageList: { items },
 		},
 	} = useQuery(GET_NEW_NOTI_MESSAGE_LIST)
 
-	const sumNewNotiMessageNumber = notiItems.reduce((acc, cur) => {
+	const sumNewNotiMessageNumber = items.reduce((acc, cur) => {
 		return cur.numberNoti + acc
 	}, 0)
+
+	const [resetCache, { client }] = useMutation(RESET_CACHE, {
+		onCompleted: async () => {
+			deleteToken()
+			handleOnChangePage('/sign-in')
+			await client.resetStore()
+			client.writeData({ data: initialState })
+		},
+		onError: err => alert(err),
+	})
 
 	const handleOnChangePage = page => {
 		setCurrentPage(page)
 		history.push(page)
 	}
 
-	const setActiveTab = pathname => {
-		return currentPage === pathname ? classes.active : ''
+	const handleOnLogOut = () => {
+		resetCache({ variables: { data: initialState } })
 	}
 
 	return (
-		<Grid className={classes.root}>
-			{items.map((item, index) => (
+		<ul className={classes.root}>
+			{navbarItems.map((item, index) => (
 				<NavBarItem
 					key={index}
 					handleOnChangePage={handleOnChangePage}
 					numberNoti={sumNewNotiMessageNumber}
-					styles={clsx(classes.tab, setActiveTab(item.pathname))}
+					currentPage={currentPage}
 					{...item}
 				/>
 			))}
-		</Grid>
+			<li className={classes.tab} onClick={handleOnLogOut}>
+				Logout
+			</li>
+		</ul>
 	)
 }
 
-export default NavBar
+export default withRouter(NavBar)
+
+export { NavBar }

@@ -14,6 +14,7 @@ const SignIn = lazy(() => import('@views/SignIn'))
 const SignUp = lazy(() => import('@views/SignUp'))
 const File = lazy(() => import('@views/File'))
 const Reservation = lazy(() => import('@views/Reservation'))
+const Chat = lazy(() => import('@views/Chat'))
 
 const App = props => {
 	const { history, location } = props
@@ -59,6 +60,7 @@ const App = props => {
 					<Route path='/sign-up' component={SignUp} />
 					<Route path='/file' component={File} />
 					<Route path='/reservation' component={Reservation} />
+					<Route path='/chat' component={Chat} />
 				</Switch>
 			</Suspense>
 		</Grid>
