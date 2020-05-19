@@ -16,6 +16,7 @@ const navbarItems = [
 	{ page: 'message', pathname: '/message' },
 	{ page: 'chat', pathname: '/chat' },
 	{ page: 'file', pathname: '/file' },
+	{ page: 'reservation', pathname: '/reservation' },
 ]
 
 const NavPanel = props => {
