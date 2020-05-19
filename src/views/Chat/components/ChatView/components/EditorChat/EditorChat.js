@@ -65,10 +65,7 @@ const EditorChat = props => {
 		onError: err => alert(err),
 	})
 	const [createZaloMessageAttachment] = useMutation(
-		CREATE_ZALO_MESSAGE_ATTACHMENT,
-		{
-			onError: err => alert(err),
-		}
+		CREATE_ZALO_MESSAGE_ATTACHMENT
 	)
 
 	const richTextValueDefault =
@@ -89,19 +86,21 @@ const EditorChat = props => {
 					fileType,
 				},
 			},
-		}).then(({ data }) => {
-			const id = data?.createZaloMessageAttachment?.id
-
-			setCreateZaloMessageAttachment({
-				variables: {
-					message: {
-						id,
-						url,
-						__typename: 'MessageAttachment',
-					},
-				},
-			})
 		})
+			.then(({ data }) => {
+				const id = data?.createZaloMessageAttachment?.id
+
+				setCreateZaloMessageAttachment({
+					variables: {
+						message: {
+							id,
+							url,
+							__typename: 'MessageAttachment',
+						},
+					},
+				})
+			})
+			.catch(e => alert(e))
 	}
 
 	const handleUploadImage = ({ target }) => {

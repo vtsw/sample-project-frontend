@@ -76,9 +76,12 @@ const ChatView = props => {
 
 				if (messageIndex !== -1 && newMessage.type === 'Text') return
 
-				if (newMessage.attachments && newMessage.attachments.length) {
+				if (
+					newMessage.attachments &&
+					newMessage.attachments.length &&
+					messageIndex !== -1
+				) {
 					if (newMessage.type === 'Image') {
-						if (messageIndex === -1) return
 						newMessage.attachments[0].payload.url =
 							zaloAttachmentMessages[messageIndex].url
 					}
@@ -87,7 +90,12 @@ const ChatView = props => {
 				return Object.assign({}, prev, {
 					zaloMessageList: {
 						...prev.zaloMessageList,
-						items: [newMessage, ...prev.zaloMessageList.items],
+						items:
+							prev.zaloMessageList.items.filter(
+								item => item.id === newMessage.id
+							).length === 0
+								? [newMessage, ...prev.zaloMessageList.items]
+								: prev.zaloMessageList.items,
 					},
 				})
 			},
