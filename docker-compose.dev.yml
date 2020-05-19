@@ -7,4 +7,9 @@ services:
     container_name: frontend
     ports:
       - "3000:3000"
-      - "6006:6006"
+    networks:
+      - localnetwork
+    command: yarn run start
+networks:
+  localnetwork:
+    external: true

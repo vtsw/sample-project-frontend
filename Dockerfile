@@ -4,7 +4,7 @@ COPY . .
 #RUN yarn add webpack webpack-cli webpack-dev-server
 RUN yarn
 RUN yarn run build
-
+RUN yarn build:storybook
 #FROM mhart/alpine-node:11
 #WORKDIR /app
 #RUN yarn global add serve
