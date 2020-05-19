@@ -133,6 +133,10 @@ const EditorChat = props => {
 	const handleOnUploadFile = ({ target }) => {
 		const file = target.files[0]
 
+		if (file.size / 1024 / 1024 > 5) {
+			alert('You cannot upload a file larger than 5MB')
+			return
+		}
 		handleSendZaloImageMessage({ attachmentFile: file, fileType: 'File' })
 	}
 
