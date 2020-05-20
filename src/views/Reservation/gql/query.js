@@ -16,17 +16,16 @@ const GET_RESERVATION_QUEUE = gql`
 `
 
 const GET_RESERVATION_LIST = gql`
-	query GetReservationList($query: ReservationListInput!) {
-		reservationList(query: $query) {
+	query GetReservationList($query: ReservationRequestListInput!) {
+		reservationRequestList(query: $query) {
 			items {
 				id
-				timestamp
-				type
-				corId
-				content {
-					zaloPatientId
-					zaloDoctorId
-					reservationTime
+				payload {
+					patient
+					bookingOptions {
+						doctor
+						time
+					}
 				}
 			}
 			hasNext

@@ -1,5 +1,6 @@
 import React from 'react'
 import { format } from 'date-fns/esm'
+import Faker from 'faker'
 
 import { useQuery } from '@apollo/react-hooks'
 
@@ -51,28 +52,34 @@ const ReservationList = () => {
 		}
 	)
 
-	const convertReservationList = reservationList => {
-		return reservationList.map(({ id, content }) => ({
-			id,
-			patient: content.zaloPatientId,
-			doctor: content.zaloDoctorId,
-			time: format(
-				new Date(parseInt(content.reservationTime)),
-				'HH:mm - dd/MM/yyyy'
-			),
-		}))
+	const convertReservationList = reservationRequestList => {
+		let items = []
+		reservationRequestList.forEach(reservation => {
+			reservation.payload.bookingOptions.forEach(option => {
+				items.push({
+					id: Faker.random.uuid(),
+					patient: reservation.payload.patient,
+					doctor: option.doctor,
+					time: format(new Date(parseInt(option.time)), 'HH:mm - dd/MM/yyyy'),
+				})
+			})
+		})
+		return items
 	}
 
 	const loadNextReservationPage = () => {
 		try {
 			fetchMore({
 				variables: {
-					query: { limit: PAGE_LIMIT, skip: data.reservationList.items.length },
+					query: {
+						limit: PAGE_LIMIT,
+						skip: data.reservationRequestList.items.length,
+					},
 				},
 				updateQuery: (prev, { fetchMoreResult }) => {
 					if (!fetchMoreResult) return prev
-					const fetchedReservationList = fetchMoreResult.reservationList
-					let cacheReservationList = prev.reservationList
+					const fetchedReservationList = fetchMoreResult.reservationRequestList
+					let cacheReservationList = prev.reservationRequestList
 
 					const items = [
 						...cacheReservationList.items,
@@ -82,7 +89,7 @@ const ReservationList = () => {
 					const total =
 						cacheReservationList.total + fetchedReservationList.total
 					return {
-						reservationList: {
+						reservationRequestList: {
 							...cacheReservationList,
 							items,
 							hasNext,
@@ -105,15 +112,15 @@ const ReservationList = () => {
 			) : (
 				<>
 					<Typography variant='h5' className={classes.listtitle}>
-						Total {data.reservationList.total}
+						Total {data.reservationRequestList.total}
 					</Typography>
 					<Box className={classes.reservationqueue__table}>
 						<InfiniteTable
-							items={convertReservationList(data.reservationList.items)}
+							items={convertReservationList(data.reservationRequestList.items)}
 							columns={tableHeaders}
 							loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 							loadNextPage={loadNextReservationPage}
-							hasNextPage={data.reservationList.hasNext}
+							hasNextPage={data.reservationRequestList.hasNext}
 						/>
 					</Box>
 				</>
