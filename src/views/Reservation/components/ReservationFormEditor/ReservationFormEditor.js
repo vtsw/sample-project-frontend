@@ -147,8 +147,8 @@ const ReservationFormEditor = props => {
 								dispatch({ type: 'SET_DOCTOR', payload: e.target.value })
 							}
 						>
-							{doctors.map(({ id, value, label }) => (
-								<MenuItem key={id} value={value}>
+							{doctors.map(({ id, label }) => (
+								<MenuItem key={id} value={id}>
 									{label}
 								</MenuItem>
 							))}

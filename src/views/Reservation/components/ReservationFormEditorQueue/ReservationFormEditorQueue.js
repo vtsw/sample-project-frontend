@@ -23,9 +23,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const doctors = [
-	{ id: 'asdasdqwe', value: 'Doctor A', label: 'Doctor A' },
-	{ id: 'asdasasd', value: 'Doctor B', label: 'Doctor B' },
-	{ id: 'asdaasd', value: 'Doctor C', label: 'Doctor C' },
+	{ id: '5ec37efc0b4bcd353424affb', value: 'Doctor A', label: 'Doctor A' },
+	{ id: '5e68995fb6d0bc05829b6e79', value: 'Doctor B', label: 'Doctor B' },
 ]
 
 const patients = [

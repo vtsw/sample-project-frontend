@@ -6,15 +6,11 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { InfiniteTable } from '@views_components'
 
-import {
-	GET_RESERVATION_QUEUE,
-	GET_RESERVATION_LIST,
-} from '@views/Reservation/gql/query'
+import { GET_RESERVATION_QUEUE } from '@views/Reservation/gql/query'
 import {
 	CREATE_RESERVATION_REQUEST,
 	RESET_RESERVATION_QUEUE,
 } from '@views/Reservation/gql/mutation'
-import { PAGE_LIMIT } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -73,17 +69,6 @@ const ReservationQueue = () => {
 						bookingOptions: reservationData,
 					},
 				},
-				refetchQueries: [
-					{
-						query: GET_RESERVATION_LIST,
-						variables: {
-							query: {
-								limit: PAGE_LIMIT,
-							},
-						},
-					},
-				],
-				awaitRefetchQueries: true,
 			}).then(() => {
 				resetReservationQueue()
 			})
