@@ -53,10 +53,10 @@ const ReservationList = () => {
 	)
 
 	const convertReservationList = reservationRequestList => {
-		let items = []
+		let reservations = []
 		reservationRequestList.forEach(reservation => {
 			reservation.payload.bookingOptions.forEach(option => {
-				items.push({
+				reservations.push({
 					id: Faker.random.uuid(),
 					patient: reservation.payload.patient,
 					doctor: option.doctor,
@@ -64,7 +64,7 @@ const ReservationList = () => {
 				})
 			})
 		})
-		return items
+		return reservations
 	}
 
 	const loadNextReservationPage = () => {

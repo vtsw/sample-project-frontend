@@ -16,7 +16,7 @@ const GET_RESERVATION_QUEUE = gql`
 `
 
 const GET_RESERVATION_LIST = gql`
-	query GetReservationList($query: ReservationRequestListInput!) {
+	query GetReservationRequestList($query: ReservationRequestListInput!) {
 		reservationRequestList(query: $query) {
 			items {
 				id
