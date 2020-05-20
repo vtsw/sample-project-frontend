@@ -28,9 +28,9 @@ const doctors = [
 ]
 
 const patients = [
-	{ id: 'asdasdfasd', value: 'Patient A', label: 'Patient A' },
-	{ id: 'asasddasd', value: 'Patient B', label: 'Patient B' },
-	{ id: 'asdaasdqsd', value: 'Patient C', label: 'Patient C' },
+	{ id: '4556061936982532685', value: 'Patient A', label: 'Patient A' },
+	{ id: '4556061936982532685', value: 'Patient B', label: 'Patient B' },
+	{ id: '4556061936982532685', value: 'Patient C', label: 'Patient C' },
 ]
 
 const ReservationFormEditorQueue = () => {

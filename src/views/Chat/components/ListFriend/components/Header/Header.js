@@ -13,25 +13,25 @@ const useStyles = makeStyles(() => ({
 		justifyContent: 'center',
 		padding: '0 16px',
 	},
-	root__tool: {
+	tool: {
 		marginTop: 4,
 		display: 'flex',
 	},
-	root__name: {
+	name: {
 		fontSize: 20,
 		fontWeight: '500',
 	},
-	root__tool__groupicon: {
+	tool__groupicon: {
 		fontSize: 25,
 		color: '#4a4a4a',
 		margin: '0px 4px',
 		cursor: 'pointer',
 	},
-	root__tool__boxinput: {
+	tool__boxinput: {
 		flex: 1,
 		paddingRight: 4,
 	},
-	root__tool__input: {
+	tool__input: {
 		width: '100%',
 		border: 'none',
 		background: '#ededed',
@@ -44,16 +44,16 @@ const Header = () => {
 	const classes = useStyles()
 	return (
 		<Box className={classes.root}>
-			<Typography className={classes.root__name}>Zalo - User Name</Typography>
-			<Box className={classes.root__tool}>
-				<Box className={classes.root__tool__boxinput}>
+			<Typography className={classes.name}>Zalo - User Name</Typography>
+			<Box className={classes.tool}>
+				<Box className={classes.tool__boxinput}>
 					<input
 						placeholder='Tìm bạn bè, nhóm và tin nhắn'
-						className={classes.root__tool__input}
+						className={classes.tool__input}
 					/>
 				</Box>
-				<PersonAddIcon className={classes.root__tool__groupicon} />
-				<GroupAddIcon className={classes.root__tool__groupicon} />
+				<PersonAddIcon className={classes.tool__groupicon} />
+				<GroupAddIcon className={classes.tool__groupicon} />
 			</Box>
 		</Box>
 	)

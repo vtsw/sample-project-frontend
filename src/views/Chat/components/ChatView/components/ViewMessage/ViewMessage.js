@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 		overflow: 'hidden',
 		backgroundColor: theme.palette.common.light,
 	},
-	root__table: {
+	table: {
 		display: 'flex',
 		flexDirection: 'column',
 		overflow: 'auto',
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 		position: 'relative',
 	},
 
-	root__loadmore: {
+	loadmore: {
 		position: 'absolute',
 		width: '100%',
 		top: '0',
@@ -138,13 +138,13 @@ const ViewMessage = props => {
 	return (
 		<Box className={classes.root}>
 			<div
-				className={classes.root__table}
+				className={classes.table}
 				id='scroll-reverse'
 				onScroll={handleOnScroll}
 				ref={refTable}
 			>
 				{loadMore && (
-					<div className={classes.root__loadmore}>
+					<div className={classes.loadmore}>
 						<CircularProgress size={20} />
 					</div>
 				)}
