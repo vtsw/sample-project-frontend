@@ -47,6 +47,8 @@ const tableHeaders = [
 	{ headerLabel: 'TIME', xs: 4, headerVariable: 'time' },
 ]
 
+const DEFAULT_RESERVATION_PATIENT_ID = '4556061936982532685'
+
 const ReservationQueue = () => {
 	const classes = useStyles()
 	const { data: reservationQueueData } = useQuery(GET_RESERVATION_QUEUE)
@@ -67,7 +69,7 @@ const ReservationQueue = () => {
 			createReservationRequest({
 				variables: {
 					reservation: {
-						patient: '6798922288405585579',
+						patient: DEFAULT_RESERVATION_PATIENT_ID,
 						bookingOptions: reservationData,
 					},
 				},
