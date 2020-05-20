@@ -3,15 +3,15 @@ import moment from 'moment'
 import React from 'react'
 
 const useStyles = makeStyles(theme => ({
-	boxsendtime: {
+	root: {
 		marginTop: theme.spacing(1),
 	},
-	boxsendtime__sendtime: {
+	sendtime: {
 		marginRight: theme.spacing(2),
 		fontSize: '12px',
 		color: '#7a869a',
 	},
-	boxsendtime__status: {
+	status: {
 		fontSize: '12px',
 		color: '#7a869a',
 	},
@@ -22,11 +22,11 @@ const LastCardIndicator = props => {
 	const classes = useStyles()
 
 	return (
-		<Grid container className={classes.boxsendtime}>
-			<Typography className={classes.boxsendtime__sendtime}>
+		<Grid container justify='space-between' className={classes.root}>
+			<Typography className={classes.sendtime}>
 				{moment(parseInt(timestamp, 10)).format('HH:mm')}
 			</Typography>
-			<Typography className={classes.boxsendtime__status}>
+			<Typography className={classes.status}>
 				{fromMe ? 'Đã gửi' : ''}
 			</Typography>
 		</Grid>

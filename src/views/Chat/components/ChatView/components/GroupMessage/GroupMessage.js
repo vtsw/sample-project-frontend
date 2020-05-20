@@ -1,13 +1,14 @@
 import React from 'react'
 
-import GroupBreak from './GroupBreak'
-import GroupedMessages from './GroupedMessages'
+import { GroupMessageList, GroupBreak } from './components'
 
 const GroupMessage = props => {
-	const { items, listPureMessage, type, timestamp, meId, endOfGroup } = props
+	const { items, type, timestamp, meId, endOfGroup } = props
 
 	if (type !== 'line') {
-		return <GroupedMessages items={items} meId={meId} endOfGroup={endOfGroup} />
+		return (
+			<GroupMessageList items={items} meId={meId} endOfGroup={endOfGroup} />
+		)
 	} else {
 		return <GroupBreak timestamp={timestamp} />
 	}

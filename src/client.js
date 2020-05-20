@@ -14,6 +14,8 @@ import {
 	GET_MAP_ZALO_MESSAGE_ATTACHMENT,
 } from './views/Chat/gql/query'
 
+import { GET_RESERVATION_QUEUE } from '@views/Reservation/gql/query'
+
 const typeDefs = {}
 
 const resolvers = {
@@ -76,7 +78,35 @@ const resolvers = {
 			})
 			return createValue
 		},
+		createReservation: (_, { reservation }, { cache }) => {
+			const { reservationQueue } = cache.readQuery({
+				query: GET_RESERVATION_QUEUE,
+			})
+			const items = [...reservationQueue.items, reservation]
 
+			cache.writeData({
+				data: {
+					reservationQueue: {
+						...reservationQueue,
+						items,
+					},
+				},
+			})
+		},
+		resetReservationQueue: (_, _args, { cache }) => {
+			const { reservationQueue } = cache.readQuery({
+				query: GET_RESERVATION_QUEUE,
+			})
+
+			cache.writeData({
+				data: {
+					reservationQueue: {
+						...reservationQueue,
+						items: [],
+					},
+				},
+			})
+		},
 		// Chat
 		setSelectedUserOfChat: (_, { selectedUser }, { cache }) => {
 			cache.writeData({
@@ -235,7 +265,10 @@ const initialState = {
 		email: '',
 		__typename: 'UserOfMain',
 	},
-
+	reservationQueue: {
+		items: [],
+		__typename: 'ReservationQueue',
+	},
 	selectedUserOfChat: {
 		id: '',
 		displayName: '',

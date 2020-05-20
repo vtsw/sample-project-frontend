@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { makeStyles, Box } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
-	root__infor__boxname__numbermessage: {
+	infor__boxname__numbermessage: {
 		margin: '0 8px',
 		fontSize: '12px',
 		background: 'red',
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 const MessageNoti = ({ numberNoti, maximumValueNoti = 5 }) => {
 	const classes = useStyles()
 	return (
-		<Box className={classes.root__infor__boxname__numbermessage}>
+		<Box className={classes.infor__boxname__numbermessage}>
 			{numberNoti > maximumValueNoti ? `${maximumValueNoti}+` : numberNoti}
 		</Box>
 	)

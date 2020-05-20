@@ -27,23 +27,23 @@ const useStyles = makeStyles(theme => ({
 		},
 	}),
 
-	root__infor__name: {
+	infor__name: {
 		display: 'flex',
 		flexDirection: 'column',
 		marginLeft: theme.spacing(2),
 	},
-	root__infor__name__fullname: {
+	infor__name__fullname: {
 		fontSize: 18,
 	},
-	root__infor__name__time: {
+	infor__name__time: {
 		fontSize: 12,
 		color: '#7a869a',
 	},
-	root__infor__unsent: {
+	infor__unsent: {
 		fontSize: 12,
 		color: 'red',
 	},
-	root__infor__name__message: {
+	infor__name__message: {
 		fontSize: 12,
 		color: '#7a869a',
 		overflow: 'hidden',
@@ -51,17 +51,17 @@ const useStyles = makeStyles(theme => ({
 		width: '100%',
 		whiteSpace: 'nowrap',
 	},
-	root__infor__boxmesssage__messagedraf: {
+	infor__boxmesssage__messagedraf: {
 		fontSize: 12,
 		color: '#7a869a',
 	},
-	root__infor__boxname: {
+	infor__boxname: {
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
 	},
 
-	root__infor__boxmesssage: {
+	infor__boxmesssage: {
 		width: '100%',
 		display: 'flex',
 		alignItems: 'baseline',
@@ -115,37 +115,35 @@ const FriendTag = props => {
 
 	return (
 		<Box className={classes.root} onClick={hanldeSelectedUser}>
-			<Grid item className={classes.root__infor__avatar}>
+			<Grid item className={classes.infor__avatar}>
 				<Avatar size={50} avatar={avatar} status='online' showStatus={true} />
 			</Grid>
 			<Grid item xs={9}>
-				<Box className={classes.root__infor__name}>
-					<Box className={classes.root__infor__boxname}>
-						<Typography className={classes.root__infor__name__fullname}>
+				<Box className={classes.infor__name}>
+					<Box className={classes.infor__boxname}>
+						<Typography className={classes.infor__name__fullname}>
 							{displayName}
 						</Typography>
 						{valueDefault && selectedUserOfChat.id !== id ? (
-							<Typography className={classes.root__infor__unsent}>
+							<Typography className={classes.infor__unsent}>
 								Chưa gửi
 							</Typography>
 						) : (
-							<Typography className={classes.root__infor__name__time}>
+							<Typography className={classes.infor__name__time}>
 								{time}
 							</Typography>
 						)}
 					</Box>
 					{lastNewMessage ? (
-						<Box className={classes.root__infor__boxmesssage}>
-							<Typography className={classes.root__infor__name__message}>
+						<Box className={classes.infor__boxmesssage}>
+							<Typography className={classes.infor__name__message}>
 								{lastNewMessage}
 							</Typography>
 							{numberNoti && <MessageNoti numberNoti={numberNoti} />}
 						</Box>
 					) : valueDefault && selectedUserOfChat.id !== id ? (
-						<Box className={classes.root__infor__boxmesssage}>
-							<Typography
-								className={classes.root__infor__boxmesssage__messagedraf}
-							>
+						<Box className={classes.infor__boxmesssage}>
+							<Typography className={classes.infor__boxmesssage__messagedraf}>
 								[Nháp]:
 							</Typography>
 

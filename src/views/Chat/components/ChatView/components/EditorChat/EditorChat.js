@@ -1,12 +1,14 @@
 import React from 'react'
 
-import { Box, IconButton } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { Image } from '@material-ui/icons'
-
-import { RichText } from '@views_components'
-import { GET_DRAFT_LIST } from '@views/Chat/gql/query'
 import { useMutation, useQuery } from '@apollo/react-hooks'
+
+import { Box } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
+import { UploadImageButton, UploadFileButton } from '@views_components'
+import { RichText } from '@views_components'
+
+import { GET_DRAFT_LIST } from '@views/Chat/gql/query'
 import {
 	CREATE_ZALO_MESSAGE,
 	CREATE_ZALO_MESSAGE_ATTACHMENT,
@@ -54,64 +56,87 @@ const EditorChat = props => {
 	} = useQuery(GET_DRAFT_LIST)
 
 	const [setCreateZaloMessageAttachment] = useMutation(
-		SET_CREATE_ZALO_MESSAGE_ATTACHMENT
-	)
-	const [createZaloMessage] = useMutation(CREATE_ZALO_MESSAGE)
-	const [createZaloMessageAttachment] = useMutation(
-		CREATE_ZALO_MESSAGE_ATTACHMENT,
+		SET_CREATE_ZALO_MESSAGE_ATTACHMENT,
 		{
 			onError: err => alert(err),
 		}
+	)
+	const [createZaloMessage] = useMutation(CREATE_ZALO_MESSAGE, {
+		onError: err => alert(err),
+	})
+	const [createZaloMessageAttachment] = useMutation(
+		CREATE_ZALO_MESSAGE_ATTACHMENT
 	)
 
 	const richTextValueDefault =
 		items.find(item => item.toInterestId === idUser) &&
 		JSON.parse(items.find(item => item.toInterestId === idUser).message)
 
-	const handleUploadImage = ({ target }) => {
-		const file = target.files[0]
-		const fileReader = new FileReader()
-
-		fileReader.readAsBinaryString(file)
-		fileReader.onload = e => {
-			const createBlobUrl = file => {
-				const length = file.length
-				let arr = new Uint8Array(length)
-
-				for (let i = 0; i < length; i++) {
-					arr[i] = file.charCodeAt(i)
-				}
-
-				const blob = new Blob([arr], { type: 'image/png' })
-				return URL.createObjectURL(blob)
-			}
-			const url = createBlobUrl(e.target.result)
-			handleSendZaloImageMessage(file, url)
-		}
-	}
-
-	const handleSendZaloImageMessage = (attachmentFile, url) => {
+	const handleSendZaloImageMessage = ({
+		attachmentFile,
+		url = '',
+		fileType,
+	}) => {
 		createZaloMessageAttachment({
 			variables: {
 				file: {
 					to: idUser,
 					content: '',
 					attachmentFile,
+					fileType,
 				},
 			},
-		}).then(({ data }) => {
-			const id = data?.createZaloMessageAttachment?.id
-
-			setCreateZaloMessageAttachment({
-				variables: {
-					message: {
-						id,
-						url,
-						__typename: 'MessageAttachment',
-					},
-				},
-			})
 		})
+			.then(({ data }) => {
+				const id = data?.createZaloMessageAttachment?.id
+
+				setCreateZaloMessageAttachment({
+					variables: {
+						message: {
+							id,
+							url,
+							__typename: 'MessageAttachment',
+						},
+					},
+				})
+			})
+			.catch(e => alert(e))
+	}
+
+	const handleUploadImage = ({ target }) => {
+		const file = target.files[0]
+		let fileType = 'Image'
+		const fileReader = new FileReader()
+
+		if (file.type === 'image/gif') {
+			fileType = 'Gif'
+		}
+
+		fileReader.readAsBinaryString(file)
+		fileReader.onload = e => {
+			const result = e.target.result
+			const length = result.length
+			let arr = new Uint8Array(length)
+
+			for (let i = 0; i < length; i++) {
+				arr[i] = result.charCodeAt(i)
+			}
+
+			const blob = new Blob([arr], { type: 'image/png' })
+			const url = URL.createObjectURL(blob)
+
+			handleSendZaloImageMessage({ attachmentFile: file, url, fileType })
+		}
+	}
+
+	const handleOnUploadFile = ({ target }) => {
+		const file = target.files[0]
+
+		if (file.size / 1024 / 1024 > 5) {
+			alert('You cannot upload a file larger than 5MB')
+			return
+		}
+		handleSendZaloImageMessage({ attachmentFile: file, fileType: 'File' })
 	}
 
 	const handleSendZaloMessage = content => {
@@ -128,20 +153,8 @@ const EditorChat = props => {
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.toolbar}>
-				<Box>
-					<input
-						id='editorchat-uploadinput'
-						type='file'
-						accept='image/*'
-						className={classes.toolbar__uploadinput}
-						onChange={handleUploadImage}
-					/>
-					<label htmlFor='editorchat-uploadinput'>
-						<IconButton aria-label='upload image' component='span'>
-							<Image />
-						</IconButton>
-					</label>
-				</Box>
+				<UploadImageButton onChange={handleUploadImage} />
+				<UploadFileButton onChange={handleOnUploadFile} />
 			</Box>
 			<Box className={classes.areainput}>
 				<RichText
