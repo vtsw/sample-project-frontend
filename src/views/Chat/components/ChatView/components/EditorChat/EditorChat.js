@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
 import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { UploadImageButton, UploadFileButton } from '@views_components'
+import {
+	UploadImageButton,
+	UploadFileButton,
+	SendReservationButton,
+} from '@views_components'
 import { RichText } from '@views_components'
+import { SendReservationDialog } from './components'
 
 import { GET_DRAFT_LIST } from '@views/Chat/gql/query'
 import {
@@ -48,6 +53,11 @@ const useStyles = makeStyles(() => ({
 const EditorChat = props => {
 	const { idUser } = props
 	const classes = useStyles()
+
+	const [
+		sendReservationDialogVisible,
+		setSendReservationDialogVisible,
+	] = useState(true)
 
 	const {
 		data: {
@@ -150,11 +160,16 @@ const EditorChat = props => {
 		})
 	}
 
+	const handleOnAgreeSendReservation = () => {}
+
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.toolbar}>
 				<UploadImageButton onChange={handleUploadImage} />
 				<UploadFileButton onChange={handleOnUploadFile} />
+				<SendReservationButton
+					onClick={() => setSendReservationDialogVisible(true)}
+				/>
 			</Box>
 			<Box className={classes.areainput}>
 				<RichText
@@ -164,6 +179,16 @@ const EditorChat = props => {
 					handleComfirm={handleSendZaloMessage}
 				/>
 			</Box>
+			<SendReservationDialog
+				open={sendReservationDialogVisible}
+				onClose={() => {
+					setSendReservationDialogVisible(false)
+				}}
+				onAgree={handleOnAgreeSendReservation}
+				onDisagree={() => {
+					setSendReservationDialogVisible(false)
+				}}
+			/>
 		</Box>
 	)
 }

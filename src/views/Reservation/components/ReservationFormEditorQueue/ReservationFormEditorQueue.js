@@ -1,15 +1,22 @@
 import React from 'react'
 import { format } from 'date-fns/esm'
 
-import { useMutation } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import ReservationFormEditor from '../ReservationFormEditor'
-import ReservationQueue from '../ReservationQueue'
+import {
+	ReservationFormEditor,
+	ReservationQueue,
+} from '@views/Reservation/components'
 
-import { CREATE_RESERVATION } from '@views/Reservation/gql/mutation'
+import { GET_RESERVATION_QUEUE } from '@views/Reservation/gql/query'
+import {
+	CREATE_RESERVATION,
+	CREATE_RESERVATION_REQUEST,
+	RESET_RESERVATION_QUEUE,
+} from '@views/Reservation/gql/mutation'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -33,9 +40,17 @@ const patients = [
 	{ id: '4556061936982532685', value: 'Patient C', label: 'Patient C' },
 ]
 
+const DEFAULT_RESERVATION_PATIENT_ID = '4556061936982532685'
+
 const ReservationFormEditorQueue = () => {
 	const classes = useStyles()
+
+	const { data: reservationQueueData } = useQuery(GET_RESERVATION_QUEUE)
 	const [createReservation] = useMutation(CREATE_RESERVATION)
+	const [createReservationRequest] = useMutation(CREATE_RESERVATION_REQUEST, {
+		onError: err => alert(err),
+	})
+	const [resetReservationQueue] = useMutation(RESET_RESERVATION_QUEUE)
 
 	const handleOnCreateReservation = ({ type, patient, doctor, time }) => {
 		createReservation({
@@ -53,6 +68,32 @@ const ReservationFormEditorQueue = () => {
 		})
 	}
 
+	const handleOnSubmit = () => {
+		if (reservationQueueData?.reservationQueue?.items.length) {
+			const reservationData = reservationQueueData.reservationQueue.items.map(
+				item => ({
+					doctor: item.doctor,
+					time: item.unixTime,
+				})
+			)
+
+			createReservationRequest({
+				variables: {
+					reservation: {
+						patient: DEFAULT_RESERVATION_PATIENT_ID,
+						bookingOptions: reservationData,
+					},
+				},
+			}).then(() => {
+				resetReservationQueue()
+			})
+		}
+	}
+
+	const handleOnCancel = () => {
+		resetReservationQueue()
+	}
+
 	return (
 		<Box className={classes.root}>
 			<ReservationFormEditor
@@ -60,7 +101,11 @@ const ReservationFormEditorQueue = () => {
 				doctors={doctors}
 				handleOnCreateReservation={handleOnCreateReservation}
 			/>
-			<ReservationQueue />
+			<ReservationQueue
+				tableItems={reservationQueueData?.reservationQueue?.items}
+				onSubmit={handleOnSubmit}
+				onCancel={handleOnCancel}
+			/>
 		</Box>
 	)
 }
