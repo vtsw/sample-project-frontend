@@ -160,8 +160,6 @@ const EditorChat = props => {
 		})
 	}
 
-	const handleOnAgreeSendReservation = () => {}
-
 	return (
 		<Box className={classes.root}>
 			<Box className={classes.toolbar}>
@@ -176,16 +174,12 @@ const EditorChat = props => {
 					valueDefault={richTextValueDefault}
 					idUser={idUser}
 					editableStyle={classes.richtext}
-					handleComfirm={handleSendZaloMessage}
+					handleConfirm={handleSendZaloMessage}
 				/>
 			</Box>
 			<SendReservationDialog
 				open={sendReservationDialogVisible}
 				onClose={() => {
-					setSendReservationDialogVisible(false)
-				}}
-				onAgree={handleOnAgreeSendReservation}
-				onDisagree={() => {
 					setSendReservationDialogVisible(false)
 				}}
 			/>

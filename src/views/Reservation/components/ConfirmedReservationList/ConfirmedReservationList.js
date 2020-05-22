@@ -35,7 +35,7 @@ const tableHeaders = [
 	{ headerLabel: 'TIME', xs: 4, headerVariable: 'time' },
 ]
 
-const ReservationList = () => {
+const ConfirmedReservationList = () => {
 	const classes = useStyles()
 
 	const { loading, error, data, fetchMore, networkStatus } = useQuery(
@@ -130,4 +130,4 @@ const ReservationList = () => {
 	)
 }
 
-export default ReservationList
+export default ConfirmedReservationList

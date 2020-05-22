@@ -48,7 +48,7 @@ const serialize = nodes => {
 	return nodes.map(n => Node.string(n)).join('\n')
 }
 
-const RichText = ({ idUser, valueDefault, handleComfirm }) => {
+const RichText = ({ idUser, valueDefault, handleConfirm }) => {
 	const classes = useStyles()
 	const ref = useRef()
 	const [value, setValue] = useState(initialValue)
@@ -75,7 +75,7 @@ const RichText = ({ idUser, valueDefault, handleComfirm }) => {
 					],
 				},
 			])
-			handleComfirm(valueComfirm)
+			handleConfirm(valueComfirm)
 			hanldeDebounceSetDraftText.cancel()
 			if (valueDefault) {
 				hanldeDebounceSetDraftText(idUser, [
