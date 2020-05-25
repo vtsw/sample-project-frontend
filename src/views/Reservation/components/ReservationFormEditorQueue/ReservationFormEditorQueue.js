@@ -11,12 +11,17 @@ import {
 	ReservationQueue,
 } from '@views/Reservation/components'
 
-import { GET_RESERVATION_QUEUE } from '@views/Reservation/gql/query'
+import {
+	GET_RESERVATION_QUEUE,
+	GET_ZALO_INTERESTED_USER_LIST,
+} from '@views/Reservation/gql/query'
+import { FETCH_USER_LIST } from '@views/User/gql/query'
 import {
 	CREATE_RESERVATION,
 	CREATE_RESERVATION_REQUEST,
 	RESET_RESERVATION_QUEUE,
 } from '@views/Reservation/gql/mutation'
+import { PAGE_LIMIT } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -29,37 +34,58 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const doctors = [
-	{ id: '5ec37efc0b4bcd353424affb', value: 'Doctor A', label: 'Doctor A' },
-	{ id: '5e68995fb6d0bc05829b6e79', value: 'Doctor B', label: 'Doctor B' },
-]
-
-const patients = [
-	{ id: '4556061936982532685', value: 'Patient A', label: 'Patient A' },
-	{ id: '4556061936982532685', value: 'Patient B', label: 'Patient B' },
-	{ id: '4556061936982532685', value: 'Patient C', label: 'Patient C' },
-]
-
 const DEFAULT_RESERVATION_PATIENT_ID = '4556061936982532685'
 
 const ReservationFormEditorQueue = () => {
 	const classes = useStyles()
 
 	const { data: reservationQueueData } = useQuery(GET_RESERVATION_QUEUE)
+	const { data: dataUserList } = useQuery(FETCH_USER_LIST, {
+		variables: {
+			query: {
+				searchText: '',
+				limit: PAGE_LIMIT,
+			},
+		},
+		onError: err => {
+			alert(err)
+		},
+	})
+	const { data: dataInterestedUserList } = useQuery(
+		GET_ZALO_INTERESTED_USER_LIST,
+		{
+			variables: {
+				query: {
+					limit: PAGE_LIMIT,
+				},
+			},
+			onError: err => {
+				alert(err)
+			},
+		}
+	)
 	const [createReservation] = useMutation(CREATE_RESERVATION)
 	const [createReservationRequest] = useMutation(CREATE_RESERVATION_REQUEST, {
 		onError: err => alert(err),
 	})
 	const [resetReservationQueue] = useMutation(RESET_RESERVATION_QUEUE)
 
-	const handleOnCreateReservation = ({ type, patient, doctor, time }) => {
+	const handleOnCreateReservation = ({ type, patientId, doctorId, time }) => {
+		const doctor = dataUserList.userList.items.filter(
+			item => item.id === doctorId
+		)
+		const patient = dataInterestedUserList.zaloInterestedUserList.items.filter(
+			item => item.id === patientId
+		)
 		createReservation({
 			variables: {
 				reservation: {
 					id: new Date().getTime(),
 					type,
-					patient,
-					doctor,
+					patientId,
+					patient: patient[0].displayName,
+					doctorId,
+					doctor: doctor[0].name,
 					time: format(time, 'HH:mm - dd/MM/yyyy'),
 					unixTime: time.getTime(),
 					__typename: 'ReservationInput',
@@ -72,7 +98,7 @@ const ReservationFormEditorQueue = () => {
 		if (reservationQueueData?.reservationQueue?.items.length) {
 			const reservationData = reservationQueueData.reservationQueue.items.map(
 				item => ({
-					doctor: item.doctor,
+					doctor: item.doctorId,
 					time: item.unixTime,
 				})
 			)
@@ -80,7 +106,7 @@ const ReservationFormEditorQueue = () => {
 			createReservationRequest({
 				variables: {
 					reservation: {
-						patient: DEFAULT_RESERVATION_PATIENT_ID,
+						patient: '2496649912531721556',
 						bookingOptions: reservationData,
 					},
 				},
@@ -97,8 +123,8 @@ const ReservationFormEditorQueue = () => {
 	return (
 		<Box className={classes.root}>
 			<ReservationFormEditor
-				patients={patients}
-				doctors={doctors}
+				patients={dataInterestedUserList?.zaloInterestedUserList?.items ?? []}
+				doctors={dataUserList?.userList?.items ?? []}
 				handleOnCreateReservation={handleOnCreateReservation}
 			/>
 			<ReservationQueue
