@@ -4,9 +4,6 @@ const CREATE_RESERVATION_REQUEST = gql`
 	mutation CreateReservationRequest($reservation: ReservationInput!) {
 		createReservationRequest(reservation: $reservation) {
 			id
-			zaloRecipientId
-			zaloSenderId
-			source
 			zaloMessageId
 			payload {
 				patient

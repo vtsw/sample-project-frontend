@@ -40,7 +40,7 @@ const Reservation = () => {
 					<ReservationFormEditorQueue />
 				</Grid>
 				<Grid item xs={7} className={classes.item__reservationlist}>
-					<ConfirmedReservationList />
+					{/* <ConfirmedReservationList /> */}
 					<ReservationList />
 				</Grid>
 			</Grid>
