@@ -18,7 +18,7 @@ const GET_RESERVATION_QUEUE = gql`
 `
 
 const GET_RESERVATION_LIST = gql`
-	query ReservationList($query: ReservationListInput!) {
+	query ReservationList($query: DefaultPaginationInput!) {
 		reservationList(query: $query) {
 			items {
 				id

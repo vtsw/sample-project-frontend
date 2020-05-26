@@ -1,5 +1,5 @@
 import 'date-fns'
-import React, { useReducer } from 'react'
+import React, { useReducer, useEffect } from 'react'
 import DateFnsUtils from '@date-io/date-fns'
 
 import {
@@ -88,8 +88,19 @@ const reducer = (state = initialState, action) => {
 
 const ReservationFormEditor = props => {
 	const classes = useStyles()
-	const { patients, doctors, handleOnCreateReservation } = props
+	const {
+		patients,
+		doctors,
+		selectedPatientId = '',
+		handleOnCreateReservation,
+	} = props
 	const [state, dispatch] = useReducer(reducer, initialState)
+
+	useEffect(() => {
+		if (selectedPatientId) {
+			dispatch({ type: 'SET_PATIENT', payload: selectedPatientId })
+		}
+	}, [selectedPatientId])
 
 	return (
 		<Box className={classes.root}>
@@ -125,7 +136,7 @@ const ReservationFormEditor = props => {
 						<Select
 							label='Doctor'
 							labelId='doctor-input-label'
-							value={state.doctor}
+							value={state.doctorId}
 							onChange={e =>
 								dispatch({ type: 'SET_DOCTOR', payload: e.target.value })
 							}
@@ -137,12 +148,16 @@ const ReservationFormEditor = props => {
 							))}
 						</Select>
 					</FormControl>
-					<FormControl variant='outlined' className={classes.formitem}>
+					<FormControl
+						variant='outlined'
+						className={classes.formitem}
+						disabled={!!selectedPatientId}
+					>
 						<InputLabel id='patient-input-label'>Patient</InputLabel>
 						<Select
 							label='Patient'
 							labelId='patient-input-label'
-							value={state.patient}
+							value={state.patientId}
 							onChange={e =>
 								dispatch({ type: 'SET_PATIENT', payload: e.target.value })
 							}

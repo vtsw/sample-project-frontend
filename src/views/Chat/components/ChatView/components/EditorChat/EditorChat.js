@@ -57,7 +57,7 @@ const EditorChat = props => {
 	const [
 		sendReservationDialogVisible,
 		setSendReservationDialogVisible,
-	] = useState(true)
+	] = useState(false)
 
 	const {
 		data: {

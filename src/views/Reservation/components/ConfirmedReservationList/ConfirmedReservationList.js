@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 const tableHeaders = [
 	{ headerLabel: 'PATIENT', xs: 4, headerVariable: 'patient' },
 	{ headerLabel: 'DOCTOR', xs: 4, headerVariable: 'doctor' },
-	{ headerLabel: 'TIME', xs: 4, headerVariable: 'time' },
+	{ headerLabel: 'TIME (HH/MM - DD/MM/YYYY)', xs: 4, headerVariable: 'time' },
 ]
 
 const ConfirmedReservationList = () => {
@@ -135,7 +135,7 @@ const ConfirmedReservationList = () => {
 			) : (
 				<>
 					<Typography variant='h5' className={classes.listtitle}>
-						ConfirmedReservationList Total {data.reservationList.items.length}
+						Total reservation: {data.reservationList.items.length}
 					</Typography>
 					<Box className={classes.reservationqueue__table}>
 						<InfiniteTable
