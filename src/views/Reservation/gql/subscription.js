@@ -11,9 +11,9 @@ const ON_RESERVATION_CONFIRMED = gql`
 			}
 			patient {
 				id
-				displayName
+				name
 			}
-			reservationTime
+			time
 		}
 	}
 `

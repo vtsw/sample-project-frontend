@@ -41,7 +41,7 @@ const Reservation = () => {
 				</Grid>
 				<Grid item xs={7} className={classes.item__reservationlist}>
 					<ConfirmedReservationList />
-					{/* <ReservationList /> */}
+					<ReservationList />
 				</Grid>
 			</Grid>
 		</Box>

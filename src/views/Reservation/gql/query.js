@@ -29,9 +29,9 @@ const GET_RESERVATION_LIST = gql`
 				}
 				patient {
 					id
-					displayName
+					name
 				}
-				reservationTime
+				time
 			}
 			hasNext
 			total
@@ -40,20 +40,19 @@ const GET_RESERVATION_LIST = gql`
 `
 
 const GET_RESERVATION_REQUEST_LIST = gql`
-	query ReservationRequestList($query: ReservationRequestListInput!) {
+	query ReservationRequestList($query: DefaultPaginationInput!) {
 		reservationRequestList(query: $query) {
 			items {
 				id
-				type
-				doctor {
+				doctors {
 					id
 					name
+					time
 				}
 				patient {
 					id
-					displayName
+					name
 				}
-				reservationTime
 			}
 			hasNext
 			total

@@ -103,7 +103,7 @@ const SendReservationDialog = props => {
 	const handleOnSubmit = () => {
 		if (reservationList.length) {
 			const reservationData = reservationList.map(item => ({
-				doctor: item.doctorId,
+				id: item.doctorId,
 				time: item.unixTime,
 			}))
 
@@ -111,7 +111,7 @@ const SendReservationDialog = props => {
 				variables: {
 					reservation: {
 						patient: '5eb91ceac22fbb003619c288',
-						bookingOptions: reservationData,
+						doctors: reservationData,
 					},
 				},
 			}).then(() => {

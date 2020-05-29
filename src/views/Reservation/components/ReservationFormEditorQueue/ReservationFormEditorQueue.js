@@ -14,6 +14,7 @@ import {
 import {
 	GET_RESERVATION_QUEUE,
 	GET_ZALO_INTERESTED_USER_LIST,
+	GET_RESERVATION_REQUEST_LIST,
 } from '@views/Reservation/gql/query'
 import { FETCH_USER_LIST } from '@views/User/gql/query'
 import {
@@ -34,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const DEFAULT_RESERVATION_PATIENT_ID = '4556061936982532685'
+const DEFAULT_RESERVATION_PATIENT_ID = '5eb91ceac22fbb003619c288'
 
 const ReservationFormEditorQueue = () => {
 	const classes = useStyles()
@@ -98,7 +99,7 @@ const ReservationFormEditorQueue = () => {
 		if (reservationQueueData?.reservationQueue?.items.length) {
 			const reservationData = reservationQueueData.reservationQueue.items.map(
 				item => ({
-					doctor: item.doctorId,
+					id: item.doctorId,
 					time: item.unixTime,
 				})
 			)
@@ -106,10 +107,21 @@ const ReservationFormEditorQueue = () => {
 			createReservationRequest({
 				variables: {
 					reservation: {
-						patient: '5eb91ceac22fbb003619c288',
-						bookingOptions: reservationData,
+						patient: DEFAULT_RESERVATION_PATIENT_ID,
+						doctors: reservationData,
 					},
 				},
+				refetchQueries: [
+					{
+						query: GET_RESERVATION_REQUEST_LIST,
+						variables: {
+							query: {
+								limit: PAGE_LIMIT,
+							},
+						},
+					},
+				],
+				awaitRefetchQueries: true,
 			}).then(() => {
 				resetReservationQueue()
 			})

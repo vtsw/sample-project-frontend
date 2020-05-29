@@ -81,12 +81,9 @@ const ConfirmedReservationList = () => {
 	const convertReservationList = reservationList => {
 		return reservationList.map(item => ({
 			id: item.id,
-			patient: item.patient.displayName,
+			patient: item.patient.name,
 			doctor: item.doctor.name,
-			time: format(
-				new Date(parseInt(item.reservationTime)),
-				'HH:mm - dd/MM/yyyy'
-			),
+			time: format(new Date(parseInt(item.time)), 'HH:mm - dd/MM/yyyy'),
 		}))
 	}
 

@@ -8,7 +8,10 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { InfiniteTable, Loading } from '@views_components'
 
-import { GET_RESERVATION_LIST } from '@views/Reservation/gql/query'
+import {
+	GET_RESERVATION_LIST,
+	GET_RESERVATION_REQUEST_LIST,
+} from '@views/Reservation/gql/query'
 import { PAGE_LIMIT, NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
@@ -38,7 +41,7 @@ const ReservationList = () => {
 	const classes = useStyles()
 
 	const { loading, error, data, fetchMore, networkStatus } = useQuery(
-		GET_RESERVATION_LIST,
+		GET_RESERVATION_REQUEST_LIST,
 		{
 			variables: {
 				query: {
@@ -53,15 +56,18 @@ const ReservationList = () => {
 	)
 
 	const convertReservationList = reservationList => {
-		return reservationList.map(item => ({
-			id: item.id,
-			patient: item.patient.displayName,
-			doctor: item.doctor.name,
-			time: format(
-				new Date(parseInt(item.reservationTime)),
-				'HH:mm - dd/MM/yyyy'
-			),
-		}))
+		const result = []
+		reservationList.forEach(reservation => {
+			reservation.doctors.forEach(doctor => {
+				result.push({
+					id: doctor.id,
+					patient: reservation.patient?.name ?? '',
+					doctor: doctor.name,
+					time: format(new Date(parseInt(doctor.time)), 'HH:mm - dd/MM/yyyy'),
+				})
+			})
+		})
+		return result
 	}
 
 	const loadNextReservationPage = () => {
@@ -109,15 +115,15 @@ const ReservationList = () => {
 			) : (
 				<>
 					<Typography variant='h5' className={classes.listtitle}>
-						Total {data.reservationList.total}
+						Total {data.reservationRequestList.total}
 					</Typography>
 					<Box className={classes.reservationqueue__table}>
 						<InfiniteTable
-							items={convertReservationList(data.reservationList.items)}
+							items={convertReservationList(data.reservationRequestList.items)}
 							columns={tableHeaders}
 							loadingMore={networkStatus === NETWORK_STATUS_FETCH_MORE}
 							loadNextPage={loadNextReservationPage}
-							hasNextPage={data.reservationList.hasNext}
+							hasNextPage={data.reservationRequestList.hasNext}
 						/>
 					</Box>
 				</>
