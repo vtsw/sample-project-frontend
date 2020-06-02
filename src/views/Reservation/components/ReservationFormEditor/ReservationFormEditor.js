@@ -132,10 +132,10 @@ const ReservationFormEditor = props => {
 				</FormControl>
 				<Grid className={classes.container__patient__doctor}>
 					<FormControl variant='outlined' className={classes.formitem}>
-						<InputLabel id='doctor-input-label'>Doctor</InputLabel>
+						<InputLabel id='reservation-doctor-input-label'>Doctor</InputLabel>
 						<Select
 							label='Doctor'
-							labelId='doctor-input-label'
+							labelId='reservation-doctor-input-label'
 							value={state.doctorId}
 							onChange={e =>
 								dispatch({ type: 'SET_DOCTOR', payload: e.target.value })
@@ -153,10 +153,12 @@ const ReservationFormEditor = props => {
 						className={classes.formitem}
 						disabled={!!selectedPatientId}
 					>
-						<InputLabel id='patient-input-label'>Patient</InputLabel>
+						<InputLabel id='reservation-patient-input-label'>
+							Patient
+						</InputLabel>
 						<Select
 							label='Patient'
-							labelId='patient-input-label'
+							labelId='reservation-patient-input-label'
 							value={state.patientId}
 							onChange={e =>
 								dispatch({ type: 'SET_PATIENT', payload: e.target.value })

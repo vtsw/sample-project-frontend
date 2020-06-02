@@ -1,6 +1,5 @@
 import React from 'react'
 import { format } from 'date-fns/esm'
-
 import { useQuery } from '@apollo/react-hooks'
 
 import { Box, Typography } from '@material-ui/core'
@@ -34,7 +33,7 @@ const tableHeaders = [
 	{ headerLabel: 'TIME (HH/MM - DD/MM/YYYY)', xs: 4, headerVariable: 'time' },
 ]
 
-const ReservationList = () => {
+const ReservationRequestList = () => {
 	const classes = useStyles()
 
 	const { loading, error, data, fetchMore, networkStatus } = useQuery(
@@ -130,4 +129,4 @@ const ReservationList = () => {
 	)
 }
 
-export default ReservationList
+export default ReservationRequestList

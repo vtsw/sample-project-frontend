@@ -1,6 +1,5 @@
 import React from 'react'
 import { format } from 'date-fns/esm'
-
 import { useQuery, useMutation } from '@apollo/react-hooks'
 
 import { Box } from '@material-ui/core'

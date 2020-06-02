@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { format } from 'date-fns/esm'
-
 import { useQuery } from '@apollo/react-hooks'
 
 import { Box, Typography } from '@material-ui/core'

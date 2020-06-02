@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import {
 	ReservationFormEditorQueue,
-	ReservationList,
+	ReservationRequestList,
 	ConfirmedReservationList,
 } from './components'
 
@@ -41,7 +41,7 @@ const Reservation = () => {
 				</Grid>
 				<Grid item xs={7} className={classes.item__reservationlist}>
 					<ConfirmedReservationList />
-					<ReservationList />
+					<ReservationRequestList />
 				</Grid>
 			</Grid>
 		</Box>
