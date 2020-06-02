@@ -8,10 +8,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { InfiniteTable, Loading } from '@views_components'
 
-import {
-	GET_RESERVATION_LIST,
-	GET_RESERVATION_REQUEST_LIST,
-} from '@views/Reservation/gql/query'
+import { GET_RESERVATION_REQUEST_LIST } from '@views/Reservation/gql/query'
 import { PAGE_LIMIT, NETWORK_STATUS_FETCH_MORE } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
@@ -76,23 +73,24 @@ const ReservationList = () => {
 				variables: {
 					query: {
 						limit: PAGE_LIMIT,
-						skip: data.reservationList.items.length,
+						skip: data.reservationRequestList.items.length,
 					},
 				},
 				updateQuery: (prev, { fetchMoreResult }) => {
 					if (!fetchMoreResult) return prev
-					const fetchedReservationList = fetchMoreResult.reservationList
-					let cacheReservationList = prev.reservationList
+					const fetchedReservationRequestList =
+						fetchMoreResult.reservationRequestList
+					let cacheReservationList = prev.reservationRequestList
 
 					const items = [
 						...cacheReservationList.items,
-						...fetchedReservationList.items,
+						...fetchedReservationRequestList.items,
 					]
-					const hasNext = fetchedReservationList.hasNext
+					const hasNext = fetchedReservationRequestList.hasNext
 					const total =
-						cacheReservationList.total + fetchedReservationList.total
+						cacheReservationList.total + fetchedReservationRequestList.total
 					return {
-						reservationList: {
+						reservationRequestList: {
 							...cacheReservationList,
 							items,
 							hasNext,
@@ -115,7 +113,7 @@ const ReservationList = () => {
 			) : (
 				<>
 					<Typography variant='h5' className={classes.listtitle}>
-						Total {data.reservationRequestList.total}
+						Reservation request list
 					</Typography>
 					<Box className={classes.reservationqueue__table}>
 						<InfiniteTable
