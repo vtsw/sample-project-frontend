@@ -11,21 +11,11 @@ import {
 	ReservationQueue,
 } from '@views/Reservation/components'
 
-import {
-	GET_RESERVATION_QUEUE,
-	GET_ZALO_INTERESTED_USER_LIST,
-} from '@views/Reservation/gql/query'
+import { GET_ZALO_INTERESTED_USER_LIST } from '@views/Reservation/gql/query'
 import { FETCH_USER_LIST } from '@views/User/gql/query'
-import {
-	GET_SELECTED_USER_OF_CHAT,
-	GET_DRAFT_LIST,
-} from '@views/Chat/gql/query'
-import {
-	CREATE_RESERVATION,
-	CREATE_RESERVATION_REQUEST,
-	RESET_RESERVATION_QUEUE,
-} from '@views/Reservation/gql/mutation'
-import { PAGE_LIMIT } from '@src/configs.local'
+import { GET_SELECTED_USER_OF_CHAT } from '@views/Chat/gql/query'
+import { CREATE_RESERVATION_REQUEST } from '@views/Reservation/gql/mutation'
+import { PAGE_LIMIT, DEFAULT_RESERVATION_PATIENT_ID } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -110,7 +100,7 @@ const SendReservationDialog = props => {
 			createReservationRequest({
 				variables: {
 					reservation: {
-						patient: '5eb91ceac22fbb003619c288',
+						patient: DEFAULT_RESERVATION_PATIENT_ID,
 						doctors: reservationData,
 					},
 				},

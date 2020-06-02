@@ -22,7 +22,7 @@ import {
 	CREATE_RESERVATION_REQUEST,
 	RESET_RESERVATION_QUEUE,
 } from '@views/Reservation/gql/mutation'
-import { PAGE_LIMIT } from '@src/configs.local'
+import { PAGE_LIMIT, DEFAULT_RESERVATION_PATIENT_ID } from '@src/configs.local'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -34,8 +34,6 @@ const useStyles = makeStyles(theme => ({
 		position: 'relative',
 	},
 }))
-
-const DEFAULT_RESERVATION_PATIENT_ID = '5eb91ceac22fbb003619c288'
 
 const ReservationFormEditorQueue = () => {
 	const classes = useStyles()

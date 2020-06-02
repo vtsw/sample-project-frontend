@@ -6,8 +6,7 @@ const CREATE_RESERVATION_REQUEST = gql`
 			id
 			patient {
 				id
-				avatar
-				displayName
+				name
 			}
 			doctors {
 				id
