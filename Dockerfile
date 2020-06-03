@@ -1,11 +1,13 @@
 FROM mhart/alpine-node:11
-WORKDIR /app
-COPY . .
-#RUN yarn add webpack webpack-cli webpack-dev-server
-RUN yarn
-RUN yarn add react-window@next
+
+## caching npm modules installation
+RUN mkdir -p /tmp/npm/
+ADD package.json /tmp/npm/
+RUN cd /tmp/npm/ && yarn && yarn add react-window@next
+
+## copy sources and build
+WORKDIR /usr/src/app
+COPY . ./
+RUN rm -rf ./node_modules
+RUN cp -a /tmp/npm/node_modules /usr/src/app
 RUN yarn run build
-#FROM mhart/alpine-node:11
-#WORKDIR /app
-#RUN yarn global add serve
-#COPY --from=builder /app/dist/ .
