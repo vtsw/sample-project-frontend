@@ -63,7 +63,6 @@ const GET_ZALO_MESSAGE_LIST = gql`
 					payload {
 						thumbnail
 						description
-						title
 						url
 						name
 					}
