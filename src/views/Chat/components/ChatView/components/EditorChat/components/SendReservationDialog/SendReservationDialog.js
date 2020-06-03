@@ -96,11 +96,10 @@ const SendReservationDialog = props => {
 				id: item.doctorId,
 				time: item.unixTime,
 			}))
-
 			createReservationRequest({
 				variables: {
 					reservation: {
-						patient: DEFAULT_RESERVATION_PATIENT_ID,
+						patient: dataSelectedUserOfChat.selectedUserOfChat.id,
 						doctors: reservationData,
 					},
 				},
