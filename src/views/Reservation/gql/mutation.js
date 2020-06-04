@@ -1,19 +1,17 @@
 import gql from 'graphql-tag'
 
 const CREATE_RESERVATION_REQUEST = gql`
-	mutation CreateReservationRequest($reservation: ReservationInput!) {
+	mutation CreateReservationRequest($reservation: ReservationRequestInput!) {
 		createReservationRequest(reservation: $reservation) {
 			id
-			zaloRecipientId
-			zaloSenderId
-			source
-			zaloMessageId
-			payload {
-				patient
-				bookingOptions {
-					doctor
-					time
-				}
+			patient {
+				id
+				name
+			}
+			doctors {
+				id
+				name
+				time
 			}
 		}
 	}

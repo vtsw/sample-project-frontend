@@ -3,7 +3,11 @@ import React from 'react'
 import { Box, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { ReservationFormEditorQueue, ReservationList } from './components'
+import {
+	ReservationFormEditorQueue,
+	ReservationRequestList,
+	ConfirmedReservationList,
+} from './components'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -18,7 +22,11 @@ const useStyles = makeStyles(theme => ({
 		paddingRight: theme.spacing(1.5),
 	},
 	item__reservationlist: {
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'space-between',
 		paddingLeft: theme.spacing(1.5),
+		height: '100%',
 	},
 }))
 
@@ -32,7 +40,8 @@ const Reservation = () => {
 					<ReservationFormEditorQueue />
 				</Grid>
 				<Grid item xs={7} className={classes.item__reservationlist}>
-					<ReservationList />
+					<ConfirmedReservationList />
+					<ReservationRequestList />
 				</Grid>
 			</Grid>
 		</Box>

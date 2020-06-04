@@ -1,5 +1,5 @@
 import 'date-fns'
-import React, { useReducer } from 'react'
+import React, { useReducer, useEffect } from 'react'
 import DateFnsUtils from '@date-io/date-fns'
 
 import {
@@ -64,8 +64,8 @@ const useStyles = makeStyles(theme => ({
 
 const initialState = {
 	type: 'examination',
-	patient: '',
-	doctor: '',
+	patientId: '',
+	doctorId: '',
 	time: new Date('2020-01-01T00:00:00'),
 }
 
@@ -74,9 +74,9 @@ const reducer = (state = initialState, action) => {
 		case 'SET_TYPE':
 			return { ...state, type: action.payload }
 		case 'SET_PATIENT':
-			return { ...state, patient: action.payload }
+			return { ...state, patientId: action.payload }
 		case 'SET_DOCTOR':
-			return { ...state, doctor: action.payload }
+			return { ...state, doctorId: action.payload }
 		case 'SET_DATE_TIME':
 			return { ...state, time: action.payload }
 		case 'RESET_STATE':
@@ -88,8 +88,19 @@ const reducer = (state = initialState, action) => {
 
 const ReservationFormEditor = props => {
 	const classes = useStyles()
-	const { patients, doctors, handleOnCreateReservation } = props
+	const {
+		patients,
+		doctors,
+		selectedPatientId = '',
+		handleOnCreateReservation,
+	} = props
 	const [state, dispatch] = useReducer(reducer, initialState)
+
+	useEffect(() => {
+		if (selectedPatientId) {
+			dispatch({ type: 'SET_PATIENT', payload: selectedPatientId })
+		}
+	}, [selectedPatientId])
 
 	return (
 		<Box className={classes.root}>
@@ -121,35 +132,41 @@ const ReservationFormEditor = props => {
 				</FormControl>
 				<Grid className={classes.container__patient__doctor}>
 					<FormControl variant='outlined' className={classes.formitem}>
-						<InputLabel id='patient-input-label'>Patient</InputLabel>
-						<Select
-							label='Patient'
-							labelId='patient-input-label'
-							value={state.patient}
-							onChange={e =>
-								dispatch({ type: 'SET_PATIENT', payload: e.target.value })
-							}
-						>
-							{patients.map(({ id, value, label }) => (
-								<MenuItem key={id} value={value}>
-									{label}
-								</MenuItem>
-							))}
-						</Select>
-					</FormControl>
-					<FormControl variant='outlined' className={classes.formitem}>
-						<InputLabel id='doctor-input-label'>Doctor</InputLabel>
+						<InputLabel id='reservation-doctor-input-label'>Doctor</InputLabel>
 						<Select
 							label='Doctor'
-							labelId='doctor-input-label'
-							value={state.doctor}
+							labelId='reservation-doctor-input-label'
+							value={state.doctorId}
 							onChange={e =>
 								dispatch({ type: 'SET_DOCTOR', payload: e.target.value })
 							}
 						>
-							{doctors.map(({ id, label }) => (
+							{doctors.map(({ id, name }) => (
 								<MenuItem key={id} value={id}>
-									{label}
+									{name}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+					<FormControl
+						variant='outlined'
+						className={classes.formitem}
+						disabled={!!selectedPatientId}
+					>
+						<InputLabel id='reservation-patient-input-label'>
+							Patient
+						</InputLabel>
+						<Select
+							label='Patient'
+							labelId='reservation-patient-input-label'
+							value={state.patientId}
+							onChange={e =>
+								dispatch({ type: 'SET_PATIENT', payload: e.target.value })
+							}
+						>
+							{patients.map(({ id, displayName }) => (
+								<MenuItem key={id} value={id}>
+									{displayName}
 								</MenuItem>
 							))}
 						</Select>
