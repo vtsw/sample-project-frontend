@@ -62,6 +62,7 @@ const ReservationFormEditorQueue = () => {
 			},
 		}
 	)
+
 	const [createReservation] = useMutation(CREATE_RESERVATION)
 	const [createReservationRequest] = useMutation(CREATE_RESERVATION_REQUEST, {
 		onError: err => alert(err),
@@ -104,7 +105,7 @@ const ReservationFormEditorQueue = () => {
 			createReservationRequest({
 				variables: {
 					reservation: {
-						patient: DEFAULT_RESERVATION_PATIENT_ID,
+						patient: reservationQueueData.reservationQueue.items[0].patientId,
 						doctors: reservationData,
 					},
 				},
