@@ -1,9 +1,16 @@
 import React, { useState } from 'react'
 
-import { Box, Button, TextField, Typography, Grid } from '@material-ui/core'
+import {
+	Box,
+	Button,
+	TextField,
+	Typography,
+	Grid,
+	TextareaAutosize,
+} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { validateEmail, validatePassword } from '@src/shares/utils'
+import { validateEmail, validatePhone } from '@src/shares/utils'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -44,30 +51,57 @@ const useStyles = makeStyles(theme => ({
 		padding: '18px 0',
 	},
 	signuptext: {
-		marginTop: theme.spacing(2),
 		cursor: 'pointer',
 	},
 	row: {
+		height: 50,
 		justifyContent: 'space-between',
+		alignItems: 'center',
+	},
+	interested: {
+		height: 20,
+		width: 88,
 	},
 }))
 
-const SignInForm = props => {
+function createMarkupChat() {
+	return {
+		__html: `<div
+class='zalo-chat-widget'
+data-oaid='4368496045530866759'
+data-welcome-message='Rất vui khi được hỗ trợ bạn!'
+data-autopopup='0'
+data-width='350'
+data-height='420'
+></div>`,
+	}
+}
+
+function createMarkupFollow() {
+	return {
+		__html: `<div
+		class='zalo-follow-only-button'
+		data-oaid='4368496045530866759'
+	></div>`,
+	}
+}
+
+const ReservationWithoutSignin = props => {
 	const { onSubmit, history } = props
 	const classes = useStyles()
 
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
+	const [name, setEmail] = useState('')
+	const [phone, setPhone] = useState('')
+	const [note, setNote] = useState('')
 
 	const handleOnSubmit = () => {
-		const isValidEmail = validateEmail(email)
-		const isValidPassword = validatePassword(password)
+		const isValidPhone = validatePhone(phone)
 
-		if (isValidEmail && isValidPassword) {
-			onSubmit(email, password)
+		if (isValidPhone) {
+			onSubmit(name, phone)
 			return
 		} else {
-			alert('Invalid email or password')
+			alert('Invalid phone')
 		}
 	}
 
@@ -81,29 +115,38 @@ const SignInForm = props => {
 		<Box className={classes.root}>
 			<Box className={classes.container}>
 				<Typography variant='h5' className={classes.title}>
-					Sign in
+					Reservation
 				</Typography>
 				<div className={classes.cardContent}>
 					<TextField
-						value={email}
-						label='EMAIL'
-						placeholder='Email'
+						value={name}
+						label='NAME'
+						placeholder='Name'
 						variant='outlined'
-						type='email'
 						autoComplete='true'
 						className={classes.input}
 						onChange={e => setEmail(e.target.value)}
 					/>
 					<TextField
-						value={password}
-						label='PASSWORD'
-						placeholder='Password'
+						value={phone}
+						label='PHONE'
+						placeholder='Phone'
 						variant='outlined'
-						type='password'
+						type='number'
 						autoComplete='true'
 						className={classes.input}
-						onChange={e => setPassword(e.target.value)}
+						onChange={e => setPhone(e.target.value)}
 						onKeyDown={handlePressEnter}
+					/>
+					<TextField
+						value={note}
+						label='NOTE'
+						placeholder='note'
+						multiline
+						rows={4}
+						variant='outlined'
+						className={classes.input}
+						onChange={e => setNote(e.target.value)}
 					/>
 				</div>
 				<div className={classes.actions}>
@@ -116,30 +159,26 @@ const SignInForm = props => {
 						className={classes.button}
 						onClick={handleOnSubmit}
 					>
-						Sign in
+						Reserve
 					</Button>
 					<Grid container className={classes.row}>
 						<Typography
 							data-testid='signup-text'
 							variant='body2'
 							className={classes.signuptext}
-							onClick={() => history.push('/sign-up')}
+							onClick={() => history.push('/sign-in')}
 						>
-							sign up
+							sign in
 						</Typography>
-						<Typography
-							data-testid='signup-text'
-							variant='body2'
-							className={classes.signuptext}
-							onClick={() => history.push('/reservation-without-signin')}
-						>
-							reservation
-						</Typography>
+						<div className={classes.interested}>
+							<div dangerouslySetInnerHTML={createMarkupFollow()} />
+						</div>
 					</Grid>
 				</div>
 			</Box>
+			<div dangerouslySetInnerHTML={createMarkupChat()} />
 		</Box>
 	)
 }
 
-export default SignInForm
+export default ReservationWithoutSignin

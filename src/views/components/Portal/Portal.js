@@ -4,6 +4,7 @@ import usePortal from './usePortal'
 
 const Portal = ({ id = 'portal', children }) => {
 	const target = usePortal(id)
+
 	return createPortal(children, target)
 }
 

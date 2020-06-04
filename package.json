@@ -69,9 +69,9 @@
     "react-virtualized-auto-sizer": "^1.0.2",
     "react-window": "^1.6.0-alpha.1",
     "react-window-infinite-loader": "^1.0.5",
-    "slate": "^0.57.1",
-    "slate-history": "^0.57.1",
-    "slate-react": "^0.57.1",
+    "slate": "^0.58.1",
+    "slate-history": "^0.58.1",
+    "slate-react": "^0.58.2",
     "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {

@@ -15,6 +15,9 @@ const SignUp = lazy(() => import('@views/SignUp'))
 const File = lazy(() => import('@views/File'))
 const Reservation = lazy(() => import('@views/Reservation'))
 const Chat = lazy(() => import('@views/Chat'))
+const ReservationWithoutSignin = lazy(() =>
+	import('@views/ReservationWithoutSignin')
+)
 
 const App = props => {
 	const { history, location } = props
@@ -26,7 +29,10 @@ const App = props => {
 			return
 		}
 
-		if (!authToken && location.pathname !== '/sign-in') {
+		if (
+			!authToken &&
+			!['/sign-in', '/reservation-without-signin'].includes(location.pathname)
+		) {
 			history.push('/sign-in')
 			return
 		}
@@ -37,17 +43,21 @@ const App = props => {
 		}
 	})
 
-	const fallbackOfSuspense =
-		location.pathname === '/sign-in' || location.pathname === '/sign-up' ? (
-			<Loading open={true} msg={'Loading...'} />
-		) : (
-			<SuspenseLoading />
-		)
+	const fallbackOfSuspense = [
+		'/sign-in',
+		'/reservation-without-signin',
+		'/sign-up',
+	].includes(location.pathname) ? (
+		<Loading open={true} msg={'Loading...'} />
+	) : (
+		<SuspenseLoading />
+	)
 
 	return (
 		<Grid container wrap='nowrap'>
-			{location.pathname === '/sign-in' ||
-			location.pathname === '/sign-up' ? null : (
+			{['/sign-in', '/reservation-without-signin', '/sign-up'].includes(
+				location.pathname
+			) ? null : (
 				<NavPanel />
 			)}
 
@@ -61,6 +71,10 @@ const App = props => {
 					<Route path='/file' component={File} />
 					<Route path='/reservation' component={Reservation} />
 					<Route path='/chat' component={Chat} />
+					<Route
+						path='/reservation-without-signin'
+						component={ReservationWithoutSignin}
+					/>
 				</Switch>
 			</Suspense>
 		</Grid>

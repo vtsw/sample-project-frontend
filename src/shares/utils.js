@@ -18,12 +18,17 @@ const validatePassword = password => {
 	const passwordRegex = /^[a-zA-Z0-9]{3,}$/
 	return password.match(passwordRegex)
 }
+const validatePhone = phone => {
+	const phoneRegex = /(09|01[2|6|8|9])+([0-9]{8})\b$/g
+	return phone.match(phoneRegex)
+}
 
 export {
 	getToken,
 	setToken,
 	deleteToken,
 	validateEmail,
+	validatePhone,
 	validateName,
 	validatePassword,
 }

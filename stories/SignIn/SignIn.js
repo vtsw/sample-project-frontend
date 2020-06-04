@@ -131,6 +131,15 @@ const SignIn = () => {
 						>
 							sign up
 						</LinkTo>
+						<LinkTo
+							kind='component-api-signup'
+							story='sign-up'
+							// story='SignUp' // it only use when have more than 2 story in abcxyz.stories.js
+							// // target='_blank'
+							// style={{ color: '#1474f3' }}
+						>
+							Reservation
+						</LinkTo>
 					</Typography>
 				</div>
 			</Box>
